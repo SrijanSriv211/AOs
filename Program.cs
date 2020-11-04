@@ -27,6 +27,16 @@ namespace AOs
                     continue;
                 }
 
+                else if (Check.ToLower() == "help")
+                {
+                    // code here.
+                }
+
+                else if (Check.ToLower() == "about")
+                {
+                    Console.WriteLine("AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited.");
+                }
+
                 else if (Check.StartsWith("shout "))
                 {
                     string Repl = Check.Replace("shout ", "");
