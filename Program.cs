@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace AOs
 {
@@ -29,7 +30,19 @@ namespace AOs
 
                 else if (Check.ToLower() == "help")
                 {
-                    // code here.
+                    string[] HelpCenter = {"about    - Tells you about AOs.",
+                    "shutdowm - Shuts your PC down.",
+                    "restart  - Restarts your PC.",
+                    "shout    - Prints to the console.",
+                    "get      - Takes input from the User.",
+                    "generate - Generates a random number.",
+                    "clear    - Clears the console."};
+                    Console.WriteLine("Type 'help' to get information of all the commands.");
+                    Array.Sort(HelpCenter);
+                    for (int i = 0; i < HelpCenter.Length; i++)
+                    {
+                        Console.WriteLine(HelpCenter[i]);
+                    }
                 }
 
                 else if (Check.ToLower() == "about")
@@ -86,7 +99,8 @@ namespace AOs
 
                 else if (Check.ToLower() == "shutdown")
                 {
-                    ShutDown();
+                    Load("Shutdown.");
+                    Environment.Exit(0);
                 }
 
                 else if (Check.ToLower() == "quit")
@@ -127,14 +141,6 @@ namespace AOs
             Timer();
             Console.Write(loading);
             Console.ReadKey();            
-        }
-
-        static void ShutDown()
-        {
-            Timer();
-            Console.Write("ShutDown.");
-            Console.ReadKey();
-            Environment.Exit(0);
         }
 
         static void Timer()
