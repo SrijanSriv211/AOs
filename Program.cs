@@ -1,0 +1,661 @@
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Diagnostics;
+using System.Globalization;
+using System.Collections.Generic;
+
+namespace AOs
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "AOs";
+            BIOS("Done.");
+        }
+
+        static void Sys()
+        {
+            Console.Clear();
+            bool Loop = true;
+            while (Loop)
+            {
+                Console.Write("$");
+                string Check = Console.ReadLine();
+                string Global = Check.ToLower();
+                if (Check == "" || Check == " " || Check.Contains("  "))
+                {
+                    continue;
+                }
+
+                else if (Check.ToLower() == "help")
+                {
+                    string[] HelpCenter = {
+                    "about    - Tells you about AOs.",
+                    "shutdowm - Shuts your PC down.",
+                    "restart  - Restarts your PC.",
+                    "shout    - Prints to the console.",
+                    "get      - Takes input from the User.",
+                    "generate - Generates a random number.",
+                    "clear    - Clears the console.",
+                    "scan     - Scans the system to check for viruses, malwares, spywares and etc.",
+                    "color    - Changes the user-interface theme.",
+                    "update   - Updates your pc to the latest version.",
+                    "refresh  - Optimizes the pc for better performance.",
+                    "math     - Calculate integers given by user.",
+                    "calander - Displays current time and date.",
+                    "credits  - Provides Credit to Developers.",
+                    "AOs1000  - AOs is made on 1000 lines of code.",
+                    "timer    - Creats a stop-watch for users.",
+                    "lock     - Locks your pc so others can't access your system.",
+                    "cmd      - Opens Command Prompt window.",
+                    "admin    - An adminstrator tool for more advanced AOs commands.",
+                    "oxygen   - Oxygen is an Artificial Intelligence which will guide you in many things."
+                    };
+                    Console.WriteLine("Type 'help' to get information of all the commands.");
+                    Array.Sort(HelpCenter);
+                    for (int i = 0; i < HelpCenter.Length; i++)
+                    {
+                        Console.WriteLine(HelpCenter[i]);
+                    }
+                }
+
+                else if (Check.ToLower() == "oxygen" || Check.ToLower() == "chatbot")
+                {
+                    Console.WriteLine("Under construction.");
+                }
+
+                else if (Check.ToLower() == "admin")
+                {
+                    Adminstrator();
+                }
+
+                else if (Check.ToLower() == "cmd")
+                {
+                    CommandPrompt("start cmd");
+                }
+
+                else if (Check.ToLower() == "lock")
+                {
+                    LockPC();
+                }
+
+                else if (Check.ToLower() == "timer")
+                {
+                    Console.WriteLine("Set time.");
+                    Console.Write("Seconds: ");
+                    long sec = Convert.ToInt64(Console.ReadLine());
+                    for (int defaultTime = 1; defaultTime <= sec; defaultTime++)
+                    {
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                        Console.WriteLine(defaultTime);
+                        if (defaultTime == sec)
+                        {
+                            Console.Write("Times up...\nContinue.");
+                            Console.ReadKey();
+                            Console.WriteLine("");
+                        }
+                    }
+                }
+
+                else if (Check == "AOs1000")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Congratulations for hitting 1000 lines of code in AOs.");
+                    Console.WriteLine("It is your first program to hit 1000 lines of code.");
+                }
+
+                else if (Check.ToLower() == "credits")
+                {
+                    string[] CreditCenter = {
+                        "_________ AOS - Team ________",
+                        "Developer - Srijan Srivastava",
+                        "Found on  - 15 June 2020",
+                        "",
+                        "____________________ Note(For Developers Only) ____________________",
+                        "|| AOs - Terminal based Operating System",
+                        "|| Contact: Srivastavavsrijan321@gmail.com",
+                        "",
+                        "|| From now onwards AOs is not an Open-Source software.",
+                        "|| If you want to modify or contribute on this project.",
+                        "|| Then you must Contact me on my gmail address."
+                    };
+                    Console.Clear();
+                    for (int i = 0; i < CreditCenter.Length; i++)
+                    {
+                        Console.WriteLine(CreditCenter[i]);
+                    }
+                    Console.Write("Continue.");
+                    Console.ReadKey();
+                    Console.WriteLine("");
+                    Console.Clear();
+                }
+
+                else if (Check.ToLower() == "calander")
+                {
+                    Console.WriteLine(DateTime.Now.DayOfWeek);
+                    Console.WriteLine(DateTime.Now.TimeOfDay);
+                    Console.WriteLine(DateTime.Now.Date);
+                }
+
+                else if (Check.ToLower() == "math")
+                {
+                    Console.Write("Enter your First number: ");
+                    int n1 = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Enter your Second number: ");
+                    int n2 = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Enter you Operator: ");
+                    string ope = Console.ReadLine();
+                    Calculate(n1, n2, ope);
+                }
+
+                else if (Check.ToLower() == "scan")
+                {
+                    Scan();
+                }
+
+                else if (Check.ToLower() == "refresh")
+                {
+                    Thread.Sleep(1000);
+                    Console.WriteLine("Refresh.");
+                }
+
+                else if (Check.ToLower() == "color")
+                {
+                    string[] Colors = {
+                    "1 >>      Default",
+                    "2 >>      Black - White",
+                    "3 >>      White - Red",
+                    "4 >>      Red - White"
+                    };
+                    for (int i = 0; i < Colors.Length; i++)
+                    {
+                        Console.WriteLine(Colors[i]);
+                    }
+                    Console.Write("\nContinue.");
+                    ConsoleKeyInfo Control = Console.ReadKey();
+                    string GetKey = Control.Key.ToString();
+                    Console.WriteLine("");
+                    if (GetKey == "D1")
+                    {
+                        Console.ResetColor();
+                        Console.WriteLine("Done.");
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                    }
+
+                    else if (GetKey == "D2")
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine("Done.");
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                    }
+
+                    else if (GetKey == "D3")
+                    {
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Done.");
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                    }
+
+                    else if (GetKey == "D4")
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Done.");
+                        Thread.Sleep(1000);
+                        Console.Clear();
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Given theme does not exist.");
+                    }
+                }
+
+                else if (Check.ToLower() == "update")
+                {
+                    Load("Update.");
+                    Update();
+                }
+
+                else if (Check.ToLower() == "about")
+                {
+                    Console.WriteLine("AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited.");
+                }
+
+                else if (Check.StartsWith("shout "))
+                {
+                    string Repl = Check.Replace("shout ", "");
+                    Console.WriteLine(Repl);
+                }
+
+                else if (Global.StartsWith("get "))
+                {
+                    string Repl = Check.Replace("get ", "");
+                    Console.Write(Repl);
+                    Console.ReadLine();
+                }
+
+                else if (Check.ToLower() == "shout")
+                {
+                    Console.WriteLine("");
+                }
+
+                else if (Check.ToLower() == "get")
+                {
+                    Console.ReadLine();
+                }
+
+                else if (Check.ToLower() == "clear" || Check.ToLower() == "cls")
+                {
+                    Console.Clear();
+                }
+
+                else if (Check.ToLower() == "generate")
+                {
+                    Console.WriteLine("Generate a random number");
+                    Console.Write("Enter you first number: ");
+                    int n1 = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Enter you second number: ");
+                    int n2 = Convert.ToInt32(Console.ReadLine());
+
+                    Random rand = new Random();
+                    int Generic = rand.Next(n1, n2+1);
+                    Console.WriteLine(Generic);
+                }
+
+                else if (Check.ToLower() == "restart")
+                {
+                    BIOS("Restart.");
+                }
+
+                else if (Check.ToLower() == "shutdown")
+                {
+                    Load("Shutdown.");
+                    Environment.Exit(0);
+                }
+
+                else if (Check.ToLower() == "quit" || Check.ToLower() == "exit")
+                {
+                    Environment.Exit(0);
+                }
+
+                else
+                {
+                    Console.WriteLine("Command does not exist.");
+                }
+            }
+        }
+
+        static void Adminstrator()
+        {
+            Console.ResetColor();
+            Console.Clear();
+
+            bool Loop = true;
+            while(Loop)
+            {
+                Console.Write("admin> ");
+                string Check = Console.ReadLine();
+                string Global = Check.ToLower();
+                if (Check == "" || Check == " " || Check.Contains("  "))
+                {
+                    continue;
+                }
+
+                else if (Check.ToLower() == "help")
+                {
+                    string[] HelpCenter = {
+                    "process   - Starts all the processes on your PC. This may cause some performance issues.",
+                    "debug     - Debug the code which are not working properly.",
+                    "diagxt    - Diagnose your PC's major or minor issues.",
+                    "generate  - Generates a random number of your desired integer values.",
+                    "terminate - Terminates all your PC process, Sometimes this may crash your PC.",
+                    "quit      - Quits Admin system.",
+                    "lock      - Asks for password at PC start-up.",
+                    "format    - Formats your PC for better performance."
+                    };
+                    Console.WriteLine("Type 'help' to get information of all the commands.");
+                    Array.Sort(HelpCenter);
+                    for (int i = 0; i < HelpCenter.Length; i++)
+                    {
+                        Console.WriteLine(HelpCenter[i]);
+                    }
+                }
+
+                else if (Check.ToLower() == "format")
+                {
+                    Console.WriteLine("Formatting.");
+                    Thread.Sleep(5000);
+                    Console.WriteLine("Formatted successfully.");
+                }
+
+                else if (Check.ToLower() == "lock")
+                {
+                    LockSYS();
+                }
+
+                else if (Check.ToLower() == "process")
+                {
+                    Thread.Sleep(5000);
+                    Console.WriteLine("Processed.");
+                }
+
+                else if (Check.ToLower() == "debug")
+                {
+                    Console.WriteLine("Debugging.");
+                    Thread.Sleep(20000);
+                    Console.WriteLine("Debugging successfully completed!");
+                }
+
+                else if (Check.ToLower() == "diagxt")
+                {
+                    Console.WriteLine("Diagnosting your PC.");
+                    Thread.Sleep(3000);
+                    Console.WriteLine("This may take few seconds.");
+                    Thread.Sleep(70000);
+                    Console.WriteLine("Your PC was Diagnosed successfully.");
+                }
+
+                else if (Global.StartsWith("generate"))
+                {
+                    if (Global.Contains("uniform"))
+                    {
+                        Random Ran = new Random();
+                        double Generic = Ran.NextDouble();
+                        Console.WriteLine(Generic);
+                    }
+
+                    else if (Global.Contains("random"))
+                    {
+                        Console.WriteLine("Generate a random number");
+                        Console.Write("Enter you first number: ");
+                        int n1 = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Enter you second number: ");
+                        int n2 = Convert.ToInt32(Console.ReadLine());
+
+                        Random rand = new Random();
+                        int Generic = rand.Next(n1, n2+1);
+                        Console.WriteLine(Generic);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Command does not exist.");
+                    }
+                }
+
+                else if (Check.ToLower() == "terminate")
+                {
+                    Random Ran = new Random();
+                    int Generic = Ran.Next(0, 2);
+                    if (Generic == 0)
+                    {
+                        CrashSys();
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Terminating all your PC processes.");
+                        Thread.Sleep(10000);
+                        Console.WriteLine("All PC processes was terminated successfully.");
+                    }
+                }
+
+                else if (Check.ToLower() == "quit" || Check.ToLower() == "exit")
+                {
+                    break;
+                }
+
+                else
+                {
+                    Console.WriteLine("Command does not exist.");
+                }
+            }
+        }
+
+        static void LockSYS()
+        {
+            Console.Clear();
+            Console.Write("Set Password: ");
+            string pinLock = Console.ReadLine();
+            Console.Clear();
+            File.WriteAllText("user.set", $"{pinLock}");
+            while(true)
+            {
+                Console.Write("Enter Password: ");
+                string askPin = Console.ReadLine();
+                if (askPin == pinLock)
+                {
+                    Console.Write("Correct password.\nContinue.");
+                    Console.ReadKey();
+                    Console.WriteLine("");
+                    Console.Clear();
+                    break;
+                }
+
+                else
+                {
+                    Console.Write("Incorrect password.\nContinue.");
+                    Console.ReadKey();
+                    Console.WriteLine("");
+                    Console.Clear();
+                }
+            }
+        }
+
+        static void CrashSys()
+        {
+            Console.WriteLine("Terminating all your PC processes.");
+            Thread.Sleep(10000);
+            Environment.Exit(0);
+        }
+
+        static void CommandPrompt(string Commands)
+        {
+            ProcessStartInfo start = new ProcessStartInfo("cmd.exe", $"/c {Commands}");
+            Process.Start(start);
+        }
+
+        static void LockPC()
+        {
+            Console.Clear();
+            Console.Write("Set Password: ");
+            string pinLock = Console.ReadLine();
+            Console.Clear();
+
+            while(true)
+            {
+                Console.Write("Enter Password: ");
+                string askPin = Console.ReadLine();
+                if (askPin == pinLock)
+                {
+                    Console.Write("Correct password.\nContinue.");
+                    Console.ReadKey();
+                    Console.WriteLine("");
+                    Console.Clear();
+                    break;
+                }
+
+                else
+                {
+                    Console.Write("Incorrect password.\nContinue.");
+                    Console.ReadKey();
+                    Console.WriteLine("");
+                    Console.Clear();
+                }
+            }
+        }
+
+        static void Calculate(int num1, int num2, string ope)
+        {
+            if (ope == "+")
+            {
+                Console.WriteLine(num1 + num2);
+            }
+
+            else if (ope == "-")
+            {
+                Console.WriteLine(num1 - num2);
+            }
+
+            else if (ope == "*" || ope == "x")
+            {
+                Console.WriteLine(num1 * num2);
+            }
+
+            else if (ope == "/")
+            {
+                Console.WriteLine(num1 / num2);
+            }
+        }
+
+        static void Update()
+        {
+            Random Ran = new Random();
+            int Generic = Ran.Next(0, 18);
+            if (Generic == 17)
+            {
+                string[] Updates = {
+                    "Downloading.",
+                    "Verifying.",
+                    "Installing.",
+                    "Updating."
+                };
+                Console.WriteLine("Updates are available!");
+                Console.Write("Continue.");
+                Console.ReadKey();
+                Console.WriteLine("");
+
+                Console.Clear();
+
+                Console.WriteLine("Connecting.");
+                Thread.Sleep(3000);
+                Console.WriteLine("[]\n");
+                for (int i = 0; i < Updates.Length; i++)
+                {
+                    Console.WriteLine(Updates[i]);
+                    Thread.Sleep(17000);
+                    Console.WriteLine("[]\n");
+                }
+
+                Console.WriteLine("You are Up-To-Date.");
+                Console.Write("Restart.");
+                Console.ReadKey();
+
+                BIOS("Restart.");
+            }
+
+            else
+            {
+                Console.WriteLine("You are Up-To-Date.");
+                Console.Write("Continue.");
+                Console.ReadKey();
+                Console.WriteLine("");
+            }
+        }
+
+        static void Scan()
+        {
+            Load("Scaning.");
+            Console.WriteLine("Scaning completed successfully!");
+            Thread.Sleep(3000);
+            Console.WriteLine("Generating report.");
+            Thread.Sleep(1000);
+            Random Ran = new Random();
+            int Generic = Ran.Next(0, 18);
+            if (Generic == 17)
+            {
+                Console.WriteLine("Your PC ran into problem =(");
+            }
+
+            else
+            {
+                Console.WriteLine("Your pc is working fine.");
+                Console.Write("Continue.");
+                Console.ReadKey();
+                Console.WriteLine("");
+            }
+        }
+
+        static void BIOS(string data)
+        {
+            Random Ran = new Random();
+            int Generic = Ran.Next(0, 18);
+            if (Generic == 17)
+            {
+                Timer();
+                Console.Title = "Error 0x001.";
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.Write("Error 0x001.");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+
+            else
+            {
+                if (File.Exists("user.set"))
+                {
+                    Console.ResetColor();
+                    string Cd = File.ReadAllText("user.set");
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.Write("Enter password: ");
+                        string ByPassCode = Console.ReadLine();
+                        if (ByPassCode == Cd)
+                        {
+                            Console.Write("Correct password.\nContinue.");
+                            Console.ReadKey();
+                            Console.WriteLine("");
+                            break;
+                        }
+
+                        else
+                        {
+                            Console.Write("Incorrect password.\nContinue.");
+                            Console.ReadKey();
+                            Console.WriteLine("");
+                        }
+                    }
+                    Load(data);
+                    Sys();
+                }
+
+                else
+                {
+                    Load(data);
+                    Sys();
+                }
+            }
+        }
+
+        static void Load(string loading)
+        {
+            Timer();
+            Console.Write(loading);
+            Console.ReadKey();            
+        }
+
+        static void Timer()
+        {
+            for (int i = 0; i <= 100; i++)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(10); // As miliseconds are counted.
+                Console.Clear();
+            }
+        }
+    }
+}
