@@ -51,7 +51,7 @@ namespace AOs
                     "lock     - Locks your pc so others can't access your system.",
                     "cmd      - Opens Command Prompt window.",
                     "admin    - An adminstrator tool for more advanced AOs commands.",
-                    "oxygen   - Oxygen is an Artificial Intelligence which will guide you in many things."
+                    "pixstore - Installs any application you want to run on AOs."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -61,9 +61,125 @@ namespace AOs
                     }
                 }
 
-                else if (Check.ToLower() == "oxygen" || Check.ToLower() == "chatbot")
+                else if (Global.StartsWith("pixstore ") || Check.ToLower() == "pixstore")
                 {
-                    Console.WriteLine("Under construction.");
+                    if (Global.StartsWith("pixstore "))
+                    {
+                        string App = Check.Replace("pixstore ", "");
+                        string application = App.ToLower();
+                        if (application.StartsWith("install "))
+                        {
+                            string Install = application.Replace("install ", "");
+                            string apps = Install.Replace(" ", "");
+                            if (File.Exists($"{apps}.co"))
+                            {
+                                Console.WriteLine($"Collecting {apps}");
+                                Thread.Sleep(1000);
+
+                                Console.WriteLine($"Updating {apps}");
+                                Console.WriteLine($"Finalizing {apps}");
+                                Thread.Sleep(3000);
+
+                                File.WriteAllText($"{apps}.co", $"\"{apps}\" updated successfully.");
+                                Console.WriteLine($"{apps} updated\n");                                
+                            }
+
+                            else
+                            {
+                                Console.WriteLine($"Collecting {apps}");
+                                Thread.Sleep(1000);
+
+                                Console.WriteLine($"Installing {apps}");
+                                Console.WriteLine($"Finalizing {apps}");
+                                Thread.Sleep(3000);
+
+                                File.WriteAllText($"{apps}.co", $"\"{apps}\" installed successfully.");
+                                Console.WriteLine($"{apps} installed\n");
+
+                                File.AppendAllText("Pixstore_installed.log", $"{apps}\n");
+                            }
+                        }
+
+                        else if (application.StartsWith("update "))
+                        {
+                            string Uninstall = application.Replace("update ", "");
+                            string apps = Uninstall.Replace(" ", "");
+                            if (File.Exists($"{apps}.co"))
+                            {
+                                Console.WriteLine($"Collecting {apps}");
+                                Thread.Sleep(1000);
+
+                                Console.WriteLine($"Updating {apps}");
+                                Console.WriteLine($"Finalizing {apps}");
+                                Thread.Sleep(3000);
+
+                                File.WriteAllText($"{apps}.co", $"\"{apps}\" updated successfully.");
+                                Console.WriteLine($"{apps} updated\n");
+                            }
+
+                            else
+                            {
+                                Console.WriteLine($"Cannot update {Uninstall}");
+                            }
+                        }
+
+                        else if (application.StartsWith("uninstall "))
+                        {
+                            string Uninstall = application.Replace("uninstall ", "");
+                            string apps = Uninstall.Replace(" ", "");
+                            if (File.Exists($"{apps}.co"))
+                            {
+                                Console.WriteLine($"Collecting {apps}");
+                                Thread.Sleep(1000);
+
+                                Console.WriteLine($"Uninstalling {apps}");
+                                Console.WriteLine($"Finalizing {apps}");
+                                Thread.Sleep(3000);
+
+                                File.Delete($"{apps}.co");
+
+                                Console.WriteLine($"{apps} uninstalled\n");
+
+                                string Deline = File.ReadAllText("Pixstore_installed.log");
+                                string[] Strlist = Deline.Split($"{apps}\n");
+                                string NewLine = string.Concat(Strlist);
+                                string repl = NewLine.Replace("\n", "");
+                                File.WriteAllText("Pixstore_installed.log", $"{repl}\n");
+                            }
+
+                            else
+                            {
+                                Console.WriteLine($"Cannot uninstall {Uninstall}");
+                            }
+                        }
+
+                        else if (App.ToLower() == "list")
+                        {
+                            if (File.Exists("Pixstore_installed.log"))
+                            {
+                                string Cd = File.ReadAllText("Pixstore_installed.log");
+                                if (Cd == "")
+                                {
+                                    Console.WriteLine("No software listed.");
+                                }
+
+                                else
+                                {
+                                    Console.WriteLine(Cd);
+                                }
+                            }
+
+                            else
+                            {
+                                Console.WriteLine("You haven't installed any programs yet.");
+                            }
+                        }
+                    }
+
+                    else if (Check.ToLower() == "pixstore")
+                    {
+                        Console.WriteLine("You need you add some arguments, such as, \"install\", \"update\", \"uninstall\", \"list\"");
+                    }
                 }
 
                 else if (Check.ToLower() == "admin")
@@ -232,7 +348,7 @@ namespace AOs
                     Console.WriteLine("AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited.");
                 }
 
-                else if (Check.StartsWith("shout "))
+                else if (Global.StartsWith("shout "))
                 {
                     string Repl = Check.Replace("shout ", "");
                     Console.WriteLine(Repl);
@@ -527,12 +643,7 @@ namespace AOs
             int Generic = Ran.Next(0, 18);
             if (Generic == 17)
             {
-                string[] Updates = {
-                    "Downloading.",
-                    "Verifying.",
-                    "Installing.",
-                    "Updating."
-                };
+                Console.WriteLine("");
                 Console.WriteLine("Updates are available!");
                 Console.Write("Continue.");
                 Console.ReadKey();
@@ -541,16 +652,34 @@ namespace AOs
                 Console.Clear();
 
                 Console.WriteLine("Connecting.");
-                Thread.Sleep(3000);
+                Thread.Sleep(7000);
+                Console.WriteLine("Connected.");
                 Console.WriteLine("[]\n");
-                for (int i = 0; i < Updates.Length; i++)
-                {
-                    Console.WriteLine(Updates[i]);
-                    Thread.Sleep(17000);
-                    Console.WriteLine("[]\n");
-                }
 
-                Console.WriteLine("You are Up-To-Date.");
+                Console.WriteLine("Downloading.");
+                Thread.Sleep(7000);
+                Console.WriteLine("72500 files Downloaded.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Verifying.");
+                Thread.Sleep(7000);
+                Console.WriteLine("72500 files Verified.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Extracting.");
+                Thread.Sleep(7000);
+                Console.WriteLine("107005 files Extracted.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Installing.");
+                Thread.Sleep(7000);
+                Console.WriteLine("10500 files Installed.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Updating.");
+                Thread.Sleep(7000);
+                Console.WriteLine("Your PC is Updated.");
+                Console.WriteLine("[]\n");
                 Console.Write("Restart.");
                 Console.ReadKey();
 
@@ -559,6 +688,7 @@ namespace AOs
 
             else
             {
+                Console.WriteLine("");
                 Console.WriteLine("You are Up-To-Date.");
                 Console.Write("Continue.");
                 Console.ReadKey();

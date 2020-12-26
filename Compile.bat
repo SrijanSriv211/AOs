@@ -1,6 +1,6 @@
 @ECHO OFF
 
 echo Compiling.
-start dotnet run
+dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true
 
 exit
