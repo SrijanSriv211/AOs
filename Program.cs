@@ -106,7 +106,7 @@ namespace AOs
                             }
                         }
 
-                        else if (!Text.StartsWith("delete "))
+                        else if (!Text.StartsWith("delete ") && !Text.StartsWith("open "))
                         {
                             string Txt = Text.Replace(" ", "");
                             if (File.Exists(Txt))
@@ -126,7 +126,9 @@ namespace AOs
 
                     else if (Check.ToLower() == "builder")
                     {
-                        Console.WriteLine("You need to give some file name, such as \"Test.txt\". Use \"--builder<quit>\" to exit.");
+                        Console.WriteLine("You need to give some file name, such as \"Test.txt\".");
+                        Console.WriteLine("You need to add some arguments, such as, \"open\", \"delete\".");
+                        Console.WriteLine("Use \"--builder<quit>\" to exit.");
                     }
                 }
 
