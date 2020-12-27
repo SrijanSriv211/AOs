@@ -760,6 +760,17 @@ namespace AOs
 
                 Console.WriteLine("Updating.");
                 Thread.Sleep(7000);
+
+                if (File.Exists("updateinfo.log"))
+                {
+                    File.AppendAllText("updateinfo.log", $"This PC was updated at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                }
+
+                else
+                {
+                    File.WriteAllText("updateinfo.log", $"This PC was updated at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                }
+
                 Console.WriteLine("Your PC is Updated.");
                 Console.WriteLine("[]\n");
                 Console.Write("Restart.");
@@ -803,11 +814,23 @@ namespace AOs
 
         static void BIOS(string data)
         {
+            if (File.Exists("BOOT.log"))
+            {
+                File.AppendAllText("BOOT.log", "");
+            }
+
+            else
+            {
+                File.WriteAllText("BOOT.log", "BOOT_LOG\n");
+            }
+
             Random Ran = new Random();
             int Generic = Ran.Next(0, 18);
             if (Generic == 17)
             {
                 Timer();
+
+                File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
                 Console.Title = "Error 0x001.";
                 Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.Write("Error 0x001.");
@@ -817,6 +840,7 @@ namespace AOs
 
             else
             {
+                File.AppendAllText("BOOT.log", $"AOs booted at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
                 if (File.Exists("user.set"))
                 {
                     Console.ResetColor();
