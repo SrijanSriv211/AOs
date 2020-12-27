@@ -51,8 +51,9 @@ namespace AOs
                     "lock     - Locks your pc so others can't access your system.",
                     "cmd      - Opens Command Prompt window.",
                     "admin    - An adminstrator tool for more advanced AOs commands.",
-                    "pixstore - Installs any application you want to run on AOs.",
-                    "builder  - Provides user a notepad to store multi-line data."
+                    "pixstore - Helps you to install any applications easily.",
+                    "builder  - Provides user a notepad to store multi-line data.",
+                    "version  - Shows you the current version of AOs."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -60,6 +61,11 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
+                }
+
+                else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
+                {
+                    Console.WriteLine("AOs 2020 [Version 1.5.4]");
                 }
 
                 else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
@@ -72,8 +78,16 @@ namespace AOs
                         {
                             string Open_Text = Text.Replace("open ", "");
                             string op = Open_Text.Replace(" ", "");
-                            string READ_FILE = File.ReadAllText(op);
-                            Console.WriteLine(READ_FILE);
+                            if (File.Exists(op))
+                            {
+                                string READ_FILE = File.ReadAllText(op);
+                                Console.WriteLine(READ_FILE);
+                            }
+
+                            else
+                            {
+                                Console.WriteLine($"Cannot open {op}");
+                            }
                         }
 
                         else if (Text.StartsWith("delete "))
@@ -127,7 +141,7 @@ namespace AOs
                             else
                             {
                                 Console.WriteLine($"Cannot open {apps}");
-                            }                            
+                            }                       
                         }
 
                         else if (application.StartsWith("install "))
