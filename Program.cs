@@ -94,9 +94,16 @@ namespace AOs
                         {
                             string Build = Text.Replace("delete ", "");
                             string Txt = Build.Replace(" ", "");
-                            File.Delete(Txt);
+                            if (File.Exists(Txt))
+                            {
+                                File.Delete(Txt);
+                                Console.WriteLine($"\"{Txt}\" deleted successfully");
+                            }
 
-                            Console.WriteLine($"\"{Txt}\" deleted successfully");
+                            else
+                            {
+                                Console.WriteLine($"Cannot delete {Txt}");
+                            }
                         }
 
                         else if (!Text.StartsWith("delete "))
@@ -219,7 +226,7 @@ namespace AOs
 
                                 string Deline = File.ReadAllText("Pixstore_installed.log");
                                 string[] Strlist = Deline.Split($"{apps}\n");
-                                string NewLine = string.Concat(Strlist);
+                                string NewLine = string.Join("", Strlist);
                                 string repl = NewLine.Replace("\n", "");
                                 File.WriteAllText("Pixstore_installed.log", $"{repl}\n");
                             }
