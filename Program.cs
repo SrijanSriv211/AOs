@@ -51,7 +51,8 @@ namespace AOs
                     "lock     - Locks your pc so others can't access your system.",
                     "cmd      - Opens Command Prompt window.",
                     "admin    - An adminstrator tool for more advanced AOs commands.",
-                    "pixstore - Installs any application you want to run on AOs."
+                    "pixstore - Installs any application you want to run on AOs.",
+                    "builder  - Provides user a notepad to store multi-line data."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -61,13 +62,75 @@ namespace AOs
                     }
                 }
 
+                else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
+                {
+                    if (Global.StartsWith("builder "))
+                    {
+                        string Builder = Check.Replace("builder ", "");
+                        string Text = Builder.ToLower();
+                        if (Text.StartsWith("open "))
+                        {
+                            string Open_Text = Text.Replace("open ", "");
+                            string op = Open_Text.Replace(" ", "");
+                            string READ_FILE = File.ReadAllText(op);
+                            Console.WriteLine(READ_FILE);
+                        }
+
+                        else if (Text.StartsWith("delete "))
+                        {
+                            string Build = Text.Replace("delete ", "");
+                            string Txt = Build.Replace(" ", "");
+                            File.Delete(Txt);
+
+                            Console.WriteLine($"\"{Txt}\" deleted successfully");
+                        }
+
+                        else if (!Text.StartsWith("delete "))
+                        {
+                            string Txt = Text.Replace(" ", "");
+                            if (File.Exists(Txt))
+                            {
+                                string CD = File.ReadAllText(Txt);
+                                Console.WriteLine($"{CD}Add more text.");
+                                Builder_Txt(Txt);
+                            }
+
+                            else
+                            {
+                                File.WriteAllText(Txt, "");
+                                Builder_Txt(Txt);
+                            }
+                        }
+                    }
+
+                    else if (Check.ToLower() == "builder")
+                    {
+                        Console.WriteLine("You need to give some file name, such as \"Test.txt\". Use \"--builder<quit>\" to exit.");
+                    }
+                }
+
                 else if (Global.StartsWith("pixstore ") || Check.ToLower() == "pixstore")
                 {
                     if (Global.StartsWith("pixstore "))
                     {
                         string App = Check.Replace("pixstore ", "");
                         string application = App.ToLower();
-                        if (application.StartsWith("install "))
+                        if (application.StartsWith("open "))
+                        {
+                            string Open = application.Replace("open ", "");
+                            string apps = Open.Replace(" ", "");
+                            if (File.Exists($"{apps}.co"))
+                            {
+                                Console.WriteLine($"Opening {apps}");                         
+                            }
+
+                            else
+                            {
+                                Console.WriteLine($"Cannot open {apps}");
+                            }                            
+                        }
+
+                        else if (application.StartsWith("install "))
                         {
                             string Install = application.Replace("install ", "");
                             string apps = Install.Replace(" ", "");
@@ -81,7 +144,7 @@ namespace AOs
                                 Thread.Sleep(3000);
 
                                 File.WriteAllText($"{apps}.co", $"\"{apps}\" updated successfully.");
-                                Console.WriteLine($"{apps} updated\n");                                
+                                Console.WriteLine($"{apps} updated\n");                          
                             }
 
                             else
@@ -178,7 +241,7 @@ namespace AOs
 
                     else if (Check.ToLower() == "pixstore")
                     {
-                        Console.WriteLine("You need you add some arguments, such as, \"install\", \"update\", \"uninstall\", \"list\"");
+                        Console.WriteLine("You need to add some arguments, such as, \"install\", \"update\", \"uninstall\", \"list\"");
                     }
                 }
 
@@ -439,7 +502,8 @@ namespace AOs
                     "terminate - Terminates all your PC process, Sometimes this may crash your PC.",
                     "quit      - Quits Admin system.",
                     "lock      - Asks for password at PC start-up.",
-                    "format    - Formats your PC for better performance."
+                    "format    - Formats your PC for better performance.",
+                    "ran       - Displays machine specific properties and configuration."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -447,6 +511,11 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
+                }
+
+                else if (Check.ToLower() == "ran")
+                {
+                    CommandPrompt("systeminfo");
                 }
 
                 else if (Check.ToLower() == "format")
@@ -538,6 +607,19 @@ namespace AOs
                 {
                     Console.WriteLine("Command does not exist.");
                 }
+            }
+        }
+
+        static void Builder_Txt(string txt)
+        {
+            while (true)
+            {
+                string Data = Console.ReadLine();
+                if (Data == "--builder<quit>")
+                {
+                    break;
+                }
+                File.AppendAllText(txt, $"{Data}\n");
             }
         }
 
