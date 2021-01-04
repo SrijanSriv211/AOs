@@ -53,7 +53,8 @@ namespace AOs
                     "admin    - An adminstrator tool for more advanced AOs commands.",
                     "pixstore - Helps you to install any applications easily.",
                     "builder  - Provides user a notepad to store multi-line data.",
-                    "version  - Shows you the current version of AOs."
+                    "version  - Shows you the current version of AOs.",
+                    "leaf     - Leaf is a webbrowser you can use to open webpages."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -61,6 +62,12 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
+                }
+
+                else if (Global.StartsWith("leaf ") || Check.ToLower() == "leaf")
+                {
+                    string Leaf = Check.Replace("leaf ", "start ");
+                    CommandPrompt(Leaf);
                 }
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
@@ -837,6 +844,17 @@ namespace AOs
 
         static void BIOS(string data)
         {
+            if (Directory.Exists("Files.x72"))
+            {
+                Directory.SetCurrentDirectory("Files.x72");
+            }
+
+            else
+            {
+                Directory.CreateDirectory("Files.x72");
+                Directory.SetCurrentDirectory("Files.x72");
+            }
+
             if (File.Exists("BOOT.log"))
             {
                 File.AppendAllText("BOOT.log", "");
