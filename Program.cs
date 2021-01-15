@@ -72,7 +72,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
                 {
-                    Console.WriteLine("AOs 2020 [Version 1.5.4]");
+                    Console.WriteLine("AOs 2020 [Version 1.5.5]");
                 }
 
                 else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
