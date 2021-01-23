@@ -5,7 +5,7 @@ AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited Term
 ## Getting Started
 Visual Studio Code is recommended (You can use your desired one), AOs is not officially completed yet, but as of now you can use it, also AOs is only focused to run on Windows Operating System.
 
-Start by cloning the repository with `git clone https://github.com/Light-Lens/AOs`, then extract `Extract it.zip`
+Start by cloning the repository with `git clone https://github.com/Light-Lens/AOs`
 
 ## The Plan
 The plan for AOs is to create a Terminal Operating System to increase your efficiency and productivity of your work.
@@ -17,5 +17,5 @@ You need to install the following on your machine.
 - Visual Studio Code (or any other IDE)
 
 ## How To Use
-- Extract both Sysfail.zip and build.rar files.
-- Open build\AOs folder and start AOs.exe
+- Extract both Sysfail.zip files.
+- Open AOs folder and start AOs.exe
