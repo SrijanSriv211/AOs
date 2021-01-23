@@ -766,8 +766,8 @@ namespace AOs
         static void Update()
         {
             Random Ran = new Random();
-            int Generic = Ran.Next(0, 2);
-            if (Generic == 1)
+            int Generic = Ran.Next(0, 18);
+            if (Generic == 17)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Updates are available!");
@@ -798,6 +798,7 @@ namespace AOs
                         Thread.Sleep(Generic_Range(0, 3001));
                         return;
                     }
+                    Directory.SetCurrentDirectory("..");
                 }
                 else
                 {
@@ -822,6 +823,7 @@ namespace AOs
                     Console.Write("-");
                     Thread.Sleep(1000);
                 }
+                File.WriteAllText("UpdatePackages\\Data\\updatedata.info", "72500 files Downloaded");
                 Console.WriteLine("72500 files Downloaded.");
                 Console.WriteLine("[]\n");
 
@@ -887,12 +889,12 @@ namespace AOs
                 Thread.Sleep(Generic_Range(0, 7001));
                 if (File.Exists("updateinfo.log"))
                 {
-                    File.AppendAllText("updateinfo.log", $"This PC was updated at {DateTime.Now}\n");
+                    File.AppendAllText("updateinfo.log", $"This PC was updated at {DateTime.Now}  : BUG FIXES, Optimizes\n");
                 }
 
                 else
                 {
-                    File.WriteAllText("updateinfo.log", $"This PC was updated at {DateTime.Now}\n");
+                    File.WriteAllText("updateinfo.log", $"This PC was updated at {DateTime.Now} : BUG FIXES, Optimizes\n");
                 }
 
                 Console.WriteLine("Your PC is Updated.");
@@ -972,6 +974,7 @@ namespace AOs
                 Console.Clear();
                 Console.WriteLine("Error 0x001.");
                 Console.WriteLine("ERROR : LOCALHOST_TIMEOUT");
+                File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : LOCALHOST_TIMEOUT\n");
 
                 string[] Syscrash = {
                 "1 >>      Hard Shutdown",
@@ -1014,6 +1017,61 @@ namespace AOs
                 Console.WriteLine("Error 0x002.");
                 Console.WriteLine("Cannot specify Config.set.");
                 Console.WriteLine("ERROR : SYSTEM_FILE_MISSING");
+                File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : SYSTEM_FILE_MISSING\n");
+
+                string[] Syscrash = {
+                "1 >>      Hard Shutdown",
+                "2 >>      Restart anyway",
+                "3 >>      Recover files"
+                };
+                for (int i = 0; i < Syscrash.Length; i++)
+                {
+                    Console.WriteLine(Syscrash[i]);
+                }
+
+                Console.Write(">>> ");
+                ConsoleKeyInfo Control = Console.ReadKey();
+                string GetKey = Control.Key.ToString();
+                Console.WriteLine("");
+
+                if (GetKey == "D1")
+                {
+                    Environment.Exit(0);
+                }
+
+                else if (GetKey == "D2")
+                {
+                    BIOS("Restart.");
+                }
+
+                else if (GetKey == "D3")
+                {
+                    RecoverSYSTEM();
+                    Console.Title = "AOs";
+                    Console.ResetColor();
+                    Console.Clear();
+                    Load(data);
+                    RootPackages();
+                    Sys();
+                }
+
+                else
+                {
+                    Console.WriteLine("Option doesn't exist.");
+                    Environment.Exit(0);
+                }
+            }
+
+            else if (File.Exists("PROPERTIES") == false)
+            {
+                File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
+                Console.Title = "Error 0x003.";
+                CommandPrompt("color 17");
+                Console.Clear();
+                Console.WriteLine("Error 0x003.");
+                Console.WriteLine("Cannot specify PROPERTIES.");
+                Console.WriteLine("ERROR : SYSTEM_FILE_MISSING");
+                File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : SYSTEM_FILE_MISSING\n");
 
                 string[] Syscrash = {
                 "1 >>      Hard Shutdown",
