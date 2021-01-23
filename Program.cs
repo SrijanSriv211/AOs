@@ -17,9 +17,9 @@ namespace AOs
 
         static void Sys()
         {
-            Console.Clear();
-            Console.ResetColor();
             Console.Title = "AOs";
+            Console.ResetColor();
+            Console.Clear();
 
             bool Loop = true;
             while (Loop)
@@ -555,7 +555,8 @@ namespace AOs
 
                 else if (Check.ToLower() == "ran")
                 {
-                    File.ReadAllText("Config.set");
+                    string Cfg = File.ReadAllText("Config.set");
+                    Console.WriteLine(Cfg);
                 }
 
                 else if (Check.ToLower() == "format")
@@ -989,7 +990,12 @@ namespace AOs
 
                 else if (GetKey == "D2")
                 {
-                    BIOS("Restart.");
+                    Console.Title = "AOs";
+                    Console.ResetColor();
+                    Console.Clear();
+                    Load(data);
+                    RootPackages();
+                    Sys();
                 }
 
                 else
@@ -1037,8 +1043,12 @@ namespace AOs
                 else if (GetKey == "D3")
                 {
                     RecoverSYSTEM();
+                    Console.Title = "AOs";
+                    Console.ResetColor();
                     Console.Clear();
-                    BIOS("Restart.");
+                    Load(data);
+                    RootPackages();
+                    Sys();
                 }
 
                 else
