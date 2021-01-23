@@ -18,6 +18,9 @@ namespace AOs
         static void Sys()
         {
             Console.Clear();
+            Console.ResetColor();
+            Console.Title = "AOs";
+
             bool Loop = true;
             while (Loop)
             {
@@ -72,7 +75,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
                 {
-                    Console.WriteLine("AOs 2020 [Version 1.5.5]");
+                    Console.WriteLine("AOs 2021 [Version 1.5.5.1]");
                 }
 
                 else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
@@ -512,6 +515,7 @@ namespace AOs
             Console.Clear();
 
             bool Loop = true;
+            Directory.SetCurrentDirectory("..");
             while(Loop)
             {
                 Console.Write("admin> ");
@@ -533,7 +537,8 @@ namespace AOs
                     "quit      - Quits Admin system.",
                     "lock      - Asks for password at PC start-up.",
                     "format    - Formats your PC for better performance.",
-                    "ran       - Displays machine specific properties and configuration."
+                    "ran       - Displays machine specific properties and configuration.",
+                    "recover   - Restores all important files and folders."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -543,9 +548,14 @@ namespace AOs
                     }
                 }
 
+                else if (Check.ToLower() == "recover")
+                {
+                    RecoverSYSTEM();
+                }
+
                 else if (Check.ToLower() == "ran")
                 {
-                    CommandPrompt("systeminfo");
+                    File.ReadAllText("Config.set");
                 }
 
                 else if (Check.ToLower() == "format")
@@ -630,6 +640,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "quit" || Check.ToLower() == "exit")
                 {
+                    Directory.SetCurrentDirectory("Files.x72");
                     break;
                 }
 
@@ -659,6 +670,7 @@ namespace AOs
             Console.Write("Set Password: ");
             string pinLock = Console.ReadLine();
             Console.Clear();
+            Directory.SetCurrentDirectory("..");
             File.WriteAllText("user.set", $"{pinLock}");
             while(true)
             {
@@ -681,6 +693,7 @@ namespace AOs
                     Console.Clear();
                 }
             }
+            Directory.SetCurrentDirectory("Files.x72");
         }
 
         static void CrashSys()
@@ -752,8 +765,8 @@ namespace AOs
         static void Update()
         {
             Random Ran = new Random();
-            int Generic = Ran.Next(0, 18);
-            if (Generic == 17)
+            int Generic = Ran.Next(0, 2);
+            if (Generic == 1)
             {
                 Console.WriteLine("");
                 Console.WriteLine("Updates are available!");
@@ -763,42 +776,122 @@ namespace AOs
 
                 Console.Clear();
 
+                Directory.SetCurrentDirectory("..");
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE");
+                Console.WriteLine("[]\n");
+
                 Console.WriteLine("Connecting.");
-                Thread.Sleep(7000);
-                Console.WriteLine("Connected.");
+                Thread.Sleep(Generic_Range(0, 10001));
+                Console.WriteLine("Connected to server.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Getting things ready.");
+                Thread.Sleep(Generic_Range(0, 10001));
+                if (Directory.Exists("UpdatePackages"))
+                {
+                    Directory.SetCurrentDirectory("UpdatePackages");
+                    if (File.Exists("UPR.exe") == false)
+                    {
+                        Console.WriteLine("Cannot find \"UPR.exe\"");
+                        Console.WriteLine("Cancelling update");
+                        Thread.Sleep(Generic_Range(0, 3001));
+                        return;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Cannot find \"UpdatePackages\" directory.");
+                    Console.WriteLine("Cancelling update");
+                    Thread.Sleep(Generic_Range(0, 3001));
+                    return;
+                }
                 Console.WriteLine("[]\n");
 
                 Console.WriteLine("Downloading.");
-                Thread.Sleep(7000);
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE_DOWNLOAD_EXECUTION");
+                Console.Write("This may take a few minutes: ");
+                Thread.Sleep(Generic_Range(0, 10001));
+                for (int i = 0; i <= 50; i++)
+                {
+                    if (i >= 50)
+                    {
+                        Console.WriteLine(">");
+                        break;
+                    }
+                    Console.Write("-");
+                    Thread.Sleep(1000);
+                }
                 Console.WriteLine("72500 files Downloaded.");
                 Console.WriteLine("[]\n");
 
-                Console.WriteLine("Verifying.");
+                Console.WriteLine("Copying.");
                 Thread.Sleep(7000);
+                CommandPrompt("call UpdatePackages\\UPR.exe");
+                Console.WriteLine("72500 files Copied.");
+                Console.WriteLine("[]\n");
+
+                Console.WriteLine("Verifying.");
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE_VERIFICATION_EXECUTION");
+                Console.Write("This may take a few seconds: ");
+                Thread.Sleep(Generic_Range(0, 10001));
+                for (int i = 0; i <= 50; i++)
+                {
+                    if (i >= 50)
+                    {
+                        Console.WriteLine(">");
+                        break;
+                    }
+                    Console.Write("-");
+                    Thread.Sleep(1000);
+                }
                 Console.WriteLine("72500 files Verified.");
                 Console.WriteLine("[]\n");
 
                 Console.WriteLine("Extracting.");
-                Thread.Sleep(7000);
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE_EXTRACTION_EXECUTION");
+                Console.Write("This may take a few minutes: ");
+                Thread.Sleep(Generic_Range(0, 17001));
+                for (int i = 0; i <= 50; i++)
+                {
+                    if (i >= 50)
+                    {
+                        Console.WriteLine(">");
+                        break;
+                    }
+                    Console.Write("-");
+                    Thread.Sleep(1000);
+                }
                 Console.WriteLine("107005 files Extracted.");
                 Console.WriteLine("[]\n");
 
                 Console.WriteLine("Installing.");
-                Thread.Sleep(7000);
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE_INSTALLATION_EXECUTION");
+                Console.Write("This may take a few minutes: ");
+                Thread.Sleep(Generic_Range(0, 27001));
+                for (int i = 0; i <= 50; i++)
+                {
+                    if (i >= 50)
+                    {
+                        Console.WriteLine(">");
+                        break;
+                    }
+                    Console.Write("-");
+                    Thread.Sleep(1000);
+                }
                 Console.WriteLine("10500 files Installed.");
                 Console.WriteLine("[]\n");
 
                 Console.WriteLine("Updating.");
-                Thread.Sleep(7000);
-
+                Console.WriteLine("AOS_1.5_UPDATE_PACKAGE_EXECUTION");
+                Thread.Sleep(Generic_Range(0, 7001));
                 if (File.Exists("updateinfo.log"))
                 {
-                    File.AppendAllText("updateinfo.log", $"This PC was updated at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                    File.AppendAllText("updateinfo.log", $"This PC was updated at {DateTime.Now}\n");
                 }
 
                 else
                 {
-                    File.WriteAllText("updateinfo.log", $"This PC was updated at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                    File.WriteAllText("updateinfo.log", $"This PC was updated at {DateTime.Now}\n");
                 }
 
                 Console.WriteLine("Your PC is Updated.");
@@ -806,6 +899,7 @@ namespace AOs
                 Console.Write("Restart.");
                 Console.ReadKey();
 
+                Directory.SetCurrentDirectory("Files.x72");
                 BIOS("Restart.");
             }
 
@@ -842,17 +936,17 @@ namespace AOs
             }
         }
 
+        static void RecoverSYSTEM()
+        {
+            CommandPrompt("robocopy \"Sysfail/Recovery\" \".\" /E");
+        }
+
         static void BIOS(string data)
         {
-            if (Directory.Exists("Files.x72"))
+            string RootDir = Directory.GetCurrentDirectory();
+            if (RootDir.Contains("AOs\\Files.x72"))
             {
-                Directory.SetCurrentDirectory("Files.x72");
-            }
-
-            else
-            {
-                Directory.CreateDirectory("Files.x72");
-                Directory.SetCurrentDirectory("Files.x72");
+                Directory.SetCurrentDirectory("..");
             }
 
             if (File.Exists("BOOT.log"))
@@ -871,17 +965,90 @@ namespace AOs
             {
                 Timer();
 
-                File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
                 Console.Title = "Error 0x001.";
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
-                Console.Write("Error 0x001.");
-                Console.ReadKey();
-                Environment.Exit(0);
+                CommandPrompt("color 17");
+                Console.Clear();
+                Console.WriteLine("Error 0x001.");
+                Console.WriteLine("ERROR : LOCALHOST_TIMEOUT");
+
+                string[] Syscrash = {
+                "1 >>      Hard Shutdown",
+                "2 >>      Restart anyway"
+                };
+                for (int i = 0; i < Syscrash.Length; i++) { Console.WriteLine(Syscrash[i]); }
+                Console.Write(">>> ");
+                ConsoleKeyInfo Control = Console.ReadKey();
+                string GetKey = Control.Key.ToString();
+
+                if (GetKey == "D1")
+                {
+                    Environment.Exit(0);
+                }
+
+                else if (GetKey == "D2")
+                {
+                    BIOS("Restart.");
+                }
+
+                else
+                {
+                    Console.WriteLine("Option doesn't exist.");
+                    Environment.Exit(0);
+                }
+            }
+
+            else if (File.Exists("Config.set") == false)
+            {
+                File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
+                Console.Title = "Error 0x002.";
+                CommandPrompt("color 17");
+                Console.Clear();
+                Console.WriteLine("Error 0x002.");
+                Console.WriteLine("Cannot specify Config.set.");
+                Console.WriteLine("ERROR : SYSTEM_FILE_MISSING");
+
+                string[] Syscrash = {
+                "1 >>      Hard Shutdown",
+                "2 >>      Restart anyway",
+                "3 >>      Recover files"
+                };
+                for (int i = 0; i < Syscrash.Length; i++)
+                {
+                    Console.WriteLine(Syscrash[i]);
+                }
+
+                Console.Write(">>> ");
+                ConsoleKeyInfo Control = Console.ReadKey();
+                string GetKey = Control.Key.ToString();
+
+                if (GetKey == "D1")
+                {
+                    Environment.Exit(0);
+                }
+
+                else if (GetKey == "D2")
+                {
+                    BIOS("Restart.");
+                }
+
+                else if (GetKey == "D3")
+                {
+                    RecoverSYSTEM();
+                    Console.Clear();
+                    BIOS("Restart.");
+                }
+
+                else
+                {
+                    Console.WriteLine("Option doesn't exist.");
+                    Environment.Exit(0);
+                }
             }
 
             else
             {
-                File.AppendAllText("BOOT.log", $"AOs booted at {DateTime.Now.Date}, {DateTime.Now.TimeOfDay}\n");
+                File.AppendAllText("BOOT.log", $"AOs booted at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
                 if (File.Exists("user.set"))
                 {
                     Console.ResetColor();
@@ -907,14 +1074,30 @@ namespace AOs
                         }
                     }
                     Load(data);
+                    RootPackages();
                     Sys();
                 }
 
                 else
                 {
                     Load(data);
+                    RootPackages();
                     Sys();
                 }
+            }
+        }
+
+        static void RootPackages()
+        {
+            if (Directory.Exists("Files.x72"))
+            {
+                Directory.SetCurrentDirectory("Files.x72");
+            }
+
+            else
+            {
+                Directory.CreateDirectory("Files.x72");
+                Directory.SetCurrentDirectory("Files.x72");
             }
         }
 
@@ -933,6 +1116,13 @@ namespace AOs
                 Thread.Sleep(10); // As miliseconds are counted.
                 Console.Clear();
             }
+        }
+
+        static int Generic_Range(int n1, int n2)
+        {
+            Random rand = new Random();
+            int Generic = rand.Next(n1, n2);
+            return Generic;
         }
     }
 }
