@@ -980,6 +980,7 @@ namespace AOs
                 Console.Write(">>> ");
                 ConsoleKeyInfo Control = Console.ReadKey();
                 string GetKey = Control.Key.ToString();
+                Console.WriteLine("");
 
                 if (GetKey == "D1")
                 {
@@ -1021,6 +1022,7 @@ namespace AOs
                 Console.Write(">>> ");
                 ConsoleKeyInfo Control = Console.ReadKey();
                 string GetKey = Control.Key.ToString();
+                Console.WriteLine("");
 
                 if (GetKey == "D1")
                 {
