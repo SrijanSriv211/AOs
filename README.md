@@ -17,5 +17,5 @@ You need to install the following on your machine.
 - Visual Studio Code (or any other IDE)
 
 ## How To Use
-- Extract both Sysfail.zip files.
+- Extract Sysfail.zip files.
 - Open AOs folder and start AOs.exe
