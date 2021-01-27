@@ -22,9 +22,10 @@ namespace AOs
             Console.Clear();
 
             bool Loop = true;
+            string Prompt = "$";
             while (Loop)
             {
-                Console.Write("$");
+                Console.Write(Prompt);
                 string Check = Console.ReadLine();
                 string Global = Check.ToLower();
                 if (Check == "" || Check == " " || Check.Contains("  "))
@@ -65,6 +66,63 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
+                }
+
+                else if (Global.StartsWith("python"))
+                {
+                    try
+                    {
+                        CommandPrompt(Global);
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                else if (Global.StartsWith("g++") || Global.StartsWith("gcc"))
+                {
+                    try
+                    {
+                        CommandPrompt(Global);
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                else if (Global.StartsWith("dotnet"))
+                {
+                    try
+                    {
+                        CommandPrompt(Global);
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                else if (Global.StartsWith("java") || Global.StartsWith("javac"))
+                {
+                    try
+                    {
+                        CommandPrompt(Global);
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                else if (Check.EndsWith("$Prompt"))
+                {
+                    Prompt = Check.Replace("Prompt", "");
                 }
 
                 else if (Global.StartsWith("leaf ") || Check.ToLower() == "leaf")
@@ -325,14 +383,24 @@ namespace AOs
                         "_________ AOS - Team ________",
                         "Developer - Srijan Srivastava",
                         "Found on  - 15 June 2020",
+                        "Github    - github.com/Light-Lens",
                         "",
                         "____________________ Note(For Developers Only) ____________________",
                         "|| AOs - Terminal based Operating System",
                         "|| Contact: Srivastavavsrijan321@gmail.com",
                         "",
-                        "|| From now onwards AOs is not an Open-Source software.",
+                        "|| AOs is an Open-Source Software.",
                         "|| If you want to modify or contribute on this project.",
-                        "|| Then you must Contact me on my gmail address."
+                        "|| Then you can do anything you want.",
+                        "|| But only at a condition,",
+                        "|| When you say in your program \"Based on AOs Kernel 1.5\".",
+                        "",
+                        "____________________ Note(For All) ____________________",
+                        "|| Warning - Do not delete any of the files or folders,",
+                        "|| or it may cause system corruption",
+                        "|| and may lead AOs not to boot.",
+                        "",
+                        "For more information type \"help\" or checkout README.docx"
                     };
                     Console.Clear();
                     for (int i = 0; i < CreditCenter.Length; i++)
