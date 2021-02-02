@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
@@ -23,6 +23,12 @@ namespace AOs
 
             bool Loop = true;
             string Prompt = "$";
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("AOs@aDrive");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("~");
+            Console.ResetColor();
             while (Loop)
             {
                 Console.Write(Prompt);
@@ -45,12 +51,13 @@ namespace AOs
                     "clear    - Clears the console.",
                     "scan     - Scans the system to check for viruses, malwares, spywares and etc.",
                     "color    - Changes the user-interface theme.",
+                    "title    - Changes the title of the AOs window.",
                     "update   - Updates your pc to the latest version.",
                     "refresh  - Optimizes the pc for better performance.",
                     "math     - Calculate integers given by user.",
                     "calander - Displays current time and date.",
                     "credits  - Provides Credit to Developers.",
-                    "AOs1000  - AOs is made on 1000 lines of code.",
+                    "AOs1000  - AOs was made up of 1000 lines of code.",
                     "timer    - Creats a stop-watch for users.",
                     "lock     - Locks your pc so others can't access your system.",
                     "cmd      - Opens Command Prompt window.",
@@ -58,13 +65,55 @@ namespace AOs
                     "pixstore - Helps you to install any applications easily.",
                     "builder  - Provides user a notepad to store multi-line data.",
                     "version  - Shows you the current version of AOs.",
-                    "leaf     - Leaf is a webbrowser you can use to open webpages."
+                    "leaf     - Leaf is a webbrowser you can use to open webpages.",
+                    "run      - Allows you to applications that exists in your system."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
                     for (int i = 0; i < HelpCenter.Length; i++)
                     {
                         Console.WriteLine(HelpCenter[i]);
+                    }
+                    Console.WriteLine("\nDecode this '891420135511920518' number to find AOs easter egg (Hint these numbers are placed in Alphabetical order)!");
+                }
+
+                else if (Check.ToLower() == "hintmeeaster")
+                {
+                    string[] HelpCenter = {
+                    "$Prompt - Use this command line at the end of an invalid command line and change the prompt of AOs.",
+                    "python  - Use this command line to run your python projects directly from AOS.",
+                    "g++     - Use this command line to compile your g++ projects directly from AOS.",
+                    "dotnet  - Use this command line to build your dotnet projects directly from AOS.",
+                    "java    - Use this command line to run your java projects directly from AOS.",
+                    };
+                    Console.WriteLine("'hintmeeaster' is an easter egg in AOs which will show info about all the secret and hidden commands on AOs.");
+                    Array.Sort(HelpCenter);
+                    for (int i = 0; i < HelpCenter.Length; i++)
+                    {
+                        Console.WriteLine(HelpCenter[i]);
+                    }
+                }
+
+                else if (Global.StartsWith("run ") || Check.ToLower() == "run")
+                {
+                    if (Global.StartsWith("run "))
+                    {
+                        string RUN = Global.Replace("run ", "");
+                        if (RUN.EndsWith(" external-run"))
+                        {
+                            CommandPrompt($"start {RUN}");
+                        }
+
+                        else
+                        {
+                            CommandPrompt($"call {RUN}");
+                        }
+                    }
+
+                    else if (Check.ToLower() == "run")
+                    {
+                        Console.WriteLine("You need to give some file name that you want to run.");
+                        Console.WriteLine("You can use external-run command line at the end to launch the application separately from AOs.");
                     }
                 }
 
@@ -133,7 +182,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
                 {
-                    Console.WriteLine("AOs 2021 [Version 1.5.5.1]");
+                    Console.WriteLine("AOs 2021 [Version 1.5.5.3]");
                 }
 
                 else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
@@ -212,13 +261,13 @@ namespace AOs
                             string apps = Open.Replace(" ", "");
                             if (File.Exists($"{apps}.co"))
                             {
-                                Console.WriteLine($"Opening {apps}");                         
+                                Console.WriteLine($"Opening {apps}");
                             }
 
                             else
                             {
                                 Console.WriteLine($"Cannot open {apps}");
-                            }                       
+                            }
                         }
 
                         else if (application.StartsWith("install "))
@@ -235,7 +284,7 @@ namespace AOs
                                 Thread.Sleep(3000);
 
                                 File.WriteAllText($"{apps}.co", $"\"{apps}\" updated successfully.");
-                                Console.WriteLine($"{apps} updated\n");                          
+                                Console.WriteLine($"{apps} updated\n");
                             }
 
                             else
@@ -444,61 +493,14 @@ namespace AOs
                     Console.WriteLine("Refresh.");
                 }
 
-                else if (Check.ToLower() == "color")
+                else if (Global.StartsWith("color"))
                 {
-                    string[] Colors = {
-                    "1 >>      Default",
-                    "2 >>      Black - White",
-                    "3 >>      White - Red",
-                    "4 >>      Red - White"
-                    };
-                    for (int i = 0; i < Colors.Length; i++)
-                    {
-                        Console.WriteLine(Colors[i]);
-                    }
-                    Console.Write("\nContinue.");
-                    ConsoleKeyInfo Control = Console.ReadKey();
-                    string GetKey = Control.Key.ToString();
-                    Console.WriteLine("");
-                    if (GetKey == "D1")
-                    {
-                        Console.ResetColor();
-                        Console.WriteLine("Done.");
-                        Thread.Sleep(1000);
-                        Console.Clear();
-                    }
+                    CommandPrompt(Check);
+                }
 
-                    else if (GetKey == "D2")
-                    {
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine("Done.");
-                        Thread.Sleep(1000);
-                        Console.Clear();
-                    }
-
-                    else if (GetKey == "D3")
-                    {
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("Done.");
-                        Thread.Sleep(1000);
-                        Console.Clear();
-                    }
-
-                    else if (GetKey == "D4")
-                    {
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Done.");
-                        Thread.Sleep(1000);
-                        Console.Clear();
-                    }
-
-                    else
-                    {
-                        Console.WriteLine("Given theme does not exist.");
-                    }
+                else if (Global.StartsWith("title"))
+                {
+                    CommandPrompt(Check);
                 }
 
                 else if (Check.ToLower() == "update")
@@ -1243,7 +1245,7 @@ namespace AOs
         {
             Timer();
             Console.Write(loading);
-            Console.ReadKey();            
+            Console.ReadKey();
         }
 
         static void Timer()
