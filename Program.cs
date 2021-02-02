@@ -74,13 +74,14 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
-                    Console.WriteLine("\nDecode this '891420135511920518' number to find AOs easter egg (Hint these numbers are placed in Alphabetical order)!");
+                    Console.WriteLine("\n'891420135511920518' - Decode this number to find AOs easter egg (Hint these numbers are placed in Alphabetical order).");
                 }
 
                 else if (Check.ToLower() == "hintmeeaster")
                 {
                     string[] HelpCenter = {
                     "$Prompt - Use this command line at the end of an invalid command line and change the prompt of AOs.",
+                    "quit    - Force your PC to shutdown.",
                     "python  - Use this command line to run your python projects directly from AOS.",
                     "g++     - Use this command line to compile your g++ projects directly from AOS.",
                     "dotnet  - Use this command line to build your dotnet projects directly from AOS.",
@@ -101,7 +102,8 @@ namespace AOs
                         string RUN = Global.Replace("run ", "");
                         if (RUN.EndsWith(" external-run"))
                         {
-                            CommandPrompt($"start {RUN}");
+                            string EXTERNALRUN = RUN.Replace(" external-run", "");
+                            CommandPrompt($"start {EXTERNALRUN}");
                         }
 
                         else
