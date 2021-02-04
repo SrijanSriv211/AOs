@@ -619,7 +619,7 @@ namespace AOs
                 else if (Check.ToLower() == "format")
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("WARNING: Formatting your PC will delete all your system data including AOs update backup and reset AOs to default settings.");
+                    Console.WriteLine("WARNING: Formatting your PC will delete all your system data excluding AOs update backup and reset AOs to default settings.");
                     Console.WriteLine("Are you sure? Y/N");
                     Console.ResetColor();
 
