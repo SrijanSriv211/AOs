@@ -15,7 +15,3 @@ You need to install the following on your machine.
 - Dotnet Core
 - Git-bash
 - Visual Studio Code (or any other IDE)
-
-## How To Use
-- Extract Sysfail.zip files.
-- Open AOs folder and start AOs.exe
