@@ -645,7 +645,7 @@ namespace AOs
                             BIOS("Restart.");
                         }
 
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             Console.WriteLine("Cannot perform a System Format.");
                         }
