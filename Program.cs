@@ -540,6 +540,8 @@ namespace AOs
                 else if (Check.ToLower() == "clear" || Check.ToLower() == "cls")
                 {
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine(SYSVersion);
                 }
 
                 else if (Check.ToLower() == "generate")
