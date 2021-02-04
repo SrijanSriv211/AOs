@@ -632,7 +632,6 @@ namespace AOs
                         try
                         {
                             Directory.Delete("Files.x72");
-                            Directory.Delete("UpdatePackages");
                             File.Delete("BOOT.log");
                             if (File.Exists("Crashreport.log"))
                             {
@@ -1027,7 +1026,7 @@ namespace AOs
 
         static void RecoverSYSTEM()
         {
-            CommandPrompt("robocopy \"Sysfail/Recovery\" \".\" /E");
+            CommandPrompt("xcopy \"Sysfail/Recovery\" \".\" /E /H /C /I /S /V /Y /Q");
         }
 
         static void BIOS(string data)
