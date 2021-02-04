@@ -22,12 +22,11 @@ namespace AOs
             Console.Clear();
 
             bool Loop = true;
-            string Prompt = "$";
+            string Prompt = "$ ";
+            string SYSVersion = "AOs 2021 [Version 1.5.7]";
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("AOs@aDrive");
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("~");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(SYSVersion);
             Console.ResetColor();
             while (Loop)
             {
@@ -60,13 +59,13 @@ namespace AOs
                     "AOs1000  - AOs was made up of 1000 lines of code.",
                     "timer    - Creats a stop-watch for users.",
                     "lock     - Locks your pc so others can't access your system.",
-                    "cmd      - Opens Command Prompt window.",
                     "admin    - An adminstrator tool for more advanced AOs commands.",
                     "pixstore - Helps you to install any applications easily.",
                     "builder  - Provides user a notepad to store multi-line data.",
                     "version  - Shows you the current version of AOs.",
                     "leaf     - Leaf is a webbrowser you can use to open webpages.",
-                    "run      - Allows you to applications that exists in your system."
+                    "run      - Allows you to applications that exists in your system.",
+                    "terminal - Opens System Terminal using AOs."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
@@ -74,18 +73,22 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
-                    Console.WriteLine("\n'891420135511920518' - Decode this number to find AOs easter egg (Hint these numbers are placed in Alphabetical order).");
+                    Console.WriteLine("\n'891420135511920518' - Decode this number in Alphabetical order.");
+                }
+
+                else if (Check.ToLower() == "terminal" || Check.ToLower() == "console" || Check.ToLower() == "cmd" || Check.ToLower() == "command prompt")
+                {
+                    CommandPrompt("start cmd");
                 }
 
                 else if (Check.ToLower() == "hintmeeaster")
                 {
                     string[] HelpCenter = {
                     "$Prompt - Use this command line at the end of an invalid command line and change the prompt of AOs.",
-                    "quit    - Force your PC to shutdown.",
                     "python  - Use this command line to run your python projects directly from AOS.",
                     "g++     - Use this command line to compile your g++ projects directly from AOS.",
                     "dotnet  - Use this command line to build your dotnet projects directly from AOS.",
-                    "java    - Use this command line to run your java projects directly from AOS.",
+                    "java    - Use this command line to run your java projects directly from AOS."
                     };
                     Console.WriteLine("'hintmeeaster' is an easter egg in AOs which will show info about all the secret and hidden commands on AOs.");
                     Array.Sort(HelpCenter);
@@ -184,7 +187,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
                 {
-                    Console.WriteLine("AOs 2021 [Version 1.5.5.3]");
+                    Console.WriteLine(SYSVersion);
                 }
 
                 else if (Global.StartsWith("builder ") || Check.ToLower() == "builder")
@@ -390,11 +393,6 @@ namespace AOs
                 else if (Check.ToLower() == "admin")
                 {
                     Adminstrator();
-                }
-
-                else if (Check.ToLower() == "cmd")
-                {
-                    CommandPrompt("start cmd");
                 }
 
                 else if (Check.ToLower() == "lock")
@@ -714,6 +712,7 @@ namespace AOs
                 else if (Check.ToLower() == "quit" || Check.ToLower() == "exit")
                 {
                     Directory.SetCurrentDirectory("Files.x72");
+                    Console.Title = "AOs";
                     break;
                 }
 
