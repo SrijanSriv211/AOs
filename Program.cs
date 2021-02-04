@@ -542,6 +542,7 @@ namespace AOs
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(SYSVersion);
+                    Console.ResetColor();
                 }
 
                 else if (Check.ToLower() == "generate")
