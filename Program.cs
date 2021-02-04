@@ -52,7 +52,6 @@ namespace AOs
                     "color    - Changes the user-interface theme.",
                     "title    - Changes the title of the AOs window.",
                     "update   - Updates your pc to the latest version.",
-                    "refresh  - Optimizes the pc for better performance.",
                     "math     - Calculate integers given by user.",
                     "calander - Displays current time and date.",
                     "credits  - Provides Credit to Developers.",
@@ -73,7 +72,6 @@ namespace AOs
                     {
                         Console.WriteLine(HelpCenter[i]);
                     }
-                    Console.WriteLine("\n'891420135511920518' - Decode this number in Alphabetical order.");
                 }
 
                 else if (Check.ToLower() == "terminal" || Check.ToLower() == "console" || Check.ToLower() == "cmd" || Check.ToLower() == "command prompt")
@@ -194,8 +192,7 @@ namespace AOs
                 {
                     if (Global.StartsWith("builder "))
                     {
-                        string Builder = Check.Replace("builder ", "");
-                        string Text = Builder.ToLower();
+                        string Text = Check.Replace("builder ", "");
                         if (Text.StartsWith("open "))
                         {
                             string Open_Text = Text.Replace("open ", "");
@@ -214,8 +211,7 @@ namespace AOs
 
                         else if (Text.StartsWith("delete "))
                         {
-                            string Build = Text.Replace("delete ", "");
-                            string Txt = Build.Replace(" ", "");
+                            string Txt = Text.Replace("delete ", "");
                             if (File.Exists(Txt))
                             {
                                 File.Delete(Txt);
@@ -487,12 +483,6 @@ namespace AOs
                     Scan();
                 }
 
-                else if (Check.ToLower() == "refresh")
-                {
-                    Thread.Sleep(1000);
-                    Console.WriteLine("Refresh.");
-                }
-
                 else if (Global.StartsWith("color"))
                 {
                     CommandPrompt(Check);
@@ -511,6 +501,7 @@ namespace AOs
 
                 else if (Check.ToLower() == "about")
                 {
+                    Console.WriteLine("'891420135511920518' - Decode this number in Alphabetical order.");
                     Console.WriteLine("AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited.");
                 }
 
@@ -577,7 +568,9 @@ namespace AOs
 
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Command does not exist.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -602,15 +595,12 @@ namespace AOs
                 else if (Check.ToLower() == "help")
                 {
                     string[] HelpCenter = {
-                    "process   - Starts all the processes on your PC. This may cause some performance issues.",
-                    "debug     - Debug the code which are not working properly.",
-                    "diagxt    - Diagnose your PC's major or minor issues.",
+                    "diagxt    - Displays machine specific properties and configuration.",
                     "generate  - Generates a random number of your desired integer values.",
                     "terminate - Terminates all your PC process, Sometimes this may crash your PC.",
                     "quit      - Quits Admin system.",
                     "lock      - Asks for password at PC start-up.",
                     "format    - Formats your PC for better performance.",
-                    "ran       - Displays machine specific properties and configuration.",
                     "recover   - Restores all important files and folders."
                     };
                     Console.WriteLine("Type 'help' to get information of all the commands.");
@@ -626,17 +616,50 @@ namespace AOs
                     RecoverSYSTEM();
                 }
 
-                else if (Check.ToLower() == "ran")
-                {
-                    string Cfg = File.ReadAllText("Config.set");
-                    Console.WriteLine(Cfg);
-                }
-
                 else if (Check.ToLower() == "format")
                 {
-                    Console.WriteLine("Formatting.");
-                    Thread.Sleep(5000);
-                    Console.WriteLine("Formatted successfully.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("WARNING: Formatting your PC will delete all your system data including AOs update backup and reset AOs to default settings.");
+                    Console.WriteLine("Are you sure? Y/N");
+                    Console.ResetColor();
+
+                    Console.Write(">>> ");
+                    ConsoleKeyInfo FormatKey = Console.ReadKey();
+                    string GetKey = FormatKey.Key.ToString();
+                    Console.WriteLine("");
+                    if (GetKey == "Y")
+                    {
+                        try
+                        {
+                            Directory.Delete("Files.x72");
+                            Directory.Delete("UpdatePackages");
+                            File.Delete("BOOT.log");
+                            if (File.Exists("Crashreport.log"))
+                            {
+                                File.Delete("Crashreport.log");
+                            }
+
+                            Console.WriteLine("System Format Completed!");
+                            Console.Write("A system restart is required to apply all changes.");
+                            Console.ReadKey();
+                            BIOS("Restart.");
+                        }
+
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Cannot perform a System Format.");
+                        }
+                    }
+
+                    else if (GetKey == "N")
+                    {
+                        Console.WriteLine("System Format Cancelled!");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Invalid Key Input.");
+                    }
                 }
 
                 else if (Check.ToLower() == "lock")
@@ -644,26 +667,10 @@ namespace AOs
                     LockSYS();
                 }
 
-                else if (Check.ToLower() == "process")
+                else if (Check.ToLower() == "diagxt" || Check.ToLower() == "ran")
                 {
-                    Thread.Sleep(5000);
-                    Console.WriteLine("Processed.");
-                }
-
-                else if (Check.ToLower() == "debug")
-                {
-                    Console.WriteLine("Debugging.");
-                    Thread.Sleep(20000);
-                    Console.WriteLine("Debugging successfully completed!");
-                }
-
-                else if (Check.ToLower() == "diagxt")
-                {
-                    Console.WriteLine("Diagnosting your PC.");
-                    Thread.Sleep(3000);
-                    Console.WriteLine("This may take few seconds.");
-                    Thread.Sleep(70000);
-                    Console.WriteLine("Your PC was Diagnosed successfully.");
+                    string Cfg = File.ReadAllText("Config.set");
+                    Console.WriteLine(Cfg);
                 }
 
                 else if (Global.StartsWith("generate"))
@@ -709,6 +716,9 @@ namespace AOs
                         Console.WriteLine("Terminating all your PC processes.");
                         Thread.Sleep(10000);
                         Console.WriteLine("All PC processes was terminated successfully.");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("WARNING: As all the processes are terminated, AOs may not work properly. So we request you to restart AOs (it is not compulsory).");
+                        Console.ResetColor();
                     }
                 }
 
@@ -721,7 +731,9 @@ namespace AOs
 
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Command does not exist.");
+                    Console.ResetColor();
                 }
             }
         }
