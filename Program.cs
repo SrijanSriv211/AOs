@@ -176,7 +176,7 @@ namespace AOs
 
                 else if (Check.EndsWith("$Prompt"))
                 {
-                    Prompt = Check.Replace("Prompt", "");
+                    Prompt = Check.Replace("Prompt", " ");
                 }
 
                 else if (Global.StartsWith("leaf ") || Check.ToLower() == "leaf")
