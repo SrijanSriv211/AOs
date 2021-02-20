@@ -23,7 +23,7 @@ namespace AOs
 
             bool Loop = true;
             string Prompt = "$ ";
-            string SYSVersion = "AOs 2021 [Version 1.5.7]";
+            string SYSVersion = "AOs 2021 [Version 1.5.8]";
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(SYSVersion);
