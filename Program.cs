@@ -640,7 +640,7 @@ namespace AOs
 
                             if (Directory.Exists("UpdatePackages/AOs.old"))
                             {
-                                Directory.Delete("UpdatePackages/AOs.old")
+                                Directory.Delete("UpdatePackages/AOs.old");
                             }
 
                             Console.WriteLine("System Format Completed!");
