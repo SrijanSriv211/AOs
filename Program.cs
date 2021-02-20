@@ -597,8 +597,8 @@ namespace AOs
                     string[] HelpCenter = {
                     "diagxt    - Displays machine specific properties and configuration.",
                     "generate  - Generates a random number of your desired integer values.",
-                    "terminate - Terminates all your PC process, Sometimes this may crash your PC.",
-                    "quit      - Quits Admin system.",
+                    "terminate - Terminates all your PC process, This may lead AOs to crash.",
+                    "exit      - Quits adminstrator.",
                     "lock      - Asks for password at PC start-up.",
                     "format    - Formats your PC for better performance.",
                     "recover   - Restores all important files and folders."
@@ -619,7 +619,7 @@ namespace AOs
                 else if (Check.ToLower() == "format")
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("WARNING: Formatting your PC will delete all your system data excluding AOs update backup and reset AOs to default settings.");
+                    Console.WriteLine("WARNING: Formatting your PC will delete all your system and personal data including AOs update backup and reset AOs to default settings.");
                     Console.WriteLine("Are you sure? Y/N");
                     Console.ResetColor();
 
@@ -636,6 +636,11 @@ namespace AOs
                             if (File.Exists("Crashreport.log"))
                             {
                                 File.Delete("Crashreport.log");
+                            }
+
+                            if (Directory.Exists("UpdatePackages/AOs.old"))
+                            {
+                                Directory.Delete("UpdatePackages/AOs.old")
                             }
 
                             Console.WriteLine("System Format Completed!");
@@ -721,7 +726,7 @@ namespace AOs
                     }
                 }
 
-                else if (Check.ToLower() == "quit" || Check.ToLower() == "exit")
+                else if (Check.ToLower() == "exit" || Check.ToLower() == "quit")
                 {
                     Directory.SetCurrentDirectory("Files.x72");
                     Console.Title = "AOs";
@@ -1035,6 +1040,54 @@ namespace AOs
             if (RootDir.Contains("AOs\\Files.x72"))
             {
                 Directory.SetCurrentDirectory("..");
+            }
+
+            if (File.Exists("PROPERTIES"))
+            {
+                foreach (var Line in File.ReadAllLines("PROPERTIES"))
+                {
+                    if (Line.Contains("GTA5M-09VC8-5SA50-3QK2P") == false)
+                    {
+                        File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
+                        Console.Title = "Error 0x004.";
+                        CommandPrompt("color 17");
+                        Console.Clear();
+                        Console.WriteLine("Error 0x004.");
+                        Console.WriteLine("ERROR : FUNCTIONAL_KEY_MISSING");
+                        File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : FUNCTIONAL_KEY_MISSING\n");
+
+                        string[] Syscrash = {
+                        "1 >>      Hard Shutdown",
+                        "2 >>      Restart anyway"
+                        };
+                        for (int i = 0; i < Syscrash.Length; i++) { Console.WriteLine(Syscrash[i]); }
+                        Console.Write(">>> ");
+                        ConsoleKeyInfo Control = Console.ReadKey();
+                        string GetKey = Control.Key.ToString();
+                        Console.WriteLine("");
+
+                        if (GetKey == "D1")
+                        {
+                            Environment.Exit(0);
+                        }
+
+                        else if (GetKey == "D2")
+                        {
+                            Console.Title = "AOs";
+                            Console.ResetColor();
+                            Console.Clear();
+                            Load(data);
+                            RootPackages();
+                            Sys();
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Option doesn't exist.");
+                            Environment.Exit(0);
+                        }
+                    }
+                }
             }
 
             if (File.Exists("BOOT.log"))
