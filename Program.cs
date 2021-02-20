@@ -1055,37 +1055,9 @@ namespace AOs
                         Console.WriteLine("Error 0x004.");
                         Console.WriteLine("ERROR : FUNCTIONAL_KEY_MISSING");
                         File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : FUNCTIONAL_KEY_MISSING\n");
-
-                        string[] Syscrash = {
-                        "1 >>      Hard Shutdown",
-                        "2 >>      Restart anyway"
-                        };
-                        for (int i = 0; i < Syscrash.Length; i++) { Console.WriteLine(Syscrash[i]); }
-                        Console.Write(">>> ");
-                        ConsoleKeyInfo Control = Console.ReadKey();
-                        string GetKey = Control.Key.ToString();
-                        Console.WriteLine("");
-
-                        if (GetKey == "D1")
-                        {
-                            Environment.Exit(0);
-                        }
-
-                        else if (GetKey == "D2")
-                        {
-                            Console.Title = "AOs";
-                            Console.ResetColor();
-                            Console.Clear();
-                            Load(data);
-                            RootPackages();
-                            Sys();
-                        }
-
-                        else
-                        {
-                            Console.WriteLine("Option doesn't exist.");
-                            Environment.Exit(0);
-                        }
+                        Console.Write("Hard Shutdown");
+                        Console.ReadKey();
+                        Environment.Exit(0);
                     }
                 }
             }
