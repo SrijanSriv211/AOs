@@ -1,15 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	<Version>1.5.8</Version>
-	<AssemblyVersion>1.5.8</AssemblyVersion>
-	<FileVersion>1.5.8</FileVersion>
+	<Version>1.5.9</Version>
+	<AssemblyVersion>1.5.9</AssemblyVersion>
+	<FileDescription>AOs 1.5 Snapshot 5.9 or AOs 1.5.9 is a beta version for the main release of AOs 1.5. AOs 1.5 is an open-source Terminal based Operating System made from scratch using C#. AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited Terminal Operating System.</FileDescription>
+	<FileVersion>1.5.9</FileVersion>
 	<Company>Light-Lens</Company>
 	<Authors>Srijan Srivastava</Authors>
-	<Product>AOs 1.5 Snapshot 5.8 or AOs 1.5.8 is a beta version for the main release of AOs 1.5. AOs 1.5 is an open-source Terminal based Operating System made from scratch using C#. AOs is a terminal based Operating System inspired by MS-DOS and BatchUnited Terminal Operating System.</Product>
+	<Product>AOs 1.5.9</Product>
 	<Copyright>Copyright © 2021</Copyright>
   </PropertyGroup>
-
 </Project>

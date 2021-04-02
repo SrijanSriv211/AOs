@@ -23,7 +23,7 @@ namespace AOs
 
             bool Loop = true;
             string Prompt = "$ ";
-            string SYSVersion = "AOs 2021 [Version 1.5.8]";
+            string SYSVersion = "AOs 2021 [Version 1.5.9]";
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(SYSVersion);
@@ -55,7 +55,6 @@ namespace AOs
                     "math     - Calculate integers given by user.",
                     "calander - Displays current time and date.",
                     "credits  - Provides Credit to Developers.",
-                    "AOs1000  - AOs was made up of 1000 lines of code.",
                     "timer    - Creats a stop-watch for users.",
                     "lock     - Locks your pc so others can't access your system.",
                     "admin    - An adminstrator tool for more advanced AOs commands.",
@@ -82,11 +81,8 @@ namespace AOs
                 else if (Check.ToLower() == "hintmeeaster")
                 {
                     string[] HelpCenter = {
+                    "AOs1000  - AOs was made up of 1000 lines of code.",
                     "$Prompt - Use this command line at the end of an invalid command line and change the prompt of AOs.",
-                    "python  - Use this command line to run your python projects directly from AOS.",
-                    "g++     - Use this command line to compile your g++ projects directly from AOS.",
-                    "dotnet  - Use this command line to build your dotnet projects directly from AOS.",
-                    "java    - Use this command line to run your java projects directly from AOS."
                     };
                     Console.WriteLine("'hintmeeaster' is an easter egg in AOs which will show info about all the secret and hidden commands on AOs.");
                     Array.Sort(HelpCenter);
@@ -133,6 +129,19 @@ namespace AOs
                     }
                 }
 
+                else if (Global.StartsWith("glass"))
+                {
+                    try
+                    {
+                        CommandPrompt(Global);
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
                 else if (Global.StartsWith("g++") || Global.StartsWith("gcc"))
                 {
                     try
@@ -159,7 +168,7 @@ namespace AOs
                     }
                 }
 
-                else if (Global.StartsWith("java") || Global.StartsWith("javac"))
+                else if (Global.StartsWith("java"))
                 {
                     try
                     {
@@ -179,8 +188,18 @@ namespace AOs
 
                 else if (Global.StartsWith("leaf ") || Check.ToLower() == "leaf")
                 {
-                    string Leaf = Check.Replace("leaf ", "start ");
-                    CommandPrompt(Leaf);
+                    if (Global.StartsWith("leaf "))
+                    {
+                        string Leaf = Check.Replace("leaf ", "start ");
+                        CommandPrompt(Leaf);
+                    }
+
+                    else if (Check.ToLower() == "leaf")
+                    {
+                        Console.WriteLine("Please Enter any site name after calling the command \"leaf\"");
+                        Console.WriteLine("Open any website using Leaf like this: leaf [site_url].");
+                        Console.WriteLine("instead of \"[site_url]\" enter the actual URL or the Website.");
+                    }
                 }
 
                 else if (Check.ToLower() == "version" || Check.ToLower() == "-v")
@@ -1031,6 +1050,7 @@ namespace AOs
 
         static void RecoverSYSTEM()
         {
+            Console.WriteLine("");
             CommandPrompt("xcopy \"Sysfail/Recovery\" \".\" /E /H /C /I /S /V /Y /Q");
         }
 
@@ -1044,21 +1064,19 @@ namespace AOs
 
             if (File.Exists("PROPERTIES"))
             {
-                foreach (var Line in File.ReadAllLines("PROPERTIES"))
+                string Line = File.ReadAllText("PROPERTIES");
+                if (Line.Contains("GTA5M-09VC8-5SA50-3QK2P") == false)
                 {
-                    if (Line.Contains("GTA5M-09VC8-5SA50-3QK2P") == false)
-                    {
-                        File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
-                        Console.Title = "Error 0x004.";
-                        CommandPrompt("color 17");
-                        Console.Clear();
-                        Console.WriteLine("Error 0x004.");
-                        Console.WriteLine("ERROR : FUNCTIONAL_KEY_MISSING");
-                        File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : FUNCTIONAL_KEY_MISSING\n");
-                        Console.Write("Hard Shutdown");
-                        Console.ReadKey();
-                        Environment.Exit(0);
-                    }
+                    File.AppendAllText("BOOT.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\n");
+                    Console.Title = "Error 0x004.";
+                    CommandPrompt("color 17");
+                    Console.Clear();
+                    Console.WriteLine("Error 0x004.");
+                    Console.WriteLine("ERROR : FUNCTIONAL_KEY_MISSING");
+                    File.WriteAllText("Crashreport.log", $"AOs crashed with a BSOD at {DateTime.Now}, {DateTime.Now.TimeOfDay}\nERROR : FUNCTIONAL_KEY_MISSING\n");
+                    Console.Write("Hard Shutdown");
+                    Console.ReadKey();
+                    Environment.Exit(0);
                 }
             }
 
