@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.7</Version>
+    <AssemblyVersion>1.7</AssemblyVersion>
+    <FileDescription>
+      AOs 1.7 Snapshot 7.1 or AOs 1.7.1 is a beta version for the main release of AOs 1.7. AOs is an Open-source Terminal based Operating System written in C#. AOs is inspired by MS-DOS and wants to improve User Efficiency.
+    </FileDescription>
+    <FileVersion>1.7.1</FileVersion>
+    <Company>Light-Lens</Company>
+    <Authors>Srijan Srivastava</Authors>
+    <Product>AOs 1.7</Product>
+    <Copyright>Copyright © 2021</Copyright>
+  </PropertyGroup>
+
+</Project>
