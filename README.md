@@ -1,6 +1,5 @@
 # AOs
-AOs is an Open-source Terminal based Operating System written in C#. It is inspired by MS-DOS. It is designed to improve User's Efficiency and Productivity while working.<br>
-Currently not much is implemented, however the developement for AOs is going really well.
+AOs is an Open-source Terminal based Operating System written in C#. It is inspired by MS-DOS. It is designed to improve User's Efficiency and Productivity while working. Currently not much is implemented, however the developement for AOs is going really well.
 
 ## Getting Started
 Visual Studio Code is recommended (You can use your desired one), AOs is not officially completed yet. It is also focused to run only on Windows.<br>
