@@ -3,7 +3,7 @@ AOs is an Open-source Terminal based Operating System written in C#. It is inspi
 
 ## Getting Started
 Visual Studio Code is recommended (You can use your desired one), AOs is not officially completed yet. It is also focused to run only on Windows.<br>
-Start by cloning the repository with `git clone https://github.com/Light-Lens/AOs`
+Start by cloning the repository with `git clone https://github.com/Light-Lens/AOs`.
 
 ## Requirments
 You need to install the following on your machine.
