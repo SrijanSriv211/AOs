@@ -73,17 +73,17 @@ namespace AOs
                 {
                     string[] HelpCenter = {
                     "about    - Tells you about AOs.",
-                    "shutdowm - Shuts your PC down.",
+                    "shutdown - Shuts your PC down.",
                     "restart  - Restarts your PC.",
                     "clear    - Clears the console.",
                     "color    - Changes the user-interface theme.",
                     "title    - Changes the title of the AOs window.",
-                    "calander - Displays current time and date.",
+                    "calendar - Displays current time and date.",
                     "credits  - Provides Credit to Developers.",
-                    "admin    - An adminstrator tool for more advanced AOs commands.",
+                    "admin    - An administrator tool for more advanced AOs commands.",
                     "version  - Shows you the current version of AOs.",
                     "run      - Allows you to applications that exists in your system.",
-                    "console - Opens System Terminal using AOs."
+                    "console  - Opens System Terminal using AOs."
                     };
 
                     Console.WriteLine("Type 'help' to get information of all the commands.");
@@ -96,8 +96,8 @@ namespace AOs
 
                 else if (Command.ToLower() == "admin")
                 {
-                    Console.WriteLine("Adminstrator carries an advanced of AOs commands.");
-                    Console.WriteLine("Use admin <command> to access adminstrator commands.");
+                    Console.WriteLine("Administrator carries an advanced of AOs commands.");
+                    Console.WriteLine("Use admin <command> to access administrator commands.");
                 }
 
                 else if (Command.ToLower().StartsWith("admin "))
@@ -105,7 +105,7 @@ namespace AOs
                     // code here.
                 }
 
-                else if (Command.ToLower() == "calander") Console.WriteLine(DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]"));
+                else if (Command.ToLower() == "calendar") Console.WriteLine(DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]"));
                 else if (Command.ToLower().StartsWith("color ")) CommandPrompt(Command);
                 else if (Command.ToLower().StartsWith("title ")) CommandPrompt(Command);
                 else if (Command.ToLower() == "version" || Command.ToLower() == "-v") Console.WriteLine(SYSVersion);
@@ -204,6 +204,20 @@ namespace AOs
             }
         }
 
+        static void RootPackages()
+        {
+            if (Directory.Exists("Files.x72"))
+            {
+                Directory.SetCurrentDirectory("Files.x72");
+            }
+
+            else
+            {
+                Directory.CreateDirectory("Files.x72");
+                Directory.SetCurrentDirectory("Files.x72");
+            }
+        }
+
         static bool BootLoader(string Loadstatus)
         {
             int Errors = 0;
@@ -222,6 +236,7 @@ namespace AOs
             if (Errors == 0)
             {
                 if (File.Exists("BOOT.log")) File.AppendAllText("BOOT.log", $"AOs booted at {DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]")}\n");
+                RootPackages();
 
                 Console.Write("Done.");
                 Console.ReadKey();
