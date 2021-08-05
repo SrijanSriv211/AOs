@@ -193,7 +193,6 @@ namespace AOs
                         "reset     - Resets your PC for Better Performance."
                         };
 
-                        Console.WriteLine("");
                         Console.WriteLine("Type 'admin help' to get information of all administrator commands.");
                         Array.Sort(HelpCenter);
                         for (int i = 0; i < HelpCenter.Length; i++) Console.WriteLine(HelpCenter[i]);
@@ -524,10 +523,9 @@ namespace AOs
                             Console.WriteLine("");
                         }
                     }
-
-                    RootPackages();
                 }
 
+                RootPackages();
                 Console.Write("Done.");
                 Console.ReadKey();
                 return true;
