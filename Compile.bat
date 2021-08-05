@@ -3,4 +3,4 @@
 title Compile AOs
 
 echo Compiling.
-dotnet publish -c Release -r win-x64 -o ./AOs /p:PublishSingleFile=true
+dotnet publish -c Release -o ./AOs
