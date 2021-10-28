@@ -8,9 +8,9 @@
     <Version>1.7</Version>
     <AssemblyVersion>1.7</AssemblyVersion>
     <FileDescription>
-      AOs 1.7 Snapshot 7.3 or AOs 1.7.3 is a beta version for the main release of AOs 1.7. AOs is an Open-source Terminal based Operating System written in C#. AOs is inspired by MS-DOS and wants to improve User Efficiency.
+      AOs 1.7 Snapshot 7.4 or AOs 1.7.4 is the final build version of AOs 1.7. AOs is an Open-source Terminal based Operating System written in C#. AOs is inspired by MS-DOS and wants to improve User Efficiency.
     </FileDescription>
-    <FileVersion>1.7.3</FileVersion>
+    <FileVersion>1.7.4</FileVersion>
     <Company>Light-Lens</Company>
     <Authors>Srijan Srivastava</Authors>
     <Product>AOs</Product>

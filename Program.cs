@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 
@@ -22,7 +23,7 @@ namespace AOs
 
             string Command;
             string Prompt = "$ ";
-            string SYSVersion = "AOs 2021 [Version 1.7.3]";
+            string SYSVersion = "AOs 2021 [Version 1.7.4]";
 
             bool Fresh = true;
 
@@ -44,6 +45,8 @@ namespace AOs
                 else if (Command.ToLower() == "quit" || Command.ToLower() == "exit") Environment.Exit(0);
                 else if (Command.ToLower() == "clear" || Command.ToLower() == "cls")
                 {
+                    Fresh = true;
+
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(SYSVersion);
@@ -93,9 +96,10 @@ namespace AOs
                     Console.WriteLine("Type 'help' to get information of all the commands.");
                     Array.Sort(HelpCenter);
                     for (int i = 0; i < HelpCenter.Length; i++) Console.WriteLine(HelpCenter[i]);
+                    CreateTemp("helporinfo");
                 }
 
-                else if (Command.EndsWith("$Prompt")) Prompt = Command.Replace("Prompt", " ");
+                else if (Command.EndsWith(" $Prompt")) Prompt = Command.Replace("Prompt", "").Trim();
                 else if (Command.StartsWith(">"))
                 {
                     string SysCmd = Command.Substring(1);
@@ -104,12 +108,15 @@ namespace AOs
 
                 else if (Command == "AOs1000")
                 {
-                    Console.Clear();
+                    Fresh = true;
+                    Console.WriteLine("AOs1000!");
                     Console.WriteLine("Congratulations for hitting 1000 Lines Of Code in AOs!");
-                    Console.WriteLine("It was the first program to ever reach these many Lines Of Code.");
+                    Console.WriteLine("It was the first program to ever reach these many Lines Of Code!");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
 
-                else if (Command.ToLower() == "math")
+                else if (Command.ToLower() == "math" || Command.ToLower() == "calculate" || Command.ToLower() == "calculator")
                 {
                     Console.Write("Enter your First number: ");
                     int n1 = Convert.ToInt32(Console.ReadLine());
@@ -120,27 +127,40 @@ namespace AOs
                     Console.Write("Enter you Operator: ");
                     string ope = Console.ReadLine();
                     Calculate(n1, n2, ope);
+                    CreateTemp("dosomemath");
                 }
 
                 else if (Command.ToLower() == "scan")
                 {
-                    Timer();
-                    Console.Write("Scanning.");
+                    Console.WriteLine("Scanning.");
+
+                    Timer(1);
                     Console.WriteLine("Scanning completed successfully!");
 
                     Thread.Sleep(3000);
                     Console.WriteLine("Generating report.");
 
-                    Thread.Sleep(1000);
-                    Random Ran = new Random();
-                    if (File.Exists("Config.set") == false) Console.WriteLine("Your PC ran into a problem :(");
-                    else
+                    int Errors = Scan();
+                    if (Errors == 0)
                     {
                         Console.WriteLine("Your PC is working fine.");
                         Console.Write("Continue.");
                         Console.ReadKey();
                         Console.WriteLine("");
                     }
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{Errors} Startup Errors were Found!");
+                        Console.WriteLine("Your PC ran into a problem :(");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        Environment.Exit(0);
+                    }
+
+                    Directory.SetCurrentDirectory("Files.x72");
+                    CreateTemp("checkforerrors");
                 }
 
                 else if (Command.ToLower() == "timer")
@@ -160,6 +180,8 @@ namespace AOs
                             Console.WriteLine("");
                         }
                     }
+
+                    CreateTemp("stopwatchortimer");
                 }
 
                 else if (Command.ToLower() == "notebook")
@@ -172,6 +194,7 @@ namespace AOs
                 {
                     string[] SplitCommand = Command.Split(new[] {' '}, 2);
                     Notebook(SplitCommand[1]);
+                    CreateTemp("txtpad");
                 }
 
                 else if (Command.ToLower() == "admin")
@@ -188,22 +211,28 @@ namespace AOs
                     if (SplitCommand[1].ToLower() == "help")
                     {
                         string[] HelpCenter = {
-                        "diagxt    - Displays machine specific properties and configuration.",
-                        "lock      - Lock your System at Start-up.",
-                        "reset     - Resets your PC for Better Performance."
+                        "diagxt  - Displays machine specific properties and configuration.",
+                        "lock    - Lock your System at Start-up.",
+                        "reset   - Resets your PC for Better Performance.",
+                        "restore - Creats a restore point for your PC."
                         };
 
                         Console.WriteLine("Type 'admin help' to get information of all administrator commands.");
                         Array.Sort(HelpCenter);
                         for (int i = 0; i < HelpCenter.Length; i++) Console.WriteLine(HelpCenter[i]);
+                        CreateTemp("helporinfoofamd");
                     }
-
-                    else if (SplitCommand[1].ToLower() == "lock")
+                    
+                    else if (SplitCommand[1].ToLower() == "restore")
                     {
-                        LockSYS();
-                        Console.WriteLine("Use 'admin rm-lock' command to remove password.");
+                        Console.Write("Creating a restore point.");
+                        CommandPrompt("call UPR");
+
+                        Console.WriteLine("Successfully created a restore point.");
+                        CreateTemp("restorethispc");
                     }
 
+                    else if (SplitCommand[1].ToLower() == "lock") LockSYS();
                     else if (SplitCommand[1].ToLower() == "rm-lock")
                     {
                         if (File.Exists("user.set"))
@@ -213,12 +242,14 @@ namespace AOs
                         }
 
                         else Console.WriteLine("Your System has no Security.");
+                        CreateTemp("systemsecurity");
                     }
 
                     else if (SplitCommand[1].ToLower() == "diagxt")
                     {
                         string Cfg = File.ReadAllText("Config.set");
                         Console.WriteLine(Cfg);
+                        CreateTemp("config");
                     }
 
                     else if (SplitCommand[1].ToLower() == "reset")
@@ -244,7 +275,10 @@ namespace AOs
                                 Console.WriteLine("System Format Completed!");
                                 Console.Write("A system restart is required to apply all changes.");
                                 Console.ReadKey();
-                                BootLoader("Restart.");
+                                Console.Clear();
+
+                                if (BootLoader("Restart.")) System();
+                                else Environment.Exit(0);
                             }
 
                             catch (Exception)
@@ -255,6 +289,7 @@ namespace AOs
 
                         else if (GetKey == "N") Console.WriteLine("System Format Cancelled!");
                         else Console.WriteLine("Invalid Key Input.");
+                        CreateTemp("resetthispc");
                     }
 
                     else
@@ -265,14 +300,21 @@ namespace AOs
                     }
 
                     Directory.SetCurrentDirectory("Files.x72");
+                    CreateTemp("amd");
                 }
 
-                else if (Command.ToLower() == "calendar") Console.WriteLine(DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]"));
+                else if (Command.ToLower() == "calendar" || Command.ToLower() == "time")
+                {
+                    Console.WriteLine(DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]"));
+                    CreateTemp("calendarordatentime");
+                }
+
                 else if (Command.ToLower().StartsWith("color ")) CommandPrompt(Command);
                 else if (Command.ToLower().StartsWith("title ")) CommandPrompt(Command);
                 else if (Command.ToLower() == "version" || Command.ToLower() == "-v") Console.WriteLine(SYSVersion);
                 else if (Command.ToLower() == "credits")
                 {
+                    Fresh = true;
                     string[] CreditCenter = {
                         "_________ AOS - Team ________",
                         "Developer - Srijan Srivastava",
@@ -281,7 +323,7 @@ namespace AOs
                         "",
                         "____________________ Note(For Developers Only) ____________________",
                         "|| AOs - Terminal based Operating System",
-                        "|| Contact: Srivastavavsrijan321@gmail.com",
+                        "|| Contact: QCoreNest@gmail.com",
                         "",
                         "|| AOs is an Open-Source Software.",
                         "|| If you want to modify or contribute on this project.",
@@ -294,19 +336,18 @@ namespace AOs
                         "|| or it may cause system corruption",
                         "|| and may lead AOs not to boot.",
                         "",
-                        "For more information type 'help' or checkout README.docx"
+                        "For more information type 'help' or checkout README.md"
                     };
 
                     Console.Clear();
-                    for (int i = 0; i < CreditCenter.Length; i++)
-                    {
-                        Console.WriteLine(CreditCenter[i]);
-                    }
+                    for (int i = 0; i < CreditCenter.Length; i++) Console.WriteLine(CreditCenter[i]);
 
                     Console.Write("Continue.");
                     Console.ReadKey();
                     Console.WriteLine("");
                     Console.Clear();
+
+                    CreateTemp("aosdevcredits");
                 }
 
                 else if (Command.ToLower() == "about") Console.WriteLine("AOs is an Open-source Terminal based Operating System written in C#. It is inspired by MS-DOS. It is designed to improve User's Efficiency and Productivity while working.");
@@ -319,7 +360,6 @@ namespace AOs
                 else if (Command.ToLower().StartsWith("run "))
                 {
                     string[] RUN = Command.Split(new[] {' '}, 2);
-
                     if (RUN[1].EndsWith(" -e"))
                     {
                         string EXTERNALRUN = RUN[1].Replace(" -e", "");
@@ -327,6 +367,7 @@ namespace AOs
                     }
 
                     else CommandPrompt($"call {RUN[1]}");
+                    CreateTemp("launchanapp");
                 }
 
                 else if (Command.ToLower() == "console" || Command.ToLower() == "terminal" || Command.ToLower() == "cmd") CommandPrompt("start cmd");
@@ -334,6 +375,7 @@ namespace AOs
                 {
                     string[] SplitCommand = Command.Split(new[] {' '}, 2);
                     CommandPrompt(SplitCommand[1]);
+                    CreateTemp("console");
                 }
 
                 else
@@ -343,6 +385,51 @@ namespace AOs
                     Console.ResetColor();
                 }
             }
+        }
+
+        static void CreateTemp(string Filename)
+        {
+            string RootDir = Directory.GetCurrentDirectory();
+            if (RootDir.Contains("AOs\\Files.x72") == false)
+            {
+                File.AppendAllText($"Files.x72\\Temp\\{Filename}.tmp", $"{DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]")}\n");
+                File.AppendAllText($"Files.x72\\Temp\\SYSLog.tmp", $"{Filename} -> {DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]")}\n");
+            }
+
+            else
+            {
+                File.AppendAllText($"Temp\\{Filename}.tmp", $"{DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]")}\n");
+                File.AppendAllText($"Temp\\SYSLog.tmp", $"{Filename} -> {DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]")}\n");
+            }
+        }
+
+        static int Scan()
+        {
+            int Errors = 0;
+            string RootDir = Directory.GetCurrentDirectory();
+            string[] Check = {
+                "UPR.exe", "SYS72.exe", "Config.set",
+                "Files.x72\\apps\\Filer", "Files.x72\\apps", "Files.x72\\img\\desk\\loader",
+                "Files.x72\\Packages\\data\\amd", "Files.x72\\Packages\\data\\oza"
+            };
+
+            // Scan the system.
+            if (RootDir.Contains("AOs\\Files.x72")) Directory.SetCurrentDirectory("..");
+            for (int i = 0; i < Check.Length; i++)
+            {
+                if (Check[i].Contains("\\"))
+                {
+                    if (Directory.Exists(Check[i]) == false) Errors++;
+                    else if (Directory.EnumerateFileSystemEntries(Check[i], "*", SearchOption.AllDirectories).Any() == false) Errors++;
+                }
+
+                else
+                {
+                    if (File.Exists(Check[i]) == false) Errors++;
+                }
+            }
+
+            return Errors;
         }
 
         static void Notebook(string Filename)
@@ -360,7 +447,6 @@ namespace AOs
 
         static void LockSYS()
         {
-            Console.Clear();
             if (File.Exists("user.set"))
             {
                 Console.ResetColor();
@@ -372,21 +458,20 @@ namespace AOs
                     string ByPassCode = Console.ReadLine();
                     if (ByPassCode == Cd)
                     {
-                        Console.Write("Correct password.\nContinue.");
+                        Console.Write("Correct password.");
                         Console.ReadKey();
-                        Console.WriteLine("");
+                        Console.WriteLine("Use 'admin rm-lock' command to remove password.");
                         break;
                     }
 
                     else
                     {
-                        Console.Write("Incorrect password.\nContinue.");
+                        Console.Write("Incorrect password.");
                         Console.ReadKey();
                         Console.WriteLine("");
+                        Console.Clear();
                     }
                 }
-
-                Console.Clear();
             }
 
             else if (File.Exists("user.set") == false)
@@ -394,8 +479,6 @@ namespace AOs
                 Console.Write("Set Password: ");
                 string pinLock = Console.ReadLine();
 
-                Console.Clear();
-                Directory.SetCurrentDirectory("..");
                 File.WriteAllText("user.set", $"{pinLock}");
                 while(true)
                 {
@@ -405,8 +488,7 @@ namespace AOs
                     {
                         Console.Write("Correct password.\nContinue.");
                         Console.ReadKey();
-                        Console.WriteLine("");
-                        Console.Clear();
+                        Console.WriteLine("Use 'admin rm-lock' command to remove password.");
                         break;
                     }
 
@@ -419,31 +501,15 @@ namespace AOs
                     }
                 }
             }
-
-            Directory.SetCurrentDirectory("Files.x72");
         }
 
         static void Calculate(int num1, int num2, string ope)
         {
-            if (ope == "+")
-            {
-                Console.WriteLine(num1 + num2);
-            }
-
-            else if (ope == "-")
-            {
-                Console.WriteLine(num1 - num2);
-            }
-
-            else if (ope == "*" || ope == "x")
-            {
-                Console.WriteLine(num1 * num2);
-            }
-
-            else if (ope == "/")
-            {
-                Console.WriteLine(num1 / num2);
-            }
+            if (ope == "+") Console.WriteLine(num1 + num2);
+            else if (ope == "-") Console.WriteLine(num1 - num2);
+            else if (ope == "*" || ope == "x") Console.WriteLine(num1 * num2);
+            else if (ope == "/") Console.WriteLine(num1 / num2);
+            else Console.WriteLine($"'{ope}' is not available.");
         }
 
         static void CommandPrompt(string GetProcess)
@@ -453,47 +519,51 @@ namespace AOs
             Execute.WaitForExit();
         }
 
-        static void Timer()
+        static void Timer(int Dir)
         {
-            for (int i = 0; i <= 100; i++)
+            int Range = 100;
+            for (int i = 0; i <= Range; i++)
             {
                 Thread.Sleep(25);
                 Console.Write("-");
-                if (i >= 100)
+                if (i >= Range)
                 {
                     Console.WriteLine(">");
                     break;
+                }
+
+                if (Dir == 0)
+                {
+                    RootPackages();
+                    if (i == 25) CommandPrompt("call SYS72 root.appdata");
+                    else if (i == 40) CommandPrompt("call SYS72 core.appdata");
+                    else if (i == 72) CommandPrompt("call SYS72 co-sys.appdata");
                 }
             }
         }
 
         static void RootPackages()
         {
-            if (Directory.Exists("Files.x72"))
+            string RootDir = Directory.GetCurrentDirectory();
+            if (RootDir.Contains("AOs\\Files.x72")) Directory.SetCurrentDirectory("..");
+            if (Directory.Exists("Files.x72") == false)
             {
-                Directory.SetCurrentDirectory("Files.x72");
-            }
-
-            else
-            {
-                Directory.CreateDirectory("Files.x72");
-                Directory.SetCurrentDirectory("Files.x72");
+                Directory.CreateDirectory("Files.x72\\Temp");
+                Directory.CreateDirectory("Files.x72\\Packages\\appdata");
             }
         }
 
         static bool BootLoader(string Loadstatus)
         {
-            int Errors = 0;
+            int Errors = Scan();
             string RootDir = Directory.GetCurrentDirectory();
             if (RootDir.Contains("AOs\\Files.x72")) Directory.SetCurrentDirectory("..");
-            if (File.Exists("BOOT.log") == false) File.WriteAllText("BOOT.log", "AOs 2021 [Version 1.7.3] - BOOT_LOG\n");
+            if (File.Exists("BOOT.log") == false) File.WriteAllText("BOOT.log", "AOs 2021 [Version 1.7.4] - BOOT_LOG\n");
 
             Console.WriteLine(Loadstatus);
             Console.WriteLine("This may take some time.\nPlease wait!\n");
 
-            if (File.Exists("Config.set") == false) Errors++;
-            Timer();
-
+            Timer(0);
             Console.Clear();
             Console.WriteLine(Loadstatus);
             if (Errors == 0)
@@ -525,7 +595,7 @@ namespace AOs
                     }
                 }
 
-                RootPackages();
+                Directory.SetCurrentDirectory("Files.x72");
                 Console.Write("Done.");
                 Console.ReadKey();
                 return true;
