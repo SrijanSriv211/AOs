@@ -1,0 +1,1 @@
+pyinstaller.exe --icon=Icon.ico -F --onefile AOs.py

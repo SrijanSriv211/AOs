@@ -1,0 +1,1 @@
+pyinstaller.exe --icon=safe.ico -F --onefile safe.py

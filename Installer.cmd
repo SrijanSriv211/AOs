@@ -1,0 +1,1 @@
+pyinstaller.exe --icon=adm.ico -F --onefile adm.py
