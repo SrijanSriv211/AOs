@@ -1,1 +1,0 @@
-You must not use this file to store permanant data as this is a System Reserved file and deleting data from this file may cause serious issues to AOs.
