@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Data;
 using System.Linq;
@@ -825,7 +825,15 @@ namespace AOs
             AppProcess.StartInfo.FileName = AppName;
             AppProcess.StartInfo.Arguments = AppArgumens;
             AppProcess.StartInfo.CreateNoWindow = false;
-            AppProcess.Start();
+            try
+            {
+                AppProcess.Start();
+            }
+
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot open the app");
+            }
         }
 
         static public string Strings(string Line)
