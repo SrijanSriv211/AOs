@@ -1135,6 +1135,7 @@ namespace AOs
                         "itsmagic    -> It's magic It's magic.",
                         "studybyte   -> Starts studybyte.",
                         "deeplock    -> Locks windows itself.",
+                        "deepscan    -> Scans the host operating system.",
                         "log         -> Creates a file for logging purpose.",
                         "todo        -> Create and manages a todo list.",
                         "help        -> Displays a list of all overload commands."
@@ -1152,7 +1153,8 @@ namespace AOs
                     else if (Args.FirstOrDefault().ToLower() == "hackgod") Shell.StartApp("https://hackertyper.net");
                     else if (Args.FirstOrDefault().ToLower() == "studybyte") Shell.StartApp("https://light-lens.github.io/Studybyte");
                     else if (Args.FirstOrDefault().ToLower() == "deeplock") Shell.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
-                    else if (Args.FirstOrDefault().ToLower() == "regedit") Directory.CreateDirectory("Files.x72\\Packages\\appdata\\REGISTRY");
+                    else if (Args.FirstOrDefault().ToLower() == "deepscan") Shell.StartApp($"{Shell.Root()}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat");
+                    else if (Args.FirstOrDefault().ToLower() == "regedit") Directory.CreateDirectory($"{Shell.Root()}\\Files.x72\\Packages\\appdata\\REGISTRY");
                     else if (Args.FirstOrDefault().ToLower() == "log")
                     {
                         // {4c4f4747494e4720544849532046494c45} -> LOGGING THIS FILE
