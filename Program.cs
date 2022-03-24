@@ -818,13 +818,14 @@ namespace AOs
             Execute.WaitForExit();
         }
 
-        static public void StartApp(string AppName, string AppArgumens="")
+        static public void StartApp(string AppName, string AppArgumens="", bool AppAdmin=false)
         {
             Process AppProcess = new Process();
             AppProcess.StartInfo.UseShellExecute = true;
             AppProcess.StartInfo.FileName = AppName;
             AppProcess.StartInfo.Arguments = AppArgumens;
             AppProcess.StartInfo.CreateNoWindow = false;
+            if (AppAdmin) AppProcess.StartInfo.Verb = "runas";
             try
             {
                 AppProcess.Start();
@@ -1153,7 +1154,7 @@ namespace AOs
                     else if (Args.FirstOrDefault().ToLower() == "hackgod") Shell.StartApp("https://hackertyper.net");
                     else if (Args.FirstOrDefault().ToLower() == "studybyte") Shell.StartApp("https://light-lens.github.io/Studybyte");
                     else if (Args.FirstOrDefault().ToLower() == "deeplock") Shell.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
-                    else if (Args.FirstOrDefault().ToLower() == "deepscan") Shell.StartApp($"{Shell.Root()}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat");
+                    else if (Args.FirstOrDefault().ToLower() == "deepscan") Shell.StartApp($"{Shell.Root()}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat", AppAdmin: true);
                     else if (Args.FirstOrDefault().ToLower() == "regedit") Directory.CreateDirectory($"{Shell.Root()}\\Files.x72\\Packages\\appdata\\REGISTRY");
                     else if (Args.FirstOrDefault().ToLower() == "log")
                     {
