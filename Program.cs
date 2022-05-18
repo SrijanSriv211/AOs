@@ -1019,7 +1019,7 @@ namespace AOs
 
                 // Split the ListOfToks into a Command and Args variable and array respectively.
                 Command = Collections.Array.Trim(ListOfToks).FirstOrDefault();
-                string[] Args = Collections.Array.Trim(ListOfToks);
+                string[] Args = Collections.Array.Trim(Collections.Array.Reduce(ListOfToks));
                 if (Args.FirstOrDefault() == Command && (Args.Length != 0 || Args != null)) Args = Collections.Array.Trim(Args.Skip(1).ToArray());
 
                 // Parse input.
