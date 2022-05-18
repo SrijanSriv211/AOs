@@ -540,8 +540,8 @@ namespace AOs
         private string Command;
         public string Title;
         public string Prompt;
-        public string Version = "AOs 2022 [Version 1.7.5]";
-        public string VersionNum = "1.7.5";
+        public string Version = "AOs 2022 [Version 1.7.9]";
+        public string VersionNum = "1.7.9";
         public Terminal(string _Title="", string _Prompt="")
         {
             Title = _Title;
@@ -599,7 +599,7 @@ namespace AOs
                 "|| This allows you to re-use the code freely, remixed in both commercial and non-commercial projects.",
                 "|| The only requirement is to include the same license when distributing.",
                 "|| If you built an Operating System on top of AOs Kernal,",
-                "|| Then you must include 'Based on AOs Kernel 1.7.5' in your program.",
+                "|| Then you must include 'Based on AOs Kernel 1.7.9' in your program.",
                 "",
                 "____________________ Note (For All) ____________________",
                 "|| Warning - Do not Delete any File",

@@ -5,14 +5,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>AOs</RootNamespace>
 
-    <Version>1.7.5</Version>
-    <AssemblyVersion>1.7.5</AssemblyVersion>
+    <Version>1.7.9</Version>
+    <AssemblyVersion>1.7.9</AssemblyVersion>
     <ApplicationIcon>Files.x72/img/src/AOs.ico</ApplicationIcon>
 
     <FileDescription>
       AOs is a Command line utility designed to improve your Efficiency and Productivity.
     </FileDescription>
-    <FileVersion>1.7.5</FileVersion>
+    <FileVersion>1.7.9</FileVersion>
     <Company>Light-Lens</Company>
     <Authors>Srijan Srivastava</Authors>
     <Product>AOs</Product>
