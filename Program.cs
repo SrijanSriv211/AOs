@@ -1669,7 +1669,7 @@ namespace AOs
                         else if ((FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/")) && !Directory.Exists(FileOrFolderName))
                             Directory.CreateDirectory(FileOrFolderName.Substring(0, FileOrFolderName.Length - 1));
 
-                        else if (!File.Exists(FileOrFolderName)) File.Create(FileOrFolderName).Dispose();
+                        else if (!File.Exists(FileOrFolderName) && !Directory.Exists(FileOrFolderName)) File.Create(FileOrFolderName).Dispose();
                         else Console.WriteLine("File or directory already exist.");
                     }
                 }
@@ -1681,10 +1681,9 @@ namespace AOs
                     else
                     {
                         string FileOrFolderName = Shell.Strings(string.Join(" ", Args));
-                        if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Don't Delete CON.");
-                        else if ((FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/")) && Directory.Exists(FileOrFolderName))
-                            Directory.Delete(FileOrFolderName.Substring(0, FileOrFolderName.Length - 1), true);
 
+                        if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Don't Delete CON.");
+                        else if (Directory.Exists(FileOrFolderName)) Directory.Delete(FileOrFolderName.Substring(0, FileOrFolderName.Length - 1), true);
                         else if (File.Exists(FileOrFolderName)) File.Delete(FileOrFolderName);
                         else Console.WriteLine("No such file or directory.");
                     }
