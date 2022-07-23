@@ -1685,7 +1685,19 @@ namespace AOs
                             FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
 
                         if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Don't Delete CON.");
-                        else if (Directory.Exists(FileOrFolderName)) Directory.Delete(FileOrFolderName, true);
+                        else if (Directory.Exists(FileOrFolderName))
+                        {
+                            try
+                            {
+                                Directory.Delete(FileOrFolderName, true);
+                            }
+
+                            catch (System.UnauthorizedAccessException)
+                            {
+                                Shell.CommandPrompt($"rmdir {FileOrFolderName} /s /q");
+                            }
+                        }
+
                         else if (File.Exists(FileOrFolderName)) File.Delete(FileOrFolderName);
                         else Console.WriteLine("No such file or directory.");
                     }
