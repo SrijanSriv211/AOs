@@ -1681,9 +1681,11 @@ namespace AOs
                     else
                     {
                         string FileOrFolderName = Shell.Strings(string.Join(" ", Args));
+                        if (FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/"))
+                            FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
 
                         if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Don't Delete CON.");
-                        else if (Directory.Exists(FileOrFolderName)) Directory.Delete(FileOrFolderName.Substring(0, FileOrFolderName.Length - 1), true);
+                        else if (Directory.Exists(FileOrFolderName)) Directory.Delete(FileOrFolderName, true);
                         else if (File.Exists(FileOrFolderName)) File.Delete(FileOrFolderName);
                         else Console.WriteLine("No such file or directory.");
                     }
