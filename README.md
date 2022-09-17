@@ -1,8 +1,8 @@
 # AOs
-AOs is a Command line utility designed to improve your Efficiency and Productivity. The latest stable release is 1.7.5. It is simple yet powerful capable of doing many things such as calculating on the command line itself, opening apps such as onedrive and onenote. The AOs administrator offers some extra features for power users such as terminating apps and more.
+AOs is a Command line utility designed to improve your Efficiency and Productivity. It is simple yet powerful capable of doing many things such as calculating on the command line itself, opening apps such as onedrive and onenote. The AOs administrator offers some extra features for power users such as terminating apps and more.
 
 ## Getting Started
-Visual Studio Code is recommended, AOs 1.7.5 is now officially complete and is ready for use. As of now AOs is focused to run only on Windows but you can modify it to work cross platform.
+Visual Studio Code is recommended, AOs is now officially complete and is ready for use. As of now AOs is focused to run only on Windows but you can modify it to work cross platform.
 
 Start by cloning the repository with `git clone https://github.com/Light-Lens/AOs`.
 
