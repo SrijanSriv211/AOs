@@ -1,7 +1,14 @@
 # AOs
+![AOs](https://github.com/Light-Lens/AOs/blob/master/img/AOs.ico?raw=true)
+
 A Command-line utility for improved efficiency and productivity.
 
 It is Simple and Powerful, capable of easing many tasks such as calculation, and opening any app such as onedrive and onenote just from the command line.
+
+> Note:
+> ---
+>
+> The **"AOs"** is under development. So, if you find any bugs or have any suggestion, feel free to post an _issue_ or a _pull request_.
 
 ## Getting Started
 Visual Studio Code is recommended, AOs is now officially complete and is ready for use. As of now AOs is focused to run only on Windows but you can modify it to work cross platform.
