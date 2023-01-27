@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 public class Obsidian
 {
@@ -95,6 +96,7 @@ public class Obsidian
 
         Shell.RootPackages();
         Shell.AskPass();
+        Shell.Scan();
     }
 
     public void Credits()
@@ -252,6 +254,8 @@ public class Obsidian
         public static void GetHelp(string[] args)
         {
             string[] HelpCenter = {
+                "- prompt          ~> Changes the command prompt.",
+                "backup          ~> Creates a restore point of AOs.",
                 "about           ~> About AOs",
                 "clear           ~> Clears the screen.",
                 "history         ~> Displays the history of Commands.",
@@ -280,8 +284,71 @@ public class Obsidian
                 "pixelate        ~> Starts a website in a web browser.",
                 "commit          ~> Edits the contents of a text file.",
                 "read            ~> Displays the contents of a text file.",
-                "prompt          ~> Changes the command prompt.",
-                "admin           ~> Administrator"
+                "update          ~> Check for Updates.",
+                "scan            ~> Scans the integrity of all protected system files.",
+                "lock            ~> Locks the System at Start-up.",
+                "terminate       ~> Terminates current running process.",
+                "generate        ~> Generates a random number between 0 and 1.",
+                "ran             ~> Displays operating system configuration information.",
+                "tree            ~> Graphically displays the directory structure of a drive or path.",
+                "diagxt          ~> Displays machine specific properties and configuration.",
+                "restore         ~> Restores system files and folders.",
+                "reset           ~> Reset AOs.",
+                "assoc           ~> displays or modifies file extension associations.",
+                "attrib          ~> displays or changes file attributes.",
+                "break           ~> sets or clears extended ctrl+c checking.",
+                "bcdedit         ~> sets properties in boot database to control boot loading.",
+                "cacls           ~> displays or modifies access control lists (acls) of files.",
+                "call            ~> calls one batch program from another.",
+                "chcp            ~> displays or sets the active code page number.",
+                "chdir           ~> displays the name of or changes the current directory.",
+                "chkdsk          ~> checks a disk and displays a status report.",
+                "chkntfs         ~> displays or modifies the checking of disk at boot time.",
+                "comp            ~> compares the contents of two files or sets of files.",
+                "compact         ~> displays or alters the compression of files on ntfs partitions.",
+                "convert         ~> converts fat volumes to ntfs.  you cannot convert the current drive.",
+                "diskpart        ~> displays or configures disk partition properties.",
+                "doskey          ~> edits command lines, recalls windows commands, and creates macros.",
+                "driverquery     ~> displays current device driver status and properties.",
+                "echo            ~> displays messages, or turns command echoing on or off.",
+                "endlocal        ~> ends localization of environment changes in a batch file.",
+                "erase           ~> deletes one or more files.",
+                "fc              ~> compares two files or sets of files, and displays the differences between them.",
+                "find            ~> searches for a text string in a file or files.",
+                "findstr         ~> searches for strings in files.",
+                "for             ~> runs a specified command for each file in a set of files.",
+                "format          ~> formats a disk for use with windows.",
+                "fsutil          ~> displays or configures the file system properties.",
+                "ftype           ~> displays or modifies file types used in file extension associations.",
+                "goto            ~> directs the windows command interpreter to a labeled line in a batch program.",
+                "gpresult        ~> displays group policy information for machine or user.",
+                "graftabl        ~> enables windows to display an extended character set in graphics mode.",
+                "help            ~> provides help information for windows commands.",
+                "icacls          ~> display, modify, backup, or restore acls for files and directories.",
+                "if              ~> performs conditional processing in batch programs.",
+                "label           ~> creates, changes, or deletes the volume label of a disk.",
+                "mklink          ~> creates symbolic links and hard links",
+                "mode            ~> configures a system device.",
+                "more            ~> displays output one screen at a time.",
+                "openfiles       ~> displays files opened by remote users for a file share.",
+                "path            ~> displays or sets a search path for executable files.",
+                "popd            ~> restores the previous value of the current directory saved by pushd.",
+                "print           ~> prints a text file.",
+                "pushd           ~> saves the current directory then changes it.",
+                "recover         ~> recovers readable information from a bad or defective disk.",
+                "rem             ~> records comments (remarks) in batch files or config.sys.",
+                "replace         ~> replaces files.",
+                "robocopy        ~> advanced utility to copy files and directory trees",
+                "set             ~> displays, sets, or removes windows environment variables.",
+                "setlocal        ~> begins localization of environment changes in a batch file.",
+                "sc              ~> displays or configures services (background processes).",
+                "schtasks        ~> schedules commands and programs to run on a computer.",
+                "shift           ~> shifts the position of replaceable parameters in batch files.",
+                "sort            ~> sorts input.",
+                "subst           ~> associates a path with a drive letter.",
+                "verify          ~> tells windows whether to verify that your files are written correctly to a disk.",
+                "vol             ~> displays a disk volume label and serial number.",
+                "wmic            ~> displays wmi information inside interactive command shell.",
             };
 
             if (Collection.Array.IsEmpty(args))
@@ -317,6 +384,7 @@ public class Obsidian
         {
             Directory.CreateDirectory($"{rDir}\\Files.x72\\etc");
             Directory.CreateDirectory($"{rDir}\\Files.x72\\root\\tmp");
+            Directory.CreateDirectory($"{rDir}\\SoftwareDistribution\\RestorePoint");
 
             if (!File.Exists($"{rDir}\\Files.x72\\root\\HISTORY")) File.Create($"{rDir}\\Files.x72\\root\\HISTORY").Dispose();
             if (!File.Exists($"{rDir}\\Files.x72\\root\\tmp\\BOOT.log")) File.Create($"{rDir}\\Files.x72\\root\\tmp\\BOOT.log").Dispose();
@@ -347,7 +415,7 @@ public class Obsidian
             if (!File.Exists($"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe"))
             {
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
-                File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, UPDATE DIRECTORY is missing or corrupted.\n");
+                File.AppendAllText($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, UPDATE DIRECTORY is missing or corrupted.\n");
 
                 new Error("Update failed." + "\n" + "UPDATE DIRECTORY is missing or corrupted.");
             }
@@ -406,16 +474,16 @@ public class Obsidian
         {
             Console.WriteLine("Restoring.");
             Console.Write("Using 'Sysfail\\RECOVERY' to restore.");
-            if (File.Exists($"{rDir}\\RESTORE.exe"))
+            if (File.Exists($"{rDir}\\safe.exe"))
             {
-                CommandPrompt($"call \"{rDir}\\RESTORE.exe\"");
-                Console.WriteLine("AOs restore successful.");
+                CommandPrompt($"call \"{rDir}\\safe.exe\" recover");
+                Console.WriteLine("Restore successful.");
             }
 
             else
             {
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
-                File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
+                File.AppendAllText($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
 
                 new Error("\n" + "Cannot restore this PC." + "\n" + "RECOVERY DIRECTORY is missing or corrupted.");
                 Environment.Exit(0);
@@ -424,33 +492,31 @@ public class Obsidian
 
         public static bool Scan()
         {
-            string Errors = "";
+            List<string> Errors = new List<string>();
             string[] CheckFor = {
-                $"{rDir}\\Files.x72\\img\\src", $"{rDir}\\Files.x72\\img\\ain",
-                $"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR\\UPR.exe",
-                $"{rDir}\\Files.x72\\Packages\\data\\amd", $"{rDir}\\Files.x72\\Packages\\data\\oza",
-                $"{rDir}\\RESTORE.exe", $"{rDir}\\Sysfail\\RECOVERY", $"{rDir}\\Files.x72\\Temp\\set\\Config.set"
+                $"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
+                $"{rDir}\\safe.exe", $"{rDir}\\Sysfail\\RECOVERY",
+                $"{rDir}\\Files.x72\\root\\Config.set",
+                $"{rDir}\\Sysfail\\rp",
             };
 
             // Scan the system.
             for (int i = 0; i < CheckFor.Length; i++)
             {
-                if (Directory.Exists(CheckFor[i]) && !Directory.EnumerateFileSystemEntries(CheckFor[i], "*", SearchOption.AllDirectories).Any())
-                    Errors += $"{CheckFor[i]} ";
-
-                else if (!Directory.Exists(CheckFor[i]) && !File.Exists(CheckFor[i]))
-                    Errors += $"{CheckFor[i]} ";
+                if ((Directory.Exists(CheckFor[i]) && !Directory.EnumerateFileSystemEntries(CheckFor[i], "*", SearchOption.AllDirectories).Any()) || (!Directory.Exists(CheckFor[i]) && !File.Exists(CheckFor[i])))
+                    Errors.Add(CheckFor[i]);
             }
 
+            string[] MissingFiles = Errors.ToArray();
+
             // Check for corrupted files.
-            if (!string.IsNullOrEmpty(Errors.Trim()))
+            if (!Collection.Array.IsEmpty(MissingFiles))
             {
-                string[] Missing = Errors.Trim().Split();
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
 
-                File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", Missing)}]\n");
+                File.AppendAllText($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", MissingFiles)}] file(s) were missing.\n");
 
-                new Error($"{Missing.Length} Errors were Found!" + "\n" + "Your PC ran into a problem :(");
+                new Error($"{MissingFiles.Length} Errors were Found! {string.Join(" ", MissingFiles)}" + "\n" + "Your PC ran into a problem :(");
                 Console.Write("Press any Key to Continue.");
                 Console.ReadKey();
                 Console.WriteLine();

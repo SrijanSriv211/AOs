@@ -307,4 +307,149 @@ public class Features
         if (File.Exists(input_args[0])) Console.WriteLine(File.ReadAllText(input_args[0]));
         else Console.WriteLine("No file found.");
     }
+
+    public static void backup()
+    {
+        Console.WriteLine("Restoring.");
+        Console.Write("Using 'SoftwareDistribution\\RestorePoint' to restore.");
+        if (File.Exists($"{Obsidian.rDir}\\safe.exe"))
+        {
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\safe.exe\" recover");
+            Console.WriteLine("Created a restore successful.");
+        }
+
+        else
+        {
+            string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
+            File.AppendAllText($"{Obsidian.rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RESTORE POINT DIRECTORY is missing or corrupted.\n");
+
+            new Error("\n" + "Cannot create a restore point." + "\n" + "RESTORE POINT DIRECTORY is missing or corrupted.");
+            Environment.Exit(0);
+        }
+    }
+
+    public static void lockPC(string[] input_args)
+    {
+        string[] LOCKHelp = {
+            "Locks the System at Start-up.",
+            "Usage: lock [args][password]",
+            "",
+            "Arguments:",
+            "-rm   -> Remove current password."
+        };
+
+        if (Collection.Array.IsEmpty(input_args))
+        {
+            Console.Write("Set Password: ");
+            string Password = Console.ReadLine();
+
+            File.WriteAllText($"{Obsidian.rDir}\\Files.x72\\root\\User.set", Password);
+            Console.WriteLine("Your password was set successfully.");
+        }
+
+        else if (Obsidian.Shell.IsAskingForHelp(input_args.FirstOrDefault()) && input_args.Length == 1) Console.WriteLine(string.Join("\n", LOCKHelp));
+        else if ((input_args.FirstOrDefault() == "remove" || input_args.FirstOrDefault() == "-rm") && input_args.Length == 1)
+        {
+            if (File.Exists($"{Obsidian.rDir}\\Files.x72\\root\\User.set"))
+            {
+                File.Delete($"{Obsidian.rDir}\\Files.x72\\root\\User.set");
+                Console.WriteLine("Password removed successfully.");
+            }
+
+            Console.WriteLine("Your system isn't password protected.");
+        }
+
+        else if (input_args.Length > 1) Error.TooManyArgs(input_args);
+        else if (input_args.Length < 1) Error.TooFewArgs(input_args);
+        else
+        {
+            input_args[0] = Obsidian.Shell.Strings(input_args[0]);
+            File.WriteAllText($"{Obsidian.rDir}\\Files.x72\\root\\User.set", input_args[0]);
+            Console.WriteLine("Your password was set successfully.");
+        }
+    }
+
+    public static void terminate(string[] input_args)
+    {
+        if (Collection.Array.IsEmpty(input_args)) Obsidian.Shell.CommandPrompt("tasklist");
+        else
+        {
+            for (int i = 0; i < input_args.Length; i++) input_args[i] = Obsidian.Shell.Strings(input_args[i]);
+            Obsidian.Shell.CommandPrompt($"taskkill /f /im {string.Join(" ", input_args)}");
+        }
+    }
+
+    public static void reset(string[] input_args)
+    {
+        if (Collection.Array.IsEmpty(input_args))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Resetting this PC will delete all your files, settings and apps.");
+            Console.ResetColor();
+
+            Console.WriteLine("Are you sure? Y/N");
+            Console.Write("> ");
+            ConsoleKeyInfo KeyInput = Console.ReadKey();
+            string GetKey = KeyInput.Key.ToString();
+            Console.WriteLine();
+            if (GetKey.ToLower() == "y")
+            {
+                try
+                {
+                    string[] EntrySourcePath = { $"{Obsidian.rDir}\\Files.x72", $"{Obsidian.rDir}\\SoftwareDistribution" };
+
+                    Console.WriteLine("Formatting.");
+                    foreach (string Source in EntrySourcePath)
+                    {
+                        string[] Entries = Directory.GetFileSystemEntries(Source, "*", SearchOption.AllDirectories);
+                        foreach (string Entry in Entries)
+                        {
+                            Console.WriteLine($"Locating {Entry}");
+                            if (Directory.Exists(Entry))
+                            {
+                                Console.WriteLine($"Deleting {Entry}");
+                                Directory.Delete(Entry, true);
+
+                                Console.WriteLine("Verifying.");
+                                if (!Directory.Exists(Entry)) Console.WriteLine($"Deleted {Entry}");
+                            }
+
+                            else if (File.Exists(Entry))
+                            {
+                                Console.WriteLine($"Deleting {Entry}");
+                                File.Delete(Entry);
+
+                                Console.WriteLine("Verifying.");
+                                if (!File.Exists(Entry)) Console.WriteLine($"Deleted {Entry}");
+                            }
+                        }
+                    }
+
+                    Console.WriteLine();
+                    Obsidian.Shell.SYSRestore();
+                    Console.WriteLine("System Reset Completed.");
+                    Console.WriteLine("Restarting in 3 seconds.");
+
+                    Obsidian.Shell.Track(1000, 3);
+
+                    Obsidian.Shell.CommandPrompt($"\"{Process.GetCurrentProcess().MainModule.FileName}\"");
+                    Environment.Exit(0);
+                }
+
+                catch (Exception)
+                {
+                    Console.WriteLine("Cannot perform a System Reset.");
+                }
+            }
+
+            else if (GetKey.ToLower() == "n") Console.WriteLine("System Reset Cancelled!");
+            else
+            {
+                Console.WriteLine("Invalid Key Input.");
+                Console.WriteLine("Cannot perform a System Reset.");
+            }
+        }
+
+        else Error.Args(input_args);
+    }
 }

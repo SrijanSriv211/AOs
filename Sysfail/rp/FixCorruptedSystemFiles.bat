@@ -1,6 +1,6 @@
 @ECHO OFF
-TITLE Fix Corrupted System Files
-ECHO Fix Corrupted System Files.
+TITLE Fixing corrupted system files
+ECHO Starting...
 
 sfc /scannow
 DISM /Online /Cleanup-image /Restorehealth

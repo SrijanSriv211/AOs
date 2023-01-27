@@ -1,0 +1,16 @@
+NAME        : AOs 2.3 Pro
+BUILD       : Release Build 2003
+VERSION     : AOs 2022 [Version 2.3]
+PROCESS     : ZeroPlus-i4-Pro
+SYSTEM TYPE : x72
+
+AUTHOR           : Light-Lens (Srijan Srivastava)
+REGISTERED OWNER : User
+
+ROOT DIRECTORY     : AOs
+SYSTEM DIRECTORY   : AOs\Files.x72\root
+UPDATE DIRECTORY   : AOs\UpdatePackage
+RECOVERY DIRECTORY : AOs\Sysfail\RECOVERY
+
+SERVER HOST     : https://github.com/Light-Lens/AOs.git
+SYSTEM LANGUAGE : en-in; English (India)

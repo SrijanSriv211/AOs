@@ -1,12 +1,26 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Diagnostics;
+using System.Security.Principal;
 
-BootLoader();
-void BootLoader()
+Startup();
+bool IsAdmin()
 {
-    Obsidian AOs = new Obsidian();
+    var identity = WindowsIdentity.GetCurrent();
+    var principal = new WindowsPrincipal(identity);
+    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+}
+
+void Startup()
+{
+    Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
     AOs.Entrypoint();
+
+    // Log current time in boot file.
+    string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
+    File.AppendAllText($"{Obsidian.rDir}\\Files.x72\\root\\tmp\\BOOT.log", $"{NoteCurrentTime}\n");
+
     while (true)
     {
         main(AOs);
@@ -18,7 +32,7 @@ void main(Obsidian AOs, string input_as_arg = "")
     var input = AOs.TakeInput(input_as_arg);
 
     // Parse commands.
-    if (Collection.String.IsEmpty(input.cmd)) {}
+    if (Collection.String.IsEmpty(input.cmd)) { }
     else if (input.cmd.ToLower() == "cls" || input.cmd.ToLower() == "clear")
     {
         if (Collection.Array.IsEmpty(input.args)) AOs.ClearConsole();
@@ -88,6 +102,12 @@ void main(Obsidian AOs, string input_as_arg = "")
         else if ((input.args.FirstOrDefault() == "-c" || input.args.FirstOrDefault() == "--clear") && input.args.Length == 1)
             Obsidian.History.ClearHistory();
 
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd == "!")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("https://github.com/Light-Lens/WINTER");
         else Error.Args(input.args);
     }
 
@@ -314,6 +334,69 @@ void main(Obsidian AOs, string input_as_arg = "")
         else if (input.args.Length < 1) Error.TooFewArgs(input.args);
         else Features.read(input.args);
     }
+
+    else if (input.cmd.ToLower() == "update")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.CheckForUpdates();
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "scan")
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            Console.WriteLine("Scanning.");
+            if (Obsidian.Shell.Scan()) Console.WriteLine("Your PC is working fine.");
+        }
+
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "lock") Features.lockPC(input.args);
+    else if (input.cmd.ToLower() == "terminate") Features.terminate(input.args);
+    else if (input.cmd.ToLower() == "generate")
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            Random random = new Random();
+            double Generic = random.NextDouble();
+            Console.WriteLine(Generic);
+        }
+
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "ran")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.CommandPrompt("systeminfo");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "tree")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.CommandPrompt("tree");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "diagxt")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Console.WriteLine(File.ReadAllText($"{Obsidian.rDir}\\Files.x72\\root\\Config.set"));
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "restore")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.SYSRestore();
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "backup" || input.cmd.ToLower() == "restorepoint")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Features.backup();
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "reset") Features.reset(input.args);
 
     // Run '.aos' files.
     else if (input.cmd.ToLower().EndsWith(".aos"))
