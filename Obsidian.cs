@@ -474,9 +474,9 @@ public class Obsidian
         {
             Console.WriteLine("Restoring.");
             Console.Write("Using 'Sysfail\\RECOVERY' to restore.");
-            if (File.Exists($"{rDir}\\safe.exe"))
+            if (File.Exists($"{rDir}\\Sysfail\\rp\\safe.exe") && Directory.Exists($"{Obsidian.rDir}\\Sysfail\\RECOVERY"))
             {
-                CommandPrompt($"call \"{rDir}\\safe.exe\" recover");
+                CommandPrompt($"call \"{rDir}\\Sysfail\\rp\\safe.exe\" -r");
                 Console.WriteLine("Restore successful.");
             }
 
@@ -495,7 +495,7 @@ public class Obsidian
             List<string> Errors = new List<string>();
             string[] CheckFor = {
                 $"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
-                $"{rDir}\\safe.exe", $"{rDir}\\Sysfail\\RECOVERY",
+                $"{rDir}\\Sysfail\\rp\\safe.exe", $"{rDir}\\Sysfail\\RECOVERY",
                 $"{rDir}\\Files.x72\\root\\Config.set",
                 $"{rDir}\\Sysfail\\rp",
             };

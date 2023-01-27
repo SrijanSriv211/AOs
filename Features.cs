@@ -312,9 +312,13 @@ public class Features
     {
         Console.WriteLine("Restoring.");
         Console.Write("Using 'SoftwareDistribution\\RestorePoint' to restore.");
-        if (File.Exists($"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe"))
+        if (Directory.Exists($"{Obsidian.rDir}\\SoftwareDistribution") && File.Exists($"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe"))
         {
-            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" recover");
+            string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
+
+            // Directory.CreateDirectory($"{Obsidian.rDir}\\SoftwareDistribution\\RestorePoint\\{NoteCurrentTime}");
+            // Obsidian.Shell.CommandPrompt($"robocopy . \"{Obsidian.rDir}\\SoftwareDistribution\\RestorePoint\\{NoteCurrentTime}\" /XD \"{Obsidian.rDir}\\SoftwareDistribution\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np");
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" -p");
             Console.WriteLine("Created a restore successful.");
         }
 
@@ -324,7 +328,6 @@ public class Features
             File.AppendAllText($"{Obsidian.rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RESTORE POINT DIRECTORY is missing or corrupted.\n");
 
             new Error("\n" + "Cannot create a restore point." + "\n" + "RESTORE POINT DIRECTORY is missing or corrupted.");
-            Environment.Exit(0);
         }
     }
 
