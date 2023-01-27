@@ -312,9 +312,9 @@ public class Features
     {
         Console.WriteLine("Restoring.");
         Console.Write("Using 'SoftwareDistribution\\RestorePoint' to restore.");
-        if (File.Exists($"{Obsidian.rDir}\\safe.exe"))
+        if (File.Exists($"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe"))
         {
-            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\safe.exe\" recover");
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" recover");
             Console.WriteLine("Created a restore successful.");
         }
 
