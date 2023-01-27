@@ -123,10 +123,10 @@ public class Features
             Console.Write("No. of Seconds$ ");
             int Sec = Convert.ToInt32(Console.ReadLine());
 
-            Obsidian.Shell.Track(Sec * 1000, description: "Waiting...");
+            Obsidian.Shell.Track(1000, Sec, "Waiting...");
         }
 
-        else if (int.TryParse(input_args.FirstOrDefault(), out int Sec) && input_args.Length == 1) Obsidian.Shell.Track(Sec * 1000, description: "Waiting...");
+        else if (int.TryParse(input_args.FirstOrDefault(), out int Sec) && input_args.Length == 1) Obsidian.Shell.Track(1000, Sec, "Waiting...");
         else Error.Args(input_args);
     }
 
@@ -153,5 +153,158 @@ public class Features
             if (Collection.String.IsEmpty(AppID)) new Error($"App {appname} not found");
             else Obsidian.Shell.CommandPrompt($"start explorer shell:appsfolder\\{AppID}");
         }
+    }
+
+    public static void ls(string[] input_args)
+    {
+        if (Collection.Array.IsEmpty(input_args))
+        {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            string[] Entries = Directory.GetFileSystemEntries(".", "*");
+            foreach (string Entry in Entries) Console.WriteLine(Entry);
+        }
+
+        else
+        {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            foreach (string i in input_args)
+            {
+                if (i.ToLower() == "-h" || i.ToLower() == "/?" || i.ToLower() == "--help")
+                {
+                    string[] LSHelpCenter = {
+                                    "Displays a list of files and subdirectories in a directory.",
+                                    "Usage: ls [Option]",
+                                    "",
+                                    "Options:",
+                                    "-f   -> Display only files.",
+                                    "-d   -> Display only folders.",
+                                    "-a   -> Display all files and folders.",
+                                };
+
+                    Console.WriteLine(string.Join("\n", LSHelpCenter));
+                    break;
+                }
+
+                else if (i.ToLower() == "-a" || i.ToLower() == "--all")
+                {
+                    string[] Entries = Directory.GetFileSystemEntries(".", "*");
+                    foreach (string Entry in Entries) Console.WriteLine(Entry);
+                    break;
+                }
+
+                else if (i.ToLower() == "-f" || i.ToLower() == "--files")
+                {
+                    string[] Files = Directory.GetFiles(".");
+                    foreach (string File in Files) Console.WriteLine(File);
+                }
+
+                else if (i.ToLower() == "-d" || i.ToLower() == "--folder" || i.ToLower() == "--directories")
+                {
+                    string[] Directories = Directory.GetDirectories(".");
+                    foreach (string Folder in Directories) Console.WriteLine(Folder);
+                }
+
+                else
+                {
+                    Error.Args(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void touch(string[] input_args)
+    {
+        string FileOrFolderName = Obsidian.Shell.Strings(string.Join(" ", input_args));
+        if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Hello CON!");
+        else if ((FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/")) && !Directory.Exists(FileOrFolderName))
+            Directory.CreateDirectory(FileOrFolderName.Substring(0, FileOrFolderName.Length - 1));
+
+        else if (!File.Exists(FileOrFolderName) && !Directory.Exists(FileOrFolderName)) File.Create(FileOrFolderName).Dispose();
+        else Console.WriteLine("File or directory already exist.");
+    }
+
+    public static void del(string[] input_args)
+    {
+        string FileOrFolderName = Obsidian.Shell.Strings(string.Join(" ", input_args));
+        if (FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/"))
+            FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
+
+        if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Don't Delete CON.");
+        else if (Directory.Exists(FileOrFolderName))
+        {
+            try
+            {
+                Directory.Delete(FileOrFolderName, true);
+            }
+
+            catch (System.UnauthorizedAccessException)
+            {
+                Obsidian.Shell.CommandPrompt($"rmdir {FileOrFolderName} /s /q");
+            }
+        }
+
+        else if (File.Exists(FileOrFolderName)) File.Delete(FileOrFolderName);
+        else Console.WriteLine("No such file or directory.");
+    }
+
+    public static void ren(string[] input_args)
+    {
+        string FileOrFolderName = Obsidian.Shell.Strings(string.Join(" ", input_args));
+        if (FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/"))
+            FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
+
+        if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Hello CON!");
+        else if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"ren {FileOrFolderName}");
+        else Console.WriteLine("No such file or directory.");
+    }
+
+    public static void copy(string input_cmd, string[] input_args)
+    {
+        string FileOrFolderName = Obsidian.Shell.Strings(string.Join(" ", input_args));
+        if (FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/"))
+            FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
+
+        if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"{input_cmd} {FileOrFolderName}");
+        else Console.WriteLine("No such file or directory.");
+    }
+
+    public static void move(string[] input_args)
+    {
+        string FileOrFolderName = Obsidian.Shell.Strings(string.Join(" ", input_args));
+        if (FileOrFolderName.EndsWith("\\") || FileOrFolderName.EndsWith("/"))
+            FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
+
+        if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"move {FileOrFolderName}");
+        else Console.WriteLine("No such file or directory.");
+    }
+
+    public static void commit(string[] input_args)
+    {
+        for (int i = 0; i < input_args.Length; i++)
+        {
+            if (Collection.String.IsString(input_args[i])) input_args[i] = Obsidian.Shell.Strings(input_args[i]);
+        }
+
+
+        if (File.Exists(input_args[0]))
+        {
+            if (File.ReadLines(input_args[0]).FirstOrDefault() == "{4c4f4747494e4720544849532046494c45}")
+            {
+                File.AppendAllText(input_args[0], $"{input_args[1]}\n");
+                File.AppendAllText(input_args[0], $"{DateTime.Now.ToString("[dd-MM-yyyy, HH:mm:ss]")}\n");
+            }
+
+            else File.AppendAllText(input_args[0], $"{input_args[1]}\n");
+        }
+
+        else Console.WriteLine("No file found.");
+    }
+
+    public static void read(string[] input_args)
+    {
+        input_args[0] = Obsidian.Shell.Strings(input_args[0]);
+        if (File.Exists(input_args[0])) Console.WriteLine(File.ReadAllText(input_args[0]));
+        else Console.WriteLine("No file found.");
     }
 }

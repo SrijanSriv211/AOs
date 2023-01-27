@@ -2,14 +2,23 @@
 using System.Linq;
 using System.Diagnostics;
 
-Obsidian AOs = new Obsidian();
-AOs.Entrypoint();
-while (true)
+BootLoader();
+void BootLoader()
 {
-    var input = AOs.TakeInput();
+    Obsidian AOs = new Obsidian();
+    AOs.Entrypoint();
+    while (true)
+    {
+        main(AOs);
+    }
+}
+
+void main(Obsidian AOs, string input_as_arg = "")
+{
+    var input = AOs.TakeInput(input_as_arg);
 
     // Parse commands.
-    if (Collection.String.IsEmpty(input.cmd)) continue;
+    if (Collection.String.IsEmpty(input.cmd)) {}
     else if (input.cmd.ToLower() == "cls" || input.cmd.ToLower() == "clear")
     {
         if (Collection.Array.IsEmpty(input.args)) AOs.ClearConsole();
@@ -62,10 +71,10 @@ while (true)
         if (Collection.Array.IsEmpty(input.args))
         {
             string[] AOs1000 = {
-                "AOs1000!",
-                "CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!",
-                "It was the first program to ever reach these many LINES OF CODE!"
-            };
+                    "AOs1000!",
+                    "CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!",
+                    "It was the first program to ever reach these many LINES OF CODE!"
+                };
 
             Console.WriteLine(string.Join("\n", AOs1000));
         }
@@ -233,6 +242,91 @@ while (true)
     {
         if (Collection.Array.IsEmpty(input.args)) Error.TooManyArgs(input.args);
         else Features.cat(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "cd" || input.cmd.ToLower() == "cd.")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Console.WriteLine(Directory.GetCurrentDirectory());
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "cd..")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Directory.SetCurrentDirectory("..");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "ls" || input.cmd.ToLower() == "dir") Features.ls(input.args);
+
+    else if (input.cmd.ToLower() == "touch" || input.cmd.ToLower() == "create")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.touch(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "del" || input.cmd.ToLower() == "rm" || input.cmd.ToLower() == "delete" || input.cmd.ToLower() == "remove")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.del(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "ren" || input.cmd.ToLower() == "rename")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.ren(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "copy" || input.cmd.ToLower() == "xcopy" || input.cmd.ToLower() == "robocopy")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.copy(input.cmd, input.args);
+    }
+
+    else if (input.cmd.ToLower() == "move")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.move(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "pixelate" || input.cmd.ToLower() == "leaf" || input.cmd.ToLower() == "corner")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("https://youtu.be/PrKtOlwwnSg");
+        else Obsidian.Shell.StartApp(Obsidian.Shell.Strings(string.Join(" ", input.args)));
+    }
+
+    else if (input.cmd.ToLower() == "commit")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 2) Error.TooManyArgs(input.args);
+        else if (input.args.Length < 2) Error.TooFewArgs(input.args);
+        else Features.commit(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "read" || input.cmd.ToLower() == "type")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else if (input.args.Length < 1) Error.TooFewArgs(input.args);
+        else Features.read(input.args);
+    }
+
+    // Run '.aos' files.
+    else if (input.cmd.ToLower().EndsWith(".aos"))
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            if (File.Exists(input.cmd))
+            {
+                foreach (string Line in File.ReadLines(input.cmd)) main(AOs, Line);
+            }
+        }
+
+        else Error.Args(input.args);
     }
 
     else
