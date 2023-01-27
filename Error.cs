@@ -2,89 +2,67 @@ using System;
 
 public class Error
 {
-        // No arguments.
-        static public void NoArgs()
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"NoArgumentError: No arguments were passed");
-            Console.ForegroundColor = Color;
-        }
+    public Error(string details)
+    {
+        var Color = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(details);
+        Console.ForegroundColor = Color;
+    }
 
-        // Unrecognized arguments.
-        static public void Args(string[] _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Unrecognized arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
-            Console.ForegroundColor = Color;
-        }
+    // No arguments.
+    public static void NoArgs()
+    {
+        new Error("NoArgumentError: No arguments were passed");
+    }
 
-        static public void Args(string _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Unrecognized arguments: {_Flag}");
-            Console.ForegroundColor = Color;
-        }
+    // Unrecognized arguments.
+    public static void Args(string[] _Flag)
+    {
+        new Error($"Unrecognized arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+    }
 
-        // Not appropriate number of arguments.
-        static public void TooFewArgs(string[] _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Too few arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
-            Console.ForegroundColor = Color;
-        }
+    public static void Args(string _Flag)
+    {
+        new Error($"Unrecognized arguments: {_Flag}");
+    }
 
-        static public void TooFewArgs(string _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Too few arguments: {_Flag}");
-            Console.ForegroundColor = Color;
-        }
+    // Not appropriate number of arguments.
+    public static void TooFewArgs(string[] _Flag)
+    {
+        new Error($"Too few arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+    }
 
-        static public void TooManyArgs(string[] _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Too many arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
-            Console.ForegroundColor = Color;
-        }
+    public static void TooFewArgs(string _Flag)
+    {
+        new Error($"Too few arguments: {_Flag}");
+    }
 
-        static public void TooManyArgs(string _Flag)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Too many arguments: {_Flag}");
-            Console.ForegroundColor = Color;
-        }
+    public static void TooManyArgs(string[] _Flag)
+    {
+        new Error($"Too many arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+    }
 
-        // Unrecognized Command.
-        static public void Command(string _Command, string _Details="Command does not exist")
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"'{_Command}', {_Details}");
-            Console.ForegroundColor = Color;
-        }
+    public static void TooManyArgs(string _Flag)
+    {
+        new Error($"Too many arguments: {_Flag}");
+    }
 
-        // Unrecognized syntax.
-        static public void Syntax(string _Details)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"SyntaxError: {_Details}");
-            Console.ForegroundColor = Color;
-        }
+    // Unrecognized Command.
+    public static void Command(string _Command, string _Details = "Command does not exist")
+    {
+        new Error($"'{_Command}', {_Details}");
+    }
 
-        // Division by 0.
-        static public void ZeroDivision(string _Line)
-        {
-            var Color = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("ZeroDivisionError: Division by 0");
-            Console.ForegroundColor = Color;
-        }
+    // Unrecognized syntax.
+    public static void Syntax(string _Details)
+    {
+        new Error($"SyntaxError: {_Details}");
+    }
+
+    // Division by 0.
+    public static void ZeroDivision(string _Line)
+    {
+        new Error("ZeroDivisionError: Division by 0");
+    }
 }

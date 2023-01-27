@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Features
 {
@@ -12,13 +13,10 @@ public class Features
                 "Usage: @[args]",
                 "",
                 "Arguments:",
-                "hackgod     -> Pretends to hack but actually is harmless.",
-                "regedit     -> Enables registry in administrator.",
                 "itsmagic    -> It's magic It's magic.",
                 "studybyte   -> Starts studybyte.",
                 "deeplock    -> Locks windows itself.",
                 "deepscan    -> Scans the host operating system.",
-                "log         -> Creates a file for logging purpose.",
                 "todo        -> Create and manages a todo list.",
                 "help        -> Displays a list of all overload commands."
             };
@@ -29,7 +27,6 @@ public class Features
         else if (input_args.FirstOrDefault().ToLower() == "studybyte") Obsidian.Shell.StartApp("https://light-lens.github.io/Studybyte");
         else if (input_args.FirstOrDefault().ToLower() == "deeplock") Obsidian.Shell.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
         else if (input_args.FirstOrDefault().ToLower() == "deepscan") Obsidian.Shell.StartApp($"{Obsidian.rDir}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat", AppAdmin: true);
-        else if (input_args.FirstOrDefault().ToLower() == "regedit") Directory.CreateDirectory($"{Obsidian.rDir}\\Files.x72\\Packages\\appdata\\REGISTRY");
         else if (input_args.FirstOrDefault().ToLower() == "todo")
         {
             string[] TODOHelp = {
@@ -126,10 +123,35 @@ public class Features
             Console.Write("No. of Seconds$ ");
             int Sec = Convert.ToInt32(Console.ReadLine());
 
-            Obsidian.Shell.Track(Sec*1000, description: "Waiting...");
+            Obsidian.Shell.Track(Sec * 1000, description: "Waiting...");
         }
 
-        else if (int.TryParse(input_args.FirstOrDefault(), out int Sec) && input_args.Length == 1) Obsidian.Shell.Track(Sec*1000, description: "Waiting...");
+        else if (int.TryParse(input_args.FirstOrDefault(), out int Sec) && input_args.Length == 1) Obsidian.Shell.Track(Sec * 1000, description: "Waiting...");
         else Error.Args(input_args);
+    }
+
+    public static void cat(string[] applist)
+    {
+        foreach (string appname in applist)
+        {
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"Get-StartApps {appname} | Select-Object -ExpandProperty AppID",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            proc.Start();
+            string AppID = proc.StandardOutput.ReadToEnd();
+            proc.Close();
+
+            if (Collection.String.IsEmpty(AppID)) new Error($"App {appname} not found");
+            else Obsidian.Shell.CommandPrompt($"start explorer shell:appsfolder\\{AppID}");
+        }
     }
 }

@@ -12,6 +12,18 @@ class Lexer
             if (!BracketsNQuotes()) Tokenizer();
         }
 
+        public static string[] SimplifyString(string[] str)
+        {
+            List<string> tempArgs = new List<string>();
+            for (int i = 0; i < str.Length; i++)
+            {
+                    if (Collection.String.IsString(str[i])) tempArgs.Add(Obsidian.Shell.Strings(str[i]));
+                    else tempArgs.Add(str[i]);
+            }
+
+            return tempArgs.ToArray();
+        }
+
         // Modify the public Tokens variable.
         private void Tokenizer()
         {

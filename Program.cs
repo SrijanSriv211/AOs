@@ -90,6 +90,151 @@ while (true)
 
     else if (input.cmd == "@") Features.overload(input.args);
     else if (input.cmd.ToLower() == "wait") Features.wait(input.args);
+    else if (input.cmd.ToLower() == "calendar" || input.cmd.ToLower() == "time" || input.cmd.ToLower() == "date" || input.cmd.ToLower() == "clock")
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
+            Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
+        }
+
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "console" || input.cmd.ToLower() == "terminal" || input.cmd.ToLower() == "cmd")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("cmd");
+        else Obsidian.Shell.CommandPrompt(string.Join(" ", input.args));
+    }
+
+    else if (input.cmd.ToLower() == "title")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else Console.Title = string.Join(" ", Lexer.SimplifyString(input.args));
+    }
+
+    else if (input.cmd.ToLower() == "shout")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else Console.WriteLine(string.Join(" ", Lexer.SimplifyString(input.args)));
+    }
+
+    else if (input.cmd.ToLower() == "pause")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Console.Write("Press any Key to Continue.");
+        else Console.Write(string.Join(" ", Lexer.SimplifyString(input.args)));
+
+        Console.ReadKey();
+        Console.WriteLine();
+    }
+
+    else if (input.cmd.ToLower() == "allinstapps" || input.cmd.ToLower() == "installedapps" || input.cmd.ToLower() == "allinstalledapps")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("winget list");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "alarm" || input.cmd.ToLower() == "timer" || input.cmd.ToLower() == "stopwatch")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-clock:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "calculator" || input.cmd.ToLower() == "math")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-calculator:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "music" || input.cmd.ToLower() == "video" || input.cmd.ToLower() == "media")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("mswindowsmusic:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "paint")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("mspaint");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "onenote")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("onenote:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "onedrive")
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            string OneDrivePath = Environment.GetEnvironmentVariable("onedrive").ToString();
+            if (!Collection.String.IsEmpty(OneDrivePath)) Obsidian.Shell.StartApp(OneDrivePath);
+        }
+
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "electron" || input.cmd.ToLower() == "builder" || input.cmd.ToLower() == "amdik" || input.cmd.ToLower() == "notepad")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("notepad");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "paint3d")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-paint:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "notepad")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("onenote:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "settings")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-settings:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "screensnip")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-screenclip:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "snipandsketch")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("ms-ScreenSketch:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "minecraft")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("minecraft:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "candycrush")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("candycrushsodasaga:");
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "run" || input.cmd.ToLower() == "start" || input.cmd.ToLower() == "call")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("cmd");
+        else Obsidian.Shell.StartApp(string.Join(" ", input.args));
+    }
+
+    else if (input.cmd.ToLower() == "cat")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.TooManyArgs(input.args);
+        else Features.cat(input.args);
+    }
+
     else
     {
         if (!Obsidian.Shell.SysEnvApps(input.cmd, input.args)) Error.Command(input.cmd);

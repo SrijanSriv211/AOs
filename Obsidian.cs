@@ -218,7 +218,30 @@ public class Obsidian
                 return true;
             }
 
-            return false;
+            else
+            {
+                try
+                {
+                    using (Process process = new Process())
+                    {
+                        process.StartInfo.FileName = "cmd.exe";
+                        process.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
+                        process.StartInfo.UseShellExecute = false;
+                        process.StartInfo.RedirectStandardOutput = true;
+                        process.Start();
+
+                        string output = process.StandardOutput.ReadToEnd().Trim();
+                        Console.WriteLine(output);
+
+                        return true;
+                    }
+                }
+
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
         }
 
         public static void GetHelp()
@@ -229,24 +252,23 @@ public class Obsidian
         public static void GetHelp(string[] args)
         {
             string[] HelpCenter = {
-                "about           ~> About AOs.",
-                "admin           ~> Administrator.",
-                "clear           ~> Clears the screen.",
-                "history         ~> Displays the history of Commands.",
-                "version         ~> Displays the AOs version.",
-                "console         ~> Starts a new instance of the terminal.",
-                "reload          ~> Restart AOs",
-                "restart         ~> Restart the system.",
-                "exit            ~> Exit AOs",
-                "shutdown        ~> Shutdown the system.",
-                "title           ~> Changes the title for AOs window.",
-                "color           ~> Changes the default AOs foreground and background colors.",
-                "time            ~> Displays current time and date.",
-                "shout           ~> Displays messages.",
-                "get             ~> Asks for input.",
-                "pause           ~> Suspends processing of a command and displays the message.",
-                "wait            ~> Suspends processing of a command for the given number of seconds.",
-                "run             ~> Starts a specified program or command.",
+                "- about           ~> About AOs",
+                "- clear           ~> Clears the screen.",
+                "- history         ~> Displays the history of Commands.",
+                "- version         ~> Displays the AOs version.",
+                "- console         ~> Starts a new instance of the terminal.",
+                "- reload          ~> Restart AOs",
+                "- restart         ~> Restart the system.",
+                "- exit            ~> Exit AOs",
+                "- shutdown        ~> Shutdown the system.",
+                "- title           ~> Changes the title for AOs window.",
+                "- color           ~> Changes the default AOs foreground and background colors.",
+                "- time            ~> Displays current time and date.",
+                "- shout           ~> Displays messages.",
+                "- wait            ~> Suspends processing of a command for the given number of seconds.",
+                "- pause           ~> Suspends processing of a command and displays the message.",
+                "- run             ~> Starts a specified program or command, given the full or sysenv path.",
+                "- cat             ~> Starts an installed program from the system.",
                 "ls              ~> Displays a list of files and subdirectories in a directory.",
                 "cd              ~> Changes the current directory.",
                 "touch           ~> Creates a file or folder.",
@@ -254,13 +276,13 @@ public class Obsidian
                 "ren             ~> Renames one or more files from one directory to another directory.",
                 "copy            ~> Copies one or more files from one directory to another directory.",
                 "move            ~> Moves one or more files from one directory to another directory.",
-                "alarm           ~> Sets an alarm.",
-                "lock            ~> Locks the system temporarily.",
                 "pixelate        ~> Starts a website in a web browser.",
-                "prompt          ~> Specifies a new command prompt.",
-                "apps            ~> Lists all installed apps on your machine.",
-                "commit          ~> Edits a text file via command prompt.",
-                "read            ~> Reads a text file via command prompt."
+                "prompt          ~> Changes the command prompt.",
+                "allinstapps     ~> Lists all installed apps on your machine.",
+                "commit          ~> Edits the contents of a text file.",
+                "type            ~> Displays the contents of a text file.",
+                "lock            ~> Locks AOs",
+                "admin           ~> Administrator"
             };
 
             if (Collection.Array.IsEmpty(args))
@@ -278,7 +300,7 @@ public class Obsidian
                     {
                         if (HelpCenter[j].StartsWith(args[i]))
                         {
-                            Console.WriteLine(HelpCenter[j]);
+                            Console.WriteLine(Collection.String.Reduce(HelpCenter[j]));
                             break;
                         }
                     }
@@ -309,14 +331,7 @@ public class Obsidian
             {
                 Console.Write("Enter password: ");
                 string Password = Console.ReadLine();
-                if (Password != File.ReadAllText($"{rDir}\\Files.x72\\root\\User.set"))
-                {
-                    var Color = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Incorrect password.");
-                    Console.ForegroundColor = Color;
-                }
-
+                if (Password != File.ReadAllText($"{rDir}\\Files.x72\\root\\User.set"))new Error("Incorrect password.");
                 else break;
             }
         }
@@ -335,11 +350,7 @@ public class Obsidian
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
                 File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, UPDATE DIRECTORY is missing or corrupted.\n");
 
-                var Color = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Update failed.");
-                Console.WriteLine("UPDATE DIRECTORY is missing or corrupted.");
-                Console.ForegroundColor = Color;
+                new Error("Update failed." + "\n" + "UPDATE DIRECTORY is missing or corrupted.");
             }
 
             else CommandPrompt($"call \"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe\" -v \"{vNum}\"");
@@ -407,11 +418,7 @@ public class Obsidian
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
                 File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nCannot restore this PC.");
-                Console.WriteLine("RECOVERY DIRECTORY is missing or corrupted.");
-                Console.ResetColor();
-
+                new Error("\n" + "Cannot restore this PC." + "\n" + "RECOVERY DIRECTORY is missing or corrupted.");
                 Environment.Exit(0);
             }
         }
@@ -443,14 +450,13 @@ public class Obsidian
                 string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
 
                 File.AppendAllText($"{rDir}\\Files.x72\\Temp\\log\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", Missing)}]\n");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{Missing.Length} Errors were Found!");
-                Console.WriteLine("Your PC ran into a problem :(");
-                Console.ResetColor();
+
+                new Error($"{Missing.Length} Errors were Found!" + "\n" + "Your PC ran into a problem :(");
                 Console.Write("Press any Key to Continue.");
                 Console.ReadKey();
                 Console.WriteLine();
                 SYSRestore();
+
                 Console.WriteLine("A restart is recommended.");
                 return false;
             }
