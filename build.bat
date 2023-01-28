@@ -7,13 +7,14 @@ if EXIST AOs rmdir /s /q AOs
 @REM Compile project
 dotnet publish -c Release -o ./AOs
 
+echo. && echo Compiling UPR.py
+pyinstaller --onefile --icon=img/UPR.ico UPR.py --distpath Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages
+
 echo. && echo Compiling safe.cpp
 g++ safe.cpp -o Sysfail/rp/safe.exe
 
-echo. && echo Compiling UPR.py
-pyinstaller -y --clean --onefile --icon=img/UPR.ico --add-data "img;img" -n UPR UPR.py --distpath SoftwareDistribution\UpdatePackages\
-
 @REM Move all necessary folders to the build folder.
+echo. && echo Finishing build
 robocopy "Sysfail" "AOs/Sysfail" /e /nfl /ndl /njh /njs /nc /ns /np /is /it
 robocopy "Sysfail/RECOVERY" "AOs" /e /nfl /ndl /njh /njs /nc /ns /np /is /it
 rmdir /s /q bin,obj,build
