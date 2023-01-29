@@ -16,21 +16,51 @@ void Startup()
 {
     Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
     AOs.Entrypoint();
+    (string, string[]) input;
 
     // Log current time in boot file.
     string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
     File.AppendAllText($"{Obsidian.rDir}\\Files.x72\\root\\tmp\\BOOT.log", $"{NoteCurrentTime}\n");
 
+    // Run all startup apps.
+    string start_path = $"{Obsidian.rDir}\\Files.x72\\root\\StartUp\\";
+    if (Directory.Exists(start_path))
+    {
+        if (File.Exists(start_path + ".startlist") && !Collection.String.IsEmpty(File.ReadAllText(start_path + ".startlist")))
+        {
+            foreach (string App in File.ReadLines(start_path + ".startlist"))
+            {
+                foreach (string Command in File.ReadLines(start_path + App))
+                {
+                    input = AOs.TakeInput(Command);
+                    main(AOs, input);
+                }
+            }
+        }
+
+        else
+        {
+            foreach (string App in Directory.GetFiles(start_path, "*.aos"))
+            {
+                foreach (string Command in File.ReadLines(App))
+                {
+                    input = AOs.TakeInput(Command);
+                    main(AOs, input);
+                }
+            }
+        }
+    }
+
+    // Start AOs shell
     while (true)
     {
-        main(AOs);
+        input = AOs.TakeInput();
+        main(AOs, input);
     }
 }
 
-void main(Obsidian AOs, string input_as_arg = "")
+void main(Obsidian AOs, (string cmd, string[] args) input)
 {
-    var input = AOs.TakeInput(input_as_arg);
-
     // Parse commands.
     if (Collection.String.IsEmpty(input.cmd)) { }
     else if (input.cmd.ToLower() == "cls" || input.cmd.ToLower() == "clear")
@@ -405,7 +435,11 @@ void main(Obsidian AOs, string input_as_arg = "")
         {
             if (File.Exists(input.cmd))
             {
-                foreach (string Line in File.ReadLines(input.cmd)) main(AOs, Line);
+                foreach (string Line in File.ReadLines(input.cmd))
+                {
+                    var input_dot_aos = AOs.TakeInput(Line);
+                    main(AOs, input_dot_aos);
+                }
             }
         }
 

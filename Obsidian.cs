@@ -11,8 +11,7 @@ public class Obsidian
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
 
     public static string vNum = "2.3";
-    private bool AOsVerPrompt = true;
-    private string CMD;
+    public bool AOsVerPrompt = true;
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
     {
@@ -22,6 +21,7 @@ public class Obsidian
 
     public (string cmd, string[] args) TakeInput(string input = "")
     {
+        string CMD = "";
         if (!Collection.String.IsEmpty(input.Trim())) CMD = input.Trim();
         else
         {
@@ -38,16 +38,19 @@ public class Obsidian
                 else Console.Write(Prompt);
             }
 
+            // Take input.
             CMD = Console.ReadLine() ?? "";
             CMD = CMD.Trim() ?? "";
         }
 
+        // Set history.
         if (!Collection.String.IsEmpty(CMD))
         {
-            History.SetHistory(CMD); // Set history.
+            History.SetHistory(CMD);
             if (CMD[0] == '_') CMD = CMD.Substring(1).Trim();
         }
 
+        // Some lexer stuff.
         string[] ListOfToks = new Lexer(CMD.Trim()).Tokens;
 
         // Split the ListOfToks into a cmd and Args variable and array respectively.
@@ -294,61 +297,61 @@ public class Obsidian
                 "diagxt          ~> Displays machine specific properties and configuration.",
                 "restore         ~> Restores system files and folders.",
                 "reset           ~> Reset AOs.",
-                "assoc           ~> displays or modifies file extension associations.",
-                "attrib          ~> displays or changes file attributes.",
-                "break           ~> sets or clears extended ctrl+c checking.",
-                "bcdedit         ~> sets properties in boot database to control boot loading.",
-                "cacls           ~> displays or modifies access control lists (acls) of files.",
-                "call            ~> calls one batch program from another.",
-                "chcp            ~> displays or sets the active code page number.",
-                "chdir           ~> displays the name of or changes the current directory.",
-                "chkdsk          ~> checks a disk and displays a status report.",
-                "chkntfs         ~> displays or modifies the checking of disk at boot time.",
-                "comp            ~> compares the contents of two files or sets of files.",
-                "compact         ~> displays or alters the compression of files on ntfs partitions.",
-                "convert         ~> converts fat volumes to ntfs.  you cannot convert the current drive.",
-                "diskpart        ~> displays or configures disk partition properties.",
-                "doskey          ~> edits command lines, recalls windows commands, and creates macros.",
-                "driverquery     ~> displays current device driver status and properties.",
-                "echo            ~> displays messages, or turns command echoing on or off.",
-                "endlocal        ~> ends localization of environment changes in a batch file.",
-                "erase           ~> deletes one or more files.",
-                "fc              ~> compares two files or sets of files, and displays the differences between them.",
-                "find            ~> searches for a text string in a file or files.",
-                "findstr         ~> searches for strings in files.",
-                "for             ~> runs a specified command for each file in a set of files.",
-                "format          ~> formats a disk for use with windows.",
-                "fsutil          ~> displays or configures the file system properties.",
-                "ftype           ~> displays or modifies file types used in file extension associations.",
-                "goto            ~> directs the windows command interpreter to a labeled line in a batch program.",
-                "gpresult        ~> displays group policy information for machine or user.",
-                "graftabl        ~> enables windows to display an extended character set in graphics mode.",
-                "help            ~> provides help information for windows commands.",
-                "icacls          ~> display, modify, backup, or restore acls for files and directories.",
-                "if              ~> performs conditional processing in batch programs.",
-                "label           ~> creates, changes, or deletes the volume label of a disk.",
-                "mklink          ~> creates symbolic links and hard links",
-                "mode            ~> configures a system device.",
-                "more            ~> displays output one screen at a time.",
-                "openfiles       ~> displays files opened by remote users for a file share.",
-                "path            ~> displays or sets a search path for executable files.",
-                "popd            ~> restores the previous value of the current directory saved by pushd.",
-                "print           ~> prints a text file.",
-                "pushd           ~> saves the current directory then changes it.",
-                "recover         ~> recovers readable information from a bad or defective disk.",
-                "rem             ~> records comments (remarks) in batch files or config.sys.",
-                "replace         ~> replaces files.",
-                "robocopy        ~> advanced utility to copy files and directory trees",
-                "set             ~> displays, sets, or removes windows environment variables.",
-                "setlocal        ~> begins localization of environment changes in a batch file.",
-                "sc              ~> displays or configures services (background processes).",
-                "schtasks        ~> schedules commands and programs to run on a computer.",
-                "shift           ~> shifts the position of replaceable parameters in batch files.",
-                "sort            ~> sorts input.",
-                "subst           ~> associates a path with a drive letter.",
-                "verify          ~> tells windows whether to verify that your files are written correctly to a disk.",
-                "vol             ~> displays a disk volume label and serial number.",
-                "wmic            ~> displays wmi information inside interactive command shell.",
+                "assoc           ~> Displays or modifies file extension associations.",
+                "attrib          ~> Displays or changes file attributes.",
+                "break           ~> Sets or clears extended ctrl+c checking.",
+                "bcdedit         ~> Sets properties in boot database to control boot loading.",
+                "cacls           ~> Displays or modifies access control lists (acls) of files.",
+                "call            ~> Calls one batch program from another.",
+                "chcp            ~> Displays or sets the active code page number.",
+                "chdir           ~> Displays the name of or changes the current directory.",
+                "chkdsk          ~> Checks a disk and displays a status report.",
+                "chkntfs         ~> Displays or modifies the checking of disk at boot time.",
+                "comp            ~> Compares the contents of two files or sets of files.",
+                "compact         ~> Displays or alters the compression of files on ntfs partitions.",
+                "convert         ~> Converts fat volumes to ntfs.  you cannot convert the current drive.",
+                "diskpart        ~> Displays or configures disk partition properties.",
+                "doskey          ~> Edits command lines, recalls windows commands, and creates macros.",
+                "driverquery     ~> Displays current device driver status and properties.",
+                "echo            ~> Displays messages, or turns command echoing on or off.",
+                "endlocal        ~> Ends localization of environment changes in a batch file.",
+                "erase           ~> Deletes one or more files.",
+                "fc              ~> Compares two files or sets of files, and displays the differences between them.",
+                "find            ~> Searches for a text string in a file or files.",
+                "findstr         ~> Searches for strings in files.",
+                "for             ~> Runs a specified command for each file in a set of files.",
+                "format          ~> Formats a disk for use with windows.",
+                "fsutil          ~> Displays or configures the file system properties.",
+                "ftype           ~> Displays or modifies file types used in file extension associations.",
+                "goto            ~> Directs the windows command interpreter to a labeled line in a batch program.",
+                "gpresult        ~> Displays group policy information for machine or user.",
+                "graftabl        ~> Enables windows to display an extended character set in graphics mode.",
+                "help            ~> Provides help information for windows commands.",
+                "icacls          ~> Display, modify, backup, or restore acls for files and directories.",
+                "if              ~> Performs conditional processing in batch programs.",
+                "label           ~> Creates, changes, or deletes the volume label of a disk.",
+                "mklink          ~> Creates symbolic links and hard links",
+                "mode            ~> Configures a system device.",
+                "more            ~> Displays output one screen at a time.",
+                "openfiles       ~> Displays files opened by remote users for a file share.",
+                "path            ~> Displays or sets a search path for executable files.",
+                "popd            ~> Restores the previous value of the current directory saved by pushd.",
+                "print           ~> Prints a text file.",
+                "pushd           ~> Saves the current directory then changes it.",
+                "recover         ~> Recovers readable information from a bad or defective disk.",
+                "rem             ~> Records comments (remarks) in batch files or config.sys.",
+                "replace         ~> Replaces files.",
+                "robocopy        ~> Advanced utility to copy files and directory trees",
+                "set             ~> Displays, sets, or removes windows environment variables.",
+                "setlocal        ~> Begins localization of environment changes in a batch file.",
+                "sc              ~> Displays or configures services (background processes).",
+                "schtasks        ~> Schedules commands and programs to run on a computer.",
+                "shift           ~> Shifts the position of replaceable parameters in batch files.",
+                "sort            ~> Sorts input.",
+                "subst           ~> Associates a path with a drive letter.",
+                "verify          ~> Tells windows whether to verify that your files are written correctly to a disk.",
+                "vol             ~> Displays a disk volume label and serial number.",
+                "wmic            ~> Displays wmi information inside interactive command shell.",
             };
 
             if (Collection.Array.IsEmpty(args))
@@ -384,10 +387,12 @@ public class Obsidian
         {
             Directory.CreateDirectory($"{rDir}\\Files.x72\\etc");
             Directory.CreateDirectory($"{rDir}\\Files.x72\\root\\tmp");
+            Directory.CreateDirectory($"{rDir}\\Files.x72\\root\\StartUp");
             Directory.CreateDirectory($"{rDir}\\SoftwareDistribution\\RestorePoint");
 
-            if (!File.Exists($"{rDir}\\Files.x72\\root\\HISTORY")) File.Create($"{rDir}\\Files.x72\\root\\HISTORY").Dispose();
+            if (!File.Exists($"{rDir}\\Files.x72\\root\\.history")) File.Create($"{rDir}\\Files.x72\\root\\.history").Dispose();
             if (!File.Exists($"{rDir}\\Files.x72\\root\\tmp\\BOOT.log")) File.Create($"{rDir}\\Files.x72\\root\\tmp\\BOOT.log").Dispose();
+            if (!File.Exists($"{rDir}\\Files.x72\\root\\StartUp\\.startlist")) File.Create($"{rDir}\\Files.x72\\root\\StartUp\\.startlist").Dispose();
             if (!File.Exists($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log")) File.Create($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log").Dispose();
         }
 
@@ -552,17 +557,17 @@ public class Obsidian
         public static void SetHistory(string cmd)
         {
             string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-            File.AppendAllText($"{rDir}\\Files.x72\\root\\HISTORY", $"{CurrentTime}, '{cmd}'\n");
+            File.AppendAllText($"{rDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'");
         }
 
         public static void GetHistory()
         {
-            Console.WriteLine(File.ReadAllText($"{rDir}\\Files.x72\\root\\HISTORY"));
+            Console.WriteLine(File.ReadAllText($"{rDir}\\Files.x72\\root\\.history"));
         }
 
         public static void ClearHistory()
         {
-            File.Delete($"{rDir}\\Files.x72\\root\\HISTORY");
+            File.Delete($"{rDir}\\Files.x72\\root\\.history");
         }
     }
 }

@@ -316,8 +316,6 @@ public class Features
         {
             string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
 
-            // Directory.CreateDirectory($"{Obsidian.rDir}\\SoftwareDistribution\\RestorePoint\\{NoteCurrentTime}");
-            // Obsidian.Shell.CommandPrompt($"robocopy . \"{Obsidian.rDir}\\SoftwareDistribution\\RestorePoint\\{NoteCurrentTime}\" /XD \"{Obsidian.rDir}\\SoftwareDistribution\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np");
             Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" -p");
             Console.WriteLine("Created a restore successful.");
         }
