@@ -1,34 +1,36 @@
 // RESTORE all files from RECOVERY folder.
 #include <filesystem>
 #include <windows.h>
-#include <string.h>
 #include <iostream>
-#include <sstream>
 #include <ctime>
 
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	// TODO: Fix this code. It doesn't work.
 	string command = "";
 	if (string(argv[1]) == "-r")
 	{
-		command = "robocopy . \"" + filesystem::current_path().string() + "\\Sysfail\\RECOVERY\"" + " . /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
+		string recovery_path = filesystem::current_path().string() + "\\Sysfail\\RECOVERY";
+		command = "robocopy \"" + recovery_path + "\" . /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
+
 		system(command.c_str());
 	}
 
 	else if (string(argv[1]) == "-p")
 	{
-		stringstream ss;
-		time_t now = time(0);
-		tm *ltm = localtime(&now);
+		time_t t = time(0);
 
-		ss << std::put_time(ltm, "%d-%m-%Y %H:%M:%S");
-		string date_time = ss.str();
+		// Get current date and time in desired format
+		char date_time[20];
+		strftime(date_time, sizeof(date_time), "%d-%m-%Y %H-%M-%S", localtime(&t));
 
-		system(("mkdir \"" + filesystem::current_path().string() + "\\SoftwareDistribution\\RestorePoint\\" + date_time + "\"").c_str());
-		command = "robocopy . \"" + filesystem::current_path().string() + "\\SoftwareDistribution\\RestorePoint\\" + date_time + "\" /XD \"" + filesystem::current_path().string() + "\\SoftwareDistribution\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
+		// Create directory with current date and time as name
+		string rp_dir = filesystem::current_path().string() + "\\SoftwareDistribution\\RestorePoint\\" + string(date_time); // rp_dir -> Restore Point Directory.
+		filesystem::create_directory(rp_dir);
+
+		string exclude_dir = filesystem::current_path().string() + "\\SoftwareDistribution";
+		command = "robocopy . \"" + rp_dir + "\" /XD \"" + exclude_dir + "\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
 		system(command.c_str());
 	}
 
