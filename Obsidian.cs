@@ -7,11 +7,12 @@ using System.Collections.Generic;
 
 public class Obsidian
 {
-    public string Title = "AOs", Prompt = "$ ";
+    public string Title = "AOs";
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
+    public string[] PromptPreset = { "-r" };
 
     public static string vNum = "2.3";
-    public bool AOsVerPrompt = true;
+    private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
     {
@@ -25,18 +26,8 @@ public class Obsidian
         if (!Collection.String.IsEmpty(input.Trim())) CMD = input.Trim();
         else
         {
-            if (AOsVerPrompt)
-            {
-                ClearConsole();
-                AOsVerPrompt = false;
-                Console.Write(Prompt);
-            }
-
-            else
-            {
-                if (!Collection.String.IsEmpty(CMD)) Console.Write($"\n{Prompt}");
-                else Console.Write(Prompt);
-            }
+            Prompt = Shell.SetTerminalPrompt(PromptPreset);
+            Console.Write(Prompt); // Show the prompt.
 
             // Take input.
             CMD = Console.ReadLine() ?? "";
@@ -88,7 +79,6 @@ public class Obsidian
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(Version);
         Console.ForegroundColor = Color;
-        AOsVerPrompt = true;
     }
 
     public void Entrypoint()
@@ -130,7 +120,7 @@ public class Obsidian
     public static dynamic rDir = AppDomain.CurrentDomain.BaseDirectory; // root dir
     public class Shell
     {
-        public static void Track(int time=100, int total=100, string description="Working...")
+        public static void Track(int time = 100, int total = 100, string description = "Working...")
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             DateTime start = DateTime.Now;
@@ -176,6 +166,7 @@ public class Obsidian
             }
 
             stopwatch.Stop();
+            Console.WriteLine();
         }
 
         public static bool SysEnvApps(string input_cmd, string[] input_Args)
@@ -233,11 +224,14 @@ public class Obsidian
                         process.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
                         process.StartInfo.UseShellExecute = false;
                         process.StartInfo.RedirectStandardOutput = true;
+                        process.StartInfo.RedirectStandardError = true;
                         process.Start();
 
                         string output = process.StandardOutput.ReadToEnd().Trim();
-                        Console.WriteLine(output);
+                        process.WaitForExit();
 
+                        if (process.ExitCode != 0) return false;
+                        else Console.WriteLine(output);
                         return true;
                     }
                 }
@@ -257,8 +251,6 @@ public class Obsidian
         public static void GetHelp(string[] args)
         {
             string[] HelpCenter = {
-                "- prompt          ~> Changes the command prompt.",
-                "backup          ~> Creates a restore point of AOs.",
                 "about           ~> About AOs",
                 "clear           ~> Clears the screen.",
                 "history         ~> Displays the history of Commands.",
@@ -277,6 +269,8 @@ public class Obsidian
                 "run             ~> Starts a specified program or command, given the full or sysenv path.",
                 "cat             ~> Starts an installed program from the system.",
                 "allinstapps     ~> Lists all installed apps on your machine.",
+                "prompt          ~> Changes the command prompt.",
+                "backup          ~> Creates a restore point of AOs.",
                 "ls              ~> Displays a list of files and subdirectories in a directory.",
                 "cd              ~> Changes the current directory.",
                 "touch           ~> Creates a file or folder.",
@@ -403,7 +397,7 @@ public class Obsidian
             {
                 Console.Write("Enter password: ");
                 string Password = Console.ReadLine();
-                if (Password != File.ReadAllText($"{rDir}\\Files.x72\\root\\User.set"))new Error("Incorrect password.");
+                if (Password != File.ReadAllText($"{rDir}\\Files.x72\\root\\User.set")) new Error("Incorrect password.");
                 else break;
             }
         }
@@ -539,12 +533,42 @@ public class Obsidian
             string PromptMessage = "";
             foreach (string i in Flags)
             {
-                if (i.ToLower() == "-v") PromptMessage += new Obsidian().Version;
+                if (Collection.String.IsString(i)) PromptMessage += Shell.Strings(i);
+                else if (i.ToLower() == "-h" || i.ToLower() == "/?" || i.ToLower() == "--help")
+                {
+                    string[] PromptHelpCenter = {
+                        "Specifies a new command prompt.",
+                        "Usage: prompt [Option]",
+                        "",
+                        "Options:",
+                        "-h, --help      ~> Displays the help message.",
+                        "-r, --reset     ~> $ (dollar sign, reset the prompt)",
+                        "-s, --space     ~> (space)",
+                        "-v, --version   ~> Current AOs version",
+                        "-t, --time      ~> Current time",
+                        "-d, --date      ~> Current date",
+                        "-p, --path      ~> Current path",
+                        "-n, --drive     ~> Current drive"
+                    };
+
+                    Console.WriteLine(string.Join("\n", PromptHelpCenter));
+                    break;
+                }
+
+                else if (i.ToLower() == "-r" || i.ToLower() == "--reset" || i.ToLower() == "--restore" || i.ToLower() == "--default") PromptMessage = "$ ";
+                else if (i.ToLower() == "-v") PromptMessage += new Obsidian().Version;
                 else if (i.ToLower() == "-s") PromptMessage += " ";
                 else if (i.ToLower() == "-t") PromptMessage += DateTime.Now.ToString("HH:mm:ss");
                 else if (i.ToLower() == "-d") PromptMessage += DateTime.Now.ToString("dd-MM-yyyy");
                 else if (i.ToLower() == "-p") PromptMessage += Directory.GetCurrentDirectory();
                 else if (i.ToLower() == "-n") PromptMessage += Path.GetPathRoot(Environment.SystemDirectory);
+                else if (i.StartsWith("-"))
+                {
+                    PromptMessage = "$ ";
+                    Error.Args(i);
+                    break;
+                }
+
                 else PromptMessage += i;
             }
 

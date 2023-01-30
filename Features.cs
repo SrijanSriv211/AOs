@@ -245,7 +245,7 @@ public class Features
         }
 
         else if (File.Exists(FileOrFolderName)) File.Delete(FileOrFolderName);
-        else Console.WriteLine("No such file or directory.");
+        else new Error("No such file or directory.");
     }
 
     public static void ren(string[] input_args)
@@ -256,7 +256,7 @@ public class Features
 
         if (FileOrFolderName.ToString().ToLower() == "con") Console.WriteLine("Hello CON!");
         else if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"ren {FileOrFolderName}");
-        else Console.WriteLine("No such file or directory.");
+        else new Error("No such file or directory.");
     }
 
     public static void copy(string input_cmd, string[] input_args)
@@ -266,7 +266,7 @@ public class Features
             FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
 
         if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"{input_cmd} {FileOrFolderName}");
-        else Console.WriteLine("No such file or directory.");
+        else new Error("No such file or directory.");
     }
 
     public static void move(string[] input_args)
@@ -276,7 +276,7 @@ public class Features
             FileOrFolderName = FileOrFolderName.Substring(0, FileOrFolderName.Length - 1);
 
         if (Directory.Exists(FileOrFolderName) || File.Exists(FileOrFolderName)) Obsidian.Shell.CommandPrompt($"move {FileOrFolderName}");
-        else Console.WriteLine("No such file or directory.");
+        else new Error("No such file or directory.");
     }
 
     public static void commit(string[] input_args)

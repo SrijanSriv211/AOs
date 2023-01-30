@@ -16,6 +16,8 @@ void Startup()
 {
     Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
     AOs.Entrypoint();
+    AOs.ClearConsole();
+
     (string, string[]) input;
 
     // Log current time in boot file.
@@ -158,6 +160,12 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         }
 
         else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "prompt")
+    {
+        if (Collection.Array.IsEmpty(input.args)) AOs.PromptPreset = new string[] {"-r"};
+        else AOs.PromptPreset = input.args;
     }
 
     else if (input.cmd.ToLower() == "console" || input.cmd.ToLower() == "terminal" || input.cmd.ToLower() == "cmd")
@@ -435,12 +443,15 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         {
             if (File.Exists(input.cmd))
             {
+                Console.WriteLine("True");
                 foreach (string Line in File.ReadLines(input.cmd))
                 {
-                    var input_dot_aos = AOs.TakeInput(Line);
+                    (string, string[]) input_dot_aos = AOs.TakeInput(Line);
                     main(AOs, input_dot_aos);
                 }
             }
+
+            else new Error("No such file or directory.");
         }
 
         else Error.Args(input.args);
