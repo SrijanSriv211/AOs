@@ -528,7 +528,7 @@ public class Obsidian
             return true;
         }
 
-        public static string SetTerminalPrompt(string[] Flags)
+        public static string SetTerminalPrompt(string[] Flags, string defaultPrompt="$ ")
         {
             string PromptMessage = "";
             foreach (string i in Flags)
@@ -552,10 +552,16 @@ public class Obsidian
                     };
 
                     Console.WriteLine(string.Join("\n", PromptHelpCenter));
+                    PromptMessage = defaultPrompt;
                     break;
                 }
 
-                else if (i.ToLower() == "-r" || i.ToLower() == "--reset" || i.ToLower() == "--restore" || i.ToLower() == "--default") PromptMessage = "$ ";
+                else if (i.ToLower() == "-r" || i.ToLower() == "--reset" || i.ToLower() == "--restore" || i.ToLower() == "--default")
+                {
+                    PromptMessage = "$ ";
+                    break;
+                }
+
                 else if (i.ToLower() == "-v") PromptMessage += new Obsidian().Version;
                 else if (i.ToLower() == "-s") PromptMessage += " ";
                 else if (i.ToLower() == "-t") PromptMessage += DateTime.Now.ToString("HH:mm:ss");
@@ -564,7 +570,7 @@ public class Obsidian
                 else if (i.ToLower() == "-n") PromptMessage += Path.GetPathRoot(Environment.SystemDirectory);
                 else if (i.StartsWith("-"))
                 {
-                    PromptMessage = "$ ";
+                    PromptMessage = defaultPrompt;
                     Error.Args(i);
                     break;
                 }

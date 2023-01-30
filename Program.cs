@@ -302,15 +302,15 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         else Features.cat(input.args);
     }
 
-    else if (input.cmd.ToLower() == "cd" || input.cmd.ToLower() == "cd.")
+    else if (input.cmd.ToLower() == "cd" || input.cmd.ToLower() == "cd." || input.cmd.ToLower() == "cd..")
     {
-        if (Collection.Array.IsEmpty(input.args)) Console.WriteLine(Directory.GetCurrentDirectory());
-        else Error.Args(input.args);
-    }
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            if (input.cmd.ToLower() == "cd..") Directory.SetCurrentDirectory("..");
+            else Console.WriteLine(Directory.GetCurrentDirectory());
+        }
 
-    else if (input.cmd.ToLower() == "cd..")
-    {
-        if (Collection.Array.IsEmpty(input.args)) Directory.SetCurrentDirectory("..");
+        else if (input.cmd.ToLower() == "cd") Directory.SetCurrentDirectory(string.Join(" ", Lexer.SimplifyString(input.args)));
         else Error.Args(input.args);
     }
 
