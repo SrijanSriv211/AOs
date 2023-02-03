@@ -3,7 +3,7 @@
 
 A Command-line utility for improved efficiency and productivity.
 
-It is Simple and Powerful, capable of easing many tasks such as calculation, and opening any app such as onedrive and onenote just from the command line.
+It is Simple and Powerful, capable of easing many tasks such as calculation, and opening any app installed on the host machine just from the command line.
 
 > Note:
 > ---
