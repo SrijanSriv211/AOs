@@ -81,11 +81,14 @@ public class Obsidian
         Console.ForegroundColor = Color;
     }
 
-    public void Entrypoint()
+    public void Entrypoint(bool clear=true)
     {
         Console.Title = Title;
-        Console.ResetColor();
-        Console.Clear();
+        if (clear)
+        {
+            Console.ResetColor();
+            Console.Clear();
+        }
 
         Shell.RootPackages();
         Shell.AskPass();
@@ -320,7 +323,7 @@ public class Obsidian
                 "goto            ~> Directs the windows command interpreter to a labeled line in a batch program.",
                 "gpresult        ~> Displays group policy information for machine or user.",
                 "graftabl        ~> Enables windows to display an extended character set in graphics mode.",
-                "help            ~> Provides help information for windows commands.",
+                "help            ~> Provides help information for AOs commands.",
                 "icacls          ~> Display, modify, backup, or restore acls for files and directories.",
                 "if              ~> Performs conditional processing in batch programs.",
                 "label           ~> Creates, changes, or deletes the volume label of a disk.",
@@ -374,6 +377,12 @@ public class Obsidian
         public static bool IsAskingForHelp(string input)
         {
             if (input == "/?" || input == "-h" || input == "--help" || input == "??") return true;
+            return false;
+        }
+
+        public static bool IsAskingForHelp(string[] input)
+        {
+            if (input.Contains("/?") || input.Contains("-h") || input.Contains("--help") || input.Contains("??")) return true;
             return false;
         }
 

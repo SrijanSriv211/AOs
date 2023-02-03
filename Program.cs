@@ -4,7 +4,9 @@ using System.Linq;
 using System.Diagnostics;
 using System.Security.Principal;
 
-Startup();
+Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
+argc();
+
 bool IsAdmin()
 {
     var identity = WindowsIdentity.GetCurrent();
@@ -12,13 +14,43 @@ bool IsAdmin()
     return principal.IsInRole(WindowsBuiltInRole.Administrator);
 }
 
+void argc()
+{
+    string[] argv = Collection.Array.Filter(args);
+    if (Collection.Array.IsEmpty(argv)) Startup();
+    else if (Obsidian.Shell.IsAskingForHelp(argv))
+    {
+        string[] SYSHelpCenter = {
+            "A Command-line utility for improved efficiency and productivity.",
+            "Usage: AOs [file]",
+            "",
+            "Options:",
+            "-h, --help ~> Displays all supported arguments.",
+        };
+
+        Console.WriteLine(string.Join("\n", SYSHelpCenter));
+    }
+
+    else
+    {
+        AOs.Entrypoint(false);
+        foreach (string i in argv)
+        {
+            if (!i.EndsWith(".aos")) new Error($"{i}: File format not recognized.");
+            else if (!File.Exists(i)) new Error($"{i}: No such file or directory.");
+            else
+            {
+                foreach (string j in File.ReadLines(i))
+                    main(AOs, AOs.TakeInput(j));
+            }
+        }
+    }
+}
+
 void Startup()
 {
-    Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
     AOs.Entrypoint();
     AOs.ClearConsole();
-
-    (string, string[]) input;
 
     // Log current time in boot file.
     string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
@@ -33,10 +65,7 @@ void Startup()
             foreach (string App in File.ReadLines(start_path + ".startlist"))
             {
                 foreach (string Command in File.ReadLines(start_path + App))
-                {
-                    input = AOs.TakeInput(Command);
-                    main(AOs, input);
-                }
+                    main(AOs, AOs.TakeInput(Command));
             }
         }
 
@@ -45,20 +74,14 @@ void Startup()
             foreach (string App in Directory.GetFiles(start_path, "*.aos"))
             {
                 foreach (string Command in File.ReadLines(App))
-                {
-                    input = AOs.TakeInput(Command);
-                    main(AOs, input);
-                }
+                    main(AOs, AOs.TakeInput(Command));
             }
         }
     }
 
     // Start AOs shell
     while (true)
-    {
-        input = AOs.TakeInput();
-        main(AOs, input);
-    }
+        main(AOs, AOs.TakeInput());
 }
 
 void main(Obsidian AOs, (string cmd, string[] args) input)
@@ -164,7 +187,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
 
     else if (input.cmd.ToLower() == "prompt")
     {
-        if (Collection.Array.IsEmpty(input.args)) AOs.PromptPreset = new string[] {"-r"};
+        if (Collection.Array.IsEmpty(input.args)) AOs.PromptPreset = new string[] { "-r" };
         else AOs.PromptPreset = input.args;
     }
 
@@ -443,7 +466,6 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         {
             if (File.Exists(input.cmd))
             {
-                Console.WriteLine("True");
                 foreach (string Line in File.ReadLines(input.cmd))
                 {
                     (string, string[]) input_dot_aos = AOs.TakeInput(Line);

@@ -286,7 +286,6 @@ public class Features
             if (Collection.String.IsString(input_args[i])) input_args[i] = Obsidian.Shell.Strings(input_args[i]);
         }
 
-
         if (File.Exists(input_args[0]))
         {
             if (File.ReadLines(input_args[0]).FirstOrDefault() == "{4c4f4747494e4720544849532046494c45}")
@@ -298,14 +297,22 @@ public class Features
             else File.AppendAllText(input_args[0], $"{input_args[1]}\n");
         }
 
-        else Console.WriteLine("No file found.");
+        else
+        {
+            new Error($"{input_args[0]}: No such file or directory.");
+            Console.WriteLine("Use `touch` command to create a file.");
+        }
     }
 
     public static void read(string[] input_args)
     {
         input_args[0] = Obsidian.Shell.Strings(input_args[0]);
         if (File.Exists(input_args[0])) Console.WriteLine(File.ReadAllText(input_args[0]));
-        else Console.WriteLine("No file found.");
+        else
+        {
+            new Error($"{input_args[0]}: No such file or directory.");
+            Console.WriteLine("Please make sure the file exists or the given file is not actually a folder.");
+        }
     }
 
     public static void backup()
