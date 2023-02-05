@@ -21,13 +21,15 @@ AOs 2023 [Version 2.3]
 $ help
 ```
 
-4. When using quotes (`" ... "` or `' ... '`) with the `\` character, for example:
+4. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
 ```console
 AOs 2023 [Version 2.3]
-$ cd "C:\Windows\System32"
+$ cd "C:\Windows\System32" :x:
+$ cd "C:\\Windows\\System32" :heavy_check_mark:
+$ cd "C:/Windows/System32" :heavy_check_mark:
 ```
 
-Remember to use double backslashes (`"C:\\Windows\\System32"`) when using quotes with the `\` character as AOs follows the same string properties as in other programming languages.
+This follows the same string handling conventions as in other programming languages.
 
 ## :toolbox: Getting Started for Developers
 AOs is now officially complete and ready for use, as of now it is focused to run only on Windows, but you can modify it to work cross-platform. Visual Studio Code is recommended for development.
