@@ -49,8 +49,6 @@ You need to install the following on your machine.
 - [Visual Studio Code](https://code.visualstudio.com/)
 
 ### :pencil: Getting Started
-AOs is now officially complete and ready for use, as of now it is focused to run only on Windows, but you can modify it to work cross-platform. Visual Studio Code is recommended for development.
-
 1. Clone the repository with `git clone https://github.com/Light-Lens/AOs`.
 2. Create a virtual environment and activate it (e.g. conda or venv):
 
