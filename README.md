@@ -22,15 +22,18 @@ $ help
 ```
 
 4. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
-:x: ```console
-AOs 2023 [Version 2.3]
-$ cd "path\to\dir"
-```
 
-:heavy_check_mark: ```console
+:heavy_check_mark: Correct way:
+```console
 AOs 2023 [Version 2.3]
 $ cd "path\\to\\dir"
 $ cd "path/to/dir"
+```
+
+:x: Wrong way:
+```console
+AOs 2023 [Version 2.3]
+$ cd "path\to\dir"
 ```
 
 This follows the same string handling conventions as in other programming languages.
