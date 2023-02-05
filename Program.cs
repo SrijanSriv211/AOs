@@ -41,7 +41,7 @@ void argc()
             else
             {
                 foreach (string j in File.ReadLines(i))
-                    main(AOs, AOs.TakeInput(j));
+                    run(AOs, AOs.TakeInput(j));
             }
         }
     }
@@ -65,7 +65,7 @@ void Startup()
             foreach (string App in File.ReadLines(start_path + ".startlist"))
             {
                 foreach (string Command in File.ReadLines(start_path + App))
-                    main(AOs, AOs.TakeInput(Command));
+                    run(AOs, AOs.TakeInput(Command));
             }
         }
 
@@ -74,14 +74,27 @@ void Startup()
             foreach (string App in Directory.GetFiles(start_path, "*.aos"))
             {
                 foreach (string Command in File.ReadLines(App))
-                    main(AOs, AOs.TakeInput(Command));
+                    run(AOs, AOs.TakeInput(Command));
             }
         }
     }
 
     // Start AOs shell
     while (true)
-        main(AOs, AOs.TakeInput());
+        run(AOs, AOs.TakeInput());
+}
+
+void run(Obsidian AOs, (string cmd, string[] args) input)
+{
+    try
+    {
+        main(AOs, input);
+    }
+
+    catch (System.Exception err)
+    {
+        new Error(err.Message);
+    }
 }
 
 void main(Obsidian AOs, (string cmd, string[] args) input)
@@ -469,7 +482,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
                 foreach (string Line in File.ReadLines(input.cmd))
                 {
                     (string, string[]) input_dot_aos = AOs.TakeInput(Line);
-                    main(AOs, input_dot_aos);
+                    run(AOs, input_dot_aos);
                 }
             }
 

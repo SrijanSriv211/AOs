@@ -6,7 +6,7 @@ title Starting build
 call venv\Scripts\activate
 
 @REM Check if AOs folder exists, if yes, remove it.
-if EXIST AOs rmdir /s /q AOs 
+if EXIST AOs rmdir /s /q AOs
 
 @REM Compile project
 dotnet publish -c Release -o ./AOs
