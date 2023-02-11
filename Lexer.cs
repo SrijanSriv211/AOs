@@ -227,9 +227,6 @@ class Lexer
             }
         }
 
-        foreach (var i in tokens.ToArray())
-            System.Console.WriteLine(i);
-
         return tokens.ToArray();
     }
 
