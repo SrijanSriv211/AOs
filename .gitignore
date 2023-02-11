@@ -1,8 +1,8 @@
 AOs/
 bin/
 obj/
-venv/
 build/
+.venv/
 
 AOs.zip
 UPR.spec
