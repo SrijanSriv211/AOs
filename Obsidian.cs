@@ -548,7 +548,7 @@ public class Obsidian
             foreach (string i in Flags)
             {
                 if (Collection.String.IsString(i)) PromptMessage += Shell.Strings(i);
-                else if (i.ToLower() == "-h" || i.ToLower() == "/?" || i.ToLower() == "--help")
+                else if (IsAskingForHelp(i.ToLower()))
                 {
                     string[] PromptHelpCenter = {
                         "Specifies a new command prompt.",
