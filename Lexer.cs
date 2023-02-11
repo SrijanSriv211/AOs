@@ -82,6 +82,12 @@ class Lexer
             if (Collection.String.IsEmpty(tok))
                 tok = "";
 
+            else if (Collection.String.IsEmpty(tok[tok.Length-1].ToString()))
+            {
+                tokens.Add(tok.Trim());
+                tok = "";
+            }
+
             else if (tok == "#")
                 break;
 
@@ -220,6 +226,9 @@ class Lexer
                 tok = "";
             }
         }
+
+        foreach (var i in tokens.ToArray())
+            System.Console.WriteLine(i);
 
         return tokens.ToArray();
     }
