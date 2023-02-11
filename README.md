@@ -26,14 +26,14 @@ $ help
 :heavy_check_mark: Correct way:
 ```console
 AOs 2023 [Version 2.3]
-$ cd "path\\to\\dir"
-$ cd "path/to/dir"
+$ "path\\to\\dir"
+$ "path/to/dir"
 ```
 
 :x: Wrong way:
 ```console
 AOs 2023 [Version 2.3]
-$ cd "path\to\dir"
+$ "path\to\dir"
 ```
 
 This follows the same string handling conventions as in other programming languages.
