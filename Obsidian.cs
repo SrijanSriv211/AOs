@@ -11,7 +11,7 @@ public class Obsidian
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
     public string[] PromptPreset = { "-r" };
 
-    public static string vNum = "2.3.1";
+    public static string vNum = "2.3.2";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
@@ -364,10 +364,15 @@ public class Obsidian
                 {
                     for (int j = 0; j < HelpCenter.Length; j++)
                     {
-                        if (HelpCenter[j].StartsWith(args[i]))
+                        if (HelpCenter[j].StartsWith($"{args[i]} "))
                         {
                             Console.WriteLine(Collection.String.Reduce(HelpCenter[j]));
                             break;
+                        }
+
+                        else if (j >= HelpCenter.Length-1)
+                        {
+                            new Error($"No information for command '{args[i]}'");
                         }
                     }
                 }
