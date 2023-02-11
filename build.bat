@@ -3,7 +3,7 @@ title Starting build
 
 @REM Activate venv before compiling.
 @REM This is make sure nothing breaks while compiling.
-call venv\Scripts\activate
+call .venv\Scripts\activate
 
 @REM Check if AOs folder exists, if yes, remove it.
 if EXIST AOs rmdir /s /q AOs
