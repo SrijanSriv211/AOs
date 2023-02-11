@@ -34,8 +34,6 @@ class Lexer
 
     public string[] Parse(string[] toks)
     {
-        DataTable dt = new DataTable();
-
         string expr = "";
         List<string> tokens = new List<string>();
 
@@ -46,7 +44,22 @@ class Lexer
                 expr += toks[i];
                 if (i == toks.Length-1 || !(isInt(toks[i+1]) || isFloat(toks[i+1]) || toks[i+1] == "+" || toks[i+1] == "-" || toks[i+1] == "*" || toks[i+1] == "/" || toks[i+1] == "(" || toks[i+1] == ")"))
                 {
-                    tokens.Add(Evaluate(expr));
+                    string output = Evaluate(expr);
+                    if (Collection.String.IsEmpty(output))
+                    {
+                        if (i == toks.Length-1)
+                            tokens.Add(expr);
+
+                        else
+                        {
+                            i++;
+                            tokens.Add(expr + toks[i]);
+                        }
+                    }
+
+                    else
+                        tokens.Add(output);
+
                     expr = "";
                 }
             }
@@ -201,7 +214,7 @@ class Lexer
                 tok = "";
             }
 
-            else
+            else if (i == line.Length-1)
             {
                 tokens.Add(tok);
                 tok = "";
