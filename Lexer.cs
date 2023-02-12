@@ -39,10 +39,10 @@ class Lexer
 
         for (int i = 0; i < toks.Length; i++)
         {
-            if (isInt(toks[i]) || isFloat(toks[i]) || toks[i] == "+" || toks[i] == "-" || toks[i] == "*" || toks[i] == "/" || toks[i] == "(" || toks[i] == ")")
+            if (isFloat(toks[i]) || toks[i] == "+" || toks[i] == "-" || toks[i] == "*" || toks[i] == "/" || toks[i] == "(" || toks[i] == ")")
             {
                 expr += toks[i];
-                if (i == toks.Length-1 || !(isInt(toks[i+1]) || isFloat(toks[i+1]) || toks[i+1] == "+" || toks[i+1] == "-" || toks[i+1] == "*" || toks[i+1] == "/" || toks[i+1] == "(" || toks[i+1] == ")"))
+                if (i == toks.Length-1 || !(isFloat(toks[i+1]) || toks[i+1] == "+" || toks[i+1] == "-" || toks[i+1] == "*" || toks[i+1] == "/" || toks[i+1] == "(" || toks[i+1] == ")"))
                 {
                     string output = Evaluate(expr);
                     if (Collection.String.IsEmpty(output))
@@ -80,7 +80,10 @@ class Lexer
         {
             tok += line[i].ToString();
             if (Collection.String.IsEmpty(tok))
+            {
+                tokens.Add(" ");
                 tok = "";
+            }
 
             else if (Collection.String.IsEmpty(tok[tok.Length-1].ToString()))
             {
@@ -91,40 +94,10 @@ class Lexer
             else if (tok == "#")
                 break;
 
-            else if (isIdentifier(tok))
-            {
-                i++;
-                while (i < line.Length && isIdentifier(line[i].ToString()))
-                {
-                    tok += line[i];
-                    i++;
-                }
-
-                i--;
-
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (isFloat(tok))
-            {
-                i++;
-                while (i < line.Length && isFloat(line[i].ToString()))
-                {
-                    tok += line[i];
-                    i++;
-                }
-
-                i--;
-
-                tokens.Add(tok);
-                tok = "";
-            }
-
             else if (isInt(tok))
             {
                 i++;
-                while (i < line.Length && isInt(line[i].ToString()))
+                while (i < line.Length && isFloat(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;
@@ -262,20 +235,6 @@ class Lexer
             }
 
             return false;
-        }
-
-        return true;
-    }
-
-    private bool isIdentifier(string str)
-    {
-        if (Collection.String.IsEmpty(str))
-            return false;
-
-        foreach (char c in str)
-        {
-            if (!char.IsLetter(c))
-                return false;
         }
 
         return true;
