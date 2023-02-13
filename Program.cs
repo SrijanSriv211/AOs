@@ -235,7 +235,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         else
         {
             string query = string.Join(" ", input.args).Replace(" ", "%20");
-            Obsidian.Shell.StartApp("https://en.wikipedia.org/wiki/{query}");
+            Obsidian.Shell.StartApp($"https://en.wikipedia.org/wiki/{query}");
         }
     }
 
