@@ -323,7 +323,7 @@ public class Features
         {
             string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
 
-            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" -p");
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Sysfail\\rp\\safe.exe\" -p \"{Obsidian.rDir}\"");
             Console.WriteLine("Created a restore successful.");
         }
 

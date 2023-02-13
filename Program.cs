@@ -123,7 +123,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         if (Collection.Array.IsEmpty(input.args))
         {
             string AOsBinaryFile = Process.GetCurrentProcess().MainModule.FileName;
-            Obsidian.Shell.CommandPrompt($"\"{AOsBinaryFile}\"");
+            Obsidian.Shell.StartApp(AOsBinaryFile);
             Environment.Exit(0);
         }
 
@@ -196,6 +196,47 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         }
 
         else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "admin")
+    {
+        if (Collection.Array.IsEmpty(input.args))
+        {
+            string AOsBinaryFile = Process.GetCurrentProcess().MainModule.FileName;
+            Obsidian.Shell.StartApp(AOsBinaryFile, AppAdmin: true);
+        }
+
+        else Error.Args(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "srh")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else
+        {
+            string query = string.Join(" ", input.args).Replace(" ", "+");
+            Obsidian.Shell.StartApp($"https://www.google.com/search?q={query}");
+        }
+    }
+
+    else if (input.cmd.ToLower() == "ply")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else
+        {
+            string query = string.Join(" ", input.args).Replace(" ", "+");
+            Obsidian.Shell.StartApp($"https://www.youtube.com/results?search_query={query}");
+        }
+    }
+
+    else if (input.cmd.ToLower() == "wiki")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else
+        {
+            string query = string.Join(" ", input.args).Replace(" ", "%20");
+            Obsidian.Shell.StartApp("https://en.wikipedia.org/wiki/{query}");
+        }
     }
 
     else if (input.cmd.ToLower() == "prompt")
@@ -473,23 +514,25 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (input.cmd.ToLower() == "reset") Features.reset(input.args);
 
     // Run '.aos' files.
-    else if (input.cmd.ToLower().EndsWith(".aos"))
+    else if (File.Exists($"{Obsidian.rDir}\\Files.x72\\etc\\{input.cmd}.aos") || ($"{Obsidian.rDir}\\Files.x72\\etc\\{input.cmd}".ToLower().EndsWith(".aos") && File.Exists($"{Obsidian.rDir}\\Files.x72\\etc\\{input.cmd}")))
     {
-        if (Collection.Array.IsEmpty(input.args))
+        string path = $"{Obsidian.rDir}\\Files.x72\\etc\\{input.cmd}";
+        string filename = path.EndsWith(".aos") ? path : path + ".aos";
+        foreach (string Line in File.ReadLines(filename))
         {
-            if (File.Exists(input.cmd))
-            {
-                foreach (string Line in File.ReadLines(input.cmd))
-                {
-                    (string, string[]) input_dot_aos = AOs.TakeInput(Line);
-                    run(AOs, input_dot_aos);
-                }
-            }
-
-            else new Error("No such file or directory.");
+            (string, string[]) input_dot_aos = AOs.TakeInput(Line);
+            run(AOs, input_dot_aos);
         }
+    }
 
-        else Error.Args(input.args);
+    else if (File.Exists(input.cmd + ".aos") || (input.cmd.ToLower().EndsWith(".aos") && File.Exists(input.cmd)))
+    {
+        string filename = input.cmd.EndsWith(".aos") ? input.cmd : input.cmd + ".aos";
+        foreach (string Line in File.ReadLines(filename))
+        {
+            (string, string[]) input_dot_aos = AOs.TakeInput(Line);
+            run(AOs, input_dot_aos);
+        }
     }
 
     else

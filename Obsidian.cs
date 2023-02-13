@@ -11,7 +11,7 @@ public class Obsidian
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
     public string[] PromptPreset = { "-r" };
 
-    public static string vNum = "2.3.2";
+    public static string vNum = "2.3.3";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
@@ -120,7 +120,7 @@ public class Obsidian
         Console.WriteLine(string.Join("\n", CreditCenter));
     }
 
-    public static dynamic rDir = AppDomain.CurrentDomain.BaseDirectory; // root dir
+    public static dynamic rDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/'); // root dir
     public class Shell
     {
         public static void Track(int time = 100, int total = 100, string description = "Working...")
@@ -221,6 +221,7 @@ public class Obsidian
             {
                 try
                 {
+                    string output = "";
                     using (Process process = new Process())
                     {
                         process.StartInfo.FileName = "cmd.exe";
@@ -230,10 +231,37 @@ public class Obsidian
                         process.StartInfo.RedirectStandardError = true;
                         process.Start();
 
-                        string output = process.StandardOutput.ReadToEnd().Trim();
+                        output = process.StandardOutput.ReadToEnd().Trim();
                         process.WaitForExit();
 
-                        if (process.ExitCode != 0) return false;
+                        if (process.ExitCode != 0)
+                        {
+                            try
+                            {
+                                using (Process power = new Process())
+                                {
+                                    power.StartInfo.FileName = "powershell.exe";
+                                    power.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
+                                    power.StartInfo.UseShellExecute = false;
+                                    power.StartInfo.RedirectStandardOutput = true;
+                                    power.StartInfo.RedirectStandardError = true;
+                                    power.Start();
+
+                                    output = power.StandardOutput.ReadToEnd().Trim();
+                                    power.WaitForExit();
+
+                                    if (power.ExitCode != 0) return false;
+                                    else Console.WriteLine(output);
+                                    return true;
+                                }
+                            }
+
+                            catch (Exception)
+                            {
+                                return false;
+                            }
+                        }
+
                         else Console.WriteLine(output);
                         return true;
                     }
@@ -254,7 +282,11 @@ public class Obsidian
         public static void GetHelp(string[] args)
         {
             string[] HelpCenter = {
+                "#               ~> Ignores the following text.",
+                ">               ~> Starts a specified program or command.",
+                "@               ~> Displays overload commands.",
                 "about           ~> About AOs",
+                "admin           ~> AOs (Administrator)",
                 "clear           ~> Clears the screen.",
                 "history         ~> Displays the history of Commands.",
                 "version         ~> Displays the AOs version.",
@@ -349,6 +381,9 @@ public class Obsidian
                 "verify          ~> Tells windows whether to verify that your files are written correctly to a disk.",
                 "vol             ~> Displays a disk volume label and serial number.",
                 "wmic            ~> Displays wmi information inside interactive command shell.",
+                "srh             ~> Search for a specific query on the internet.",
+                "wiki            ~> search for information on wikipedia.",
+                "ply             ~> search for a video on youtube based on a query."
             };
 
             if (Collection.Array.IsEmpty(args))
@@ -489,7 +524,7 @@ public class Obsidian
             Console.Write("Using 'Sysfail\\RECOVERY' to restore.");
             if (File.Exists($"{rDir}\\Sysfail\\rp\\safe.exe") && Directory.Exists($"{Obsidian.rDir}\\Sysfail\\RECOVERY"))
             {
-                CommandPrompt($"call \"{rDir}\\Sysfail\\rp\\safe.exe\" -r");
+                CommandPrompt($"call \"{rDir}\\Sysfail\\rp\\safe.exe\" -r \"{rDir}\"");
                 Console.WriteLine("Restore successful.");
             }
 
@@ -529,7 +564,7 @@ public class Obsidian
 
                 File.AppendAllText($"{rDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", MissingFiles)}] file(s) were missing.\n");
 
-                new Error($"{MissingFiles.Length} Errors were Found! {string.Join(" ", MissingFiles)}" + "\n" + "Your PC ran into a problem :(");
+                new Error($"{MissingFiles.Length} Errors were Found!\n{string.Join("\n", MissingFiles)}" + "\n" + "Your PC ran into a problem :(");
                 Console.Write("Press any Key to Continue.");
                 Console.ReadKey();
                 Console.WriteLine();
