@@ -10,11 +10,22 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
 	string command = "";
-	if (string(argv[1]) == "-r")
+    if (argc < 2)
 	{
-		string recovery_path = string(argv[2]) + "\\Sysfail\\RECOVERY";
-		command = "robocopy \"" + recovery_path + "\" \"" + string(argv[2]) + "\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
+        cout << "Invalid number of arguments." << endl;
+        return 1;
+    }
 
+	else if (string(argv[1]) == "-r")
+	{
+		string aos_path = argv[2];
+		string recovery_path = aos_path + "\\Sysfail\\RECOVERY";
+
+        cout << "Restoring all files from the recovery folder..." << endl;
+        cout << "Source: " << recovery_path << endl;
+        cout << "Destination: " << aos_path << endl;
+
+		command = "robocopy \"" + recovery_path + "\" \"" + aos_path + "\" /e /s /nfl /ndl /njh /njs /nc /ns /np";
 		system(command.c_str());
 	}
 
@@ -27,12 +38,17 @@ int main(int argc, char const *argv[])
 		strftime(date_time, sizeof(date_time), "%d-%m-%Y %H-%M-%S", localtime(&t));
 
 		// Create directory with current date and time as name
-		string rp_dir = string(argv[2]) + "\\SoftwareDistribution\\RestorePoint\\" + string(date_time); // rp_dir -> Restore Point Directory.
+		string aos_path = argv[2];
+		string rp_dir = aos_path + "\\SoftwareDistribution\\RestorePoint\\" + string(date_time); // rp_dir -> Restore Point Directory.
+		string exclude_dir = aos_path + "\\SoftwareDistribution";
+
 		filesystem::create_directory(rp_dir);
 
-		string exclude_dir = string(argv[2]) + "\\SoftwareDistribution";
-		command = "robocopy \"" + string(argv[2]) + "\" \"" + rp_dir + "\" /XD \"" + exclude_dir + "\" /E /S /NFL /NDL /NJH /NJS /nc /ns /np";
+        cout << "Creating a restore point all files to recovery folder..." << endl;
+        cout << "Source: " << aos_path << endl;
+        cout << "Destination: " << rp_dir << endl;
 
+		command = "robocopy \"" + aos_path + "\" \"" + rp_dir + "\" /XD \"" + exclude_dir + "\" /e /s /nfl /ndl /njh /njs /nc /ns /np";
 		system(command.c_str());
 	}
 

@@ -224,7 +224,7 @@ public class Obsidian
                     string output = "";
                     using (Process process = new Process())
                     {
-                        process.StartInfo.FileName = "cmd.exe";
+                        process.StartInfo.FileName = "powershell.exe";
                         process.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
                         process.StartInfo.UseShellExecute = false;
                         process.StartInfo.RedirectStandardOutput = true;
@@ -234,34 +234,7 @@ public class Obsidian
                         output = process.StandardOutput.ReadToEnd().Trim();
                         process.WaitForExit();
 
-                        if (process.ExitCode != 0)
-                        {
-                            try
-                            {
-                                using (Process power = new Process())
-                                {
-                                    power.StartInfo.FileName = "powershell.exe";
-                                    power.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
-                                    power.StartInfo.UseShellExecute = false;
-                                    power.StartInfo.RedirectStandardOutput = true;
-                                    power.StartInfo.RedirectStandardError = true;
-                                    power.Start();
-
-                                    output = power.StandardOutput.ReadToEnd().Trim();
-                                    power.WaitForExit();
-
-                                    if (power.ExitCode != 0) return false;
-                                    else Console.WriteLine(output);
-                                    return true;
-                                }
-                            }
-
-                            catch (Exception)
-                            {
-                                return false;
-                            }
-                        }
-
+                        if (process.ExitCode != 0) return false;
                         else Console.WriteLine(output);
                         return true;
                     }
