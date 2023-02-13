@@ -382,8 +382,8 @@ public class Obsidian
                 "vol             ~> Displays a disk volume label and serial number.",
                 "wmic            ~> Displays wmi information inside interactive command shell.",
                 "srh             ~> Search for a specific query on the internet.",
-                "wiki            ~> search for information on wikipedia.",
-                "ply             ~> search for a video on youtube based on a query."
+                "wiki            ~> Search for information on wikipedia.",
+                "ply             ~> Search for a video on youtube based on a query."
             };
 
             if (Collection.Array.IsEmpty(args))
