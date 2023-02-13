@@ -4,5 +4,6 @@ obj/
 build/
 .venv/
 
+*.exe
 AOs.zip
 UPR.spec
