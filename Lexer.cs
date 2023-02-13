@@ -7,8 +7,7 @@ class Lexer
     public string[] Tokens;
     public Lexer(string line)
     {
-        if (!BracketsNQuotes(line.Trim()))
-            Tokens = Parse(Tokenizer(line.Trim()));
+        Tokens = Parse(Tokenizer(line.Trim()));
     }
 
     private string Evaluate(string expr)
@@ -177,7 +176,7 @@ class Lexer
                 if (i >= line.Length)
                     Error.Syntax("Unterminated string literal");
 
-                tokens.Add(tok);
+                tokens.Add($"\"{tok}\"");
                 tok = "";
             }
 
@@ -238,87 +237,6 @@ class Lexer
         }
 
         return true;
-    }
-
-    private string ExcludeDataInString(string line)
-    {
-        char quote = '\0';
-        bool escape = false;
-        StringBuilder nonStringData = new StringBuilder();
-
-        foreach (char c in line)
-        {
-            if (c == '"' || c == '\'')
-            {
-                if (escape)
-                {
-                    nonStringData.Append(c);
-                    escape = false;
-                }
-
-                else if (quote == '\0')
-                {
-                    quote = c;
-                    nonStringData.Append(c);
-                }
-
-                else if (quote == c)
-                {
-                    quote = '\0';
-                    nonStringData.Append(c);
-                }
-            }
-
-            else if (quote == '\0')
-            {
-                nonStringData.Append(c);
-            }
-
-            if (c == '\\' && quote != '\0')
-            {
-                escape = true;
-            }
-
-            else
-            {
-                escape = false;
-            }
-        }
-
-        return nonStringData.ToString();
-    }
-
-    private bool BracketsNQuotes(string cmd)
-    {
-        string NonStringData = ExcludeDataInString(cmd);
-
-        // Check for unmatched parentheses
-        if (HasUnevenBrackets(NonStringData, "(", ")"))
-        {
-            Error.Syntax("Unmatched parenthesis");
-            return true;
-        }
-
-        // Check for unmatched square brackets
-        if (HasUnevenBrackets(NonStringData, "[", "]"))
-        {
-            Error.Syntax("Unmatched square brackets");
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool HasUnevenQuotes(string input, string quote)
-    {
-        return Collection.String.Count(input, quote) % 2 != 0;
-    }
-
-    private bool HasUnevenBrackets(string input, string open, string close)
-    {
-        int openCount = Collection.String.Count(input, open);
-        int closeCount = Collection.String.Count(input, close);
-        return openCount != closeCount;
     }
 
     public static string[] SimplifyString(string[] str)

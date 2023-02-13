@@ -11,7 +11,7 @@ public class Obsidian
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
     public string[] PromptPreset = { "-r" };
 
-    public static string vNum = "2.3.3";
+    public static string vNum = "2.3.4";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
