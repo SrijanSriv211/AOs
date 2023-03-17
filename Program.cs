@@ -64,6 +64,9 @@ void Startup()
         {
             foreach (string App in File.ReadLines(start_path + ".startlist"))
             {
+                if (App == ".")
+                    break;
+
                 foreach (string Command in File.ReadLines(start_path + App))
                     run(AOs, AOs.TakeInput(Command));
             }
@@ -175,7 +178,9 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
 
     else if (input.cmd == "!")
     {
-        if (Collection.Array.IsEmpty(input.args)) Obsidian.Shell.StartApp("https://github.com/Light-Lens/WINTER");
+        if (Collection.Array.IsEmpty(input.args)) Obsidian.default_else_shell = "powershell.exe";
+        else if (input.args.FirstOrDefault() == "ps" || input.args.FirstOrDefault() == "powershell") Obsidian.default_else_shell = "powershell.exe";
+        else if (input.args.FirstOrDefault() == "cmd") Obsidian.default_else_shell = "cmd.exe";
         else Error.Args(input.args);
     }
 
@@ -198,7 +203,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         else Error.Args(input.args);
     }
 
-    else if (input.cmd.ToLower() == "admin")
+    else if (input.cmd.ToLower() == "admin" || input.cmd.ToLower() == "power")
     {
         if (Collection.Array.IsEmpty(input.args))
         {

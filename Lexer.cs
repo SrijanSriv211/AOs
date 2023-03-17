@@ -186,7 +186,7 @@ class Lexer
                 tok = "";
             }
 
-            else if (tok == ">" || tok == "@")
+            else if (tok == ">" || tok == "@" || tok == "!")
             {
                 tokens.Add(tok);
                 tok = "";

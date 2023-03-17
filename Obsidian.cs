@@ -11,6 +11,8 @@ public class Obsidian
     public string Version = String.Format("AOs 2023 [Version {0}]", vNum);
     public string[] PromptPreset = { "-r" };
 
+    public static string default_else_shell = "powershell.exe";
+    public static string buildNo = "2034";
     public static string vNum = "2.3.4";
     private string Prompt = "";
 
@@ -224,7 +226,7 @@ public class Obsidian
                     string output = "";
                     using (Process process = new Process())
                     {
-                        process.StartInfo.FileName = "powershell.exe";
+                        process.StartInfo.FileName = Obsidian.default_else_shell;
                         process.StartInfo.Arguments = "/C " + $"{input_cmd} {string.Join(" ", input_Args)}";
                         process.StartInfo.UseShellExecute = false;
                         process.StartInfo.RedirectStandardOutput = true;
@@ -256,6 +258,7 @@ public class Obsidian
         {
             string[] HelpCenter = {
                 "#               ~> Ignores the following text.",
+                "!               ~> Changes the default-else shell.",
                 ">               ~> Starts a specified program or command.",
                 "@               ~> Displays overload commands.",
                 "about           ~> About AOs",
@@ -442,7 +445,7 @@ public class Obsidian
                 new Error("Update failed." + "\n" + "UPDATE DIRECTORY is missing or corrupted.");
             }
 
-            else CommandPrompt($"call \"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe\" -v \"{vNum}\"");
+            else CommandPrompt($"call \"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe\" -v \"{buildNo}\"");
         }
 
         public static void CreatePass()
