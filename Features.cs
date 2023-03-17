@@ -553,4 +553,33 @@ public class Features
         else
             Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wiki.exe\" --search \"{query}\"");
     }
+
+    public static void SearchonGoogle(string[] input_args)
+    {
+        try
+        {
+            // Find the index of the item to remove,
+            // if the item was found, remove it from the list
+            List<string> list = input_args.ToList();
+            int index = list.IndexOf("-m");
+            string engine = "google";
+
+            if (index != -1)
+            {
+                engine = input_args[index + 1].ToString();
+
+                list.RemoveAt(index + 1);
+                list.RemoveAt(index);
+                input_args = list.ToArray();
+            }
+
+            string query = Lexer.SimplifyString(input_args[0]);
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\srh.exe\" --engine {engine} --search \"{query}\"");
+        }
+
+        catch (System.Exception e)
+        {
+            new Error(e.Message);
+        }
+    }
 }

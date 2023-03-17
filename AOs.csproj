@@ -7,12 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
-    <Version>2.3.4</Version>
-    <AssemblyVersion>2.3.4</AssemblyVersion>
+    <Version>2.3.5</Version>
+    <AssemblyVersion>2.3.5</AssemblyVersion>
     <ApplicationIcon>img/AOs.ico</ApplicationIcon>
 
     <FileDescription>Command-line utility for improved efficiency and productivity.</FileDescription>
-    <FileVersion>2.3.4</FileVersion>
+    <FileVersion>2.3.5</FileVersion>
     <Company>Light-Lens</Company>
     <Authors>Srijan Srivastava</Authors>
     <Product>AOs</Product>

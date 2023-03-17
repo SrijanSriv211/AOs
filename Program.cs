@@ -217,11 +217,8 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (input.cmd.ToLower() == "srh")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
-        else
-        {
-            string query = string.Join(" ", input.args).Replace(" ", "+");
-            Obsidian.Shell.StartApp($"https://www.google.com/search?q={query}");
-        }
+        else if (input.args.Length > 3) Error.TooManyArgs(input.args);
+        else Features.SearchonGoogle(input.args);
     }
 
     else if (input.cmd.ToLower() == "ply")

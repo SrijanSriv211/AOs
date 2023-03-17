@@ -12,8 +12,8 @@ public class Obsidian
     public string[] PromptPreset = { "-r" };
 
     public static string default_else_shell = "powershell.exe";
-    public static string buildNo = "2034";
-    public static string vNum = "2.3.4";
+    public static string buildNo = "2035";
+    public static string vNum = "2.3.5";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
@@ -522,7 +522,8 @@ public class Obsidian
                 $"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
                 $"{rDir}\\Sysfail\\rp\\safe.exe", $"{rDir}\\Sysfail\\RECOVERY",
                 $"{rDir}\\Files.x72\\root\\Config.set", $"{rDir}\\Sysfail\\rp",
-                $"{rDir}\\Files.x72\\root\\ext\\ply.exe", $"{rDir}\\Files.x72\\root\\ext\\wiki.exe"
+                $"{rDir}\\Files.x72\\root\\ext\\ply.exe", $"{rDir}\\Files.x72\\root\\ext\\wiki.exe",
+                $"{rDir}\\Files.x72\\root\\ext\\srh.exe"
             };
 
             // Scan the system.
