@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
+using Microsoft.Win32;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 public class Features
 {
@@ -459,5 +460,97 @@ public class Features
         }
 
         else Error.Args(input_args);
+    }
+
+    public static void winrar(string[] input_args)
+    {
+        string winrarPath = string.Empty;
+        bool unzip = false;
+
+        // Find the index of the item to remove,
+        // if the item was found, remove it from the list
+        List<string> list = input_args.ToList();
+        int index = list.IndexOf("-u");
+        if (index != -1)
+        {
+            unzip = true;
+            list.RemoveAt(index);
+            input_args = list.ToArray();
+        }
+
+        RegistryKey winrarKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe");
+        if (winrarKey != null)
+        {
+            winrarPath = winrarKey.GetValue(string.Empty).ToString();
+            winrarKey.Close();
+        }
+
+        System.Diagnostics.Process process = new System.Diagnostics.Process();
+        System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+        startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+        startInfo.FileName = winrarPath;
+
+        string sourcePath = input_args[0];
+        string destinationPath = input_args[1];
+        if (unzip)
+        {
+            startInfo.Arguments = $"x -y \"{sourcePath}\" \"{destinationPath}\"";
+            if (!Directory.Exists(destinationPath))
+                Directory.CreateDirectory(destinationPath);
+        }
+
+        else
+            startInfo.Arguments = $"a -ep \"{destinationPath}\" \"{sourcePath}\"";
+
+        process.StartInfo = startInfo;
+        process.Start();
+    }
+
+    public static void PlayonYT(string[] input_args)
+    {
+        bool doOpen = false;
+
+        // Find the index of the item to remove,
+        // if the item was found, remove it from the list
+        List<string> list = input_args.ToList();
+        int index = list.IndexOf("-m");
+        if (index != -1)
+        {
+            doOpen = true;
+            list.RemoveAt(index);
+            input_args = list.ToArray();
+        }
+
+        string query = Lexer.SimplifyString(input_args[0]);
+
+        if (doOpen)
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\ply.exe\" --play \"{query}\"");
+
+        else
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\ply.exe\" --search \"{query}\"");
+    }
+
+    public static void SearchonWiki(string[] input_args)
+    {
+        bool doOpen = false;
+
+        // Find the index of the item to remove,
+        // if the item was found, remove it from the list
+        List<string> list = input_args.ToList();
+        int index = list.IndexOf("-m");
+        if (index != -1)
+        {
+            doOpen = true;
+            list.RemoveAt(index);
+            input_args = list.ToArray();
+        }
+
+        string query = Lexer.SimplifyString(input_args[0]);
+
+        if (doOpen)
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wiki.exe\" --show \"{query}\"");
+
+        else
+            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wiki.exe\" --search \"{query}\"");
     }
 }

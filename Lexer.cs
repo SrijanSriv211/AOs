@@ -176,7 +176,7 @@ class Lexer
                 if (i >= line.Length)
                     Error.Syntax("Unterminated string literal");
 
-                tokens.Add($"\"{tok}\"");
+                tokens.Add(tok);
                 tok = "";
             }
 
@@ -252,5 +252,14 @@ class Lexer
         }
 
         return tempArgs.ToArray();
+    }
+
+    public static string SimplifyString(string str)
+    {
+        if (Collection.String.IsString(str))
+            return Obsidian.Shell.Strings(str);
+
+        else
+            return str;
     }
 }

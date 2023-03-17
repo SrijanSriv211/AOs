@@ -289,6 +289,7 @@ public class Obsidian
                 "pixelate        ~> Starts a website in a web browser.",
                 "commit          ~> Edits the contents of a text file.",
                 "read            ~> Displays the contents of a text file.",
+                "zip             ~> Compresses or Decompresses files or folders. (-u flag to unzip)",
                 "update          ~> Check for Updates.",
                 "scan            ~> Scans the integrity of all protected system files.",
                 "lock            ~> Locks the System at Start-up.",
@@ -486,8 +487,8 @@ public class Obsidian
 
         public static string Strings(string Line)
         {
-            if (Line.StartsWith("\"") && Line.EndsWith("\"")) return Line.Substring(1, Line.Length - 2);
-            else if (Line.StartsWith("'") && Line.EndsWith("'")) return Line.Substring(1, Line.Length - 2);
+            Line = Line.Trim();
+            if (Collection.String.IsString(Line)) return Line.Substring(1, Line.Length - 2);
             return Line;
         }
 
@@ -517,8 +518,8 @@ public class Obsidian
             string[] CheckFor = {
                 $"{rDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
                 $"{rDir}\\Sysfail\\rp\\safe.exe", $"{rDir}\\Sysfail\\RECOVERY",
-                $"{rDir}\\Files.x72\\root\\Config.set",
-                $"{rDir}\\Sysfail\\rp",
+                $"{rDir}\\Files.x72\\root\\Config.set", $"{rDir}\\Sysfail\\rp",
+                $"{rDir}\\Files.x72\\root\\ext\\ply.exe", $"{rDir}\\Files.x72\\root\\ext\\wiki.exe"
             };
 
             // Scan the system.

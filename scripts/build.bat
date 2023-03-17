@@ -16,6 +16,8 @@ g++ "Sysfail\rp\safe.cpp" -o Sysfail/rp/safe.exe
 
 echo. && echo Compiling Python scripts
 pyinstaller --onefile --icon=img/UPR.ico "Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages\UPR.py" --distpath Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages
+pyinstaller --onefile --icon=img/exe.ico "Sysfail\RECOVERY\Files.x72\root\ext\wiki.py" --distpath Sysfail\RECOVERY\Files.x72\root\ext
+pyinstaller --onefile --icon=img/exe.ico "Sysfail\RECOVERY\Files.x72\root\ext\ply.py" --distpath Sysfail\RECOVERY\Files.x72\root\ext
 
 rem Move all necessary folders to the build folder.
 echo. && echo Finishing build

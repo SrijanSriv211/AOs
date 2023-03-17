@@ -222,21 +222,23 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (input.cmd.ToLower() == "ply")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
-        else
-        {
-            string query = string.Join(" ", input.args).Replace(" ", "+");
-            Obsidian.Shell.StartApp($"https://www.youtube.com/results?search_query={query}");
-        }
+        else if (input.args.Length > 2) Error.TooManyArgs(input.args);
+        else Features.PlayonYT(input.args);
     }
 
     else if (input.cmd.ToLower() == "wiki")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
-        else
-        {
-            string query = string.Join(" ", input.args).Replace(" ", "%20");
-            Obsidian.Shell.StartApp($"https://en.wikipedia.org/wiki/{query}");
-        }
+        else if (input.args.Length > 2) Error.TooManyArgs(input.args);
+        else Features.SearchonWiki(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "zip" || input.cmd.ToLower() == "rar" || input.cmd.ToLower() == "winrar")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
+        else if (input.args.Length < 2) Error.TooFewArgs(input.args);
+        else if (input.args.Length > 3) Error.TooManyArgs(input.args);
+        else Features.winrar(input.args);
     }
 
     else if (input.cmd.ToLower() == "prompt")
