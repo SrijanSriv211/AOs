@@ -449,8 +449,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (input.cmd.ToLower() == "read" || input.cmd.ToLower() == "type")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
-        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
-        else if (input.args.Length < 1) Error.TooFewArgs(input.args);
+        else if (input.args.Length > 3) Error.TooManyArgs(input.args);
         else Features.read(input.args);
     }
 

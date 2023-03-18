@@ -307,11 +307,32 @@ public class Features
 
     public static void read(string[] input_args)
     {
+        // long line_no = 0;
         input_args[0] = Obsidian.Shell.Strings(input_args[0]);
-        if (File.Exists(input_args[0])) Console.WriteLine(File.ReadAllText(input_args[0]));
+        var parser = new argparse("read ~> Displays the contents of a text file.");
+        parser.AddArgument("--info", "Shows information about a specific line.", default_value: "-1");
+        parser.AddArgument("-i", "Shows information about a specific line.", default_value: "-1");
+        var args = parser.Parse(input_args);
+
+        string filename = parser.free_args.FirstOrDefault();
+        if (File.Exists(filename))
+        {
+            if (args["-i"] == "-1" && args["--info"] == "-1")
+            {
+                string[] lines = File.ReadAllLines(filename);
+                for (int i = 0; i < lines.Length; i++)
+                    Console.WriteLine("{0}: {1}", i+1, lines[i]);
+            }
+
+            else
+            {
+                Console.WriteLine(args["-i"]);
+            }
+        }
+
         else
         {
-            new Error($"{input_args[0]}: No such file or directory.");
+            new Error($"{filename}: No such file or directory.");
             Console.WriteLine("Please make sure the file exists or the given file is not actually a folder.");
         }
     }
@@ -556,30 +577,47 @@ public class Features
 
     public static void SearchonGoogle(string[] input_args)
     {
-        try
+        // Find the index of the item to remove,
+        // if the item was found, remove it from the list
+        List<string> list = input_args.ToList();
+        string engineName = string.Empty;
+        int index = list.IndexOf("-m");
+        var engines = new Dictionary<string, string>()
         {
-            // Find the index of the item to remove,
-            // if the item was found, remove it from the list
-            List<string> list = input_args.ToList();
-            int index = list.IndexOf("-m");
-            string engine = "google";
+            { "bing", "https://www.bing.com/search?q=" },
+            { "google", "https://www.google.com/search?q=" },
+            { "duckduckgo", "https://duckduckgo.com/?q=" }
+        };
 
-            if (index != -1)
-            {
-                engine = input_args[index + 1].ToString();
+        if (index != -1)
+        {
+            engineName = index < input_args.Length - 1 ? input_args[index + 1].ToString() : "google";
 
-                list.RemoveAt(index + 1);
-                list.RemoveAt(index);
-                input_args = list.ToArray();
-            }
-
-            string query = Lexer.SimplifyString(input_args[0]);
-            Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\srh.exe\" --engine {engine} --search \"{query}\"");
+            list.RemoveAt(index + 1);
+            list.RemoveAt(index);
+            input_args = list.ToArray();
         }
 
-        catch (System.Exception e)
+        string query = Lexer.SimplifyString(input_args.FirstOrDefault()).Replace(" ", "+");
+        if (Collection.String.IsEmpty(query))
         {
-            new Error(e.Message);
+            new Error("Please provide a search query.");
+            return;
+        }
+
+        else
+        {
+            string engine = string.Empty;
+            if (engines.ContainsKey(engineName))
+                engine = engines[engineName];
+
+            else
+            {
+                Console.WriteLine($"Search engine '{engineName}' not supported.");
+                return;
+            }
+
+            Obsidian.Shell.CommandPrompt($"start {engine}{query}");
         }
     }
 }
