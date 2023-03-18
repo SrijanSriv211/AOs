@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Linq;
 using Microsoft.Win32;
 using System.Diagnostics;
@@ -307,7 +308,6 @@ public class Features
 
     public static void read(string[] input_args)
     {
-        // long line_no = 0;
         input_args[0] = Obsidian.Shell.Strings(input_args[0]);
         var parser = new argparse("read ~> Displays the contents of a text file.");
         parser.AddArgument("--info", "Shows information about a specific line.", default_value: "-1");
@@ -317,16 +317,67 @@ public class Features
         string filename = parser.free_args.FirstOrDefault();
         if (File.Exists(filename))
         {
-            if (args["-i"] == "-1" && args["--info"] == "-1")
+            Console.OutputEncoding = Encoding.UTF8;
+            if (Convert.ToInt64(args["-i"]) <= 0 && Convert.ToInt64(args["--info"]) <= 0)
             {
+                var Color = Console.ForegroundColor;
                 string[] lines = File.ReadAllLines(filename);
+                Encoding encoding = Encoding.Unicode; // Get the Unicode encoding of the line
+                FileInfo fileInfo = new FileInfo(filename); // Create a FileInfo object for a text file
+
                 for (int i = 0; i < lines.Length; i++)
-                    Console.WriteLine("{0}: {1}", i+1, lines[i]);
+                {
+                    encoding = Encoding.Unicode; // Get the Unicode encoding of the line
+                    fileInfo = new FileInfo(filename); // Create a FileInfo object for a text file
+
+                    // Print the line.
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"{i+1}. ");
+                    Console.ForegroundColor = Color;
+
+                    Console.WriteLine($"{lines[i]}");
+                }
+
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine(String.Concat(new String('\u2501', 50)));
+                Console.ForegroundColor = Color;
+
+                // Print the properties of the file
+                long char_count = fileInfo.Length;
+                DateTime creation_time = fileInfo.CreationTime;
+
+                Console.WriteLine($"File: {fileInfo.Name}");
+                Console.WriteLine($"Characters: {char_count}");
+                Console.WriteLine($"Creation Time: {creation_time}");
+                Console.WriteLine($"Encoding: {encoding}");
             }
 
             else
             {
-                Console.WriteLine(args["-i"]);
+                var Color = Console.ForegroundColor;
+                Encoding encoding = Encoding.Unicode; // Get the Unicode encoding of the line
+                FileInfo fileInfo = new FileInfo(filename); // Create a FileInfo object for a text file
+
+                long line_no = args["-i"] != "-1" ? Convert.ToInt64(args["-i"]) : Convert.ToInt64(args["--info"]);
+                string[] lines = File.ReadAllLines(filename);
+
+                // Print the line.
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write($"{line_no}. ");
+                Console.ForegroundColor = Color;
+
+                Console.WriteLine(lines[line_no-1]);
+
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine(String.Concat(new String('\u2501', 50)));
+                Console.ForegroundColor = Color;
+
+                // Print the properties of the file
+                long char_count = fileInfo.Length;
+
+                Console.WriteLine($"File: {fileInfo.Name}");
+                Console.WriteLine($"Characters: {char_count}");
+                Console.WriteLine($"Encoding: {encoding}");
             }
         }
 
