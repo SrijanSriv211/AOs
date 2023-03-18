@@ -283,25 +283,71 @@ public class Features
 
     public static void commit(string[] input_args)
     {
-        for (int i = 0; i < input_args.Length; i++)
+        var parser = new argparse("commit -> Edits the contents of a text file.");
+        parser.AddArgument("--line", "Edits a specific line in a text file.", default_value: "-1");
+        parser.AddArgument("-l", "Edits a specific line in a text file.", default_value: "-1");
+        var args = parser.Parse(input_args);
+
+        if (parser.free_args.Length < 2)
         {
-            if (Collection.String.IsString(input_args[i])) input_args[i] = Obsidian.Shell.Strings(input_args[i]);
+            new Error("Filename/Text to be written not specified.");
+            return;
         }
 
-        if (File.Exists(input_args[0]))
+        input_args = Lexer.SimplifyString(input_args);
+        string content = Lexer.SimplifyString(parser.free_args[1]);
+        string filename = parser.free_args.FirstOrDefault();
+
+        if (File.Exists(filename))
         {
-            if (File.ReadLines(input_args[0]).FirstOrDefault() == "{4c4f4747494e4720544849532046494c45}")
+            var Color = Console.ForegroundColor;
+            if (Convert.ToInt64(args["-l"]) == 0 || Convert.ToInt64(args["--line"]) == 0)
             {
-                File.AppendAllText(input_args[0], $"{input_args[1]}\n");
-                File.AppendAllText(input_args[0], $"{DateTime.Now.ToString("[dd-MM-yyyy, HH:mm:ss]")}\n");
+                new Error("Overwrite the entire file; are you sure? Y/N");
+                Console.Write("> ");
+                ConsoleKeyInfo KeyInput = Console.ReadKey();
+                string GetKey = KeyInput.Key.ToString();
+                Console.WriteLine();
+
+                if (GetKey.ToLower() == "y")
+                    File.WriteAllText(filename, content);
+
+                else
+                    return;
             }
 
-            else File.AppendAllText(input_args[0], $"{input_args[1]}\n");
+            else if (Convert.ToInt64(args["-l"]) < 0 || Convert.ToInt64(args["--line"]) < 0)
+            {
+                if (File.ReadLines(filename).FirstOrDefault() == "__{time-date}__")
+                {
+                    File.AppendAllText(filename, $"{input_args[1]}\n");
+                    File.AppendAllText(filename, $"{DateTime.Now.ToString("[dd-MM-yyyy, HH:mm:ss]")}\n");
+                }
+
+                else
+                    File.AppendAllText(filename, $"{input_args[1]}\n");
+            }
+
+            else
+            {
+                long line_no = args["-l"] != "-1" ? Convert.ToInt64(args["-l"]) : Convert.ToInt64(args["--line"]);
+                string[] lines = File.ReadAllLines(filename);
+
+                // Check if the line number is valid
+                if (line_no > 0 && line_no <= lines.Length)
+                {
+                    // Overwrite the specified line with the new text
+                    lines[line_no - 1] = content;
+
+                    // Write the modified array back to the file
+                    File.WriteAllLines(filename, lines);
+                }
+            }
         }
 
         else
         {
-            new Error($"{input_args[0]}: No such file or directory.");
+            new Error($"{filename}: No such file or directory.");
             Console.WriteLine("Use `touch` command to create a file.");
         }
     }
@@ -309,7 +355,7 @@ public class Features
     public static void read(string[] input_args)
     {
         input_args[0] = Obsidian.Shell.Strings(input_args[0]);
-        var parser = new argparse("read ~> Displays the contents of a text file.");
+        var parser = new argparse("read -> Displays the contents of a text file.");
         parser.AddArgument("--info", "Shows information about a specific line.", default_value: "-1");
         parser.AddArgument("-i", "Shows information about a specific line.", default_value: "-1");
         var args = parser.Parse(input_args);
@@ -382,10 +428,7 @@ public class Features
         }
 
         else
-        {
             new Error($"{filename}: No such file or directory.");
-            Console.WriteLine("Please make sure the file exists or the given file is not actually a folder.");
-        }
     }
 
     public static void backup()
@@ -464,9 +507,7 @@ public class Features
     {
         if (Collection.Array.IsEmpty(input_args))
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Resetting this PC will delete all your files, settings and apps.");
-            Console.ResetColor();
+            new Error("Resetting this PC will delete all your files, settings and apps.");
 
             Console.WriteLine("Are you sure? Y/N");
             Console.Write("> ");
@@ -539,16 +580,11 @@ public class Features
         string winrarPath = string.Empty;
         bool unzip = false;
 
-        // Find the index of the item to remove,
-        // if the item was found, remove it from the list
-        List<string> list = input_args.ToList();
-        int index = list.IndexOf("-u");
-        if (index != -1)
-        {
-            unzip = true;
-            list.RemoveAt(index);
-            input_args = list.ToArray();
-        }
+        var parser = new argparse("zip -> Compresses or Decompresses files or folders.");
+        parser.AddArgument("-u", "Decompresses zip files.");
+        var args = parser.Parse(input_args);
+
+        unzip = Convert.ToBoolean(args["-u"]);
 
         RegistryKey winrarKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe");
         if (winrarKey != null)
@@ -562,8 +598,8 @@ public class Features
         startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
         startInfo.FileName = winrarPath;
 
-        string sourcePath = input_args[0];
-        string destinationPath = input_args[1];
+        string sourcePath = parser.free_args.FirstOrDefault();
+        string destinationPath = parser.free_args[1];
         if (unzip)
         {
             startInfo.Arguments = $"x -y \"{sourcePath}\" \"{destinationPath}\"";
@@ -582,18 +618,12 @@ public class Features
     {
         bool doOpen = false;
 
-        // Find the index of the item to remove,
-        // if the item was found, remove it from the list
-        List<string> list = input_args.ToList();
-        int index = list.IndexOf("-m");
-        if (index != -1)
-        {
-            doOpen = true;
-            list.RemoveAt(index);
-            input_args = list.ToArray();
-        }
+        var parser = new argparse("ply -> Search for a video on youtube based on a query.");
+        parser.AddArgument("-m", "Plays the first video from the YouTube search results list.");
+        var args = parser.Parse(input_args);
 
-        string query = Lexer.SimplifyString(input_args[0]);
+        doOpen = Convert.ToBoolean(args["-m"]);
+        string query = Lexer.SimplifyString(parser.free_args.FirstOrDefault());
 
         if (doOpen)
             Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\ply.exe\" --play \"{query}\"");
@@ -606,18 +636,12 @@ public class Features
     {
         bool doOpen = false;
 
-        // Find the index of the item to remove,
-        // if the item was found, remove it from the list
-        List<string> list = input_args.ToList();
-        int index = list.IndexOf("-m");
-        if (index != -1)
-        {
-            doOpen = true;
-            list.RemoveAt(index);
-            input_args = list.ToArray();
-        }
+        var parser = new argparse("wiki -> Search for information on wikipedia.");
+        parser.AddArgument("-m", "Get the information directly in the terminal.");
+        var args = parser.Parse(input_args);
 
-        string query = Lexer.SimplifyString(input_args[0]);
+        doOpen = Convert.ToBoolean(args["-m"]);
+        string query = Lexer.SimplifyString(parser.free_args.FirstOrDefault());
 
         if (doOpen)
             Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wiki.exe\" --show \"{query}\"");
@@ -628,11 +652,11 @@ public class Features
 
     public static void SearchonGoogle(string[] input_args)
     {
-        // Find the index of the item to remove,
-        // if the item was found, remove it from the list
-        List<string> list = input_args.ToList();
-        string engineName = string.Empty;
-        int index = list.IndexOf("-m");
+        var parser = new argparse("srh -> Search for a specific query on the internet.");
+        parser.AddArgument("-m", "Search the query on a specific search engine.", default_value: "google");
+        var args = parser.Parse(input_args);
+
+        string engineName = args["-m"];
         var engines = new Dictionary<string, string>()
         {
             { "bing", "https://www.bing.com/search?q=" },
@@ -640,16 +664,7 @@ public class Features
             { "duckduckgo", "https://duckduckgo.com/?q=" }
         };
 
-        if (index != -1)
-        {
-            engineName = index < input_args.Length - 1 ? input_args[index + 1].ToString() : "google";
-
-            list.RemoveAt(index + 1);
-            list.RemoveAt(index);
-            input_args = list.ToArray();
-        }
-
-        string query = Lexer.SimplifyString(input_args.FirstOrDefault()).Replace(" ", "+");
+        string query = Lexer.SimplifyString(parser.free_args.FirstOrDefault()).Replace(" ", "+");
         if (Collection.String.IsEmpty(query))
         {
             new Error("Please provide a search query.");

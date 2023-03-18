@@ -298,7 +298,7 @@ class argparse
                 if (arguments.Find(a => a.Name == arg && a.IsFlag) != null)
                     arg_val = "true";
 
-                else
+                else if (arguments.Find(a => a.Name == arg && !a.IsFlag) != null)
                 {
                     List<string> list = args.ToList();
                     int index = list.IndexOf(arg);
@@ -308,6 +308,9 @@ class argparse
                     else
                         new Error($"Missing value for argument: {arg}");
                 }
+
+                else
+                    arg_val = "false";
             }
 
             else

@@ -218,6 +218,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
         else if (input.args.Length > 3) Error.TooManyArgs(input.args);
+        else if (input.args.Length == 2) Error.TooFewArgs(input.args);
         else Features.SearchonGoogle(input.args);
     }
 
@@ -441,7 +442,7 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (input.cmd.ToLower() == "commit")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();
-        else if (input.args.Length > 2) Error.TooManyArgs(input.args);
+        else if (input.args.Length > 4) Error.TooManyArgs(input.args);
         else if (input.args.Length < 2) Error.TooFewArgs(input.args);
         else Features.commit(input.args);
     }
