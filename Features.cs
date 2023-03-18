@@ -316,7 +316,7 @@ public class Features
                     return;
             }
 
-            else if (Convert.ToInt64(args["-l"]) < 0 || Convert.ToInt64(args["--line"]) < 0)
+            else if (Convert.ToInt64(args["-l"]) < 0 && Convert.ToInt64(args["--line"]) < 0)
             {
                 if (File.ReadLines(filename).FirstOrDefault() == "__{time-date}__")
                 {
