@@ -13,7 +13,7 @@ public class Obsidian
 
     public static string default_else_shell = "powershell.exe";
     public static string buildNo = "2035";
-    public static string vNum = "2.3.5";
+    public static string vNum = "2.3.7";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
