@@ -32,36 +32,7 @@ public class Obsidian
             Console.Write(Prompt); // Show the prompt.
 
             // Take input.
-            // CMD = Console.ReadLine().Trim() ?? "";
-            while (true)
-            {
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Tab)
-                    HandleTabKeyPress(ref CMD);
-
-                else if (keyInfo.Key == ConsoleKey.Enter)
-                {
-                    Console.WriteLine();
-                    break;
-                }
-
-                else if (keyInfo.Key == ConsoleKey.Backspace)
-                {
-                    if (CMD.Length > 0)
-                    {
-                        CMD = CMD.Substring(0, CMD.Length - 1);
-                        Console.Write("\b \b");
-                    }
-                }
-
-                else if (!Char.IsControl(keyInfo.KeyChar))
-                {
-                    CMD += keyInfo.KeyChar;
-                    Console.Write(keyInfo.KeyChar);
-                }
-            }
-
-            CMD = CMD.Trim() ?? "";
+            CMD = Console.ReadLine().Trim() ?? "";
         }
 
         // Set history.
@@ -654,54 +625,5 @@ public class Obsidian
         {
             File.Delete($"{rDir}\\Files.x72\\root\\.history");
         }
-    }
-
-    private static void HandleTabKeyPress(ref string command)
-    {
-        string[] path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        string last_part = path_parts.LastOrDefault();
-
-        string[] directories = last_part.Split(Path.DirectorySeparatorChar);
-        string[] Entries = new string[0];
-
-        string base_directory = Directory.GetCurrentDirectory();
-        List<string> list_of_suggestions = new List<string>();
-
-        if (directories.Length == 1)
-        {
-            Entries = Directory.GetFileSystemEntries(".", "*");
-            foreach (string Entry in Entries)
-            {
-                if (Entry.Substring(2).ToLower().StartsWith(directories.FirstOrDefault().ToLower()))
-                    list_of_suggestions.Add(Entry.Substring(2));
-            }
-
-            list_of_suggestions.Add(directories.FirstOrDefault());
-        }
-
-        else
-        {
-            string path = string.Empty;
-            for (int i = 0; i < directories.Length-1; i++)
-                path = Path.Combine(path, directories[i]);
-
-            Entries = Directory.GetFileSystemEntries(".", Path.Combine(path, "*"));
-            foreach (string Entry in Entries)
-            {
-                string[] subpath = Entry.Substring(2).Split(Path.DirectorySeparatorChar);
-                string folder_to_search = subpath.LastOrDefault().ToLower();
-
-                if (folder_to_search.StartsWith(directories.LastOrDefault().ToLower()))
-                    list_of_suggestions.Add(Entry.Substring(2));
-            }
-
-            list_of_suggestions.Add(directories.LastOrDefault());
-        }
-
-        string[] output = list_of_suggestions.ToArray();
-        string suggestion = String.Concat(new String('\b', directories.LastOrDefault().Length)) + output.FirstOrDefault();
-
-        command = command.Replace(directories.LastOrDefault(), suggestion);
-        Console.WriteLine(command);
     }
 }
