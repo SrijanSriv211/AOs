@@ -54,15 +54,14 @@ public class Obsidian
                     }
                 }
 
-                else
+                else if (!Char.IsControl(keyInfo.KeyChar))
                 {
-                    if (!Char.IsControl(keyInfo.KeyChar))
-                    {
-                        CMD += keyInfo.KeyChar;
-                        Console.Write(keyInfo.KeyChar);
-                    }
+                    CMD += keyInfo.KeyChar;
+                    Console.Write(keyInfo.KeyChar);
                 }
             }
+
+            CMD = CMD.Trim() ?? "";
         }
 
         // Set history.
@@ -657,35 +656,27 @@ public class Obsidian
         }
     }
 
-    private static List<string> GetFilesAndFolders()
-    {
-        string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
-        string[] folders = Directory.GetDirectories(Directory.GetCurrentDirectory());
-        List<string> filesAndFolders = new List<string>(files);
-        filesAndFolders.AddRange(folders);
-        return filesAndFolders;
-    }
-
     private static void HandleTabKeyPress(ref string command)
     {
         string[] path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        string last_part = path_parts[path_parts.Length - 1];
+        string last_part = path_parts.LastOrDefault();
 
         string[] directories = last_part.Split(Path.DirectorySeparatorChar);
         string[] Entries = new string[0];
 
         string base_directory = Directory.GetCurrentDirectory();
-        List<string> output = new List<string>();
+        List<string> list_of_suggestions = new List<string>();
 
-        Console.WriteLine();
         if (directories.Length == 1)
         {
             Entries = Directory.GetFileSystemEntries(".", "*");
             foreach (string Entry in Entries)
             {
                 if (Entry.Substring(2).ToLower().StartsWith(directories.FirstOrDefault().ToLower()))
-                    output.Add(Entry.Substring(2));
+                    list_of_suggestions.Add(Entry.Substring(2));
             }
+
+            list_of_suggestions.Add(directories.FirstOrDefault());
         }
 
         else
@@ -698,14 +689,19 @@ public class Obsidian
             foreach (string Entry in Entries)
             {
                 string[] subpath = Entry.Substring(2).Split(Path.DirectorySeparatorChar);
-                string folder_to_search = subpath[subpath.Length-1].ToLower();
+                string folder_to_search = subpath.LastOrDefault().ToLower();
 
-                if (folder_to_search.StartsWith(directories[directories.Length-1].ToLower()))
-                    output.Add(Entry.Substring(2));
+                if (folder_to_search.StartsWith(directories.LastOrDefault().ToLower()))
+                    list_of_suggestions.Add(Entry.Substring(2));
             }
+
+            list_of_suggestions.Add(directories.LastOrDefault());
         }
 
-        foreach (var i in output)
-            Console.WriteLine(i);
+        string[] output = list_of_suggestions.ToArray();
+        string suggestion = String.Concat(new String('\b', directories.LastOrDefault().Length)) + output.FirstOrDefault();
+
+        command = command.Replace(directories.LastOrDefault(), suggestion);
+        Console.WriteLine(command);
     }
 }
