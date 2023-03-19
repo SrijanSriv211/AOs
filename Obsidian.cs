@@ -32,15 +32,45 @@ public class Obsidian
             Console.Write(Prompt); // Show the prompt.
 
             // Take input.
-            CMD = Console.ReadLine() ?? "";
-            CMD = CMD.Trim() ?? "";
+            // CMD = Console.ReadLine().Trim() ?? "";
+            while (true)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Tab)
+                    HandleTabKeyPress(ref CMD);
+
+                else if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+
+                else if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (CMD.Length > 0)
+                    {
+                        CMD = CMD.Substring(0, CMD.Length - 1);
+                        Console.Write("\b \b");
+                    }
+                }
+
+                else
+                {
+                    if (!Char.IsControl(keyInfo.KeyChar))
+                    {
+                        CMD += keyInfo.KeyChar;
+                        Console.Write(keyInfo.KeyChar);
+                    }
+                }
+            }
         }
 
         // Set history.
         if (!Collection.String.IsEmpty(CMD))
         {
             History.SetHistory(CMD);
-            if (CMD[0] == '_') CMD = CMD.Substring(1).Trim();
+            if (CMD[0] == '_')
+                CMD = CMD.Substring(1).Trim();
         }
 
         // Some lexer stuff.
@@ -625,5 +655,57 @@ public class Obsidian
         {
             File.Delete($"{rDir}\\Files.x72\\root\\.history");
         }
+    }
+
+    private static List<string> GetFilesAndFolders()
+    {
+        string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
+        string[] folders = Directory.GetDirectories(Directory.GetCurrentDirectory());
+        List<string> filesAndFolders = new List<string>(files);
+        filesAndFolders.AddRange(folders);
+        return filesAndFolders;
+    }
+
+    private static void HandleTabKeyPress(ref string command)
+    {
+        string[] path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string last_part = path_parts[path_parts.Length - 1];
+
+        string[] directories = last_part.Split(Path.DirectorySeparatorChar);
+        string[] Entries = new string[0];
+
+        string base_directory = Directory.GetCurrentDirectory();
+        List<string> output = new List<string>();
+
+        Console.WriteLine();
+        if (directories.Length == 1)
+        {
+            Entries = Directory.GetFileSystemEntries(".", "*");
+            foreach (string Entry in Entries)
+            {
+                if (Entry.Substring(2).ToLower().StartsWith(directories.FirstOrDefault().ToLower()))
+                    output.Add(Entry.Substring(2));
+            }
+        }
+
+        else
+        {
+            string path = string.Empty;
+            for (int i = 0; i < directories.Length-1; i++)
+                path = Path.Combine(path, directories[i]);
+
+            Entries = Directory.GetFileSystemEntries(".", Path.Combine(path, "*"));
+            foreach (string Entry in Entries)
+            {
+                string[] subpath = Entry.Substring(2).Split(Path.DirectorySeparatorChar);
+                string folder_to_search = subpath[subpath.Length-1].ToLower();
+
+                if (folder_to_search.StartsWith(directories[directories.Length-1].ToLower()))
+                    output.Add(Entry.Substring(2));
+            }
+        }
+
+        foreach (var i in output)
+            Console.WriteLine(i);
     }
 }

@@ -163,7 +163,8 @@ public class Features
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
             string[] Entries = Directory.GetFileSystemEntries(".", "*");
-            foreach (string Entry in Entries) Console.WriteLine(Entry);
+            foreach (string Entry in Entries)
+                Console.WriteLine(Entry);
         }
 
         else
@@ -174,14 +175,14 @@ public class Features
                 if (i.ToLower() == "-h" || i.ToLower() == "/?" || i.ToLower() == "--help")
                 {
                     string[] LSHelpCenter = {
-                                    "Displays a list of files and subdirectories in a directory.",
-                                    "Usage: ls [Option]",
-                                    "",
-                                    "Options:",
-                                    "-f   -> Display only files.",
-                                    "-d   -> Display only folders.",
-                                    "-a   -> Display all files and folders.",
-                                };
+                        "Displays a list of files and subdirectories in a directory.",
+                        "Usage: ls [Option]",
+                        "",
+                        "Options:",
+                        "-f   -> Display only files.",
+                        "-d   -> Display only folders.",
+                        "-a   -> Display all files and folders.",
+                    };
 
                     Console.WriteLine(string.Join("\n", LSHelpCenter));
                     break;
@@ -190,20 +191,24 @@ public class Features
                 else if (i.ToLower() == "-a" || i.ToLower() == "--all")
                 {
                     string[] Entries = Directory.GetFileSystemEntries(".", "*");
-                    foreach (string Entry in Entries) Console.WriteLine(Entry);
+                    foreach (string Entry in Entries)
+                        Console.WriteLine(Entry);
+
                     break;
                 }
 
                 else if (i.ToLower() == "-f" || i.ToLower() == "--files")
                 {
                     string[] Files = Directory.GetFiles(".");
-                    foreach (string File in Files) Console.WriteLine(File);
+                    foreach (string File in Files)
+                        Console.WriteLine(File);
                 }
 
                 else if (i.ToLower() == "-d" || i.ToLower() == "--folder" || i.ToLower() == "--directories")
                 {
                     string[] Directories = Directory.GetDirectories(".");
-                    foreach (string Folder in Directories) Console.WriteLine(Folder);
+                    foreach (string Folder in Directories)
+                        Console.WriteLine(Folder);
                 }
 
                 else
