@@ -28,11 +28,74 @@ public class Obsidian
         if (!Collection.String.IsEmpty(input.Trim())) CMD = input.Trim();
         else
         {
+            int count = 1;
+            string suggestion = string.Empty;
+            string[] list_of_suggestions = new string[0];
+
             Prompt = Shell.SetTerminalPrompt(PromptPreset);
             Console.Write(Prompt); // Show the prompt.
 
             // Take input.
-            CMD = Console.ReadLine().Trim() ?? "";
+            // CMD = Console.ReadLine().Trim() ?? "";
+            while (true)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Tab)
+                {
+                    // if (Collection.Array.IsEmpty(list_of_suggestions))
+                    // {
+                    //     list_of_suggestions = KeyHandler.TabKeyPress(CMD);
+                    //     suggestion = list_of_suggestions.FirstOrDefault();
+                    //     Console.Write(String.Concat(new String('\b', directories.LastOrDefault().Length)) + suggestion);
+                    // }
+
+                    // else
+                    // {
+                    //     int last_input = count == 0 ? directories[directories.Length-1].Length : list_of_suggestions[count-1].Length;
+                    //     suggestion = list_of_suggestions[count];
+
+                    //     Console.Write(String.Concat(new String('\b', last_input)) + suggestion);
+                    //     count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
+                    // }
+
+                    if (Collection.Array.IsEmpty(list_of_suggestions))
+                    {
+                        var tab = new KeyHandler.Tab(CMD);
+                        list_of_suggestions = tab.List_of_Suggestions;
+                    }
+
+                    else
+                    {
+                        // code here.
+                    }
+                }
+
+                else if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    // CMD = !Collection.String.IsEmpty(suggestion) ? suggestion : CMD;
+                    // suggestion = string.Empty;
+                    // list_of_suggestions = new string[0];
+                    Console.WriteLine();
+                    break;
+                }
+
+                else if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (CMD.Length > 0)
+                    {
+                        CMD = CMD.Substring(0, CMD.Length - 1);
+                        Console.Write("\b \b");
+                    }
+                }
+
+                else if (!Char.IsControl(keyInfo.KeyChar))
+                {
+                    CMD += keyInfo.KeyChar;
+                    Console.Write(keyInfo.KeyChar);
+                }
+            }
+
+            CMD = CMD.Trim() ?? "";
         }
 
         // Set history.
@@ -624,6 +687,76 @@ public class Obsidian
         public static void ClearHistory()
         {
             File.Delete($"{rDir}\\Files.x72\\root\\.history");
+        }
+    }
+
+}
+
+namespace KeyHandler
+{
+    class Tab
+    {
+        private static string command = string.Empty;
+        private static string last_part = string.Empty;
+        private static string[] path_parts = new string[0];
+        private static string[] directories = new string[0];
+        private static List<string> list_of_suggestions = new List<string>();
+
+        public Tab(string CMD)
+        {
+            command = CMD;
+        }
+
+        public string[] Directories
+        {
+            get { return directories; }
+        }
+
+        public string[] List_of_Suggestions
+        {
+            get { return list_of_suggestions.ToArray(); }
+        }
+
+        private static void KeyPress()
+        {
+            path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            last_part = path_parts.LastOrDefault();
+
+            directories = last_part.Split(Path.DirectorySeparatorChar);
+            string[] Entries = new string[0];
+
+            string base_directory = Directory.GetCurrentDirectory();
+
+            if (directories.Length == 1)
+            {
+                Entries = Directory.GetFileSystemEntries(".", "*");
+                foreach (string Entry in Entries)
+                {
+                    if (Entry.Substring(2).ToLower().StartsWith(directories.FirstOrDefault().ToLower()))
+                        list_of_suggestions.Add(Entry.Substring(2));
+                }
+
+                list_of_suggestions.Add(directories.FirstOrDefault());
+            }
+
+            else
+            {
+                string path = string.Empty;
+                for (int i = 0; i < directories.Length-1; i++)
+                    path = Path.Combine(path, directories[i]);
+
+                Entries = Directory.GetFileSystemEntries(".", Path.Combine(path, "*"));
+                foreach (string Entry in Entries)
+                {
+                    string[] subpath = Entry.Substring(2).Split(Path.DirectorySeparatorChar);
+                    string folder_to_search = subpath.LastOrDefault().ToLower();
+
+                    if (folder_to_search.StartsWith(directories.LastOrDefault().ToLower()))
+                        list_of_suggestions.Add(Entry.Substring(2));
+                }
+
+                list_of_suggestions.Add(directories.LastOrDefault());
+            }
         }
     }
 }
