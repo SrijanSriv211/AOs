@@ -46,23 +46,21 @@ public class Obsidian
                     if (Collection.Array.IsEmpty(list_of_suggestions))
                     {
                         TabKey = new KeyHandler.Tab(CMD);
-                        list_of_suggestions = TabKey.List_of_Suggestions;
-                        string selected_suggestion = list_of_suggestions.FirstOrDefault();
 
-                        // suggestion = String.Concat(new String('\b', TabKey.Directories.LastOrDefault().Length)) + selected_suggestion;
-                        // Console.Write(suggestion);
+                        list_of_suggestions = TabKey.List_of_Suggestions;
+                        suggestion = list_of_suggestions.FirstOrDefault();
+
+                        Console.Write(String.Concat(new String('\b', TabKey.Directories.LastOrDefault().Length)) + suggestion);
                     }
 
-                    // else
-                    // {
-                    //     int last_input = count == 0 ? TabKey.Directories[TabKey.Directories.Length-1].Length : list_of_suggestions[count-1].Length;
-                    //     string selected_suggestion = list_of_suggestions[count];
+                    else
+                    {
+                        int last_input = count == 0 ? TabKey.Directories[TabKey.Directories.Length-1].Length : list_of_suggestions[count-1].Length;
+                        suggestion = list_of_suggestions[count];
 
-                    //     suggestion = String.Concat(new String('\b', last_input)) + selected_suggestion;
-                    //     Console.Write(suggestion);
-
-                    //     count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
-                    // }
+                        Console.Write(String.Concat(new String('\b', last_input)) + suggestion);
+                        count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
+                    }
                 }
 
                 else if (keyInfo.Key == ConsoleKey.Enter)
@@ -696,7 +694,6 @@ namespace KeyHandler
 {
     class Tab
     {
-        private static string command = string.Empty;
         private static string last_part = string.Empty;
         private static string[] path_parts = new string[0];
         private static string[] directories = new string[0];
@@ -704,7 +701,8 @@ namespace KeyHandler
 
         public Tab(string CMD)
         {
-            command = CMD;
+            Reset();
+            KeyPress(CMD);
         }
 
         public string[] Directories
@@ -717,7 +715,15 @@ namespace KeyHandler
             get { return list_of_suggestions.ToArray(); }
         }
 
-        private static void KeyPress()
+        private static void Reset()
+        {
+            last_part = string.Empty;
+            path_parts = new string[0];
+            directories = new string[0];
+            list_of_suggestions = new List<string>();
+        }
+
+        private static void KeyPress(string command)
         {
             path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             last_part = path_parts.LastOrDefault();
