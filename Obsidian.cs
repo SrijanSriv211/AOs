@@ -31,6 +31,7 @@ public class Obsidian
             int count = 1;
             string suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
+            KeyHandler.Tab TabKey = null;
 
             Prompt = Shell.SetTerminalPrompt(PromptPreset);
             Console.Write(Prompt); // Show the prompt.
@@ -42,45 +43,42 @@ public class Obsidian
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                 if (keyInfo.Key == ConsoleKey.Tab)
                 {
-                    // if (Collection.Array.IsEmpty(list_of_suggestions))
-                    // {
-                    //     list_of_suggestions = KeyHandler.TabKeyPress(CMD);
-                    //     suggestion = list_of_suggestions.FirstOrDefault();
-                    //     Console.Write(String.Concat(new String('\b', directories.LastOrDefault().Length)) + suggestion);
-                    // }
+                    if (Collection.Array.IsEmpty(list_of_suggestions))
+                    {
+                        TabKey = new KeyHandler.Tab(CMD);
+                        list_of_suggestions = TabKey.List_of_Suggestions;
+                        string selected_suggestion = list_of_suggestions.FirstOrDefault();
+
+                        // suggestion = String.Concat(new String('\b', TabKey.Directories.LastOrDefault().Length)) + selected_suggestion;
+                        // Console.Write(suggestion);
+                    }
 
                     // else
                     // {
-                    //     int last_input = count == 0 ? directories[directories.Length-1].Length : list_of_suggestions[count-1].Length;
-                    //     suggestion = list_of_suggestions[count];
+                    //     int last_input = count == 0 ? TabKey.Directories[TabKey.Directories.Length-1].Length : list_of_suggestions[count-1].Length;
+                    //     string selected_suggestion = list_of_suggestions[count];
 
-                    //     Console.Write(String.Concat(new String('\b', last_input)) + suggestion);
+                    //     suggestion = String.Concat(new String('\b', last_input)) + selected_suggestion;
+                    //     Console.Write(suggestion);
+
                     //     count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
                     // }
-
-                    if (Collection.Array.IsEmpty(list_of_suggestions))
-                    {
-                        var tab = new KeyHandler.Tab(CMD);
-                        list_of_suggestions = tab.List_of_Suggestions;
-                    }
-
-                    else
-                    {
-                        // code here.
-                    }
                 }
 
                 else if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    // CMD = !Collection.String.IsEmpty(suggestion) ? suggestion : CMD;
-                    // suggestion = string.Empty;
-                    // list_of_suggestions = new string[0];
+                    CMD = !Collection.String.IsEmpty(suggestion) ? suggestion : CMD;
+                    list_of_suggestions = new string[0];
+
                     Console.WriteLine();
                     break;
                 }
 
                 else if (keyInfo.Key == ConsoleKey.Backspace)
                 {
+                    CMD = !Collection.String.IsEmpty(suggestion) ? suggestion : CMD;
+                    list_of_suggestions = new string[0];
+
                     if (CMD.Length > 0)
                     {
                         CMD = CMD.Substring(0, CMD.Length - 1);
@@ -90,7 +88,9 @@ public class Obsidian
 
                 else if (!Char.IsControl(keyInfo.KeyChar))
                 {
+                    CMD = !Collection.String.IsEmpty(suggestion) ? suggestion : CMD;
                     CMD += keyInfo.KeyChar;
+                    list_of_suggestions = new string[0];
                     Console.Write(keyInfo.KeyChar);
                 }
             }
