@@ -13,7 +13,7 @@ public class Obsidian
 
     public static string default_else_shell = "powershell.exe";
     public static string buildNo = "2077";
-    public static string vNum = "2.3.7";
+    public static string vNum = "2.3.8";
     private string Prompt = "";
 
     public Obsidian(string title = "AOs", string prompt = "$ ")
@@ -85,12 +85,27 @@ public class Obsidian
                     }
                 }
 
+                // Handel typable-characters.
                 else if (!Char.IsControl(keyInfo.KeyChar))
                 {
                     CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
                     CMD += keyInfo.KeyChar;
                     list_of_suggestions = new string[0];
+
                     Console.Write(keyInfo.KeyChar);
+                }
+
+                // Handle arrow keys.
+                else if (keyInfo.Key == ConsoleKey.LeftArrow)
+                {
+                    if (Console.CursorLeft > 0)
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                }
+
+                else if (keyInfo.Key == ConsoleKey.RightArrow)
+                {
+                    if (Console.CursorLeft < CMD.Length)
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
                 }
             }
 
