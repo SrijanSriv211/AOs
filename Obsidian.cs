@@ -33,8 +33,8 @@ public class Obsidian
 
             // Take input.
             // CMD = Console.ReadLine().Trim() ?? "";
-            int count = -1;
-            string suggestion = string.Empty;
+            int count = 0;
+            string next_suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
 
             while (true)
@@ -46,46 +46,18 @@ public class Obsidian
                     list_of_suggestions = TabKey.List_of_Suggestions;
 
                     // If length of list of suggestions > 1
-                    count = (count + 1) % list_of_suggestions.Length;
-                    suggestion = list_of_suggestions[count];
+                    string suggestion = list_of_suggestions[count];
+
+                    // '(count + 1) % list_of_suggestions.Length' here is very different from the count declaration.
+                    //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
+                    next_suggestion = list_of_suggestions[ (count + 1) % list_of_suggestions.Length ];
 
                     // Update the line.
-                    // string next_suggestion = count == 0 ? list_of_suggestions.LastOrDefault() : list_of_suggestions[count-1];
+                    Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
+                    Console.Write(next_suggestion);
 
-                    // Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
-                    // Console.Write(next_suggestion);
-
-
-
-
-
-
-
-
-
-
-
-                    // int last_input = 0;
-                    // KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
-
-                    // if (Collection.Array.IsEmpty(list_of_suggestions))
-                    // {
-                    //     list_of_suggestions = TabKey.List_of_Suggestions;
-                    //     suggestion = list_of_suggestions.FirstOrDefault();
-                    //     last_input = TabKey.Directories.Length;
-                    // }
-
-                    // else
-                    // {
-                    //     last_input = count == 0 ? TabKey.Directories.Length : list_of_suggestions[count-1].Length;
-                    //     suggestion = list_of_suggestions[count];
-                    //     count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
-                    // }
-
-                    // for (int i = 0; i < last_input; i++)
-                    //     Console.Write("\b \b");
-
-                    // Console.Write(suggestion);
+                    // Update the count such that when it == list_of_suggestions.Length, then it resets back to 0;
+                    count = (count + 1) % list_of_suggestions.Length;
                 }
 
                 // Handle arrow keys.
@@ -103,8 +75,9 @@ public class Obsidian
 
                 else
                 {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
+                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? next_suggestion : CMD;
                     list_of_suggestions = new string[0];
+                    count = 0;
 
                     if (keyInfo.Key == ConsoleKey.Enter)
                     {
