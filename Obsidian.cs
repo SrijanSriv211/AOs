@@ -33,7 +33,7 @@ public class Obsidian
 
             // Take input.
             // CMD = Console.ReadLine().Trim() ?? "";
-            int count = 1;
+            int count = -1;
             string suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
 
@@ -42,57 +42,50 @@ public class Obsidian
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                 if (keyInfo.Key == ConsoleKey.Tab)
                 {
-                    int last_input = 0;
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
-                    if (Collection.Array.IsEmpty(list_of_suggestions))
-                    {
-                        list_of_suggestions = TabKey.List_of_Suggestions;
-                        suggestion = list_of_suggestions.FirstOrDefault();
-                        last_input = TabKey.Directories.LastOrDefault().Length;
-                    }
+                    list_of_suggestions = TabKey.List_of_Suggestions;
 
-                    else
-                    {
-                        last_input = count == 0 ? TabKey.Directories[TabKey.Directories.Length-1].Length : list_of_suggestions[count-1].Length;
-                        suggestion = list_of_suggestions[count];
-                        count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
-                    }
+                    // If length of list of suggestions > 1
+                    count = (count + 1) % list_of_suggestions.Length;
+                    suggestion = list_of_suggestions[count];
 
-                    for (int i = 0; i < last_input; i++)
-                        Console.Write("\b \b");
+                    // Update the line.
+                    // string next_suggestion = count == 0 ? list_of_suggestions.LastOrDefault() : list_of_suggestions[count-1];
 
-                    Console.Write(suggestion);
-                }
+                    // Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
+                    // Console.Write(next_suggestion);
 
-                else if (keyInfo.Key == ConsoleKey.Enter)
-                {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
-                    list_of_suggestions = new string[0];
 
-                    Console.WriteLine();
-                    break;
-                }
 
-                else if (keyInfo.Key == ConsoleKey.Backspace)
-                {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
-                    list_of_suggestions = new string[0];
 
-                    if (CMD.Length > 0)
-                    {
-                        CMD = CMD.Substring(0, CMD.Length - 1);
-                        Console.Write("\b \b");
-                    }
-                }
 
-                // Handel typable-characters.
-                else if (!Char.IsControl(keyInfo.KeyChar))
-                {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
-                    CMD += keyInfo.KeyChar;
-                    list_of_suggestions = new string[0];
 
-                    Console.Write(keyInfo.KeyChar);
+
+
+
+
+
+                    // int last_input = 0;
+                    // KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
+
+                    // if (Collection.Array.IsEmpty(list_of_suggestions))
+                    // {
+                    //     list_of_suggestions = TabKey.List_of_Suggestions;
+                    //     suggestion = list_of_suggestions.FirstOrDefault();
+                    //     last_input = TabKey.Directories.Length;
+                    // }
+
+                    // else
+                    // {
+                    //     last_input = count == 0 ? TabKey.Directories.Length : list_of_suggestions[count-1].Length;
+                    //     suggestion = list_of_suggestions[count];
+                    //     count = (count + 1) % list_of_suggestions.Length; // do count++ but when it reaches the end reset it.
+                    // }
+
+                    // for (int i = 0; i < last_input; i++)
+                    //     Console.Write("\b \b");
+
+                    // Console.Write(suggestion);
                 }
 
                 // Handle arrow keys.
@@ -106,6 +99,34 @@ public class Obsidian
                 {
                     if (Console.CursorLeft < CMD.Length)
                         Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                }
+
+                else
+                {
+                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? suggestion : CMD;
+                    list_of_suggestions = new string[0];
+
+                    if (keyInfo.Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine();
+                        break;
+                    }
+
+                    else if (keyInfo.Key == ConsoleKey.Backspace)
+                    {
+                        if (CMD.Length > 0)
+                        {
+                            CMD = CMD.Substring(0, CMD.Length - 1);
+                            Console.Write("\b \b");
+                        }
+                    }
+
+                    // Handel typable-characters.
+                    else if (!Char.IsControl(keyInfo.KeyChar))
+                    {
+                        CMD += keyInfo.KeyChar;
+                        Console.Write(keyInfo.KeyChar);
+                    }
                 }
             }
 
@@ -777,7 +798,7 @@ namespace KeyHandler
                         list_of_suggestions.Add(Entry.Substring(2));
                 }
 
-                list_of_suggestions.Add(directories.LastOrDefault());
+                list_of_suggestions.Add(string.Join("\\", directories));
             }
         }
     }
