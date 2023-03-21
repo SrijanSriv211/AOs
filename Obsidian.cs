@@ -100,6 +100,28 @@ public class Obsidian
                     }
 
                     // Handle backspace.
+                    else if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.Backspace && !Collection.String.IsEmpty(CMD))
+                    {
+                        bool lscrc = false; // lscrc -> last_space_char_removed_completely
+                        string tmp_CMD = string.Empty;
+                        for (int i = CMD.Length - 1; i >= 0; i--)
+                        {
+                            if (lscrc || Collection.String.IsEmpty(CMD[i].ToString()))
+                            {
+                                lscrc = true;
+                                tmp_CMD = CMD[i] + tmp_CMD;
+                                continue;
+                            }
+
+                            Console.Write("\b \b");
+                        }
+
+                        if (CMD.Split().Length > 1)
+                            Console.Write("\b \b");
+
+                        CMD = tmp_CMD.Trim() ?? "";
+                    }
+
                     else if (keyInfo.Key == ConsoleKey.Backspace)
                     {
                         if (CMD.Length > 0)
@@ -133,7 +155,7 @@ public class Obsidian
                     {
                         if (!Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
                         {
-                            int tmp_history_of_commands_length = tmp_history_of_commands.ToArray().Length - 1;
+                            int tmp_history_of_commands_length = tmp_history_of_commands.Count - 1;
                             count_for_tmp_history = (count_for_tmp_history == tmp_history_of_commands_length) ? tmp_history_of_commands_length : (count_for_tmp_history + 1);
 
                             Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
