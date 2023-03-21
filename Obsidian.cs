@@ -33,7 +33,8 @@ public class Obsidian
 
             // Take input.
             // CMD = Console.ReadLine().Trim() ?? "";
-            int count = 0;
+            int count = 1;
+            string suggestion = string.Empty;
             string next_suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
 
@@ -45,12 +46,10 @@ public class Obsidian
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
                     list_of_suggestions = TabKey.List_of_Suggestions;
 
-                    // If length of list of suggestions > 1
-                    string suggestion = list_of_suggestions[count];
-
                     // '(count + 1) % list_of_suggestions.Length' here is very different from the count declaration.
                     //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
                     next_suggestion = list_of_suggestions[ (count + 1) % list_of_suggestions.Length ];
+                    suggestion = list_of_suggestions[count];
 
                     // Update the line.
                     Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
@@ -745,18 +744,20 @@ namespace KeyHandler
 
             if (directories.Length == 1)
             {
+                list_of_suggestions.Add(directories.FirstOrDefault());
+
                 Entries = Directory.GetFileSystemEntries(".", "*");
                 foreach (string Entry in Entries)
                 {
                     if (Entry.Substring(2).ToLower().StartsWith(directories.FirstOrDefault().ToLower()))
                         list_of_suggestions.Add(Entry.Substring(2));
                 }
-
-                list_of_suggestions.Add(directories.FirstOrDefault());
             }
 
             else
             {
+                list_of_suggestions.Add(string.Join("\\", directories));
+
                 string path = string.Empty;
                 for (int i = 0; i < directories.Length - 1; i++)
                     path = Path.Combine(path, directories[i]);
@@ -770,8 +771,6 @@ namespace KeyHandler
                     if (folder_to_search.StartsWith(directories.LastOrDefault().ToLower()))
                         list_of_suggestions.Add(Entry.Substring(2));
                 }
-
-                list_of_suggestions.Add(string.Join("\\", directories));
             }
         }
     }
