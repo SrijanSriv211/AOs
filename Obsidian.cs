@@ -16,6 +16,9 @@ public class Obsidian
     public static string vNum = "2.3.8";
     private string Prompt = "";
 
+    private static int count_for_tmp_history = 0;
+    private static List<string> tmp_history_of_commands = new List<string>();
+
     public Obsidian(string title = "AOs", string prompt = "$ ")
     {
         Title = title;
@@ -33,8 +36,7 @@ public class Obsidian
 
             // Take input.
             // CMD = Console.ReadLine().Trim() ?? ""; //* Keep it for future use.
-
-            int count = 1;
+            int count_for_autocomplete = 1;
             string suggestion = string.Empty;
             string next_suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
@@ -49,17 +51,17 @@ public class Obsidian
 
                     if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
 
-                    // '(count + 1) % list_of_suggestions.Length' here is very different from the count declaration.
-                    //* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
-                    next_suggestion = list_of_suggestions[ (count + 1) % list_of_suggestions.Length ];
-                    suggestion = list_of_suggestions[count];
+                    // '(count_for_autocomplete + 1) % list_of_suggestions.Length' here is very different from the count declaration.
+                    //* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count_for_autocomplete + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
+                    next_suggestion = list_of_suggestions[ (count_for_autocomplete + 1) % list_of_suggestions.Length ];
+                    suggestion = list_of_suggestions[count_for_autocomplete];
 
                     // Update the line.
                     Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
                     Console.Write(next_suggestion);
 
                     // Update the count such that when it == list_of_suggestions.Length, then it resets back to 0;
-                    count = (count + 1) % list_of_suggestions.Length;
+                    count_for_autocomplete = (count_for_autocomplete + 1) % list_of_suggestions.Length;
                 }
 
                 else if (keyInfo.Key == ConsoleKey.Escape)
@@ -71,36 +73,26 @@ public class Obsidian
 
                     // Get to original input.
                     next_suggestion = list_of_suggestions.FirstOrDefault();
-                    suggestion = list_of_suggestions[count];
+                    suggestion = list_of_suggestions[count_for_autocomplete];
 
                     // Update the line and set the count to default;
                     Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
                     Console.Write(next_suggestion);
-                    count = 0;
-                }
-
-                // Handle arrow keys.
-                else if (keyInfo.Key == ConsoleKey.LeftArrow)
-                {
-                    if (Console.CursorLeft > 0)
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                }
-
-                else if (keyInfo.Key == ConsoleKey.RightArrow)
-                {
-                    if (Console.CursorLeft < CMD.Length)
-                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                    count_for_autocomplete = 0;
                 }
 
                 else
                 {
                     CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? next_suggestion : CMD;
                     list_of_suggestions = new string[0];
-                    count = 0;
+                    count_for_autocomplete = 0;
 
                     if (keyInfo.Key == ConsoleKey.Enter)
                     {
                         Console.WriteLine();
+                        if (!Collection.String.IsEmpty(CMD))
+                            tmp_history_of_commands.Add(CMD);
+
                         break;
                     }
 
@@ -118,6 +110,44 @@ public class Obsidian
                     {
                         CMD += keyInfo.KeyChar;
                         Console.Write(keyInfo.KeyChar);
+                    }
+
+                    // Handle arrow keys.
+                    else if (keyInfo.Key == ConsoleKey.UpArrow)
+                    {
+                        if (!Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
+                        {
+                            count_for_tmp_history = (count_for_tmp_history == 0) ? 0 : (count_for_tmp_history - 1);
+
+                            Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
+                            CMD = tmp_history_of_commands[count_for_tmp_history];
+                            Console.Write(CMD);
+                        }
+                    }
+
+                    else if (keyInfo.Key == ConsoleKey.DownArrow)
+                    {
+                        if (!Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
+                        {
+                            int tmp_history_of_commands_length = tmp_history_of_commands.ToArray().Length - 1;
+                            count_for_tmp_history = (count_for_tmp_history == tmp_history_of_commands_length) ? tmp_history_of_commands_length : (count_for_tmp_history + 1);
+
+                            Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
+                            CMD = tmp_history_of_commands[count_for_tmp_history];
+                            Console.Write(CMD);
+                        }
+                    }
+
+                    else if (keyInfo.Key == ConsoleKey.LeftArrow)
+                    {
+                        if (Console.CursorLeft > 0)
+                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+
+                    else if (keyInfo.Key == ConsoleKey.RightArrow)
+                    {
+                        if (Console.CursorLeft < CMD.Length)
+                            Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
                     }
                 }
             }
