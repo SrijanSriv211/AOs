@@ -32,7 +32,8 @@ public class Obsidian
             Console.Write(Prompt); // Show the prompt.
 
             // Take input.
-            // CMD = Console.ReadLine().Trim() ?? "";
+            // CMD = Console.ReadLine().Trim() ?? ""; //* Keep it for future use.
+
             int count = 1;
             string suggestion = string.Empty;
             string next_suggestion = string.Empty;
@@ -46,8 +47,10 @@ public class Obsidian
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
                     list_of_suggestions = TabKey.List_of_Suggestions;
 
+                    if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
+
                     // '(count + 1) % list_of_suggestions.Length' here is very different from the count declaration.
-                    //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
+                    //* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
                     next_suggestion = list_of_suggestions[ (count + 1) % list_of_suggestions.Length ];
                     suggestion = list_of_suggestions[count];
 
@@ -57,6 +60,23 @@ public class Obsidian
 
                     // Update the count such that when it == list_of_suggestions.Length, then it resets back to 0;
                     count = (count + 1) % list_of_suggestions.Length;
+                }
+
+                else if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
+                    list_of_suggestions = TabKey.List_of_Suggestions;
+
+                    if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
+
+                    // Get to original input.
+                    next_suggestion = list_of_suggestions.FirstOrDefault();
+                    suggestion = list_of_suggestions[count];
+
+                    // Update the line and set the count to default;
+                    Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
+                    Console.Write(next_suggestion);
+                    count = 0;
                 }
 
                 // Handle arrow keys.
@@ -714,11 +734,6 @@ namespace KeyHandler
             KeyPress(CMD);
         }
 
-        public string[] Directories
-        {
-            get { return directories; }
-        }
-
         public string[] List_of_Suggestions
         {
             get { return list_of_suggestions.ToArray(); }
@@ -736,11 +751,12 @@ namespace KeyHandler
         {
             path_parts = command.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             last_part = path_parts.LastOrDefault();
+            if (Collection.String.IsEmpty(last_part)) return;
 
             directories = last_part.Split(Path.DirectorySeparatorChar);
-            string[] Entries = new string[0];
 
             string base_directory = Directory.GetCurrentDirectory();
+            string[] Entries = new string[0];
 
             if (directories.Length == 1)
             {
