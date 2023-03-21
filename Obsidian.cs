@@ -39,6 +39,7 @@ public class Obsidian
             int count_for_autocomplete = 1;
             string suggestion = string.Empty;
             string next_suggestion = string.Empty;
+            string str_to_be_replaced = string.Empty;
             string[] list_of_suggestions = new string[0];
 
             while (true)
@@ -48,6 +49,7 @@ public class Obsidian
                 {
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
                     list_of_suggestions = TabKey.List_of_Suggestions;
+                    str_to_be_replaced = TabKey.Directories;
 
                     if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
 
@@ -68,6 +70,7 @@ public class Obsidian
                 {
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
                     list_of_suggestions = TabKey.List_of_Suggestions;
+                    str_to_be_replaced = TabKey.Directories;
 
                     if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
 
@@ -83,7 +86,7 @@ public class Obsidian
 
                 else
                 {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? next_suggestion : CMD;
+                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? CMD.Replace(str_to_be_replaced, next_suggestion) : CMD;
                     list_of_suggestions = new string[0];
                     count_for_autocomplete = 0;
 
@@ -96,6 +99,7 @@ public class Obsidian
                         break;
                     }
 
+                    // Handle backspace.
                     else if (keyInfo.Key == ConsoleKey.Backspace)
                     {
                         if (CMD.Length > 0)
@@ -105,7 +109,7 @@ public class Obsidian
                         }
                     }
 
-                    // Handel typable-characters.
+                    // Handle typable-characters.
                     else if (!Char.IsControl(keyInfo.KeyChar))
                     {
                         CMD += keyInfo.KeyChar;
@@ -764,6 +768,11 @@ namespace KeyHandler
             KeyPress(CMD);
         }
 
+        public string Directories
+        {
+            get { return string.Join("\\", directories); }
+        }
+
         public string[] List_of_Suggestions
         {
             get { return list_of_suggestions.ToArray(); }
@@ -788,10 +797,9 @@ namespace KeyHandler
             string base_directory = Directory.GetCurrentDirectory();
             string[] Entries = new string[0];
 
+            list_of_suggestions.Add(string.Join("\\", directories));
             if (directories.Length == 1)
             {
-                list_of_suggestions.Add(directories.FirstOrDefault());
-
                 Entries = Directory.GetFileSystemEntries(".", "*");
                 foreach (string Entry in Entries)
                 {
@@ -802,8 +810,6 @@ namespace KeyHandler
 
             else
             {
-                list_of_suggestions.Add(string.Join("\\", directories));
-
                 string path = string.Empty;
                 for (int i = 0; i < directories.Length - 1; i++)
                     path = Path.Combine(path, directories[i]);
