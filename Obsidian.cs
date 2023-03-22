@@ -39,14 +39,14 @@ public class Obsidian
             int cursor_pos = 0;
             int count_for_autocomplete = 1;
             string suggestion = string.Empty;
-            string next_suggestion = string.Empty;
             string str_to_be_replaced = string.Empty;
             string[] list_of_suggestions = new string[0];
 
             while (true)
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Tab)
+
+                if (keyInfo.Key == ConsoleKey.Tab && cursor_pos == CMD.Length)
                 {
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
                     list_of_suggestions = TabKey.List_of_Suggestions;
@@ -56,38 +56,20 @@ public class Obsidian
 
                     // '(count_for_autocomplete + 1) % list_of_suggestions.Length' here is very different from the count declaration.
                     //* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count_for_autocomplete + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
-                    next_suggestion = list_of_suggestions[ (count_for_autocomplete + 1) % list_of_suggestions.Length ];
-                    suggestion = list_of_suggestions[count_for_autocomplete];
+                    suggestion = list_of_suggestions[ (count_for_autocomplete + 1) % list_of_suggestions.Length ];
+                    string current_line = list_of_suggestions[count_for_autocomplete];
 
                     // Update the line.
-                    Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
-                    Console.Write(next_suggestion);
+                    Console.Write(string.Concat(Enumerable.Repeat("\b \b", current_line.Length)));
+                    Console.Write(suggestion);
 
                     // Update the count such that when it == list_of_suggestions.Length, then it resets back to 0;
                     count_for_autocomplete = (count_for_autocomplete + 1) % list_of_suggestions.Length;
                 }
 
-                else if (keyInfo.Key == ConsoleKey.Escape)
-                {
-                    KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
-                    list_of_suggestions = TabKey.List_of_Suggestions;
-                    str_to_be_replaced = TabKey.Directories;
-
-                    if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
-
-                    // Get to original input.
-                    next_suggestion = list_of_suggestions.FirstOrDefault();
-                    suggestion = list_of_suggestions[count_for_autocomplete];
-
-                    // Update the line and set the count to default;
-                    Console.Write(string.Concat(Enumerable.Repeat("\b \b", suggestion.Length)));
-                    Console.Write(next_suggestion);
-                    count_for_autocomplete = 0;
-                }
-
                 else
                 {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? CMD.Replace(str_to_be_replaced, next_suggestion) : CMD;
+                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? CMD.Replace(str_to_be_replaced, suggestion) : CMD;
                     list_of_suggestions = new string[0];
                     count_for_autocomplete = 0;
 
@@ -98,6 +80,16 @@ public class Obsidian
                             tmp_history_of_commands.Add(CMD);
 
                         break;
+                    }
+
+                    // Handle typable-characters.
+                    else if (!Char.IsControl(keyInfo.KeyChar))
+                    {
+                        CMD = CMD.Insert(cursor_pos, keyInfo.KeyChar.ToString());
+                        cursor_pos++;
+
+                        Console.Write(CMD.Substring(cursor_pos - 1));
+                        Console.SetCursorPosition(Console.CursorLeft - CMD.Length + cursor_pos, Console.CursorTop);
                     }
 
                     // Handle backspace.
@@ -114,11 +106,15 @@ public class Obsidian
                                 continue;
                             }
 
+                            cursor_pos--;
                             Console.Write("\b \b");
                         }
 
                         if (CMD.Split().Length > 1)
+                        {
+                            cursor_pos--;
                             Console.Write("\b \b");
+                        }
 
                         CMD = tmp_CMD.Trim() ?? "";
                     }
@@ -126,14 +122,9 @@ public class Obsidian
                     else if (keyInfo.Key == ConsoleKey.Backspace && CMD.Length > 0)
                     {
                         CMD = CMD.Substring(0, CMD.Length - 1);
-                        Console.Write("\b \b");
-                    }
+                        cursor_pos--;
 
-                    // Handle typable-characters.
-                    else if (!Char.IsControl(keyInfo.KeyChar))
-                    {
-                        CMD += keyInfo.KeyChar;
-                        Console.Write(keyInfo.KeyChar);
+                        Console.Write("\b \b");
                     }
 
                     // Handle arrow keys.
@@ -143,6 +134,7 @@ public class Obsidian
 
                         Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
                         CMD = tmp_history_of_commands[count_for_tmp_history];
+                        cursor_pos = CMD.Length;
                         Console.Write(CMD);
                     }
 
@@ -153,22 +145,21 @@ public class Obsidian
 
                         Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
                         CMD = tmp_history_of_commands[count_for_tmp_history];
+                        cursor_pos = CMD.Length;
                         Console.Write(CMD);
                     }
 
                     else if (keyInfo.Key == ConsoleKey.LeftArrow && Console.CursorLeft > Prompt.Length)
                     {
                         cursor_pos--;
-                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write("\b");
                     }
 
                     else if (keyInfo.Key == ConsoleKey.RightArrow && Console.CursorLeft < CMD.Length+1)
                     {
                         cursor_pos++;
-                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                        Console.Write(CMD[cursor_pos - 1]);
                     }
-
-                    cursor_pos = Console.CursorLeft - Prompt.Length;
                 }
             }
 
@@ -502,7 +493,8 @@ public class Obsidian
                 "wiki            -> Search for information on wikipedia.",
                 "ply             -> Search for a video on youtube based on a query.",
                 "weather         -> Displays today's weather in a city.",
-                "temperature     -> Displays today's temperature in a city."
+                "temperature     -> Displays today's temperature in a city.",
+                "settings        -> Starts the Windows settings page."
             };
 
             if (Collection.Array.IsEmpty(args))

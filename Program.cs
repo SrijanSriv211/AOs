@@ -537,20 +537,14 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         string path = $"{Obsidian.rDir}\\Files.x72\\etc\\{input.cmd}";
         string filename = path.EndsWith(".aos") ? path : path + ".aos";
         foreach (string Line in File.ReadLines(filename))
-        {
-            (string, string[]) input_dot_aos = AOs.TakeInput(Line);
-            run(AOs, input_dot_aos);
-        }
+            run(AOs, AOs.TakeInput(Line));
     }
 
     else if (File.Exists(input.cmd + ".aos") || (input.cmd.ToLower().EndsWith(".aos") && File.Exists(input.cmd)))
     {
         string filename = input.cmd.EndsWith(".aos") ? input.cmd : input.cmd + ".aos";
         foreach (string Line in File.ReadLines(filename))
-        {
-            (string, string[]) input_dot_aos = AOs.TakeInput(Line);
-            run(AOs, input_dot_aos);
-        }
+            run(AOs, AOs.TakeInput(Line));
     }
 
     else
