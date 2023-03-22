@@ -36,6 +36,7 @@ public class Obsidian
 
             // Take input.
             // CMD = Console.ReadLine().Trim() ?? ""; //* Keep it for future use.
+            int cursor_pos = 0;
             int count_for_autocomplete = 1;
             string suggestion = string.Empty;
             string next_suggestion = string.Empty;
@@ -122,13 +123,10 @@ public class Obsidian
                         CMD = tmp_CMD.Trim() ?? "";
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.Backspace)
+                    else if (keyInfo.Key == ConsoleKey.Backspace && CMD.Length > 0)
                     {
-                        if (CMD.Length > 0)
-                        {
-                            CMD = CMD.Substring(0, CMD.Length - 1);
-                            Console.Write("\b \b");
-                        }
+                        CMD = CMD.Substring(0, CMD.Length - 1);
+                        Console.Write("\b \b");
                     }
 
                     // Handle typable-characters.
@@ -139,42 +137,38 @@ public class Obsidian
                     }
 
                     // Handle arrow keys.
-                    else if (keyInfo.Key == ConsoleKey.UpArrow)
+                    else if (keyInfo.Key == ConsoleKey.UpArrow && !Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
                     {
-                        if (!Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
-                        {
-                            count_for_tmp_history = (count_for_tmp_history == 0) ? 0 : (count_for_tmp_history - 1);
+                        count_for_tmp_history = (count_for_tmp_history == 0) ? 0 : (count_for_tmp_history - 1);
 
-                            Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
-                            CMD = tmp_history_of_commands[count_for_tmp_history];
-                            Console.Write(CMD);
-                        }
+                        Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
+                        CMD = tmp_history_of_commands[count_for_tmp_history];
+                        Console.Write(CMD);
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.DownArrow)
+                    else if (keyInfo.Key == ConsoleKey.DownArrow && !Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
                     {
-                        if (!Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
-                        {
-                            int tmp_history_of_commands_length = tmp_history_of_commands.Count - 1;
-                            count_for_tmp_history = (count_for_tmp_history == tmp_history_of_commands_length) ? tmp_history_of_commands_length : (count_for_tmp_history + 1);
+                        int tmp_history_of_commands_length = tmp_history_of_commands.Count - 1;
+                        count_for_tmp_history = (count_for_tmp_history == tmp_history_of_commands_length) ? tmp_history_of_commands_length : (count_for_tmp_history + 1);
 
-                            Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
-                            CMD = tmp_history_of_commands[count_for_tmp_history];
-                            Console.Write(CMD);
-                        }
+                        Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
+                        CMD = tmp_history_of_commands[count_for_tmp_history];
+                        Console.Write(CMD);
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.LeftArrow)
+                    else if (keyInfo.Key == ConsoleKey.LeftArrow && Console.CursorLeft > Prompt.Length)
                     {
-                        if (Console.CursorLeft > 0)
-                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        cursor_pos--;
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.RightArrow)
+                    else if (keyInfo.Key == ConsoleKey.RightArrow && Console.CursorLeft < CMD.Length+1)
                     {
-                        if (Console.CursorLeft < CMD.Length)
-                            Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                        cursor_pos++;
+                        Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
                     }
+
+                    cursor_pos = Console.CursorLeft - Prompt.Length;
                 }
             }
 
@@ -506,7 +500,9 @@ public class Obsidian
                 "wmic            -> Displays wmi information inside interactive command shell.",
                 "srh             -> Search for a specific query on the internet.",
                 "wiki            -> Search for information on wikipedia.",
-                "ply             -> Search for a video on youtube based on a query."
+                "ply             -> Search for a video on youtube based on a query.",
+                "weather         -> Displays today's weather in a city.",
+                "temperature     -> Displays today's temperature in a city."
             };
 
             if (Collection.Array.IsEmpty(args))
@@ -835,6 +831,8 @@ namespace KeyHandler
                 string path = string.Empty;
                 for (int i = 0; i < directories.Length - 1; i++)
                     path = Path.Combine(path, directories[i]);
+
+                if (!File.Exists(path)) return;
 
                 Entries = Directory.GetFileSystemEntries(".", Path.Combine(path, "*"));
                 foreach (string Entry in Entries)

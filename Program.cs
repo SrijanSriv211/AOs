@@ -214,6 +214,20 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
         else Error.Args(input.args);
     }
 
+    else if (input.cmd.ToLower() == "weather")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Features.weather(input.args);
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.weather(input.args);
+    }
+
+    else if (input.cmd.ToLower() == "temperature")
+    {
+        if (Collection.Array.IsEmpty(input.args)) Features.temperature(input.args);
+        else if (input.args.Length > 1) Error.TooManyArgs(input.args);
+        else Features.temperature(input.args);
+    }
+
     else if (input.cmd.ToLower() == "srh")
     {
         if (Collection.Array.IsEmpty(input.args)) Error.NoArgs();

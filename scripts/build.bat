@@ -11,7 +11,7 @@ if exist AOs rmdir /s /q AOs
 rem Compile project
 dotnet publish -c Release -o ./AOs
 
-@REM echo. && echo Compiling scripts
+echo. && echo Compiling scripts
 @REM g++ "Sysfail/rp/safe.cpp" -o Sysfail/rp/safe.exe
 @REM python scripts/cxthon.py --spec scripts/setup.spec
 python scripts/update_build_no.py
