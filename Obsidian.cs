@@ -126,6 +126,7 @@ public class Obsidian
                     // Handle arrow keys.
                     else if (keyInfo.Key == ConsoleKey.UpArrow && !Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
                     {
+                        Console.SetCursorPosition(Prompt.Length + CMD.Length, Console.CursorTop);
                         count_for_tmp_history = (count_for_tmp_history == 0) ? 0 : (count_for_tmp_history - 1);
 
                         Console.Write(string.Concat(Enumerable.Repeat("\b \b", CMD.Length)));
@@ -136,6 +137,8 @@ public class Obsidian
 
                     else if (keyInfo.Key == ConsoleKey.DownArrow && !Collection.Array.IsEmpty(tmp_history_of_commands.ToArray()))
                     {
+                        Console.SetCursorPosition(Prompt.Length + CMD.Length, Console.CursorTop);
+
                         int tmp_history_of_commands_length = tmp_history_of_commands.Count - 1;
                         count_for_tmp_history = (count_for_tmp_history == tmp_history_of_commands_length) ? tmp_history_of_commands_length : (count_for_tmp_history + 1);
 
