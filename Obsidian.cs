@@ -38,8 +38,7 @@ public class Obsidian
             // CMD = Console.ReadLine().Trim() ?? ""; //* Keep it for future use.
             int cursor_pos = 0;
             int count_for_autocomplete = 1;
-            string suggestion = string.Empty;
-            string str_to_be_replaced = string.Empty;
+            string complete_suggestion = string.Empty;
             string[] list_of_suggestions = new string[0];
 
             while (true)
@@ -49,19 +48,24 @@ public class Obsidian
                 if (keyInfo.Key == ConsoleKey.Tab && cursor_pos == CMD.Length)
                 {
                     KeyHandler.Tab TabKey = new KeyHandler.Tab(CMD);
+                    string str_to_be_replaced = TabKey.Directories;
                     list_of_suggestions = TabKey.List_of_Suggestions;
-                    str_to_be_replaced = TabKey.Directories;
 
                     if (Collection.Array.IsEmpty(list_of_suggestions)) continue;
 
                     // '(count_for_autocomplete + 1) % list_of_suggestions.Length' here is very different from the count declaration.
                     //* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -> Can be rewritten as '(((count_for_autocomplete + 1) % list_of_suggestions.Length) + 1) % list_of_suggestions.Length'
-                    suggestion = list_of_suggestions[ (count_for_autocomplete + 1) % list_of_suggestions.Length ];
+                    string suggestion = list_of_suggestions[ (count_for_autocomplete + 1) % list_of_suggestions.Length ];
                     string current_line = list_of_suggestions[count_for_autocomplete];
+                    complete_suggestion = CMD.Replace(str_to_be_replaced, suggestion);
 
                     // Update the line.
                     Console.Write(string.Concat(Enumerable.Repeat("\b \b", current_line.Length)));
                     Console.Write(suggestion);
+
+                    // Move the cursor to the very end and update cursor position.
+                    cursor_pos = complete_suggestion.Length;
+                    Console.SetCursorPosition(Prompt.Length + cursor_pos, Console.CursorTop);
 
                     // Update the count such that when it == list_of_suggestions.Length, then it resets back to 0;
                     count_for_autocomplete = (count_for_autocomplete + 1) % list_of_suggestions.Length;
@@ -69,7 +73,7 @@ public class Obsidian
 
                 else
                 {
-                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? CMD.Replace(str_to_be_replaced, suggestion) : CMD;
+                    CMD = !Collection.Array.IsEmpty(list_of_suggestions) ? complete_suggestion : CMD;
                     list_of_suggestions = new string[0];
                     count_for_autocomplete = 0;
 
@@ -93,38 +97,30 @@ public class Obsidian
                     }
 
                     // Handle backspace.
-                    else if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.Backspace && !Collection.String.IsEmpty(CMD))
+                    else if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.Backspace && !Collection.String.IsEmpty(CMD) && Console.CursorLeft > Prompt.Length)
                     {
-                        bool lscrc = false; // lscrc -> last_space_char_removed_completely
-                        string tmp_CMD = string.Empty;
-                        for (int i = CMD.Length - 1; i >= 0; i--)
-                        {
-                            if (lscrc || Collection.String.IsEmpty(CMD[i].ToString()))
-                            {
-                                lscrc = true;
-                                tmp_CMD = CMD[i] + tmp_CMD;
-                                continue;
-                            }
+                        int start_pos = cursor_pos - 1;
+                        while (start_pos >= 0 && CMD[start_pos] == ' ') start_pos--;
+                        while (start_pos >= 0 && CMD[start_pos] != ' ') start_pos--; 
+                        start_pos++;
 
-                            cursor_pos--;
-                            Console.Write("\b \b");
-                        }
+                        string deleted = CMD.Substring(start_pos, cursor_pos - start_pos);
+                        CMD = CMD.Remove(start_pos, cursor_pos - start_pos);
+                        cursor_pos = start_pos;
 
-                        if (CMD.Split().Length > 1)
-                        {
-                            cursor_pos--;
-                            Console.Write("\b \b");
-                        }
-
-                        CMD = tmp_CMD.Trim() ?? "";
+                        Console.Write(string.Concat(Enumerable.Repeat("\b \b", deleted.Length)));
+                        Console.Write(CMD.Substring(cursor_pos) + " ");
+                        Console.Write(new string(' ', deleted.Length) + "\b", deleted.Length);
+                        Console.SetCursorPosition(Prompt.Length + cursor_pos, Console.CursorTop);
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.Backspace && CMD.Length > 0)
+                    else if (keyInfo.Key == ConsoleKey.Backspace && !Collection.String.IsEmpty(CMD) && Console.CursorLeft > Prompt.Length)
                     {
-                        CMD = CMD.Substring(0, CMD.Length - 1);
+                        CMD = CMD.Remove(cursor_pos - 1, 1);
                         cursor_pos--;
 
-                        Console.Write("\b \b");
+                        Console.Write("\b \b" + CMD.Substring(cursor_pos) + " ");
+                        Console.SetCursorPosition(Prompt.Length + cursor_pos, Console.CursorTop);
                     }
 
                     // Handle arrow keys.
@@ -155,7 +151,7 @@ public class Obsidian
                         Console.Write("\b");
                     }
 
-                    else if (keyInfo.Key == ConsoleKey.RightArrow && Console.CursorLeft < CMD.Length+1)
+                    else if (keyInfo.Key == ConsoleKey.RightArrow && Console.CursorLeft < CMD.Length + 2)
                     {
                         cursor_pos++;
                         Console.Write(CMD[cursor_pos - 1]);
