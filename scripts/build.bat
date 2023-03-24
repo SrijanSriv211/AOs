@@ -12,8 +12,8 @@ rem Compile project
 dotnet publish -c Release -o ./AOs
 
 echo. && echo Compiling scripts
-@REM g++ "Sysfail/rp/safe.cpp" -o Sysfail/rp/safe.exe
-@REM python scripts/cxthon.py --spec scripts/setup.spec
+g++ "Sysfail/rp/safe.cpp" -o Sysfail/rp/safe.exe
+python scripts/cxthon.py --spec scripts/setup.spec
 python scripts/update_build_no.py
 
 rem Move all necessary folders to the build folder.
@@ -23,5 +23,5 @@ robocopy "Sysfail/RECOVERY" "AOs" /e /nfl /ndl /njh /njs /nc /ns /np /is /it /xf
 
 rem Delete all unnecessary files and folders.
 rmdir /s /q bin,obj,build
-del *.spec
+del Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages\UPR.exe Sysfail\RECOVERY\Files.x72\root\ext\*.exe Sysfail\rp\safe.exe *.spec
 echo Done.

@@ -12,7 +12,7 @@ public class Obsidian
     public string[] PromptPreset = { "-r" };
 
     public static string default_else_shell = "powershell.exe";
-    public static string buildNo = "2077";
+    public static string buildNo = "2445";
     public static string vNum = "2.3.8";
     private string Prompt = "";
 
