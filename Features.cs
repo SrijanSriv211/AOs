@@ -39,7 +39,7 @@ public class Features
             parser.AddArgument("-v", "Increase/Decrease the volume by 2 levels.", default_value: "");
             var args = parser.Parse(volume_args);
 
-            if (Collection.String.IsEmpty(args["-v"]) && !(Convert.ToInt32(parser.free_args.FirstOrDefault()) < -100 || Convert.ToInt32(parser.free_args.FirstOrDefault()) > 100))
+            if (Collection.String.IsEmpty(args["-v"]) && !(Convert.ToInt32(parser.free_args.FirstOrDefault()) < 0 || Convert.ToInt32(parser.free_args.FirstOrDefault()) > 100))
                 VolumeChanger.AudioManager.SetMasterVolume(Convert.ToInt32(parser.free_args.FirstOrDefault()));
 
             else
