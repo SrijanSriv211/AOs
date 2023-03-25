@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Diagnostics;
 using System.Security.Principal;
 
@@ -67,8 +68,29 @@ void Startup()
                 if (App == ".")
                     break;
 
-                foreach (string Command in File.ReadLines(start_path + App))
-                    run(AOs, AOs.TakeInput(Command));
+                int current_line_idx = 0;
+                string[] lines = File.ReadAllLines(start_path + App);
+
+                while (current_line_idx < lines.Length)
+                {
+                    string current_line = lines[current_line_idx];
+                    if (current_line == ".")
+                    {
+                        while (current_line == ".")
+                        {
+                            // Wait until the current line is changed
+                            Thread.Sleep(100); // Wait for a short time before checking again
+                            lines = File.ReadAllLines(start_path + App); // Read the file again to check if the current line is changed
+                            current_line = lines[current_line_idx];
+                        }
+                    }
+
+                    else
+                    {
+                        run(AOs, AOs.TakeInput(current_line));
+                        current_line_idx++;
+                    }
+                }
             }
         }
 
@@ -76,8 +98,29 @@ void Startup()
         {
             foreach (string App in Directory.GetFiles(start_path, "*.aos"))
             {
-                foreach (string Command in File.ReadLines(App))
-                    run(AOs, AOs.TakeInput(Command));
+                int current_line_idx = 0;
+                string[] lines = File.ReadAllLines(App);
+
+                while (current_line_idx < lines.Length)
+                {
+                    string current_line = lines[current_line_idx];
+                    if (current_line == ".")
+                    {
+                        while (current_line == ".")
+                        {
+                            // Wait until the current line is changed
+                            Thread.Sleep(100); // Wait for a short time before checking again
+                            lines = File.ReadAllLines(App); // Read the file again to check if the current line is changed
+                            current_line = lines[current_line_idx];
+                        }
+                    }
+
+                    else
+                    {
+                        run(AOs, AOs.TakeInput(current_line));
+                        current_line_idx++;
+                    }
+                }
             }
         }
     }
