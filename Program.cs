@@ -41,8 +41,29 @@ void argc()
             else if (!File.Exists(i)) new Error($"{i}: No such file or directory.");
             else
             {
-                foreach (string j in File.ReadLines(i))
-                    run(AOs, AOs.TakeInput(j));
+                int current_line_idx = 0;
+                string[] lines = File.ReadAllLines(i);
+
+                while (current_line_idx < lines.Length)
+                {
+                    string current_line = lines[current_line_idx];
+                    if (current_line == ".")
+                    {
+                        while (current_line == ".")
+                        {
+                            // Wait until the current line is changed
+                            Thread.Sleep(100); // Wait for a short time before checking again
+                            lines = File.ReadAllLines(i); // Read the file again to check if the current line is changed
+                            current_line = lines[current_line_idx];
+                        }
+                    }
+
+                    else
+                    {
+                        run(AOs, AOs.TakeInput(current_line));
+                        current_line_idx++;
+                    }
+                }
             }
         }
     }
@@ -586,8 +607,29 @@ void main(Obsidian AOs, (string cmd, string[] args) input)
     else if (File.Exists(input.cmd + ".aos") || (input.cmd.ToLower().EndsWith(".aos") && File.Exists(input.cmd)))
     {
         string filename = input.cmd.EndsWith(".aos") ? input.cmd : input.cmd + ".aos";
-        foreach (string Line in File.ReadLines(filename))
-            run(AOs, AOs.TakeInput(Line));
+        int current_line_idx = 0;
+        string[] lines = File.ReadAllLines(filename);
+
+        while (current_line_idx < lines.Length)
+        {
+            string current_line = lines[current_line_idx];
+            if (current_line == ".")
+            {
+                while (current_line == ".")
+                {
+                    // Wait until the current line is changed
+                    Thread.Sleep(100); // Wait for a short time before checking again
+                    lines = File.ReadAllLines(filename); // Read the file again to check if the current line is changed
+                    current_line = lines[current_line_idx];
+                }
+            }
+
+            else
+            {
+                run(AOs, AOs.TakeInput(current_line));
+                current_line_idx++;
+            }
+        }
     }
 
     else
