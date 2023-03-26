@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Linq;
+using System.Net.Http;
 using Microsoft.Win32;
+using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -22,6 +24,7 @@ public class Features
                 "deepscan    -> Scans the host operating system.",
                 "todo        -> Create and manages a todo list.",
                 "vol         -> Set the system master volume to a specific level.",
+                "switch      -> Switch to an application by using its window title.",
                 "help        -> Displays a list of all overload commands."
             };
 
@@ -31,6 +34,31 @@ public class Features
         else if (input_args.FirstOrDefault().ToLower() == "studybyte") Obsidian.Shell.StartApp("https://light-lens.github.io/Studybyte");
         else if (input_args.FirstOrDefault().ToLower() == "deeplock") Obsidian.Shell.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
         else if (input_args.FirstOrDefault().ToLower() == "deepscan") Obsidian.Shell.StartApp($"{Obsidian.rDir}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat", AppAdmin: true);
+        else if (input_args.FirstOrDefault().ToLower() == "switch")
+        {
+            RequestHandler request = new RequestHandler("instruction: extract just the file/folder or app/website name from the given input.\n\ninput: ");
+
+            string input = Collection.Array.Trim(input_args.Skip(1).ToArray()).FirstOrDefault();
+            string appname = request.NER(input);
+            Console.WriteLine(appname);
+
+            Process[] processes = Process.GetProcesses().Where(p => p.MainWindowTitle.ToLower().Contains(appname.ToLower())).ToArray();
+            if (processes.Length > 0)
+            {
+                // Launch the process if it's not already running
+                Process process = processes[0];
+                if (process.MainWindowHandle == IntPtr.Zero)
+                {
+                    ProcessStartInfo startInfo = process.StartInfo;
+                    Process.Start(startInfo);
+                    process.WaitForInputIdle();
+                }
+
+                // Try to set the window as foreground using SetForegroundWindow
+                WindowManager.SetForegroundWindow(process.MainWindowHandle);
+            }
+        }
+
         else if (input_args.FirstOrDefault().ToLower() == "vol")
         {
             string[] volume_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
@@ -717,27 +745,52 @@ public class Features
 
     public static void weather(string[] input_args)
     {
-        string city = string.Empty;
+        string City = string.Empty;
         if (Collection.Array.IsEmpty(input_args))
-            city = "muzaffarpur";
+            City = "muzaffarpur";
 
         else
-            city = input_args.FirstOrDefault();
+            City = input_args.FirstOrDefault();
 
-        Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wetemp.exe\" -r w -c {city}");
+        Console.WriteLine($"Fetching today's weather report for: {City}");
+
+
+        // Fetch weather details.
+        string URL = $"https://wttr.in/{City}?format=%C";
+        HttpClient client = new HttpClient();
+        HttpResponseMessage response = client.GetAsync(URL).Result;
+        string res = response.Content.ReadAsStringAsync().Result;
+
+        Console.WriteLine(res);
     }
 
     public static void temperature(string[] input_args)
     {
-        string city = string.Empty;
+        string City = string.Empty;
         if (Collection.Array.IsEmpty(input_args))
-            city = "muzaffarpur";
+            City = "muzaffarpur";
 
         else
-            city = input_args.FirstOrDefault();
+            City = input_args.FirstOrDefault();
 
-        Obsidian.Shell.CommandPrompt($"call \"{Obsidian.rDir}\\Files.x72\\root\\ext\\wetemp.exe\" -r t -c {city}");
+        Console.WriteLine($"Fetching today's temperature report in: {City}");
+
+        // Fetch temperature details.
+        string URL = $"https://wttr.in/{City}?format=%t";
+        HttpClient client = new HttpClient();
+        HttpResponseMessage response = client.GetAsync(URL).Result;
+        string res = response.Content.ReadAsStringAsync().Result;
+        string Temp = (res[0] == '+') ? res.Substring(1) : res;
+
+        Console.WriteLine(Temp);
     }
+}
+
+class WindowManager
+{
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
 }
 
 // https://gist.github.com/sverrirs/d099b34b7f72bb4fb386

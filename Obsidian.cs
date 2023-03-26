@@ -1,8 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Diagnostics;
+using System.Net.Http.Json;
 using System.Collections.Generic;
 
 public class Obsidian
@@ -79,6 +82,7 @@ public class Obsidian
 
                     if (keyInfo.Key == ConsoleKey.Enter)
                     {
+                        count_for_tmp_history++;
                         Console.WriteLine();
                         if (!Collection.String.IsEmpty(CMD))
                             tmp_history_of_commands.Add(CMD);
@@ -760,6 +764,34 @@ public class Obsidian
         }
     }
 
+}
+
+class RequestHandler
+{
+    private static readonly HttpClient client = new HttpClient();
+    private static readonly string API_URL = "https://api-inference.huggingface.co/models/google/flan-ul2";
+    private static readonly string AUTH_TOKEN = "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";
+    private static string prompt = "";
+
+    public RequestHandler(string _prompt)
+    {
+        prompt = _prompt;
+    }
+
+    public string NER(string text)
+    {
+        string input_text = $"{prompt}{text}\noutput: ";
+        dynamic response = Query(new { inputs = input_text });
+        return response[0]["generated_text"];
+    }
+
+    private dynamic Query(object payload)
+    {
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AUTH_TOKEN);
+        var response = client.PostAsJsonAsync(API_URL, payload).Result;
+        var responseString = response.Content.ReadAsStringAsync().Result;
+        return JsonConvert.DeserializeObject<dynamic>(responseString);
+    }
 }
 
 namespace KeyHandler
