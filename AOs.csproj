@@ -7,20 +7,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
-    <Version>2.3.9</Version>
-    <AssemblyVersion>2.3.9</AssemblyVersion>
+    <Version>2.4</Version>
+    <AssemblyVersion>2.4</AssemblyVersion>
     <ApplicationIcon>img/AOs.ico</ApplicationIcon>
 
     <FileDescription>Command-line utility for improved efficiency and productivity.</FileDescription>
-    <FileVersion>2.3.9</FileVersion>
+    <FileVersion>2.4</FileVersion>
     <Company>Light-Lens</Company>
     <Authors>Srijan Srivastava</Authors>
     <Product>AOs</Product>
     <Copyright>Copyright © 2023</Copyright>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
 
 </Project>

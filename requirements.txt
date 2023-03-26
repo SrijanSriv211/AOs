@@ -1,6 +1,6 @@
 altgraph==0.17.3
 beautifulsoup4==4.11.2
-certifi==2022.12.7
+certifi==2023.12.7
 charset-normalizer==3.0.1
 click==8.1.3
 colorama==0.4.6
@@ -20,7 +20,7 @@ PyAutoGUI==0.9.53
 PyGetWindow==0.0.9
 Pygments==2.14.0
 pyinstaller==5.8.0
-pyinstaller-hooks-contrib==2022.15
+pyinstaller-hooks-contrib==2023.15
 PyMsgBox==1.0.9
 pyperclip==1.8.2
 PyRect==0.2.0

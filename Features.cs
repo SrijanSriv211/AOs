@@ -4,7 +4,6 @@ using System.Text;
 using System.Linq;
 using System.Net.Http;
 using Microsoft.Win32;
-using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -25,6 +24,7 @@ public class Features
                 "todo        -> Create and manages a todo list.",
                 "vol         -> Set the system master volume to a specific level.",
                 "switch      -> Switch to an application by using its window title.",
+                "cosine      -> Calculate the cosine similarity between two sentences.",
                 "help        -> Displays a list of all overload commands."
             };
 
@@ -34,27 +34,26 @@ public class Features
         else if (input_args.FirstOrDefault().ToLower() == "studybyte") Obsidian.Shell.StartApp("https://light-lens.github.io/Studybyte");
         else if (input_args.FirstOrDefault().ToLower() == "deeplock") Obsidian.Shell.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
         else if (input_args.FirstOrDefault().ToLower() == "deepscan") Obsidian.Shell.StartApp($"{Obsidian.rDir}\\Sysfail\\rp\\FixCorruptedSystemFiles.bat", AppAdmin: true);
+        else if (input_args.FirstOrDefault().ToLower() == "cosine")
+        {
+            string[] cosine_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
+            if (cosine_args.Length < 2)
+                Error.TooFewArgs(cosine_args);
+
+            else if (cosine_args.Length > 2)
+                Error.TooManyArgs(cosine_args);
+
+            else
+                Console.WriteLine(TextSimilarity.CosineSimilarity(cosine_args[0], cosine_args[1]));
+        }
+
         else if (input_args.FirstOrDefault().ToLower() == "switch")
         {
-            RequestHandler request = new RequestHandler("instruction: extract just the file/folder or app/website name from the given input.\n\ninput: ");
-
-            string input = Collection.Array.Trim(input_args.Skip(1).ToArray()).FirstOrDefault();
-            string appname = request.NER(input);
-            Console.WriteLine(appname);
-
-            Process[] processes = Process.GetProcesses().Where(p => p.MainWindowTitle.ToLower().Contains(appname.ToLower())).ToArray();
+            string appname = Collection.Array.Trim(input_args.Skip(1).ToArray()).FirstOrDefault();
+            Process[] processes = Process.GetProcessesByName(appname);
             if (processes.Length > 0)
             {
-                // Launch the process if it's not already running
                 Process process = processes[0];
-                if (process.MainWindowHandle == IntPtr.Zero)
-                {
-                    ProcessStartInfo startInfo = process.StartInfo;
-                    Process.Start(startInfo);
-                    process.WaitForInputIdle();
-                }
-
-                // Try to set the window as foreground using SetForegroundWindow
                 WindowManager.SetForegroundWindow(process.MainWindowHandle);
             }
         }

@@ -1,11 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using Newtonsoft.Json;
 using System.Threading;
 using System.Diagnostics;
-using System.Net.Http.Json;
 using System.Collections.Generic;
 
 public class Obsidian
@@ -15,8 +12,8 @@ public class Obsidian
     public string[] PromptPreset = { "-r" };
 
     public static string default_else_shell = "powershell.exe";
-    public static string buildNo = "2488";
-    public static string vNum = "2.3.9";
+    public static string buildNo = "2500";
+    public static string vNum = "2.4";
     private string Prompt = "";
 
     private static int count_for_tmp_history = 0;
@@ -766,31 +763,44 @@ public class Obsidian
 
 }
 
-class RequestHandler
+public class TextSimilarity
 {
-    private static readonly HttpClient client = new HttpClient();
-    private static readonly string API_URL = "https://api-inference.huggingface.co/models/google/flan-ul2";
-    private static readonly string AUTH_TOKEN = "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";
-    private static string prompt = "";
-
-    public RequestHandler(string _prompt)
+    public static double CosineSimilarity(string sent1, string sent2)
     {
-        prompt = _prompt;
-    }
+        // Tokenize sentences into words
+        string[] words1 = sent1.Split(' ');
+        string[] words2 = sent2.Split(' ');
 
-    public string NER(string text)
-    {
-        string input_text = $"{prompt}{text}\noutput: ";
-        dynamic response = Query(new { inputs = input_text });
-        return response[0]["generated_text"];
-    }
+        // Create a set of all unique words in both sentences
+        HashSet<string> uniqueWords = new HashSet<string>(words1);
+        uniqueWords.UnionWith(words2);
 
-    private dynamic Query(object payload)
-    {
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", AUTH_TOKEN);
-        var response = client.PostAsJsonAsync(API_URL, payload).Result;
-        var responseString = response.Content.ReadAsStringAsync().Result;
-        return JsonConvert.DeserializeObject<dynamic>(responseString);
+        // Create vectors of word frequencies for each sentence
+        Dictionary<string, int> vector1 = new Dictionary<string, int>();
+        Dictionary<string, int> vector2 = new Dictionary<string, int>();
+        foreach (string word in uniqueWords)
+        {
+            vector1[word] = words1.Count(w => w == word);
+            vector2[word] = words2.Count(w => w == word);
+        }
+
+        // Calculate cosine similarity using dot product and norms of vectors
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        foreach (string word in uniqueWords)
+        {
+            dotProduct += vector1[word] * vector2[word];
+            normA += vector1[word] * vector1[word];
+            normB += vector2[word] * vector2[word];
+        }
+
+        double denominator = Math.Sqrt(normA) * Math.Sqrt(normB);
+        if (denominator == 0)
+            return 0.0;
+
+        else
+            return dotProduct / denominator;
     }
 }
 
