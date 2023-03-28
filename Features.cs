@@ -558,7 +558,12 @@ public class Features
             {
                 string appname = Lexer.SimplifyString(i);
                 if (Collection.String.IsEmpty(appname))
-                    processes = new[] {Process.GetCurrentProcess()};
+                {
+                    uint process_id;
+                    IntPtr handle = WindowManager.GetForegroundWindow();
+                    WindowManager.GetWindowThreadProcessId(handle, out process_id);
+                    processes = new[] { Process.GetProcessById((int)process_id) };
+                }
 
                 else
                     processes = Process.GetProcessesByName(appname);
@@ -806,6 +811,12 @@ class WindowManager
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 }
 
 // https://gist.github.com/sverrirs/d099b34b7f72bb4fb386
