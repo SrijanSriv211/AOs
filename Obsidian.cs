@@ -79,10 +79,12 @@ public class Obsidian
 
                     if (keyInfo.Key == ConsoleKey.Enter)
                     {
-                        count_for_tmp_history++;
                         Console.WriteLine();
                         if (!Collection.String.IsEmpty(CMD))
+                        {
                             tmp_history_of_commands.Add(CMD);
+                            count_for_tmp_history++;
+                        }
 
                         break;
                     }

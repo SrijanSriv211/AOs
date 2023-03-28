@@ -553,8 +553,24 @@ public class Features
         if (Collection.Array.IsEmpty(input_args)) Obsidian.Shell.CommandPrompt("tasklist");
         else
         {
-            for (int i = 0; i < input_args.Length; i++) input_args[i] = Obsidian.Shell.Strings(input_args[i]);
-            Obsidian.Shell.CommandPrompt($"taskkill /f /im {string.Join(" ", input_args)}");
+            Process[] processes;
+            foreach (string i in input_args)
+            {
+                string appname = Lexer.SimplifyString(i);
+                if (Collection.String.IsEmpty(appname))
+                    processes = new[] {Process.GetCurrentProcess()};
+
+                else
+                    processes = Process.GetProcessesByName(appname);
+
+                // Close the first instance of the process
+                if (processes.Length > 0)
+                {
+                    Process app_process = processes.FirstOrDefault();
+                    if (!app_process.CloseMainWindow())
+                        app_process.Kill();
+                }
+            }
         }
     }
 
