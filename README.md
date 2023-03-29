@@ -17,7 +17,7 @@ You need to install the following on your machine.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
 3. To see a list of all supported commands, type `help` in the AOs window:
 ```console
-AOs 2023 [Version 2.3]
+AOs 2023 [Version 2.4]
 $ help
 ```
 
@@ -25,14 +25,14 @@ $ help
 
 :heavy_check_mark: Correct way:
 ```console
-AOs 2023 [Version 2.3]
+AOs 2023 [Version 2.4]
 $ "path\\to\\dir"
 $ "path/to/dir"
 ```
 
 :x: Wrong way:
 ```console
-AOs 2023 [Version 2.3]
+AOs 2023 [Version 2.4]
 $ "path\to\dir"
 ```
 
@@ -66,7 +66,7 @@ $ pip install -r requirements.txt
 4. Compile the program with:
 Don't use `dotnet run`, instead run:
 ```console
-$ build.bat
+$ scripts\build.bat
 ```
 
 This will create an executable in the `AOs` folder with all required files to run.
