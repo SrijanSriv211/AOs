@@ -17,7 +17,7 @@ You need to install the following on your machine.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
 3. To see a list of all supported commands, type `help` in the AOs window:
 ```console
-AOs 2023 [Version 2.4]
+AOs 2023 [Version 2.5]
 $ help
 ```
 
@@ -25,14 +25,14 @@ $ help
 > ---
 > :heavy_check_mark: Correct way:
 > ```console
-> AOs 2023 [Version 2.4]
+> AOs 2023 [Version 2.5]
 > $ "path\\to\\dir"
 > $ "path/to/dir"
 > ```
 >
 > :x: Wrong way:
 > ```console
-> AOs 2023 [Version 2.4]
+> AOs 2023 [Version 2.5]
 > $ "path\to\dir"
 > ```
 
