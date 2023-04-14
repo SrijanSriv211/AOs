@@ -1,10 +1,2 @@
-AOs/
 bin/
 obj/
-build/
-.venv/
-__pycache__/
-
-*.exe
-AOs.zip
-UPR.spec

@@ -1,3 +1,0 @@
---name Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages\UPR.py --out Sysfail\RECOVERY\SoftwareDistribution\UpdatePackages --icon img/UPR.ico
---name Sysfail\RECOVERY\Files.x72\root\ext\wiki.py --out Sysfail\RECOVERY\Files.x72\root\ext --icon img/exe.ico
---name Sysfail\RECOVERY\Files.x72\root\ext\ply.py --out Sysfail\RECOVERY\Files.x72\root\ext --icon img/exe.ico
