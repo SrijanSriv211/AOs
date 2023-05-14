@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Principal;
 using System.Collections.Generic;
 
@@ -11,6 +10,8 @@ bool IsAdmin()
     var principal = new WindowsPrincipal(identity);
     return principal.IsInRole(WindowsBuiltInRole.Administrator);
 }
+
+AOs.Entrypoint();
 
 // shout "Hello world!";1+3;"1+2"
 foreach (KeyValuePair<string, string[]> item in AOs.TakeInput())

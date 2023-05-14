@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 //! This module is deprecated/not ready for use.
-class readline
+class Readline
 {
     public string Out = "";
     private string Prompt = "";
@@ -11,7 +11,7 @@ class readline
     private static int count_for_tmp_history = 0;
     private static List<string> tmp_history_of_commands = new List<string>();
 
-    public readline(string prompt="")
+    public Readline(string prompt="")
     {
         Prompt = prompt;
     }

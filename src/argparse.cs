@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-class argparse
+class Argparse
 {
     public string[] free_args = new string[0];
 
@@ -12,7 +12,7 @@ class argparse
     private List<Argument> arguments = new List<Argument>();
     private List<string> help_list = new List<string>();
 
-    public argparse(string name, string description)
+    public Argparse(string name, string description)
     {
         program_name = name;
         program_description = description;

@@ -12,13 +12,13 @@ class Obsidian
 
     private string Title = "AOs";
     private string Prompt = "";
-    // private readline Terminal = new readline();
+    // private Readline Terminal = new Readline();
 
     public Obsidian(string title="AOs", string prompt="$ ")
     {
         Title = title;
         Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(PromptPreset) : prompt;
-        // Terminal = new readline(Prompt);
+        // Terminal = new Readline(Prompt);
     }
 
     public Dictionary<string, string[]> TakeInput(string input = "")
@@ -66,6 +66,20 @@ class Obsidian
         Console.ForegroundColor = Color;
     }
 
+    public void Entrypoint(bool clear=true)
+    {
+        Console.Title = Title;
+        if (clear)
+        {
+            Console.ResetColor();
+            Console.Clear();
+        }
+
+        // Shell.RootPackages();
+        // Shell.AskPass();
+        // Shell.Scan();
+    }
+
     public void Credits()
     {
         string[] CreditCenter = {
@@ -97,7 +111,7 @@ class Obsidian
         foreach (string i in flags)
         {
             if (Collection.String.IsString(i)) PromptMessage += Collection.String.Strings(i);
-            else if (argparse.IsAskingForHelp(i.ToLower()))
+            else if (Argparse.IsAskingForHelp(i.ToLower()))
             {
                 string[] PromptHelpCenter = {
                     "Specifies a new command prompt.",
