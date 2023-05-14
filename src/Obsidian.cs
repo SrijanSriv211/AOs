@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 class Obsidian
 {
@@ -10,14 +12,13 @@ class Obsidian
 
     private string Title = "AOs";
     private string Prompt = "";
-    private readline Terminal = new readline();
-
+    // private readline Terminal = new readline();
 
     public Obsidian(string title="AOs", string prompt="$ ")
     {
         Title = title;
         Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(PromptPreset) : prompt;
-        Terminal = new readline(Prompt);
+        // Terminal = new readline(Prompt);
     }
 
     public Dictionary<string, string[]> TakeInput(string input = "")
@@ -26,10 +27,11 @@ class Obsidian
         string CMD = input.Trim();
         if (Collection.String.IsEmpty(CMD))
         {
-            CMD = Terminal.input();
+            // CMD = Terminal.input();
+            Console.Write(Prompt);
+            CMD = Console.ReadLine().Trim();
             if (Collection.String.IsEmpty(CMD))
-                return new Dictionary<string, string[]>();
-                // return (cmd: "", args: new string[0]);
+                return new Dictionary<string, string[]>(); // return (cmd: "", args: new string[0])
 
             if (CMD[0] == '_')
                 CMD = CMD.Substring(1).Trim();

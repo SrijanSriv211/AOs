@@ -48,13 +48,13 @@ public class Error
         new Error($"Too many arguments: {_Flag}");
     }
 
-    // Unrecognized Command.
+    // Invalid Command.
     public static void Command(string _Command, string _Details = "Command does not exist")
     {
         new Error($"'{_Command}', {_Details}");
     }
 
-    // Unrecognized syntax.
+    // Invalid syntax.
     public static void Syntax(string _Details)
     {
         new Error($"SyntaxError: {_Details}");

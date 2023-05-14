@@ -13,9 +13,12 @@ bool IsAdmin()
 }
 
 // shout "Hello world!";1+3;"1+2"
-Dictionary<string, string[]> inp = AOs.TakeInput();
-foreach (KeyValuePair<string, string[]> item in inp)
+foreach (KeyValuePair<string, string[]> item in AOs.TakeInput())
 {
     string cmd = item.Key;
     string[] argc = item.Value;
+
+    Console.WriteLine(cmd);
+    for (int i = 0; i < argc.Length; i++)
+        Console.WriteLine(argc[i]);
 }

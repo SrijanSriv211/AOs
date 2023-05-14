@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+//! This module is deprecated/not ready for use.
 class readline
 {
     public string Out = "";

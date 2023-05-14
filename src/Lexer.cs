@@ -11,7 +11,8 @@ class Lexer
         string[] Toks = Parse(Tokenize(line.Trim()));
         foreach (string i in Toks)
         {
-            if (Collection.String.IsEmpty(i)) continue;
+            if (Collection.String.IsEmpty(i))
+                continue;
 
             // Create a new sublist when encountering a semicolon
             if (i == ";")
