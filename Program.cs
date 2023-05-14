@@ -2,24 +2,44 @@
 using System.Security.Principal;
 using System.Collections.Generic;
 
-Obsidian AOs = IsAdmin() ? new Obsidian("AOs (Administrator)") : new Obsidian();
+bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+Obsidian AOs = isAdmin ? new Obsidian("AOs (Administrator)") : new Obsidian();
+Startup();
 
-bool IsAdmin()
+void Startup()
 {
-    var identity = WindowsIdentity.GetCurrent();
-    var principal = new WindowsPrincipal(identity);
-    return principal.IsInRole(WindowsBuiltInRole.Administrator);
-}
+    string[] argv = Collection.Array.Filter(args);
+    if (Argparse.IsAskingForHelp(argv))
+    {
+        string[] SYSHelpCenter = {
+            "A Command-line utility for improved efficiency and productivity.",
+            "Usage: AOs [file]",
+            "",
+            "Options:",
+            "-h, --help ~> Displays all supported arguments.",
+        };
 
-AOs.Entrypoint();
+        Console.WriteLine(string.Join("\n", SYSHelpCenter));
+    }
+
+    else if (Collection.Array.IsEmpty(argv))
+    {
+        AOs.Entrypoint();
+    }
+
+    else
+    {
+        AOs.Entrypoint(false);
+    }
+}
 
 // shout "Hello world!";1+3;"1+2"
 foreach (KeyValuePair<string, string[]> item in AOs.TakeInput())
 {
     string cmd = item.Key;
-    string[] argc = item.Value;
+    string[] arg = item.Value;
 
     Console.WriteLine(cmd);
-    for (int i = 0; i < argc.Length; i++)
-        Console.WriteLine(argc[i]);
+    for (int i = 0; i < arg.Length; i++)
+        Console.WriteLine(arg[i]);
 }

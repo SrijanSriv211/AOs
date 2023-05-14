@@ -70,10 +70,7 @@ class Obsidian
     {
         Console.Title = Title;
         if (clear)
-        {
-            Console.ResetColor();
-            Console.Clear();
-        }
+            ClearConsole();
 
         // Shell.RootPackages();
         // Shell.AskPass();
