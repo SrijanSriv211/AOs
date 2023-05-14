@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
+// Rename class
 class Argparse
 {
     public string[] free_args = new string[0];
