@@ -2,147 +2,119 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-// Rename class
 class Argparse
 {
-    public string[] free_args = new string[0];
-
-    private string program_name = string.Empty;
-    private string program_description = string.Empty;
-
+    private string programName;
+    private string programDescription;
     private List<Argument> arguments = new List<Argument>();
-    private List<string> help_list = new List<string>();
 
     public Argparse(string name, string description)
     {
-        program_name = name;
-        program_description = description;
-        help_list.Add($"{program_name} -> {description}");
+        programName = name;
+        programDescription = description;
     }
 
-    public void AddArgument(string name, string help = "", bool required = false, string default_value = null)
+    public void AddArgument(string name, string help = "", bool required = false, string defaultValue = null)
     {
-        arguments.Add(new Argument(name, help, required, default_value));
+        arguments.Add(new Argument(name, help, required, defaultValue));
     }
 
-    // Method to parse the command line arguments and return a dictionary of parsed arguments
     public Dictionary<string, string> Parse(string[] args)
     {
-        var parsed_args = new Dictionary<string, string>();
+        var parsedArgs = new Dictionary<string, string>();
 
-        string arg_name = string.Empty;
-        string arg_val = string.Empty;
+        foreach (var argument in arguments)
+        {
+            parsedArgs[argument.Name] = argument.DefaultValue;
+        }
+
+        List<string> freeArgs = new List<string>();
 
         for (int i = 0; i < args.Length; i++)
         {
-            var arg = args[i];
-            if (arguments.Find(a => a.Name == arg) != null)
+            string arg = args[i];
+
+            if (arg.StartsWith("-"))
             {
-                arg_name = arg;
-                if (arguments.Find(a => a.Name == arg && a.IsFlag) != null)
-                    arg_val = "true";
+                string argName = arg.TrimStart('-');
+                var argument = arguments.FirstOrDefault(a => a.MatchesName(argName));
 
-                else if (arguments.Find(a => a.Name == arg && !a.IsFlag) != null)
+                if (argument != null)
                 {
-                    List<string> list = args.ToList();
-                    int index = list.IndexOf(arg);
-                    if (index != -1 && index < args.Length-1)
-                        arg_val = args[index + 1];
-
+                    if (argument.IsFlag)
+                    {
+                        parsedArgs[argument.Name] = "true";
+                    }
                     else
-                        new Error($"Missing value for argument: {arg}");
+                    {
+                        if (i + 1 < args.Length)
+                        {
+                            parsedArgs[argument.Name] = args[++i];
+                        }
+                        else
+                        {
+                            throw new ArgumentException($"Missing value for argument: {arg}");
+                        }
+                    }
                 }
-
                 else
-                    arg_val = "false";
+                {
+                    throw new ArgumentException($"Invalid argument: {arg}");
+                }
             }
-
             else
             {
-                List<string> list = free_args.ToList();
-                list.Add(arg);
-                free_args = list.ToArray();
+                freeArgs.Add(arg);
             }
-
-            // Store the parsed argument to the dict.
-            if (arguments.Find(a => a.Name == arg_name) != null)
-                parsed_args[arg_name] = arg_val;
         }
 
         foreach (var argument in arguments)
         {
-            if (argument.Required && !parsed_args.ContainsKey(argument.Name))
-                new Error($"Missing required argument: {argument.Name}");
-
-            if (!parsed_args.ContainsKey(argument.Name))
-                parsed_args[argument.Name] = argument.DefaultValue;
+            if (argument.Required && !parsedArgs.ContainsKey(argument.Name))
+            {
+                throw new ArgumentException($"Missing required argument: {argument.Name}");
+            }
         }
 
-        return parsed_args;
+        parsedArgs["__free_args__"] = string.Join(" ", freeArgs);
+
+        return parsedArgs;
     }
 
     public void PrintHelp()
     {
-        System.Console.WriteLine($"Description:\n{program_name} -> {program_description}\n");
-        System.Console.WriteLine($"Usage: {program_name} [OPTIONS]");
-        System.Console.WriteLine();
-        System.Console.WriteLine("Options:");
+        Console.WriteLine($"Description:\n{programName} -> {programDescription}\n");
+        Console.WriteLine($"Usage: {programName} [OPTIONS]");
+        Console.WriteLine();
+        Console.WriteLine("Options:");
+
         foreach (var argument in arguments)
         {
-            var argName = $"{argument.Name}";
-            var defaultValue = argument.DefaultValue != null ? $" (default: {argument.DefaultValue})" : "";
-            System.Console.WriteLine($"{argName}: {argument.Help}{defaultValue}");
+            string defaultValue = argument.DefaultValue != null ? $" (default: {argument.DefaultValue})" : "";
+            Console.WriteLine($"-{argument.Name}: {argument.Help}{defaultValue}");
         }
-    }
-
-    public void GetHelp(string name="")
-    {
-        help_list.Sort();
-        if (Collection.String.IsEmpty(name))
-        {
-            Console.WriteLine("Type `help <command-name>` for more information on a specific command");
-            foreach (string i in help_list)
-                Console.WriteLine("{0,-15} -> {1}", i.Split(' ')[0], string.Join(" ", i.Split(' ').Skip(2)));
-        }
-
-        else
-        {
-            var matches = help_list.Where(s => s.StartsWith(name));
-            if (matches.Any())
-                Console.WriteLine(string.Join("\n", matches));
-
-            else
-                new Error($"No information for command '{name}'");
-        }
-    }
-
-    public static bool IsAskingForHelp(string input)
-    {
-        if (input == "/?" || input == "-h" || input == "--help" || input == "??") return true;
-        return false;
-    }
-
-    public static bool IsAskingForHelp(string[] input)
-    {
-        if (input.Contains("/?") || input.Contains("-h") || input.Contains("--help") || input.Contains("??")) return true;
-        return false;
     }
 
     private class Argument
     {
-        public string Name { get; set; }
-        public string Help { get; set; }
-        public bool Required { get; set; }
-        public string DefaultValue { get; set; }
-        public bool IsFlag { get; set; }
+        public string Name { get; }
+        public string Help { get; }
+        public bool Required { get; }
+        public string DefaultValue { get; }
+        public bool IsFlag { get; }
 
-        public Argument(string name, string help, bool required, string default_value)
+        public Argument(string name, string help, bool required, string defaultValue)
         {
             Name = name;
             Help = help;
             Required = required;
-            DefaultValue = default_value;
-            IsFlag = (default_value == null);
+            DefaultValue = defaultValue;
+            IsFlag = string.IsNullOrEmpty(defaultValue);
+        }
+
+        public bool MatchesName(string argName)
+        {
+            return Name.Equals(argName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

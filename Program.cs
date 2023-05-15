@@ -9,6 +9,10 @@ Startup();
 void Startup()
 {
     string[] argv = Collection.Array.Filter(args);
+    var parser = new Argparse("@vol", "Set the system master volume to a specific level.");
+    // parser.AddArgument("-v", "Increase/Decrease the volume by 2 levels.", default_value: "");
+    // var args = parser.Parse(volume_args);
+
     if (Argparse.IsAskingForHelp(argv))
     {
         string[] SYSHelpCenter = {
@@ -16,7 +20,8 @@ void Startup()
             "Usage: AOs [file]",
             "",
             "Options:",
-            "-h, --help ~> Displays all supported arguments.",
+            "-h, --help -> Display all supported arguments.",
+            "-c, --cmd  -> Program passed in as string.",
         };
 
         Console.WriteLine(string.Join("\n", SYSHelpCenter));
