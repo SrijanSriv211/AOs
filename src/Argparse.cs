@@ -9,6 +9,36 @@ class Argparse
     private List<string> help_list = new List<string>();
     private List<Argument> arguments = new List<Argument>();
 
+    private struct Argument
+    {
+        public string[] names { get; set; }
+        public string help { get; set; }
+        public bool required { get; set; }
+        public string default_value { get; set; }
+        public bool is_flag { get; set; }
+
+        public Argument(string[] names, string help, bool required, string default_value)
+        {
+            this.names = names;
+            this.help = help;
+            this.required = required;
+            this.default_value = default_value;
+            this.is_flag = (default_value == null);
+        }
+    }
+
+    public struct ParsedArgument
+    {
+        public string[] names { get; set; }
+        public string value { get; set; }
+
+        public ParsedArgument(string[] names, string value)
+        {
+            this.names = names;
+            this.value = value;
+        }
+    }
+
     public Argparse(string name, string description)
     {
         cmd_name = name;
@@ -17,20 +47,51 @@ class Argparse
         help_list.Add($"{cmd_name} -> {description}");
     }
 
-    public void Add(string name, string help="", bool required=false, string default_value=null)
+    public void Add(string[] names, string help="", bool required=false, string default_value=null)
     {
-        arguments.Add(new Argument(name, help, required, default_value));
+        arguments.Add(new Argument(names, help, required, default_value));
     }
 
     public List<ParsedArgument> Parse(string[] args)
     {
         List<ParsedArgument> parsed_args = new List<ParsedArgument>();
+        string[] arg_flags = { "--", "-", "/" };
+
         foreach (string arg in args)
         {
-            // code here.
+            if (arg_flags.Any(prefix => arg.StartsWith(prefix)))
+            {
+                List<string> names = arguments.SelectMany(i => i.names).ToList();
+
+                string name = names.Find(name => name==arg);
+                if (name == null)
+                {
+                    new Error($"Invalid argument: {arg}");
+                    return new List<ParsedArgument>();
+                }
+
+                else
+                {
+                    Console.WriteLine(name);
+                }
+            }
+
+            else
+                parsed_args.Add(new ParsedArgument(new string[] { arg }, null));
         }
 
-        return new List<ParsedArgument>();
+        return parsed_args;
+    }
+
+    private Argument FindMatchingArgument(string arg)
+    {
+        foreach (Argument argument in arguments)
+        {
+            if (argument.names.Contains(arg))
+                return argument;
+        }
+
+        return new Argument();
     }
 
     public void GetHelp(string name="")
@@ -62,13 +123,13 @@ class Argparse
 
     public static bool IsAskingForHelp(string arg)
     {
-        string[] help_flags = {"/?", "-h", "--help", "??"};
+        string[] help_flags = { "/?", "-h", "--help", "??" };
         return help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase);
     }
 
     public static bool IsAskingForHelp(string[] args)
     {
-        string[] help_flags = {"/?", "-h", "--help", "??"};
+        string[] help_flags = { "/?", "-h", "--help", "??" };
         foreach (string arg in args)
         {
             if (help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase))
@@ -76,37 +137,5 @@ class Argparse
         }
 
         return false;
-    }
-
-    public struct ParsedArgument
-    {
-        public string name { get; set; }
-        public string value { get; set; }
-        public string type { get; set; }
-
-        public ParsedArgument(string name, string value, string type)
-        {
-            this.name = name;
-            this.value = value;
-            this.type = type;
-        }
-    }
-
-    private struct Argument
-    {
-        public string name { get; set; }
-        public string help { get; set; }
-        public bool required { get; set; }
-        public string defaultvalue { get; set; }
-        public bool isflag { get; set; }
-
-        public Argument(string name, string help, bool required, string default_value)
-        {
-            this.name = name;
-            this.help = help;
-            this.required = required;
-            this.defaultvalue = default_value;
-            this.isflag = (default_value == null);
-        }
     }
 }
