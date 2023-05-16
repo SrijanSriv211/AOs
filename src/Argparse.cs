@@ -4,117 +4,109 @@ using System.Collections.Generic;
 
 class Argparse
 {
-    private string programName;
-    private string programDescription;
+    private string cmd_name = string.Empty;
+    private string cmd_desc = string.Empty;
+    private List<string> help_list = new List<string>();
     private List<Argument> arguments = new List<Argument>();
 
     public Argparse(string name, string description)
     {
-        programName = name;
-        programDescription = description;
+        cmd_name = name;
+        cmd_desc = description;
+
+        help_list.Add($"{cmd_name} -> {description}");
     }
 
-    public void AddArgument(string name, string help = "", bool required = false, string defaultValue = null)
+    public void Add(string name, string help="", bool required=false, string default_value=null)
     {
-        arguments.Add(new Argument(name, help, required, defaultValue));
+        arguments.Add(new Argument(name, help, required, default_value));
     }
 
-    public Dictionary<string, string> Parse(string[] args)
+    public List<ParsedArgument> Parse(string[] args)
     {
-        var parsedArgs = new Dictionary<string, string>();
-
-        foreach (var argument in arguments)
+        List<ParsedArgument> parsed_args = new List<ParsedArgument>();
+        foreach (string arg in args)
         {
-            parsedArgs[argument.Name] = argument.DefaultValue;
+            // code here.
         }
 
-        List<string> freeArgs = new List<string>();
+        return new List<ParsedArgument>();
+    }
 
-        for (int i = 0; i < args.Length; i++)
+    public void GetHelp(string name="")
+    {
+        help_list.Sort();
+
+        if (Collection.String.IsEmpty(name))
         {
-            string arg = args[i];
-
-            if (arg.StartsWith("-"))
+            Console.WriteLine("Type `help <command-name>` for more information on a specific command");
+            foreach (string item in help_list)
             {
-                string argName = arg.TrimStart('-');
-                var argument = arguments.FirstOrDefault(a => a.MatchesName(argName));
-
-                if (argument != null)
-                {
-                    if (argument.IsFlag)
-                    {
-                        parsedArgs[argument.Name] = "true";
-                    }
-                    else
-                    {
-                        if (i + 1 < args.Length)
-                        {
-                            parsedArgs[argument.Name] = args[++i];
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Missing value for argument: {arg}");
-                        }
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException($"Invalid argument: {arg}");
-                }
+                string[] parts = item.Split(' ');
+                string command = parts[0];
+                string description = string.Join(" ", parts.Skip(2));
+                Console.WriteLine("{0,-15} -> {1}", command, description);
             }
+        }
+
+        else
+        {
+            var matches = help_list.Where(s => s.StartsWith(name));
+            if (matches.Any())
+                Console.WriteLine(string.Join("\n", matches));
+
             else
-            {
-                freeArgs.Add(arg);
-            }
-        }
-
-        foreach (var argument in arguments)
-        {
-            if (argument.Required && !parsedArgs.ContainsKey(argument.Name))
-            {
-                throw new ArgumentException($"Missing required argument: {argument.Name}");
-            }
-        }
-
-        parsedArgs["__free_args__"] = string.Join(" ", freeArgs);
-
-        return parsedArgs;
-    }
-
-    public void PrintHelp()
-    {
-        Console.WriteLine($"Description:\n{programName} -> {programDescription}\n");
-        Console.WriteLine($"Usage: {programName} [OPTIONS]");
-        Console.WriteLine();
-        Console.WriteLine("Options:");
-
-        foreach (var argument in arguments)
-        {
-            string defaultValue = argument.DefaultValue != null ? $" (default: {argument.DefaultValue})" : "";
-            Console.WriteLine($"-{argument.Name}: {argument.Help}{defaultValue}");
+                new Error($"No information for command '{name}'");
         }
     }
 
-    private class Argument
+    public static bool IsAskingForHelp(string arg)
     {
-        public string Name { get; }
-        public string Help { get; }
-        public bool Required { get; }
-        public string DefaultValue { get; }
-        public bool IsFlag { get; }
+        string[] help_flags = {"/?", "-h", "--help", "??"};
+        return help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase);
+    }
 
-        public Argument(string name, string help, bool required, string defaultValue)
+    public static bool IsAskingForHelp(string[] args)
+    {
+        string[] help_flags = {"/?", "-h", "--help", "??"};
+        foreach (string arg in args)
         {
-            Name = name;
-            Help = help;
-            Required = required;
-            DefaultValue = defaultValue;
-            IsFlag = string.IsNullOrEmpty(defaultValue);
+            if (help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase))
+                return true;
         }
 
-        public bool MatchesName(string argName)
+        return false;
+    }
+
+    public struct ParsedArgument
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+        public string type { get; set; }
+
+        public ParsedArgument(string name, string value, string type)
         {
-            return Name.Equals(argName, StringComparison.OrdinalIgnoreCase);
+            this.name = name;
+            this.value = value;
+            this.type = type;
+        }
+    }
+
+    private struct Argument
+    {
+        public string name { get; set; }
+        public string help { get; set; }
+        public bool required { get; set; }
+        public string defaultvalue { get; set; }
+        public bool isflag { get; set; }
+
+        public Argument(string name, string help, bool required, string default_value)
+        {
+            this.name = name;
+            this.help = help;
+            this.required = required;
+            this.defaultvalue = default_value;
+            this.isflag = (default_value == null);
         }
     }
 }
