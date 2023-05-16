@@ -56,28 +56,80 @@ class Argparse
     {
         List<ParsedArgument> parsed_args = new List<ParsedArgument>();
         string[] arg_flags = { "--", "-", "/" };
+        string value = string.Empty;
 
-        foreach (string arg in args)
+        for (int i = 0; i < args.Length; i++)
         {
+            string arg = args[i];
             if (arg_flags.Any(prefix => arg.StartsWith(prefix)))
             {
                 List<string> names = arguments.SelectMany(i => i.names).ToList();
-
                 string name = names.Find(name => name==arg);
-                if (name == null)
+
+                if (Collection.String.IsEmpty(name))
                 {
-                    new Error($"Invalid argument: {arg}");
+                    Error.Args(arg);
                     return new List<ParsedArgument>();
                 }
 
                 else
                 {
-                    Console.WriteLine(name);
+                    foreach (var argument in arguments)
+                    {
+                        if (argument.is_flag && name == arg)
+                            value = "true";
+
+                        else if (!argument.is_flag && name == arg)
+                        {
+                            List<string> list = args.ToList();
+                            int index = list.IndexOf(name);
+                            if (index != -1 && index < args.Length-1)
+                            {
+                                if (!arg_flags.Any(prefix => args[index + 1].StartsWith(prefix)))
+                                    value = args[index + 1];
+
+                                else if (argument.default_value != null)
+                                    parsed_args.Add(new ParsedArgument(argument.names, argument.default_value));
+
+                                else
+                                {
+                                    new Error($"Missing value for argument: {name}");
+                                    return new List<ParsedArgument>();
+                                }
+                            }
+
+                            else
+                            {
+                                new Error($"Missing value for argument: {name}");
+                                return new List<ParsedArgument>();
+                            }
+                        }
+
+                        else
+                            value = "false";
+
+                        parsed_args.Add(new ParsedArgument(names.ToArray(), value));
+                    }
                 }
             }
 
             else
                 parsed_args.Add(new ParsedArgument(new string[] { arg }, null));
+        }
+
+        foreach (var argument in arguments)
+        {
+            if (argument.required)
+            {
+                foreach (var i in parsed_args)
+                {
+                    if (i.names != argument.names)
+                    {
+                        new Error($"Missing required argument: {argument.names}");
+                        return new List<ParsedArgument>();
+                    }
+                }
+            }
         }
 
         return parsed_args;
