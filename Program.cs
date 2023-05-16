@@ -16,12 +16,12 @@ void Startup()
     var parsedArgs = parser.Parse(argv);
 
     // Process parsed arguments
-    // foreach (var parsedArg in parsedArgs)
-    // {
-    //     Console.WriteLine($"Argument: {string.Join(", ", parsedArg.names)}");
-    //     Console.WriteLine($"Value: {parsedArg.value}");
-    //     Console.WriteLine();
-    // }
+    foreach (var parsedArg in parsedArgs)
+    {
+        Console.WriteLine($"Argument: {string.Join(", ", parsedArg.names)}");
+        Console.WriteLine($"Value: {parsedArg.value}");
+        Console.WriteLine();
+    }
 
 
 
