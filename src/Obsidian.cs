@@ -145,7 +145,7 @@ class Obsidian
             else if (i.StartsWith("-"))
             {
                 PromptMessage = default_prompt;
-                Error.Args(i);
+                Error.UnrecognizedArgs(i);
                 break;
             }
 

@@ -17,12 +17,12 @@ public class Error
     }
 
     // Unrecognized arguments.
-    public static void Args(string[] _Flag)
+    public static void UnrecognizedArgs(string[] _Flag)
     {
         new Error($"Unrecognized arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
     }
 
-    public static void Args(string _Flag)
+    public static void UnrecognizedArgs(string _Flag)
     {
         new Error($"Unrecognized arguments: {_Flag}");
     }
