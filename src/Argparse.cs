@@ -47,7 +47,7 @@ class Argparse
         help_list.Add($"{cmd_name} -> {description}");
     }
 
-    public void Add(string[] names, string help="", bool required=false, string default_value=null)
+    public void Add(string[] names, string help="", bool required=false, string default_value="")
     {
         arguments.Add(new Argument(names, help, required, default_value));
     }
@@ -63,58 +63,65 @@ class Argparse
             string arg = args[i];
             if (arg_flags.Any(prefix => arg.StartsWith(prefix)))
             {
-                // List<string> names = arguments.SelectMany(i => i.names).ToList();
-                // string name = names.Find(name => name==arg);
+                foreach (var argument in arguments)
+                {
+                    foreach (var name in argument.names)
+                    {
+                        if (name == arg && argument.is_flag)
+                            value = "true";
 
-                // if (Collection.String.IsEmpty(name))
-                // {
-                //     Error.Args(arg);
-                //     return new List<ParsedArgument>();
-                // }
+                        else if (name == arg && !argument.is_flag)
+                        {
+                            if (i != -1 && i < args.Length-1 && !arg_flags.Any(prefix => args[i+1].StartsWith(prefix)))
+                            {
+                                value = args[i+1];
+                                i++;
+                            }
 
-                // else
-                // {
-                //     foreach (var argument in arguments)
-                //     {
-                //         if (argument.is_flag && name == arg)
-                //             value = "true";
+                            else
+                            {
+                                new Error($"Missing value for argument: {name}");
+                                return new List<ParsedArgument>();
+                            }
+                        }
 
-                //         else if (!argument.is_flag && name == arg)
-                //         {
-                //             List<string> list = args.ToList();
-                //             int index = list.IndexOf(name);
-                //             if (index != -1 && index < args.Length-1)
-                //             {
-                //                 if (!arg_flags.Any(prefix => args[index + 1].StartsWith(prefix)))
-                //                     value = args[index + 1];
+                        else
+                            value = "false";
 
-                //                 else if (argument.default_value != null)
-                //                     parsed_args.Add(new ParsedArgument(argument.names, argument.default_value));
-
-                //                 else
-                //                 {
-                //                     new Error($"Missing value for argument: {name}");
-                //                     return new List<ParsedArgument>();
-                //                 }
-                //             }
-
-                //             else
-                //             {
-                //                 new Error($"Missing value for argument: {name}");
-                //                 return new List<ParsedArgument>();
-                //             }
-                //         }
-
-                //         else
-                //             value = "false";
-
-                //         parsed_args.Add(new ParsedArgument(names.ToArray(), value));
-                    // }
-                // }
+                        parsed_args.Add(new ParsedArgument(argument.names.ToArray(), value));
+                        break;
+                    }
+                }
             }
 
             else
                 parsed_args.Add(new ParsedArgument(new string[] { arg }, null));
+        }
+
+        List<string> missing_arg_list = new List<string>();
+        foreach (var argument in arguments)
+        {
+            bool is_argument_found = false;
+            foreach (var arg in parsed_args)
+            {
+                if (arg.names.SequenceEqual(argument.names))
+                {
+                    is_argument_found = true;
+                    break;
+                }
+            }
+
+            if (argument.required && !is_argument_found)
+                missing_arg_list.Add(argument.names[0]);
+
+            else if (!argument.required && !is_argument_found)
+                parsed_args.Add(new ParsedArgument(argument.names.ToArray(), argument.default_value));
+        }
+
+        if (missing_arg_list.Count > 0)
+        {
+            new Error($"Missing required argument: {string.Join(", ", missing_arg_list)}");
+            return new List<ParsedArgument>();
         }
 
         return parsed_args;

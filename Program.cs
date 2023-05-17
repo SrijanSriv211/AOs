@@ -10,7 +10,7 @@ void Startup()
 {
     string[] argv = Collection.Array.Filter(args);
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-    parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments.", required: true);
+    parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments.", required: true, default_value: null);
     parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string.");
 
     var parsedArgs = parser.Parse(argv);
