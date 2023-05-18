@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Security.Principal;
 using System.Collections.Generic;
 
@@ -31,6 +33,8 @@ void Startup()
             else if (arg.names.Contains("-c"))
             {
                 AOs.Entrypoint(false);
+                run(AOs, AOs.TakeInput(arg.value));
+                return;
             }
 
             else
@@ -59,35 +63,15 @@ void Startup()
         }
     }
 
-    // if (Argparse.IsAskingForHelp(argv))
-    //     parser.PrintHelp();
-
-    // else if (Collection.Array.IsEmpty(argv))
-    //     AOs.Entrypoint();
-
-    // else
-    // {
-    //     foreach (var arg in parsed_args)
-    //     {
-    //         if (arg.names[0] == "-c")
-    //         {
-    //             Console.WriteLine(arg.value);
-    //             // AOs.Entrypoint(false);
-    //         }
-
-    //         else
-    //         {
-    //             // Console.WriteLine(arg.names[0]);
-    //         }
-    //     }
-    // }
+    while (true)
+        run(AOs, AOs.TakeInput());
 }
 
-void run(Obsidian AOs, Dictionary<string, string[]> input)
+void run(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     try
     {
-        // main(AOs, input);
+        main(AOs, input);
     }
 
     catch (System.Exception err)
@@ -97,13 +81,15 @@ void run(Obsidian AOs, Dictionary<string, string[]> input)
     }
 }
 
-// shout "Hello world!";1+3;"1+2"
-foreach (KeyValuePair<string, string[]> item in AOs.TakeInput())
+void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
-    string cmd = item.Key;
-    string[] arg = item.Value;
+    // shout "Hello world!";1+3;"1+2"
+    foreach (var i in input)
+    {
+        Console.WriteLine(i.cmd);
+        foreach (string arg in i.args)
+            Console.WriteLine(arg);
 
-    Console.WriteLine(cmd);
-    for (int i = 0; i < arg.Length; i++)
-        Console.WriteLine(arg[i]);
+        Console.WriteLine();
+    }
 }

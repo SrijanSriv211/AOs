@@ -17,10 +17,9 @@ class Obsidian
         Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(new string[]{"-r"}) : prompt;
     }
 
-    public Dictionary<string, string[]> TakeInput(string input = "")
-    // public (string cmd, string[] args) TakeInput(string input = "")
+    public List<(string cmd, string[] args)> TakeInput(string input = "")
     {
-        Dictionary<string, string[]> output = new Dictionary<string, string[]>();
+        List<(string cmd, string[] args)> output = new List<(string cmd, string[] args)>();
         string CMD = input.Trim();
 
         if (Collection.String.IsEmpty(CMD))
@@ -29,7 +28,7 @@ class Obsidian
             CMD = Console.ReadLine().Trim();
 
             if (Collection.String.IsEmpty(CMD))
-                return new Dictionary<string, string[]>(); // return (cmd: "", args: new string[0])
+                return new List<(string cmd, string[] args)>(); // (cmd: "", args: new string[0])
 
             if (CMD[0] == '_')
                 CMD = CMD.Substring(1).Trim();
@@ -48,7 +47,7 @@ class Obsidian
             if (!Collection.Array.IsEmpty(input_args) && input_args.FirstOrDefault() == input_cmd)
                 input_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
 
-            output.Add(input_cmd, input_args);
+            output.Add((input_cmd, input_args));
         }
 
         return output;
