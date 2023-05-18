@@ -21,14 +21,22 @@ void Startup()
     else if (Collection.Array.IsEmpty(argv))
         AOs.Entrypoint();
 
-    // else
-    // {
-    //     foreach (var item in parsed_args)
-    //     {
-    //         if (item.names[0] == "-c")
-    //             AOs.Entrypoint(false);
-    //     }
-    // }
+    else
+    {
+        foreach (var arg in parsed_args)
+        {
+            if (arg.names[0] == "-c")
+            {
+                Console.WriteLine(arg.value);
+                // AOs.Entrypoint(false);
+            }
+
+            else
+            {
+                // Console.WriteLine(arg.names[0]);
+            }
+        }
+    }
 }
 
 // shout "Hello world!";1+3;"1+2"
