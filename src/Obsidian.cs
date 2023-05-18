@@ -67,7 +67,6 @@ class Obsidian
 
         Shell.RootPackages();
         Shell.AskPass();
-        // Shell.Scan();
     }
 
     public void Credits()
