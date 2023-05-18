@@ -113,12 +113,13 @@ class Argparse
 
     public void PrintHelp()
     {
-        Console.WriteLine(cmd_name);
+        new TerminalColor("Name:", ConsoleColor.Yellow);
+        Console.WriteLine($"{cmd_name}\n");
         new TerminalColor("Description:", ConsoleColor.Cyan);
         Console.WriteLine($"{cmd_desc}\n");
-        new TerminalColor("Usage: ", ConsoleColor.Yellow, false);
+        new TerminalColor("Usage:", ConsoleColor.Blue);
         Console.WriteLine($"{cmd_name} [OPTIONS]\n");
-        new TerminalColor("Options:", ConsoleColor.Blue);
+        new TerminalColor("Options:", ConsoleColor.Magenta);
 
         foreach (var argument in arguments)
         {

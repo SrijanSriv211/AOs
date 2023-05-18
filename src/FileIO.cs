@@ -38,10 +38,18 @@ class FileIO
                 File.Delete(Filepath);
         }
 
-        public static string Read(string Filepath)
+        public static string ReadAllText(string Filepath)
         {
             if (File.Exists(Filepath))
                 return File.ReadAllText(Filepath);
+
+            return null;
+        }
+
+        public static string[] ReadAllLines(string Filepath)
+        {
+            if (File.Exists(Filepath))
+                return File.ReadAllLines(Filepath);
 
             return null;
         }

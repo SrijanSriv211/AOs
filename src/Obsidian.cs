@@ -6,8 +6,6 @@ using System.Collections.Generic;
 class Obsidian
 {
     public string Version = String.Format("AOs 2023 [Version 2.5]");
-    public string[] PromptPreset = {"-r"};
-
     public static dynamic rootDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/');
 
     private string Title = "AOs";
@@ -16,13 +14,15 @@ class Obsidian
     public Obsidian(string title="AOs", string prompt="$ ")
     {
         Title = title;
-        Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(PromptPreset) : prompt;
+        Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(new string[]{"-r"}) : prompt;
     }
 
     public Dictionary<string, string[]> TakeInput(string input = "")
+    // public (string cmd, string[] args) TakeInput(string input = "")
     {
         Dictionary<string, string[]> output = new Dictionary<string, string[]>();
         string CMD = input.Trim();
+
         if (Collection.String.IsEmpty(CMD))
         {
             new TerminalColor(Prompt, ConsoleColor.White, false);
@@ -68,7 +68,7 @@ class Obsidian
 
         Shell.RootPackages();
         Shell.AskPass();
-        Shell.Scan();
+        // Shell.Scan();
     }
 
     public void Credits()
@@ -96,58 +96,70 @@ class Obsidian
         new TerminalColor(string.Join("\n", CreditCenter), ConsoleColor.White);
     }
 
-    //TODO: Re-write this function using the new argparse class.
     public string SetPrompt(string[] flags, string default_prompt="$ ")
     {
-        string PromptMessage = "";
-        foreach (string i in flags)
+        var parser = new Argparse("prompt", "Specifies a new command prompt.");
+
+        parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
+        parser.Add(new string[] {"-r", "--reset", "--restore", "--default"}, "$ (dollar sign, reset the prompt)", is_flag: true);
+
+        parser.Add(new string[] {"-s", "--space"}, "(space)", is_flag: true);
+        parser.Add(new string[] {"-v", "--version"}, "Current AOs version", is_flag: true);
+
+        parser.Add(new string[] {"-t", "--time"}, "Current time", is_flag: true);
+        parser.Add(new string[] {"-d", "--date"}, "Current date", is_flag: true);
+        parser.Add(new string[] {"-p", "--path"}, "Current path", is_flag: true);
+        parser.Add(new string[] {"-n", "--drive"}, "Current drive", is_flag: true);
+
+        var parsed_args = parser.Parse(flags);
+        string new_prompt = string.Empty;
+
+        if (Collection.Array.IsEmpty(flags))
+            return default_prompt;
+
+        else
         {
-            if (Collection.String.IsString(i)) PromptMessage += Collection.String.Strings(i);
-            else if (Argparse.IsAskingForHelp(i.ToLower()))
+            foreach (var arg in parsed_args)
             {
-                string[] PromptHelpCenter = {
-                    "Specifies a new command prompt.",
-                    "Usage: prompt [Option]",
-                    "",
-                    "Options:",
-                    "-h, --help      -> Displays the help message.",
-                    "-r, --reset     -> $ (dollar sign, reset the prompt)",
-                    "-s, --space     -> (space)",
-                    "-v, --version   -> Current AOs version",
-                    "-t, --time      -> Current time",
-                    "-d, --date      -> Current date",
-                    "-p, --path      -> Current path",
-                    "-n, --drive     -> Current drive"
-                };
+                if (Argparse.IsAskingForHelp(arg.names))
+                {
+                    parser.PrintHelp();
+                    return default_prompt;
+                }
 
-                Console.WriteLine(string.Join("\n", PromptHelpCenter));
-                PromptMessage = default_prompt;
-                break;
+                else if (arg.names.Contains("-r"))
+                    return default_prompt;
+
+                else if (arg.names.Contains("-v"))
+                    new_prompt += new Obsidian().Version;
+
+                else if (arg.names.Contains("-s"))
+                    new_prompt += " ";
+
+                else if (arg.names.Contains("-t"))
+                    new_prompt += DateTime.Now.ToString("HH:mm:ss");
+
+                else if (arg.names.Contains("-d"))
+                    new_prompt += DateTime.Now.ToString("dd-MM-yyyy");
+
+                else if (arg.names.Contains("-p"))
+                    new_prompt += Directory.GetCurrentDirectory();
+
+                else if (arg.names.Contains("-n"))
+                    new_prompt += Path.GetPathRoot(Environment.SystemDirectory);
+
+                else if (arg.names.Any(name => name.StartsWith("-")))
+                {
+                    Error.UnrecognizedArgs(arg.names);
+                    return default_prompt;
+                }
+
+                else
+                    new_prompt += arg;
             }
-
-            else if (i.ToLower() == "-r" || i.ToLower() == "--reset" || i.ToLower() == "--restore" || i.ToLower() == "--default")
-            {
-                PromptMessage = "$ ";
-                break;
-            }
-
-            else if (i.ToLower() == "-v") PromptMessage += new Obsidian().Version;
-            else if (i.ToLower() == "-s") PromptMessage += " ";
-            else if (i.ToLower() == "-t") PromptMessage += DateTime.Now.ToString("HH:mm:ss");
-            else if (i.ToLower() == "-d") PromptMessage += DateTime.Now.ToString("dd-MM-yyyy");
-            else if (i.ToLower() == "-p") PromptMessage += Directory.GetCurrentDirectory();
-            else if (i.ToLower() == "-n") PromptMessage += Path.GetPathRoot(Environment.SystemDirectory);
-            else if (i.StartsWith("-"))
-            {
-                PromptMessage = default_prompt;
-                Error.UnrecognizedArgs(i);
-                break;
-            }
-
-            else PromptMessage += i;
         }
 
-        return PromptMessage;
+        return new_prompt;
     }
 }
 
@@ -156,17 +168,17 @@ class History
     public static void Set(string cmd)
     {
         string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        File.AppendAllText($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'");
+        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'");
     }
 
     public static void Get()
     {
-        Console.WriteLine(File.ReadAllText($"{Obsidian.rootDir}\\Files.x72\\root\\.history"));
+        Console.WriteLine(FileIO.FileSystem.ReadAllText($"{Obsidian.rootDir}\\Files.x72\\root\\.history"));
     }
 
     public static void Clear()
     {
-        File.Delete($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
+        FileIO.FileSystem.Delete($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
     }
 }
 

@@ -15,27 +15,85 @@ void Startup()
 
     var parsed_args = parser.Parse(argv);
 
-    if (Argparse.IsAskingForHelp(argv))
-        parser.PrintHelp();
-
-    else if (Collection.Array.IsEmpty(argv))
+    if (Collection.Array.IsEmpty(argv))
         AOs.Entrypoint();
 
     else
     {
         foreach (var arg in parsed_args)
         {
-            if (arg.names[0] == "-c")
+            if (Argparse.IsAskingForHelp(arg.names))
             {
-                Console.WriteLine(arg.value);
-                // AOs.Entrypoint(false);
+                parser.PrintHelp();
+                return;
+            }
+
+            else if (arg.names.Contains("-c"))
+            {
+                AOs.Entrypoint(false);
             }
 
             else
             {
-                // Console.WriteLine(arg.names[0]);
+                foreach (string filename in arg.names)
+                {
+                    if (!filename.EndsWith(".aos"))
+                    {
+                        new Error($"{filename}: File format not recognized.");
+                        return;
+                    }
+
+                    else if (!File.Exists(filename))
+                    {
+                        new Error($"{filename}: No such file or directory.");
+                        return;
+                    }
+
+                    else
+                    {
+                        foreach (string current_line in FileIO.FileSystem.ReadAllLines(filename))
+                            run(AOs, AOs.TakeInput(current_line));
+                    }
+                }
             }
         }
+    }
+
+    // if (Argparse.IsAskingForHelp(argv))
+    //     parser.PrintHelp();
+
+    // else if (Collection.Array.IsEmpty(argv))
+    //     AOs.Entrypoint();
+
+    // else
+    // {
+    //     foreach (var arg in parsed_args)
+    //     {
+    //         if (arg.names[0] == "-c")
+    //         {
+    //             Console.WriteLine(arg.value);
+    //             // AOs.Entrypoint(false);
+    //         }
+
+    //         else
+    //         {
+    //             // Console.WriteLine(arg.names[0]);
+    //         }
+    //     }
+    // }
+}
+
+void run(Obsidian AOs, Dictionary<string, string[]> input)
+{
+    try
+    {
+        // main(AOs, input);
+    }
+
+    catch (System.Exception err)
+    {
+        new Error(err.Message);
+        return;
     }
 }
 

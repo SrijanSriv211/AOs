@@ -48,7 +48,7 @@ class Shell
         {
             Console.Write("Enter password: ");
             string Password = Console.ReadLine();
-            if (Password != FileIO.FileSystem.Read(Path))
+            if (Password != FileIO.FileSystem.ReadAllText(Path))
                 new Error("Incorrect password.");
 
             else
@@ -100,21 +100,6 @@ class Shell
 
     public static void SYSRestore()
     {
-        Console.WriteLine("Restoring.");
-        Console.Write("Using 'Sysfail\\RECOVERY' to restore.");
-        if (File.Exists($"{Obsidian.rootDir}\\Sysfail\\rp\\safe.exe") && Directory.Exists($"{Obsidian.rootDir}\\Sysfail\\RECOVERY"))
-        {
-            CommandPrompt($"call \"{Obsidian.rootDir}\\Sysfail\\rp\\safe.exe\" -r \"{Obsidian.rootDir}\"");
-            Console.WriteLine("Restore successful.");
-        }
-
-        else
-        {
-            string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
-            FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
-
-            new Error("\n" + "Cannot restore this PC." + "\n" + "RECOVERY DIRECTORY is missing or corrupted.");
-            Environment.Exit(0);
-        }
+        //TODO: improve this system by download the latest build zip file from the internet, unzipping it and replacing by all missing/corrupted files.
     }
 }
