@@ -17,9 +17,34 @@ void Startup()
 
     var parsed_args = parser.Parse(argv);
 
+    // If no arguments are passed.
     if (Collection.Array.IsEmpty(argv))
-        AOs.Entrypoint();
+    {
+        string startlist_path = Path.Combine(Obsidian.rootDir, "Files.x72\\root\\StartUp\\.startlist");
+        bool isEmpty = Collection.String.IsEmpty( FileIO.FileSystem.ReadAllText(startlist_path) );
 
+        if (File.Exists(startlist_path) && !isEmpty)
+        {
+            AOs.Entrypoint(false);
+            foreach (string app in File.ReadLines(startlist_path))
+            {
+                // Break the loop if "." is detected, as all apps after the dot are marked as disabled.
+                if (app == ".")
+                    break;
+
+                else if (app.EndsWith(".aos"))
+                {
+                    foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), app) ))
+                        run(AOs, AOs.TakeInput(current_line));
+                }
+            }
+        }
+
+        else
+            AOs.Entrypoint();
+    }
+
+    // Execute AOs on the basis of the command-line arguments passed.
     else
     {
         foreach (var arg in parsed_args)

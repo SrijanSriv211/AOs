@@ -103,14 +103,33 @@ class Lexer
                 tok = "";
             }
 
+            else if (tok == "#")
+                break;
+
+            else if (line[i].ToString() == ";")
+            {
+                tokens.Add(tok.Substring(0, tok.Length-1));
+                tokens.Add(line[i].ToString());
+                tok = "";
+            }
+
+            else if (tok == ">" || tok == "@" || tok == "!")
+            {
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            else if (tok == "+" || tok == "-" || tok == "*" || tok == "/")
+            {
+                tokens.Add(tok);
+                tok = "";
+            }
+
             else if (Collection.String.IsEmpty(tok[tok.Length-1].ToString()))
             {
                 tokens.Add(tok.Trim());
                 tok = "";
             }
-
-            else if (tok == "#")
-                break;
 
             else if (isInt(tok))
             {
@@ -195,18 +214,6 @@ class Lexer
                 if (i >= line.Length)
                     Error.Syntax("Unterminated string literal");
 
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (tok == "+" || tok == "-" || tok == "*" || tok == "/")
-            {
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (tok == ">" || tok == "@" || tok == "!" || tok == ";")
-            {
                 tokens.Add(tok);
                 tok = "";
             }
