@@ -40,14 +40,15 @@ class Shell
 
     public static void AskPass()
     {
-        if (!File.Exists($"{Obsidian.rootDir}\\Files.x72\\root\\User.set"))
+        string Path = $"{Obsidian.rootDir}\\Files.x72\\root\\User.set";
+        if (!File.Exists(Path))
             return;
 
         while (true)
         {
             Console.Write("Enter password: ");
             string Password = Console.ReadLine();
-            if (Password != File.ReadAllText($"{Obsidian.rootDir}\\Files.x72\\root\\User.set"))
+            if (Password != FileIO.FileSystem.Read(Path))
                 new Error("Incorrect password.");
 
             else
@@ -59,11 +60,14 @@ class Shell
     {
         List<string> Errors = new List<string>();
         string[] CheckFor = {
-                    $"{Obsidian.rootDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
-                    $"{Obsidian.rootDir}\\Sysfail\\rp\\safe.exe", $"{Obsidian.rootDir}\\Sysfail\\RECOVERY",
-                    $"{Obsidian.rootDir}\\Files.x72\\root\\Config.set", $"{Obsidian.rootDir}\\Sysfail\\rp",
-                    $"{Obsidian.rootDir}\\Files.x72\\root\\ext\\ply.exe", $"{Obsidian.rootDir}\\Files.x72\\root\\ext\\wiki.exe"
-                };
+            $"{Obsidian.rootDir}\\Sysfail\\RECOVERY",
+            $"{Obsidian.rootDir}\\Files.x72\\root\\Config.set",
+            $"{Obsidian.rootDir}\\Sysfail\\rp",
+            $"{Obsidian.rootDir}\\Sysfail\\rp\\safe.exe",
+            $"{Obsidian.rootDir}\\Files.x72\\root\\ext\\ply.exe",
+            $"{Obsidian.rootDir}\\Files.x72\\root\\ext\\wiki.exe",
+            $"{Obsidian.rootDir}\\SoftwareDistribution\\UpdatePackages\\UPR.exe",
+        };
 
         // Scan the system.
         for (int i = 0; i < CheckFor.Length; i++)
@@ -79,7 +83,7 @@ class Shell
         {
             string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
 
-            File.AppendAllText($"{Obsidian.rootDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", MissingFiles)}] file(s) were missing.\n");
+            FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, [{string.Join(", ", MissingFiles)}] file(s) were missing.\n");
 
             new Error($"{MissingFiles.Length} Errors were Found!\n{string.Join("\n", MissingFiles)}" + "\n" + "Your PC ran into a problem :(");
             Console.Write("Press any Key to Continue.");
@@ -107,7 +111,7 @@ class Shell
         else
         {
             string NoteCurrentTime = DateTime.Now.ToString("[dd-MM-yyyy], [HH:mm:ss]");
-            File.AppendAllText($"{Obsidian.rootDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
+            FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\tmp\\Crashreport.log", $"{NoteCurrentTime}, RECOVERY DIRECTORY is missing or corrupted.\n");
 
             new Error("\n" + "Cannot restore this PC." + "\n" + "RECOVERY DIRECTORY is missing or corrupted.");
             Environment.Exit(0);

@@ -93,9 +93,10 @@ class Obsidian
             "Type 'help' to get information about all supported command."
         };
 
-        Console.WriteLine(string.Join("\n", CreditCenter));
+        new TerminalColor(string.Join("\n", CreditCenter), ConsoleColor.White);
     }
 
+    //TODO: Re-write this function using the new argparse class.
     public string SetPrompt(string[] flags, string default_prompt="$ ")
     {
         string PromptMessage = "";
