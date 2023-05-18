@@ -113,25 +113,12 @@ class Argparse
 
     public void PrintHelp()
     {
-        var Color = Console.ForegroundColor;
-
         Console.WriteLine(cmd_name);
-
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"Description:");
-        Console.ForegroundColor = Color;
-        Console.WriteLine($"{cmd_desc}");
-        Console.WriteLine();
-
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write($"Usage: ");
-        Console.ForegroundColor = Color;
-        Console.WriteLine($"{cmd_name} [OPTIONS]");
-        Console.WriteLine();
-
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.WriteLine("Options:");
-        Console.ForegroundColor = Color;
+        new TerminalColor("Description:", ConsoleColor.Cyan);
+        Console.WriteLine($"{cmd_desc}\n");
+        new TerminalColor("Usage: ", ConsoleColor.Yellow, false);
+        Console.WriteLine($"{cmd_name} [OPTIONS]\n");
+        new TerminalColor("Options:", ConsoleColor.Blue);
 
         foreach (var argument in arguments)
         {

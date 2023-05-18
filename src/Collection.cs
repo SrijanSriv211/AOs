@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-public class Collection
+class Collection
 {
     public class String
     {

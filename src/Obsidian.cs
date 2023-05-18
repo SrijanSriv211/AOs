@@ -5,20 +5,18 @@ using System.Collections.Generic;
 
 class Obsidian
 {
-    public string Version = String.Format("AOs 2023 [Version 2.4]");
+    public string Version = String.Format("AOs 2023 [Version 2.5]");
     public string[] PromptPreset = {"-r"};
 
     public static dynamic rootDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/');
 
     private string Title = "AOs";
     private string Prompt = "";
-    // private Readline Terminal = new Readline();
 
     public Obsidian(string title="AOs", string prompt="$ ")
     {
         Title = title;
         Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(PromptPreset) : prompt;
-        // Terminal = new Readline(Prompt);
     }
 
     public Dictionary<string, string[]> TakeInput(string input = "")
@@ -27,9 +25,9 @@ class Obsidian
         string CMD = input.Trim();
         if (Collection.String.IsEmpty(CMD))
         {
-            // CMD = Terminal.input();
-            Console.Write(Prompt);
+            new TerminalColor(Prompt, ConsoleColor.White, false);
             CMD = Console.ReadLine().Trim();
+
             if (Collection.String.IsEmpty(CMD))
                 return new Dictionary<string, string[]>(); // return (cmd: "", args: new string[0])
 
@@ -38,7 +36,7 @@ class Obsidian
         }
 
         // Set history.
-        // History.Set(CMD);
+        History.Set(CMD);
 
         // Some lexer stuff.
         List<List<string>> ListOfToks = new Lexer(CMD).Tokens;
@@ -59,11 +57,7 @@ class Obsidian
     public void ClearConsole()
     {
         Console.Clear();
-
-        var Color = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine(Version);
-        Console.ForegroundColor = Color;
+        new TerminalColor(Version, ConsoleColor.Yellow);
     }
 
     public void Entrypoint(bool clear=true)
@@ -72,9 +66,9 @@ class Obsidian
         if (clear)
             ClearConsole();
 
-        // Shell.RootPackages();
-        // Shell.AskPass();
-        // Shell.Scan();
+        Shell.RootPackages();
+        Shell.AskPass();
+        Shell.Scan();
     }
 
     public void Credits()
@@ -156,7 +150,7 @@ class Obsidian
     }
 }
 
-public class History
+class History
 {
     public static void Set(string cmd)
     {
@@ -172,5 +166,22 @@ public class History
     public static void Clear()
     {
         File.Delete($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
+    }
+}
+
+class TerminalColor
+{
+    public TerminalColor(string details, ConsoleColor Color, bool isNewLine=true)
+    {
+        var ForegroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = Color;
+
+        if (isNewLine)
+            Console.WriteLine(details);
+
+        else
+            Console.Write(details);
+
+        Console.ForegroundColor = ForegroundColor;
     }
 }

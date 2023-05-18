@@ -1,13 +1,10 @@
 using System;
 
-public class Error
+class Error
 {
     public Error(string details)
     {
-        var Color = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(details);
-        Console.ForegroundColor = Color;
+        new TerminalColor(details, ConsoleColor.Red);
     }
 
     // No arguments.
