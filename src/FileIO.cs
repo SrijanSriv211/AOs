@@ -43,7 +43,7 @@ class FileIO
             if (File.Exists(Filepath))
                 return File.ReadAllText(Filepath);
 
-            return null;
+            return string.Empty;
         }
 
         public static string[] ReadAllLines(string Filepath)
@@ -51,7 +51,7 @@ class FileIO
             if (File.Exists(Filepath))
                 return File.ReadAllLines(Filepath);
 
-            return null;
+            return new string[0];
         }
     }
 
