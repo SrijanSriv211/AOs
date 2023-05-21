@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Security.Principal;
 using System.Collections.Generic;
 
+Console.OutputEncoding = Encoding.UTF8;
 bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 Obsidian AOs = isAdmin ? new Obsidian("AOs (Administrator)") : new Obsidian();
 Startup();
@@ -113,19 +115,36 @@ void shout()
 
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
-    // shout "Hello world!";1+3;"1+2"
     Dictionary<string, Action> cmdlist = new Dictionary<string, Action>();
     cmdlist["shout"] = shout;
+
+    // var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
+    var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
+    parser.Add(new string[] {"_cls", "_clear"}, "Clear the screen", is_flag: true);
+    parser.Add(new string[] {"_about", "_info"}, "About AOs", is_flag: true);
+    parser.Add(new string[] {"_shutdown"}, "Shutdown the host machine", is_flag: true);
+    parser.Add(new string[] {"_restart"}, "Restart the host machine", is_flag: true);
+    parser.Add(new string[] {"_quit", "_exit"}, "Exit AOs", is_flag: true);
+    parser.Add(new string[] {"_reload", "_refresh"}, "Restart AOs", is_flag: true);
+
+    // var parsed_args = parser.Parse(argv);
+
+    // shout "Hello world!";1+3;"1+2"
     foreach (var i in input)
     {
-        if (Collection.String.IsEmpty(i.cmd)){}
-        else if (cmdlist.ContainsKey(i.cmd))
-            cmdlist[i.cmd]();
+        string lower_cmd = i.cmd.ToLower();
+
+        if (Collection.String.IsEmpty(lower_cmd)){}
+        else if (lower_cmd == "help" || Argparse.IsAskingForHelp(lower_cmd))
+            parser.GetHelp(i.args.FirstOrDefault(""));
+
+        else if (cmdlist.ContainsKey(lower_cmd))
+            cmdlist[lower_cmd]();
 
         else
         {
-            if (!Shell.SysEnvApps(i.cmd, i.args))
-                Error.Command(i.cmd);
+            if (!Shell.SysEnvApps(lower_cmd, i.args))
+                Error.Command(lower_cmd);
         }
     }
 }

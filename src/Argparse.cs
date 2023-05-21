@@ -54,19 +54,19 @@ class Argparse
     {
         cmd_name = name;
         cmd_desc = description;
-
-        help_list.Add($"{cmd_name} -> {description}");
     }
 
     public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false)
     {
         arguments.Add(new Argument(names, help, required, default_value, is_flag));
+
+        help_list.Add($"{names.FirstOrDefault()} -> {help}");
     }
 
     public List<ParsedArgument> Parse(string[] args)
     {
         List<ParsedArgument> parsed_args = new List<ParsedArgument>();
-        string[] arg_flags = { "--", "-", "/" };
+        string[] arg_flags = { "--", "-", "_", "/" };
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -135,6 +135,7 @@ class Argparse
     public void GetHelp(string name="")
     {
         help_list.Sort();
+        name = name.StartsWith('_') ? name.Substring(1) : name;
 
         if (Collection.String.IsEmpty(name))
         {
@@ -143,6 +144,8 @@ class Argparse
             {
                 string[] parts = item.Split(' ');
                 string command = parts[0];
+                command = command.StartsWith("_") ? command.Substring(1) : command;
+
                 string description = string.Join(" ", parts.Skip(2));
                 Console.WriteLine("{0,-15} -> {1}", command, description);
             }
@@ -150,9 +153,12 @@ class Argparse
 
         else
         {
-            var matches = help_list.Where(s => s.StartsWith(name));
+            IEnumerable<string> matches = help_list.Where(
+                cmd => cmd.StartsWith("_") ? cmd.Substring(1).StartsWith(name) : cmd.StartsWith(name)
+            );
+
             if (matches.Any())
-                Console.WriteLine(string.Join("\n", matches));
+                Console.WriteLine(string.Join("\n", matches.Select(each_match => each_match.StartsWith("_") ? each_match.Substring(1) : each_match)));
 
             else
                 new Error($"No information for command '{name}'");
