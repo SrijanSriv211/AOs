@@ -173,7 +173,7 @@ class History
     public static void Set(string cmd)
     {
         string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'\n");
+        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}\n'{cmd}'\n\n");
     }
 
     public static void Get()

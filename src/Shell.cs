@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ class Shell
         string lower_input = input_cmd.ToLower();
         if (File.Exists(lower_input))
         {
-            Console.WriteLine(CommandPrompt($"\"{lower_input}\" {string.Join(" ", input_args)}"));
+            CommandPrompt($"\"{lower_input}\" {string.Join(" ", input_args)}");
             return true;
         }
 
@@ -47,18 +48,14 @@ class Shell
                 string exe_name_with_ext = lower_input + ext;
                 if (!Collection.String.IsEmpty(LocateEXE(exe_name_with_ext)))
                 {
-                    Console.WriteLine(CommandPrompt($"\"{exe_name_with_ext}\" {string.Join(" ", input_args)}"));
+                    CommandPrompt($"\"{exe_name_with_ext}\" {string.Join(" ", input_args)}");
                     return true;
                 }
             }
 
             // If no exe is located then try running a cmd command.
             string output = CommandPrompt($"\"{lower_input}\" {string.Join(" ", input_args)}", Obsidian.default_else_shell);
-            if (Collection.String.IsEmpty(output))
-                return false;
-
-            Console.WriteLine(output);
-            return true;
+            return Collection.String.IsEmpty(output) ? false : true;
         }
     }
 
@@ -71,10 +68,33 @@ class Shell
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.Start();
 
+            StringBuilder output_builder = new StringBuilder();
+
+            // Event handler for capturing the output
+            DataReceivedEventHandler output_handler = (sender, e) =>
+            {
+                if (!Collection.String.IsEmpty(e.Data))
+                {
+                    output_builder.AppendLine(e.Data); // Append the output to the StringBuilder
+                    Console.WriteLine(e.Data); // Display the output in real-time
+                }
+            };
+
+            // Redirect and handle standard output
+            process.OutputDataReceived += output_handler;
+
+            process.Start();
+            
+            // Begin asynchronous reading of the standard output
+            process.BeginOutputReadLine();
+
+            // Wait for the process to exit
             process.WaitForExit();
-            return process.StandardOutput.ReadToEnd().Trim();
+
+            // Remove the event handler
+            process.OutputDataReceived -= output_handler;
+            return output_builder.ToString().Trim();
         }
     }
 
