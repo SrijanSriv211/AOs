@@ -106,15 +106,26 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
     }
 }
 
+void shout()
+{
+    Console.WriteLine("Hello world!");
+}
+
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     // shout "Hello world!";1+3;"1+2"
+    Dictionary<string, Action> cmdlist = new Dictionary<string, Action>();
+    cmdlist["shout"] = shout;
     foreach (var i in input)
     {
-        Console.WriteLine(i.cmd);
-        foreach (string arg in i.args)
-            Console.WriteLine(arg);
+        if (Collection.String.IsEmpty(i.cmd)){}
+        else if (cmdlist.ContainsKey(i.cmd))
+            cmdlist[i.cmd]();
 
-        Console.WriteLine();
+        else
+        {
+            if (!Shell.SysEnvApps(i.cmd, i.args))
+                Error.Command(i.cmd);
+        }
     }
 }

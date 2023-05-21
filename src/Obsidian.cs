@@ -6,6 +6,8 @@ using System.Collections.Generic;
 class Obsidian
 {
     public string Version = String.Format("AOs 2023 [Version 2.5]");
+
+    public static string default_else_shell = "cmd.exe";
     public static dynamic rootDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/');
 
     private string Title = "AOs";
@@ -42,12 +44,17 @@ class Obsidian
         foreach (var Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
-            string input_cmd = Collection.Array.Trim(Toks.ToArray()).FirstOrDefault() ?? "";
-            string[] input_args = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray())) ?? new string[0];
+            string input_cmd = Collection.Array.Trim(Toks.ToArray()).FirstOrDefault();
+            string[] input_args = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray()));
             if (!Collection.Array.IsEmpty(input_args) && input_args.FirstOrDefault() == input_cmd)
                 input_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
 
-            output.Add((input_cmd, input_args));
+            // Parse input.
+            if (input_cmd == "∞" || double.TryParse(input_cmd, out double _) || Collection.String.IsString(input_cmd))
+                Console.WriteLine(Collection.String.Strings(input_cmd));
+
+            else
+                output.Add((input_cmd, input_args));
         }
 
         return output;
@@ -166,7 +173,7 @@ class History
     public static void Set(string cmd)
     {
         string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'");
+        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}, '{cmd}'\n");
     }
 
     public static void Get()
