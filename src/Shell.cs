@@ -102,10 +102,9 @@ class Shell
     {
         string[] DirectoryList = new string[]
         {
-            "Files.x72\\etc",
+            "Files.x72\\etc\\PowerToys",
             "Files.x72\\root\\tmp",
-            "Files.x72\\root\\StartUp",
-            "SoftwareDistribution\\RestorePoint"
+            "Files.x72\\root\\StartUp"
         };
 
         string[] FileList = new string[]
