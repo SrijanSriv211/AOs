@@ -113,10 +113,16 @@ void shout()
     Console.WriteLine("Hello world!");
 }
 
+void exit()
+{
+    Environment.Exit(0);
+}
+
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     Dictionary<string, Action> cmdlist = new Dictionary<string, Action>();
     cmdlist["shout"] = shout;
+    cmdlist["exit"] = exit;
 
     // var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
@@ -126,6 +132,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[] {"_restart"}, "Restart the host machine", is_flag: true);
     parser.Add(new string[] {"_quit", "_exit"}, "Exit AOs", is_flag: true);
     parser.Add(new string[] {"_reload", "_refresh"}, "Restart AOs", is_flag: true);
+    parser.Add(new string[] {"_shout", "_echo"}, "Restart AOs", is_flag: false);
 
     // var parsed_args = parser.Parse(argv);
 
