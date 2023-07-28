@@ -59,8 +59,12 @@ void Startup()
 
             else if (arg.names.Contains("-c"))
             {
-                AOs.Entrypoint(false);
-                run(AOs, AOs.TakeInput(arg.value));
+                if (!Collection.String.IsEmpty(arg.value))
+                {
+                    AOs.Entrypoint(false);
+                    run(AOs, AOs.TakeInput(arg.value));
+                }
+
                 return;
             }
 
@@ -124,7 +128,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     cmdlist["shout"] = shout;
     cmdlist["exit"] = exit;
 
-    // var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
+    //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     parser.Add(new string[] {"_cls", "_clear"}, "Clear the screen", is_flag: true);
     parser.Add(new string[] {"_about", "_info"}, "About AOs", is_flag: true);
@@ -132,9 +136,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[] {"_restart"}, "Restart the host machine", is_flag: true);
     parser.Add(new string[] {"_quit", "_exit"}, "Exit AOs", is_flag: true);
     parser.Add(new string[] {"_reload", "_refresh"}, "Restart AOs", is_flag: true);
-    parser.Add(new string[] {"_shout", "_echo"}, "Restart AOs", is_flag: false);
-
-    // var parsed_args = parser.Parse(argv);
+    parser.Add(new string[] {"_shout", "_echo"}, "Displays messages", is_flag: false);
 
     // shout "Hello world!";1+3;"1+2"
     foreach (var i in input)
