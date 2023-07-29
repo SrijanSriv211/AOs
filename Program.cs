@@ -124,19 +124,23 @@ void exit()
 
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
+    //TODO: Optimize this later.
     Dictionary<string, Action> cmdlist = new Dictionary<string, Action>();
     cmdlist["shout"] = shout;
+    cmdlist["echo"] = shout;
+
+    cmdlist["quit"] = exit;
     cmdlist["exit"] = exit;
 
     //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-    parser.Add(new string[] {"_cls", "_clear"}, "Clear the screen", is_flag: true);
-    parser.Add(new string[] {"_about", "_info"}, "About AOs", is_flag: true);
-    parser.Add(new string[] {"_shutdown"}, "Shutdown the host machine", is_flag: true);
-    parser.Add(new string[] {"_restart"}, "Restart the host machine", is_flag: true);
-    parser.Add(new string[] {"_quit", "_exit"}, "Exit AOs", is_flag: true);
-    parser.Add(new string[] {"_reload", "_refresh"}, "Restart AOs", is_flag: true);
-    parser.Add(new string[] {"_shout", "_echo"}, "Displays messages", is_flag: false);
+    parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", is_flag: true);
+    parser.Add(new string[]{ "about", "info" }, "About AOs", is_flag: true);
+    parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", is_flag: true);
+    parser.Add(new string[]{ "restart" }, "Restart the host machine", is_flag: true);
+    parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", is_flag: true);
+    parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", is_flag: true);
+    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false);
 
     // shout "Hello world!";1+3;"1+2"
     foreach (var i in input)
