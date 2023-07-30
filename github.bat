@@ -1,13 +1,13 @@
 @echo off
 
-echo Checking status
+echo -> Checking status
 git status
 
-echo. & echo Adding file(s)
+echo. & echo -> Adding file(s)
 git add .
 
-echo. & echo Commiting updates
+echo. & echo -> Commiting updates
 git commit -m $1
 
-echo. & echo Pushing updates
+echo. & echo -> Pushing updates
 git push origin master
