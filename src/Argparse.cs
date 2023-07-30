@@ -33,11 +33,13 @@ class Argparse
     {
         public string[] names { get; set; }
         public string value { get; set; }
+        public Action<string[]> method { get; set; }
 
-        public ParsedArgument(string[] names, string value)
+        public ParsedArgument(string[] names, string value, Action<string[]> method)
         {
             this.names = names;
             this.value = value;
+            this.method = method;
         }
     }
 
@@ -64,7 +66,7 @@ class Argparse
         help_list.Add($"{names.FirstOrDefault()} -> {help}");
     }
 
-    public List<ParsedArgument> Parse(string[] args)
+    public List<ParsedArgument> Parse(string[] args, Action<string> error_func=null)
     {
         List<ParsedArgument> parsed_args = new List<ParsedArgument>();
         string[] arg_flags = { "--", "-", "_", "/" };
@@ -77,12 +79,17 @@ class Argparse
                 Argument matching_argument = FindMatchingArgument(arg);
                 if (matching_argument.names == null)
                 {
-                    Error.UnrecognizedArgs(arg);
+                    if (error_func == null)
+                        Error.UnrecognizedArgs(arg);
+
+                    else
+                        error_func(arg);
+
                     return new List<ParsedArgument>();
                 }
 
                 if (matching_argument.is_flag)
-                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), "true"));
+                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), "true", matching_argument.method));
 
                 else
                 {
@@ -92,13 +99,13 @@ class Argparse
                         return new List<ParsedArgument>();
                     }
 
-                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), args[Array.IndexOf(args, arg) + 1]));
+                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), args[Array.IndexOf(args, arg) + 1], matching_argument.method));
                     i++;
                 }
             }
 
             else
-                parsed_args.Add(new ParsedArgument(new string[]{arg}, null));
+                parsed_args.Add(new ParsedArgument(new string[]{arg}, null, null));
         }
 
         List<string> missing_arg_list = arguments.Where(argument => argument.required && !parsed_args.Any(arg => arg.names.SequenceEqual(argument.names))).Select(argument => argument.names[0]).ToList();

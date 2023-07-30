@@ -138,26 +138,38 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
     //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-    parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", is_flag: true);
-    parser.Add(new string[]{ "about", "info" }, "About AOs", is_flag: true);
-    parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", is_flag: true);
-    parser.Add(new string[]{ "restart" }, "Restart the host machine", is_flag: true);
-    parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", is_flag: true, method: exit);
-    parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", is_flag: true);
-    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false, method: shout);
+    parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true);
+    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true);
+    parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true);
+    parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true);
+    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: exit);
+    parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true);
+    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: shout);
 
     foreach (var i in input)
     {
-        string[] cmd_to_be_parsed = new string[]{ i.cmd }.Concat(i.args).ToArray();
-        var parsed_args = parser.Parse(cmd_to_be_parsed);
-        foreach (var arg in parsed_args)
+        if (Collection.String.IsEmpty(i.cmd)){}
+        else if (i.cmd == "help" || Argparse.IsAskingForHelp(i.cmd))
+            parser.GetHelp(i.args.FirstOrDefault(""));
+
+        else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Collection.String.IsString(i.cmd))
+            Console.WriteLine(Collection.String.Strings(i.cmd));
+
+        else
         {
-            Console.WriteLine(string.Join(", ", arg.names));
-            Console.WriteLine(arg.value);
+            string[] cmd_to_be_parsed = new string[]{ $"_{i.cmd}" }.Concat(i.args).ToArray();
+            var parsed_args = parser.Parse(cmd_to_be_parsed, error_func: (arg) => Error.Command(arg));
+
+            foreach (var arg in parsed_args)
+            {
+                // Console.WriteLine(string.Join(", ", arg.names));
+                // Console.WriteLine(arg.value);
+                arg.method(i.args);
+            }
         }
     }
 
-    // shout "Hello world!";1+3;"1+2"
+    // shout "Hello world!";1+3;"1+2";exit
     // foreach (var i in input)
     // {
     //     string lower_cmd = i.cmd.ToLower();
