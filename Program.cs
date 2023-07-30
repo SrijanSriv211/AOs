@@ -156,6 +156,9 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
         else if (lower_cmd == "help" || Argparse.IsAskingForHelp(lower_cmd))
             parser.GetHelp(i.args.FirstOrDefault(""));
 
+        else if (lower_cmd == "∞" || double.TryParse(lower_cmd, out double _) || Collection.String.IsString(lower_cmd))
+            cmdlist["shout"](new string[]{ lower_cmd });
+
         else if (cmdlist.ContainsKey(lower_cmd))
             cmdlist[lower_cmd](i.args);
 
