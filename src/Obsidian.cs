@@ -44,10 +44,14 @@ class Obsidian
         foreach (var Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
-            string input_cmd = Collection.Array.Trim(Toks.ToArray()).FirstOrDefault();
-            string[] input_args = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray()));
-            if (!Collection.Array.IsEmpty(input_args) && input_args.FirstOrDefault() == input_cmd)
-                input_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
+            string[] preprocess_toks = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray()));
+            string input_cmd = preprocess_toks.FirstOrDefault();
+            string[] input_args = preprocess_toks.Skip(1).ToArray();
+
+            // string[] input_args = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray()));
+            // string[] input_args = Collection.Array.Trim(preprocess_toks.Skip(1).ToArray());
+            // if (!Collection.Array.IsEmpty(input_args) && input_args.FirstOrDefault() == input_cmd)
+            //     input_args = Collection.Array.Trim(input_args.Skip(1).ToArray());
 
             // Parse input.
             if (input_cmd == "∞" || double.TryParse(input_cmd, out double _) || Collection.String.IsString(input_cmd))
@@ -55,8 +59,13 @@ class Obsidian
 
             else
                 output.Add((input_cmd, input_args));
+
+            Console.WriteLine(input_cmd);
+            Console.WriteLine(string.Join(",", input_args));
+
         }
 
+        Environment.Exit(0);
         return output;
     }
 

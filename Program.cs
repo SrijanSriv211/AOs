@@ -112,12 +112,16 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
     }
 }
 
-void shout()
+void shout(string[] args)
 {
-    Console.WriteLine("Hello world!");
+    if (Collection.Array.IsEmpty(args))
+        Error.NoArgs();
+
+    else
+        Console.WriteLine(string.Join(" ", Lexer.SimplifyString(args)));
 }
 
-void exit()
+void exit(string[] _)
 {
     Environment.Exit(0);
 }
@@ -125,12 +129,13 @@ void exit()
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     //TODO: Optimize this later.
-    Dictionary<string, Action> cmdlist = new Dictionary<string, Action>();
-    cmdlist["shout"] = shout;
-    cmdlist["echo"] = shout;
-
-    cmdlist["quit"] = exit;
-    cmdlist["exit"] = exit;
+    Dictionary<string, Action<string[]>> cmdlist = new Dictionary<string, Action<string[]>>
+    {
+        {"shout", shout},
+        {"echo", shout},
+        {"quit", exit},
+        {"exit", exit}
+    };
 
     //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
@@ -152,7 +157,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             parser.GetHelp(i.args.FirstOrDefault(""));
 
         else if (cmdlist.ContainsKey(lower_cmd))
-            cmdlist[lower_cmd]();
+            cmdlist[lower_cmd](i.args);
 
         else
         {
