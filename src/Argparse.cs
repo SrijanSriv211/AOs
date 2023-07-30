@@ -16,14 +16,16 @@ class Argparse
         public bool required { get; set; }
         public string default_value { get; set; }
         public bool is_flag { get; set; }
+        public Action<string[]> method { get; set; }
 
-        public Argument(string[] names, string help, bool required, string default_value, bool is_flag)
+        public Argument(string[] names, string help, bool required, string default_value, bool is_flag, Action<string[]> method=null)
         {
             this.names = names;
             this.help = help;
             this.required = required;
             this.default_value = default_value;
             this.is_flag = is_flag;
+            this.method = method;
         }
     }
 
@@ -56,10 +58,9 @@ class Argparse
         cmd_desc = description;
     }
 
-    public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false)
+    public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false, Action<string[]> method=null)
     {
-        arguments.Add(new Argument(names, help, required, default_value, is_flag));
-
+        arguments.Add(new Argument(names, help, required, default_value, is_flag, method));
         help_list.Add($"{names.FirstOrDefault()} -> {help}");
     }
 

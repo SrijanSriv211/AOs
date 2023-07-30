@@ -108,7 +108,6 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
     catch (System.Exception err)
     {
         new Error(err.Message);
-        return;
     }
 }
 
@@ -129,13 +128,13 @@ void exit(string[] _)
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     //TODO: Optimize this later.
-    Dictionary<string, Action<string[]>> cmdlist = new Dictionary<string, Action<string[]>>
-    {
-        {"shout", shout},
-        {"echo", shout},
-        {"quit", exit},
-        {"exit", exit}
-    };
+    // Dictionary<string, Action<string[]>> cmdlist = new Dictionary<string, Action<string[]>>
+    // {
+    //     {"shout", shout},
+    //     {"echo", shout},
+    //     {"quit", exit},
+    //     {"exit", exit}
+    // };
 
     //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
@@ -143,29 +142,40 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "about", "info" }, "About AOs", is_flag: true);
     parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", is_flag: true);
     parser.Add(new string[]{ "restart" }, "Restart the host machine", is_flag: true);
-    parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", is_flag: true);
+    parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", is_flag: true, method: exit);
     parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", is_flag: true);
-    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false);
+    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false, method: shout);
 
-    // shout "Hello world!";1+3;"1+2"
     foreach (var i in input)
     {
-        string lower_cmd = i.cmd.ToLower();
-
-        if (Collection.String.IsEmpty(lower_cmd)){}
-        else if (lower_cmd == "help" || Argparse.IsAskingForHelp(lower_cmd))
-            parser.GetHelp(i.args.FirstOrDefault(""));
-
-        else if (lower_cmd == "∞" || double.TryParse(lower_cmd, out double _) || Collection.String.IsString(lower_cmd))
-            cmdlist["shout"](new string[]{ lower_cmd });
-
-        else if (cmdlist.ContainsKey(lower_cmd))
-            cmdlist[lower_cmd](i.args);
-
-        else
+        string[] cmd_to_be_parsed = new string[]{ i.cmd }.Concat(i.args).ToArray();
+        var parsed_args = parser.Parse(cmd_to_be_parsed);
+        foreach (var arg in parsed_args)
         {
-            if (!Shell.SysEnvApps(lower_cmd, i.args))
-                Error.Command(lower_cmd);
+            Console.WriteLine(string.Join(", ", arg.names));
+            Console.WriteLine(arg.value);
         }
     }
+
+    // shout "Hello world!";1+3;"1+2"
+    // foreach (var i in input)
+    // {
+    //     string lower_cmd = i.cmd.ToLower();
+
+    //     if (Collection.String.IsEmpty(lower_cmd)){}
+    //     else if (lower_cmd == "help" || Argparse.IsAskingForHelp(lower_cmd))
+    //         parser.GetHelp(i.args.FirstOrDefault(""));
+
+    //     else if (lower_cmd == "∞" || double.TryParse(lower_cmd, out double _) || Collection.String.IsString(lower_cmd))
+    //         cmdlist["shout"](new string[]{ lower_cmd });
+
+    //     else if (cmdlist.ContainsKey(lower_cmd))
+    //         cmdlist[lower_cmd](i.args);
+
+    //     else
+    //     {
+    //         if (!Shell.SysEnvApps(lower_cmd, i.args))
+    //             Error.Command(lower_cmd);
+    //     }
+    // }
 }
