@@ -151,7 +151,13 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             var parsed_args = parser.Parse(cmd_to_be_parsed, error_func: (arg) => Error.Command(arg));
 
             foreach (var arg in parsed_args)
+            {
+                Console.WriteLine(string.Join(", ", arg.names));
+                Console.WriteLine(arg.value);
                 arg.method(i.args);
+            }
         }
     }
+
+    // shout "Hello world!";1+3;"1+2";exit
 }
