@@ -127,16 +127,6 @@ void exit(string[] _)
 
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
-    //TODO: Optimize this later.
-    // Dictionary<string, Action<string[]>> cmdlist = new Dictionary<string, Action<string[]>>
-    // {
-    //     {"shout", shout},
-    //     {"echo", shout},
-    //     {"quit", exit},
-    //     {"exit", exit}
-    // };
-
-    //TODO: This is just for the GetHelp function. Improve this and make this more robust and scalable.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true);
     parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true);
@@ -161,33 +151,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             var parsed_args = parser.Parse(cmd_to_be_parsed, error_func: (arg) => Error.Command(arg));
 
             foreach (var arg in parsed_args)
-            {
-                // Console.WriteLine(string.Join(", ", arg.names));
-                // Console.WriteLine(arg.value);
                 arg.method(i.args);
-            }
         }
     }
-
-    // shout "Hello world!";1+3;"1+2";exit
-    // foreach (var i in input)
-    // {
-    //     string lower_cmd = i.cmd.ToLower();
-
-    //     if (Collection.String.IsEmpty(lower_cmd)){}
-    //     else if (lower_cmd == "help" || Argparse.IsAskingForHelp(lower_cmd))
-    //         parser.GetHelp(i.args.FirstOrDefault(""));
-
-    //     else if (lower_cmd == "∞" || double.TryParse(lower_cmd, out double _) || Collection.String.IsString(lower_cmd))
-    //         cmdlist["shout"](new string[]{ lower_cmd });
-
-    //     else if (cmdlist.ContainsKey(lower_cmd))
-    //         cmdlist[lower_cmd](i.args);
-
-    //     else
-    //     {
-    //         if (!Shell.SysEnvApps(lower_cmd, i.args))
-    //             Error.Command(lower_cmd);
-    //     }
-    // }
 }
