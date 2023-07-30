@@ -9,5 +9,5 @@ git add .
 echo. & echo ~ Commiting updates & echo.
 git commit -m $1
 
-echo. & echo ~ Pushing updates
+echo. & echo ~ Pushing updates & echo.
 git push origin master
