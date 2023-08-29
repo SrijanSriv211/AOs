@@ -101,7 +101,7 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
         main(AOs, input);
     }
 
-    catch (System.Exception err)
+    catch (Exception err)
     {
         new Error(err.Message);
     }
