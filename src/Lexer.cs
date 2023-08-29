@@ -37,13 +37,13 @@ class Lexer
         {
             Calculate = dt.Compute(string.Join("", expr), "").ToString() ?? ""; // Evaluate the expression.
             if (Calculate.ToString().Contains("∞"))
-                Error.ZeroDivision(expr);
+                Error.ZeroDivision();
         }
 
         catch (System.Exception e)
         {
             if (e.Message.ToLower().Contains("divide by zero."))
-                Error.ZeroDivision(expr);
+                Error.ZeroDivision();
         }
 
         return Calculate;
@@ -209,9 +209,15 @@ class Lexer
                     i++;
                 }
 
-                tok += line[i];
+                if (i < line.Length)
+                    tok += line[i];
+
                 if (i >= line.Length)
+                {
                     Error.Syntax("Unterminated string literal");
+                    tokens = new List<string>();
+                    return tokens.ToArray();
+                }
 
                 tokens.Add(tok);
                 tok = "";

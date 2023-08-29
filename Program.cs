@@ -110,18 +110,20 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-    parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true);
-    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true);
-    parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true);
-    parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true);
-    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: Features.exit);
-    parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true);
-    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: Features.shout);
+    parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
+    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true, method: Features.About);
+    parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true, method: Features.Shutdown);
+    parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true, method: Features.Restart);
+    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: Features.Exit);
+    parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true, method: Features.Refresh);
+    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: Features.Shout);
 
     foreach (var i in input)
     {
-        if (Collection.String.IsEmpty(i.cmd)){}
-        else if (i.cmd == "help" || Argparse.IsAskingForHelp(i.cmd))
+        if (Collection.String.IsEmpty(i.cmd))
+            continue;
+
+        if (i.cmd == "help" || Argparse.IsAskingForHelp(i.cmd))
             parser.GetHelp(i.args.FirstOrDefault(""));
 
         else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Collection.String.IsString(i.cmd))
@@ -134,11 +136,21 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
             foreach (var arg in parsed_args)
             {
-                Console.WriteLine($"[({string.Join(", ", arg.names)}), {arg.value}]");
-                arg.method(i.args);
+                Console.WriteLine($"[({string.Join(", ", arg.names)}), {arg.value}, is_flag: {arg.is_flag}]");
+                if (arg.is_flag)
+                {
+                    var action = arg.method as Action; // Cast the stored delegate to Action
+                    action?.Invoke(); // Invoke the delegate with no arguments
+                }
+
+                else
+                {
+                    var action = arg.method as Action<string[]>; // Cast the stored delegate to Action<string[]>
+                    action?.Invoke(i.args); // Invoke the delegate with the provided arguments (i.args)
+                }
             }
         }
     }
 
-    // shout "Hello world!";1+3;"1+2";exit
+    // shout "Hello world!";1+3;"1+2";
 }

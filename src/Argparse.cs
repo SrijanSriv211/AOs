@@ -12,9 +12,9 @@ class Argparse
         public bool required { get; set; }
         public string default_value { get; set; }
         public bool is_flag { get; set; }
-        public Action<string[]> method { get; set; }
+        public Delegate method { get; set; }
 
-        public Argument(string[] names, string help, bool required, string default_value, bool is_flag, Action<string[]> method=null)
+        public Argument(string[] names, string help, bool required, string default_value, bool is_flag, Delegate method=null)
         {
             this.names = names;
             this.help = help;
@@ -29,13 +29,15 @@ class Argparse
     {
         public string[] names { get; set; }
         public string value { get; set; }
-        public Action<string[]> method { get; set; }
+        public bool is_flag { get; set; }
+        public Delegate method { get; set; }
 
-        public ParsedArgument(string[] names, string value, Action<string[]> method)
+        public ParsedArgument(string[] names, string value, bool is_flag, Delegate method)
         {
             this.names = names;
             this.value = value;
             this.method = method;
+            this.is_flag = is_flag;
         }
     }
 
@@ -56,7 +58,7 @@ class Argparse
         cmd_desc = description;
     }
 
-    public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false, Action<string[]> method=null)
+    public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false, Delegate method=null)
     {
         arguments.Add(new Argument(names, help, required, default_value, is_flag, method));
         help_list.Add($"{names.FirstOrDefault()} -> {help}");
@@ -85,7 +87,7 @@ class Argparse
                 }
 
                 if (matching_argument.is_flag)
-                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), "true", matching_argument.method));
+                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), "true", matching_argument.is_flag, matching_argument.method));
 
                 else
                 {
@@ -95,13 +97,13 @@ class Argparse
                         return new List<ParsedArgument>();
                     }
 
-                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), args[Array.IndexOf(args, arg) + 1], matching_argument.method));
+                    parsed_args.Add(new ParsedArgument(matching_argument.names.ToArray(), args[Array.IndexOf(args, arg) + 1], matching_argument.is_flag, matching_argument.method));
                     i++;
                 }
             }
 
             else
-                parsed_args.Add(new ParsedArgument(new string[]{arg}, null, null));
+                parsed_args.Add(new ParsedArgument(new string[]{arg}, null, false, null));
         }
 
         List<string> missing_arg_list = arguments.Where(argument => argument.required && !parsed_args.Any(arg => arg.names.SequenceEqual(argument.names))).Select(argument => argument.names[0]).ToList();

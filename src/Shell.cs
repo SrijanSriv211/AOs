@@ -14,6 +14,27 @@ class Shell
         }
 
         return string.Empty;
+}
+
+    public static void StartApp(string name, string args = "", bool is_admin = false)
+    {
+        Process AppProcess = new();
+        AppProcess.StartInfo.UseShellExecute = true;
+        AppProcess.StartInfo.FileName = name;
+        AppProcess.StartInfo.Arguments = args;
+        AppProcess.StartInfo.CreateNoWindow = false;
+        if (is_admin)
+            AppProcess.StartInfo.Verb = "runas";
+
+        try
+        {
+            AppProcess.Start();
+        }
+
+        catch (Exception e)
+        {
+            new Error($"Error: Cannot open the app.\n{e}");
+        }
     }
 
     public static bool SysEnvApps(string input_cmd, string[] input_args)
@@ -57,41 +78,39 @@ class Shell
 
     public static string CommandPrompt(string args, string shell="cmd.exe")
     {
-        using (Process process = new Process())
+        using Process process = new();
+        process.StartInfo.FileName = shell;
+        process.StartInfo.Arguments = "/C " + args;
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
+
+        StringBuilder output_builder = new StringBuilder();
+
+        // Event handler for capturing the output
+        DataReceivedEventHandler output_handler = (sender, e) =>
         {
-            process.StartInfo.FileName = shell;
-            process.StartInfo.Arguments = "/C " + args;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-
-            StringBuilder output_builder = new StringBuilder();
-
-            // Event handler for capturing the output
-            DataReceivedEventHandler output_handler = (sender, e) =>
+            if (!Collection.String.IsEmpty(e.Data))
             {
-                if (!Collection.String.IsEmpty(e.Data))
-                {
-                    output_builder.AppendLine(e.Data); // Append the output to the StringBuilder
-                    Console.WriteLine(e.Data); // Display the output in real-time
-                }
-            };
+                output_builder.AppendLine(e.Data); // Append the output to the StringBuilder
+                Console.WriteLine(e.Data); // Display the output in real-time
+            }
+        };
 
-            // Redirect and handle standard output
-            process.OutputDataReceived += output_handler;
+        // Redirect and handle standard output
+        process.OutputDataReceived += output_handler;
 
-            process.Start();
-            
-            // Begin asynchronous reading of the standard output
-            process.BeginOutputReadLine();
+        process.Start();
 
-            // Wait for the process to exit
-            process.WaitForExit();
+        // Begin asynchronous reading of the standard output
+        process.BeginOutputReadLine();
 
-            // Remove the event handler
-            process.OutputDataReceived -= output_handler;
-            return output_builder.ToString().Trim();
-        }
+        // Wait for the process to exit
+        process.WaitForExit();
+
+        // Remove the event handler
+        process.OutputDataReceived -= output_handler;
+        return output_builder.ToString().Trim();
     }
 
     public static void RootPackages()

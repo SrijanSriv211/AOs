@@ -56,7 +56,7 @@ class Error
     }
 
     // Division by 0.
-    public static void ZeroDivision(string _Line)
+    public static void ZeroDivision()
     {
         new Error("ZeroDivisionError: Division by 0");
     }
