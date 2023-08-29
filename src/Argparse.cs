@@ -61,7 +61,7 @@ class Argparse
     public void Add(string[] names, string help="", bool required=false, string default_value=null, bool is_flag=false, Delegate method=null)
     {
         arguments.Add(new Argument(names, help, required, default_value, is_flag, method));
-        help_list.Add($"{names.FirstOrDefault()} -> {help}");
+        help_list.Add($"{string.Join(", ", names)} -> {help}");
     }
 
     public List<ParsedArgument> Parse(string[] args, Action<string> error_func=null)
@@ -147,26 +147,38 @@ class Argparse
         {
             Console.WriteLine("Type `help <command-name>` for more information on a specific command");
             foreach (string item in help_list)
-            {
-                string[] parts = item.Split(' ');
-                string command = parts[0];
-                command = command.StartsWith("_") ? command.Substring(1) : command;
-
-                string description = string.Join(" ", parts.Skip(2));
-                Console.WriteLine("{0,-15} -> {1}", command, description);
-            }
+                Console.WriteLine(item);
         }
 
         else
         {
-            IEnumerable<string> matches = help_list.Where(
-                cmd => cmd.StartsWith("_") ? cmd.Substring(1).StartsWith(name) : cmd.StartsWith(name)
-            );
+            if (name == ",")
+            {
+                Error.Syntax("Invalid syntax");
+                return;
+            }
 
-            if (matches.Any())
-                Console.WriteLine(string.Join("\n", matches.Select(each_match => each_match.StartsWith("_") ? each_match.Substring(1) : each_match)));
+            string match = "";
+            foreach (string item in help_list)
+            {
+                if (!Collection.String.IsEmpty(match))
+                {
+                    Console.WriteLine(match);
+                    break;
+                }
 
-            else
+                string[] parts = item.Split("->");
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    if (parts[i].Contains(name))
+                    {
+                        match = $"{Collection.String.Reduce(parts[i])} -> {Collection.String.Reduce(parts[i+1])}";
+                        break;
+                    }
+                }
+            }
+
+            if (Collection.String.IsEmpty(match))
                 new Error($"No information for command '{name}'");
         }
     }
