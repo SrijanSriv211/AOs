@@ -111,20 +111,6 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
     }
 }
 
-void shout(string[] args)
-{
-    if (Collection.Array.IsEmpty(args))
-        Error.NoArgs();
-
-    else
-        Console.WriteLine(string.Join(" ", Lexer.SimplifyString(args)));
-}
-
-void exit(string[] _)
-{
-    Environment.Exit(0);
-}
-
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
@@ -132,9 +118,9 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true);
     parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true);
     parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true);
-    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: exit);
+    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: Features.exit);
     parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true);
-    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: shout);
+    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: Features.shout);
 
     foreach (var i in input)
     {
@@ -152,8 +138,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
             foreach (var arg in parsed_args)
             {
-                Console.WriteLine(string.Join(", ", arg.names));
-                Console.WriteLine(arg.value);
+                Console.WriteLine($"[({string.Join(", ", arg.names)}), {arg.value}]");
                 arg.method(i.args);
             }
         }
