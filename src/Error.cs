@@ -1,5 +1,3 @@
-// using System;
-
 class Error
 {
     public Error(string details)

@@ -1,7 +1,3 @@
-// using System;
-// using System.Linq;
-// using System.Collections.Generic;
-
 class Argparse
 {
     private string cmd_name = string.Empty;

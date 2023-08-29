@@ -1,5 +1,3 @@
-// using System.IO;
-
 class FileIO
 {
     public class FileSystem
