@@ -1,6 +1,6 @@
 class Obsidian
 {
-    public string Version = String.Format("AOs 2023 [Version 2.5]");
+    public string Version = "AOs 2023 [Version 2.5]";
 
     public static string default_else_shell = "cmd.exe";
     public static dynamic rootDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/');
@@ -64,6 +64,11 @@ class Obsidian
 
         Shell.RootPackages();
         Shell.AskPass();
+    }
+
+    public void PrintVersion()
+    {
+        Console.WriteLine(Version);
     }
 
     public void Credits()

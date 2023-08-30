@@ -111,27 +111,35 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
-    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true, method: Features.About);
+    parser.Add(new string[]{ "_version", "_ver", "-v" }, "Displays the AOs version.", is_flag: true, method: AOs.PrintVersion);
+    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true, method: parser.PrintHelp);
     parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true, method: Features.Shutdown);
     parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true, method: Features.Restart);
     parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: Features.Exit);
     parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true, method: Features.Refresh);
-    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", is_flag: false, method: Features.Shout);
+    parser.Add(new string[]{ "_credits" }, "Credits for AOs", is_flag: true, method: AOs.Credits);
+
+    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", default_value: "", is_flag: false, method: Features.Shout);
+    parser.Add(new string[]{ "_history" }, "Displays the history of Commands.", default_value: "", is_flag: false, method: Features.GetSetHistory);
 
     foreach (var i in input)
     {
         if (Collection.String.IsEmpty(i.cmd))
             continue;
 
-        if (i.cmd == "help" || Argparse.IsAskingForHelp(i.cmd))
+        if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd))
             parser.GetHelp(i.args.FirstOrDefault(""));
+
+        else if (i.cmd == "AOs1000")
+            Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");
 
         else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Collection.String.IsString(i.cmd))
             Console.WriteLine(Collection.String.Strings(i.cmd));
 
         else
         {
-            string[] cmd_to_be_parsed = new string[]{ $"_{i.cmd}" }.Concat(i.args).ToArray();
+            string cmd = i.cmd.ToLower();
+            string[] cmd_to_be_parsed = new string[]{ $"_{cmd}" }.Concat(i.args).ToArray();
             var parsed_args = parser.Parse(cmd_to_be_parsed, error_func: (arg) => Error.Command(arg));
 
             foreach (var arg in parsed_args)

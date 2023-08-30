@@ -29,8 +29,19 @@ class Features
         Exit();
     }
 
-    public static void About()
+    public static void GetSetHistory(string[] args)
     {
-        Console.WriteLine("Command-line utility for improved efficiency and productivity.");
+        string arg = args.FirstOrDefault();
+        if (args.Length > 1)
+        {
+            Error.TooManyArgs(args);
+            return;
+        }
+
+        if (Collection.String.IsEmpty(arg))
+            History.Get();
+
+        else if (arg == "-c" || arg == "--clear")
+            History.Clear();
     }
 }
