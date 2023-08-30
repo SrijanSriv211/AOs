@@ -121,36 +121,36 @@ class Obsidian
         {
             foreach (var arg in parsed_args)
             {
-                if (Argparse.IsAskingForHelp(arg.names))
+                if (Argparse.IsAskingForHelp(arg.Names))
                 {
                     parser.PrintHelp();
                     return default_prompt;
                 }
 
-                else if (arg.names.Contains("-r"))
+                else if (arg.Names.Contains("-r"))
                     return default_prompt;
 
-                else if (arg.names.Contains("-v"))
+                else if (arg.Names.Contains("-v"))
                     new_prompt += new Obsidian().Version;
 
-                else if (arg.names.Contains("-s"))
+                else if (arg.Names.Contains("-s"))
                     new_prompt += " ";
 
-                else if (arg.names.Contains("-t"))
+                else if (arg.Names.Contains("-t"))
                     new_prompt += DateTime.Now.ToString("HH:mm:ss");
 
-                else if (arg.names.Contains("-d"))
+                else if (arg.Names.Contains("-d"))
                     new_prompt += DateTime.Now.ToString("dd-MM-yyyy");
 
-                else if (arg.names.Contains("-p"))
+                else if (arg.Names.Contains("-p"))
                     new_prompt += Directory.GetCurrentDirectory();
 
-                else if (arg.names.Contains("-n"))
+                else if (arg.Names.Contains("-n"))
                     new_prompt += Path.GetPathRoot(Environment.SystemDirectory);
 
-                else if (arg.names.Any(name => name.StartsWith("-")))
+                else if (arg.Names.Any(name => name.StartsWith("-")))
                 {
-                    Error.UnrecognizedArgs(arg.names);
+                    Error.UnrecognizedArgs(arg.Names);
                     return default_prompt;
                 }
 

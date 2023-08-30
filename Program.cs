@@ -47,18 +47,18 @@ void Startup()
     {
         foreach (var arg in parsed_args)
         {
-            if (Argparse.IsAskingForHelp(arg.names))
+            if (Argparse.IsAskingForHelp(arg.Names))
             {
                 parser.PrintHelp();
                 return;
             }
 
-            else if (arg.names.Contains("-c"))
+            else if (arg.Names.Contains("-c"))
             {
-                if (!Collection.String.IsEmpty(arg.value))
+                if (!Collection.String.IsEmpty(arg.Value))
                 {
                     AOs.Entrypoint(false);
-                    run(AOs, AOs.TakeInput(arg.value));
+                    run(AOs, AOs.TakeInput(arg.Value));
                 }
 
                 return;
@@ -66,7 +66,7 @@ void Startup()
 
             else
             {
-                foreach (string filename in arg.names)
+                foreach (string filename in arg.Names)
                 {
                     if (!filename.EndsWith(".aos"))
                     {
@@ -110,17 +110,17 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-    parser.Add(new string[]{ "_cls", "_clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
-    parser.Add(new string[]{ "_version", "_ver", "-v" }, "Displays the AOs version.", is_flag: true, method: AOs.PrintVersion);
-    parser.Add(new string[]{ "_about", "_info" }, "About AOs", is_flag: true, method: parser.PrintHelp);
-    parser.Add(new string[]{ "_shutdown" }, "Shutdown the host machine", is_flag: true, method: Features.Shutdown);
-    parser.Add(new string[]{ "_restart" }, "Restart the host machine", is_flag: true, method: Features.Restart);
-    parser.Add(new string[]{ "_quit", "_exit" }, "Exit AOs", is_flag: true, method: Features.Exit);
-    parser.Add(new string[]{ "_reload", "_refresh" }, "Restart AOs", is_flag: true, method: Features.Refresh);
-    parser.Add(new string[]{ "_credits" }, "Credits for AOs", is_flag: true, method: AOs.Credits);
+    parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
+    parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version.", is_flag: true, method: AOs.PrintVersion);
+    parser.Add(new string[]{ "about", "info" }, "About AOs", is_flag: true, method: parser.PrintHelp);
+    parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", is_flag: true, method: Features.Shutdown);
+    parser.Add(new string[]{ "restart" }, "Restart the host machine", is_flag: true, method: Features.Restart);
+    parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", is_flag: true, method: Features.Exit);
+    parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", is_flag: true, method: Features.Refresh);
+    parser.Add(new string[]{ "credits" }, "Credits for AOs", is_flag: true, method: AOs.Credits);
 
-    parser.Add(new string[]{ "_shout", "_echo" }, "Displays messages", default_value: "", is_flag: false, method: Features.Shout);
-    parser.Add(new string[]{ "_history" }, "Displays the history of Commands.", default_value: "", is_flag: false, method: Features.GetSetHistory);
+    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", default_value: "", is_flag: false, method: Features.Shout);
+    parser.Add(new string[]{ "history" }, "Displays the history of Commands.", default_value: "", is_flag: false, method: Features.GetSetHistory);
 
     foreach (var i in input)
     {
@@ -144,16 +144,16 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
             foreach (var arg in parsed_args)
             {
-                Console.WriteLine($"[({string.Join(", ", arg.names)}), {arg.value}, is_flag: {arg.is_flag}]");
-                if (arg.is_flag)
+                Console.WriteLine($"[({string.Join(", ", arg.Names)}), {arg.Value}, is_flag: {arg.Is_flag}]");
+                if (arg.Is_flag)
                 {
-                    var action = arg.method as Action; // Cast the stored delegate to Action
+                    var action = arg.Method as Action; // Cast the stored delegate to Action
                     action?.Invoke(); // Invoke the delegate with no arguments
                 }
 
                 else
                 {
-                    var action = arg.method as Action<string[]>; // Cast the stored delegate to Action<string[]>
+                    var action = arg.Method as Action<string[]>; // Cast the stored delegate to Action<string[]>
                     action?.Invoke(i.args); // Invoke the delegate with the provided arguments (i.args)
                 }
             }
