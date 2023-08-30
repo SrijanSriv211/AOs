@@ -98,7 +98,7 @@ class Lexer
             tok += line[i].ToString();
             if (Collection.String.IsEmpty(tok))
             {
-                tokens.Add(" ");
+                // tokens.Add(" ");
                 tok = "";
             }
 

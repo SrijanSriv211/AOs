@@ -1,7 +1,7 @@
 class Argparse
 {
-    private readonly string name = string.Empty;
-    private readonly string desc = string.Empty;
+    private readonly string name = "";
+    private readonly string desc = "";
 
     private readonly List<string> help_list = new List<string>();
     private readonly List<Argument> arguments = new List<Argument>();
@@ -12,7 +12,7 @@ class Argparse
         this.desc = description;
     }
 
-    public void Add(string[] names, string help="", object default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
+    public void Add(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
     {
         arguments.Add(new Argument(names, help, default_value, is_flag, required, method));
         help_list.Add($"{string.Join(", ", names)} -> {help}");
@@ -21,6 +21,7 @@ class Argparse
     public List<ParsedArgument> Parse(string[] args, Action<string> error_func=null)
     {
         List<ParsedArgument> parsed_args = new();
+        string out_value;
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -32,8 +33,45 @@ class Argparse
                 error_func ??= Error.UnrecognizedArgs;
                 error_func(arg);
 
-                return new List<ParsedArgument>();
+                out_value = null;
             }
+
+            if (matching_argument.Is_flag)
+                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: "true", is_flag: matching_argument.Is_flag, method: matching_argument.Method));
+
+            else
+            {
+                if (Array.IndexOf(args, arg) == args.Length - 1)
+                {
+                    if (matching_argument.Default_value == null)
+                    {
+                        new Error($"Missing value for argument: {arg}");
+                        out_value = null;
+                    }
+
+                    else
+                        out_value = matching_argument.Default_value;
+                }
+
+                else
+                    out_value = args[Array.IndexOf(args, arg) + 1];
+
+                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: out_value, is_flag: matching_argument.Is_flag, method: matching_argument.Method));
+                i++;
+            }
+        }
+
+        List<string> missing_arg_list = arguments.Where(
+            argument => argument.Required
+            &&
+            !parsed_args.Any(arg => arg.Names.SequenceEqual(argument.Names))).Select(argument => argument.Names[0]
+        ).ToList();
+
+        if (missing_arg_list.Count > 0)
+        {
+            Error.TooFewArgs("");
+            new Error($"Missing required argument(s): {string.Join(", ", missing_arg_list)}");
+            return new List<ParsedArgument>();
         }
 
         return parsed_args;
@@ -46,10 +84,10 @@ class Argparse
         public bool Is_flag { get; set; }
         public Delegate Method { get; set; }
 
-        public ParsedArgument(string[] names, string help, bool is_flag, Delegate method)
+        public ParsedArgument(string[] names, string value, bool is_flag, Delegate method)
         {
             this.Names = names;
-            this.Value = help;
+            this.Value = value;
             this.Is_flag = is_flag;
             this.Method = method;
         }
@@ -59,12 +97,12 @@ class Argparse
     {
         public string[] Names { get; set; }
         public string Help { get; set; }
-        public object Default_value { get; set; }
+        public string Default_value { get; set; }
         public bool Is_flag { get; set; }
         public bool Required { get; set; }
         public Delegate Method { get; set; }
 
-        public Argument(string[] names, string help="", object default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
+        public Argument(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
         {
             this.Names = names;
             this.Help = help;

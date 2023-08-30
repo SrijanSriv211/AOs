@@ -15,57 +15,60 @@ void Startup()
 
     var parsed_args = parser.Parse(argv);
 
-    // If no arguments are passed.
-    if (Collection.Array.IsEmpty(argv))
+    if (parsed_args.Count() == 0)
     {
         string startlist_path = Path.Combine(Obsidian.rootDir, "Files.x72\\root\\StartUp\\.startlist");
-        bool isEmpty = Collection.String.IsEmpty( FileIO.FileSystem.ReadAllText(startlist_path) );
+        bool isEmpty = Collection.String.IsEmpty(
+            FileIO.FileSystem.ReadAllText(startlist_path)
+        );
 
         if (File.Exists(startlist_path) && !isEmpty)
         {
             AOs.Entrypoint(false);
-            foreach (string app in File.ReadLines(startlist_path))
+            foreach (string appname in File.ReadLines(startlist_path))
             {
-                // Break the loop if "." is detected, as all apps after the dot are marked as disabled.
-                if (app == ".")
+                // break if "." is in place of appname
+                // all apps after the dot will be marked as disabled.
+                if (appname == ".")
                     break;
 
-                else if (app.EndsWith(".aos"))
+                else if (appname.EndsWith(".aos"))
                 {
-                    foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), app) ))
+                    foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), appname) ))
                         run(AOs, AOs.TakeInput(current_line));
                 }
             }
         }
 
         else
+        {
             AOs.Entrypoint();
+            while (true)
+                run(AOs, AOs.TakeInput());
+        }
     }
 
-    // Execute AOs on the basis of the command-line arguments passed.
     else
     {
         foreach (var arg in parsed_args)
         {
+            Console.WriteLine($"[({string.Join(", ", arg.Names)}), {arg.Value}, is_flag: {arg.Is_flag}]");
+
             if (Argparse.IsAskingForHelp(arg.Names))
-            {
                 parser.PrintHelp();
-                return;
-            }
 
             else if (arg.Names.Contains("-c"))
             {
-                if (!Collection.String.IsEmpty(arg.Value))
-                {
-                    AOs.Entrypoint(false);
-                    run(AOs, AOs.TakeInput(arg.Value));
-                }
+                if (arg.Value == null)
+                    return;
 
-                return;
+                AOs.Entrypoint(false);
+                run(AOs, AOs.TakeInput(arg.Value));
             }
 
             else
             {
+                AOs.Entrypoint(false);
                 foreach (string filename in arg.Names)
                 {
                     if (!filename.EndsWith(".aos"))
@@ -89,9 +92,6 @@ void Startup()
             }
         }
     }
-
-    while (true)
-        run(AOs, AOs.TakeInput());
 }
 
 void run(Obsidian AOs, List<(string cmd, string[] args)> input)
@@ -124,10 +124,12 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
     foreach (var i in input)
     {
+        string lowercase_cmd = i.cmd.ToLower();
+
         if (Collection.String.IsEmpty(i.cmd))
             continue;
 
-        if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd))
+        else if (lowercase_cmd == "help" || Argparse.IsAskingForHelp(lowercase_cmd))
             parser.GetHelp(i.args.FirstOrDefault(""));
 
         else if (i.cmd == "AOs1000")
@@ -138,8 +140,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
         else
         {
-            string cmd = i.cmd.ToLower();
-            string[] cmd_to_be_parsed = new string[]{ $"_{cmd}" }.Concat(i.args).ToArray();
+            string[] cmd_to_be_parsed = new string[]{ lowercase_cmd }.Concat(i.args).ToArray();
             var parsed_args = parser.Parse(cmd_to_be_parsed, error_func: (arg) => Error.Command(arg));
 
             foreach (var arg in parsed_args)

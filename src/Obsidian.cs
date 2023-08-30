@@ -3,7 +3,7 @@ class Obsidian
     public string Version = "AOs 2023 [Version 2.5]";
 
     public static string default_else_shell = "cmd.exe";
-    public static dynamic rootDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\').TrimEnd('/');
+    public static string rootDir = AppDomain.CurrentDomain.BaseDirectory;
 
     private string Title = "AOs";
     private string Prompt = "";
@@ -173,7 +173,29 @@ class History
 
     public static void Get()
     {
-        Console.WriteLine(FileIO.FileSystem.ReadAllText($"{Obsidian.rootDir}\\Files.x72\\root\\.history"));
+        string format = "[dd-MM-yyyy HH:mm:ss]";
+
+        string[] history = FileIO.FileSystem.ReadAllLines($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
+
+        for (int i = 0; i < history.Length; i++)
+        {
+            if (Collection.String.IsEmpty(history[i]))
+                continue;
+
+            DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
+
+            Console.Write(history[i+1] + " ");
+            new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
+            i++;
+        }
+
+        // foreach (string i in FileIO.FileSystem.ReadAllLines($"{Obsidian.rootDir}\\Files.x72\\root\\.history"))
+        // {
+        //     DateTime.TryParseExact(i, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
+
+        //     Console.Write(i + " ");
+        //     new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
+        // }
     }
 
     public static void Clear()
