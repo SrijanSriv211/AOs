@@ -188,14 +188,6 @@ class History
             new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
             i++;
         }
-
-        // foreach (string i in FileIO.FileSystem.ReadAllLines($"{Obsidian.rootDir}\\Files.x72\\root\\.history"))
-        // {
-        //     DateTime.TryParseExact(i, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
-
-        //     Console.Write(i + " ");
-        //     new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
-        // }
     }
 
     public static void Clear()
