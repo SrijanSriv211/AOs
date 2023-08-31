@@ -16,7 +16,7 @@ class Obsidian
 
     public List<(string cmd, string[] args)> TakeInput(string input = "")
     {
-        List<(string cmd, string[] args)> output = new List<(string cmd, string[] args)>();
+        List<(string cmd, string[] args)> output = new();
         string CMD = input.Trim();
 
         if (Collection.String.IsEmpty(CMD))
@@ -44,7 +44,8 @@ class Obsidian
             string[] input_args = preprocess_toks.Skip(1).ToArray();
 
             // Parse input.
-            output.Add((input_cmd, input_args));
+            if (!Collection.String.IsEmpty(input_cmd))
+                output.Add((input_cmd, input_args));
         }
 
         return output;

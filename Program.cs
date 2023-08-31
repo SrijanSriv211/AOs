@@ -119,7 +119,8 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", is_flag: true, method: Features.Refresh);
     parser.Add(new string[]{ "credits" }, "Credits for AOs", is_flag: true, method: AOs.Credits);
 
-    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", default_value: "", is_flag: false, method: Features.Shout);
+    // parser.Add(new string[]{ "shout", "echo" }, "Displays messages", default_value: "", is_flag: false, method: Features.Shout);
+    parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false, method: Features.Shout);
     parser.Add(new string[]{ "history" }, "Displays the history of Commands.", default_value: "", is_flag: false, method: Features.GetSetHistory);
 
     foreach (var i in input)

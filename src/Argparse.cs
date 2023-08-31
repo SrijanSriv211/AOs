@@ -21,7 +21,6 @@ class Argparse
     public List<ParsedArgument> Parse(string[] args, Action<string> error_func=null)
     {
         List<ParsedArgument> parsed_args = new();
-        string out_value;
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -33,7 +32,7 @@ class Argparse
                 error_func ??= Error.UnrecognizedArgs;
                 error_func(arg);
 
-                out_value = null;
+                return new List<ParsedArgument>();
             }
 
             if (matching_argument.Is_flag)
@@ -41,12 +40,13 @@ class Argparse
 
             else
             {
+                string out_value;
                 if (Array.IndexOf(args, arg) == args.Length - 1)
                 {
                     if (matching_argument.Default_value == null)
                     {
                         new Error($"Missing value for argument: {arg}");
-                        out_value = null;
+                        return new List<ParsedArgument>();
                     }
 
                     else
@@ -84,9 +84,9 @@ class Argparse
         public bool Is_flag { get; set; }
         public Delegate Method { get; set; }
 
-        public ParsedArgument(string[] names, string value, bool is_flag, Delegate method)
+        public ParsedArgument(string[] names=null, string value=null, bool is_flag=false, Delegate method=null)
         {
-            this.Names = names;
+            this.Names = names ?? new string[0];
             this.Value = value;
             this.Is_flag = is_flag;
             this.Method = method;
