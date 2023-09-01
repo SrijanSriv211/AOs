@@ -4,7 +4,7 @@ A Command-line utility for improved efficiency and productivity. It is Simple an
 
 ***
 
-## :gear: Getting started for people to use.
+## :gear: Getting AOs
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/Light-Lens/AOs/releases/) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
