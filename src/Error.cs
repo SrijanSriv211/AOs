@@ -14,7 +14,7 @@ class Error
     // Unrecognized arguments.
     public static void UnrecognizedArgs(string[] _Flag)
     {
-        new Error($"Unrecognized arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+        new Error($"Unrecognized arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
     }
 
     public static void UnrecognizedArgs(string _Flag)
@@ -25,7 +25,7 @@ class Error
     // Not appropriate number of arguments.
     public static void TooFewArgs(string[] _Flag)
     {
-        new Error($"Too few arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+        new Error($"Too few arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
     }
 
     public static void TooFewArgs(string _Flag)
@@ -35,7 +35,7 @@ class Error
 
     public static void TooManyArgs(string[] _Flag)
     {
-        new Error($"Too many arguments: {string.Join(", ", Collection.Array.Reduce(_Flag))}");
+        new Error($"Too many arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
     }
 
     public static void TooManyArgs(string _Flag)

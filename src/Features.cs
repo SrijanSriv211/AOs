@@ -4,7 +4,7 @@ class Features
 {
     public static void Shout(string[] args)
     {
-        Console.WriteLine(string.Join(" ", Lexer.SimplifyString(args)));
+        Console.WriteLine(string.Join(" ", Utils.Utils.SimplifyString(args)));
     }
 
     public static void Exit()
@@ -38,7 +38,7 @@ class Features
             return;
         }
 
-        if (Collection.String.IsEmpty(arg))
+        if (Utils.String.IsEmpty(arg))
             History.Get();
 
         else if (arg == "-c" || arg == "--clear")

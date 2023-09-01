@@ -11,7 +11,7 @@ class Obsidian
     public Obsidian(string title="AOs", string prompt="$ ")
     {
         Title = title;
-        Prompt = Collection.String.IsEmpty(prompt) ? SetPrompt(new string[]{"-r"}) : prompt;
+        Prompt = Utils.String.IsEmpty(prompt) ? SetPrompt(new string[]{"-r"}) : prompt;
     }
 
     public List<(string cmd, string[] args)> TakeInput(string input = "")
@@ -19,12 +19,12 @@ class Obsidian
         List<(string cmd, string[] args)> output = new();
         string CMD = input.Trim();
 
-        if (Collection.String.IsEmpty(CMD))
+        if (Utils.String.IsEmpty(CMD))
         {
             new TerminalColor(Prompt, ConsoleColor.White, false);
             CMD = Console.ReadLine().Trim();
 
-            if (Collection.String.IsEmpty(CMD))
+            if (Utils.String.IsEmpty(CMD))
                 return new List<(string cmd, string[] args)>(); // (cmd: "", args: new string[0])
 
             if (CMD[0] == '_')
@@ -39,12 +39,12 @@ class Obsidian
         foreach (var Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
-            string[] preprocess_toks = Collection.Array.Trim(Collection.Array.Reduce(Toks.ToArray()));
+            string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
             string input_cmd = preprocess_toks.FirstOrDefault();
             string[] input_args = preprocess_toks.Skip(1).ToArray();
 
             // Parse input.
-            if (!Collection.String.IsEmpty(input_cmd))
+            if (!Utils.String.IsEmpty(input_cmd))
                 output.Add((input_cmd, input_args));
         }
 
@@ -115,7 +115,7 @@ class Obsidian
         var parsed_args = parser.Parse(flags);
         string new_prompt = string.Empty;
 
-        if (Collection.Array.IsEmpty(flags))
+        if (Utils.Array.IsEmpty(flags))
             return default_prompt;
 
         else
@@ -180,7 +180,7 @@ class History
 
         for (int i = 0; i < history.Length; i++)
         {
-            if (Collection.String.IsEmpty(history[i]))
+            if (Utils.String.IsEmpty(history[i]))
                 continue;
 
             DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);

@@ -1,51 +1,50 @@
 using System.Data;
 using System.Text.RegularExpressions;
 
-class Collection
+namespace Utils
 {
+    class Utils
+    {
+        public static string[] SimplifyString(string[] str)
+        {
+            List<string> tempArgs = new();
+            for (int i = 0; i < str.Length; i++)
+                tempArgs.Add(String.Strings(str[i]));
+
+            return tempArgs.ToArray();
+        }
+    }
+
     public class String
     {
         // Count the number of times a substring appears in a string.
-        public static int Count(string _Source, string _SubString)
+        public static int Count(string source, string what_to_count)
         {
-            return Regex.Matches(_Source, Regex.Escape(_SubString)).Count;
+            return Regex.Matches(source, Regex.Escape(what_to_count)).Count;
         }
 
         // Remove extra spaces from a string.
-        public static string Reduce(string _Line)
+        public static string Reduce(string line)
         {
-            return string.Join(" ", _Line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => x.Trim()));
+            return string.Join(" ", line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => x.Trim()));
         }
 
         // Check whether a string is empty.
-        public static bool IsEmpty(string _Line)
+        public static bool IsEmpty(string line)
         {
-            if (string.IsNullOrEmpty(_Line) || string.IsNullOrWhiteSpace(_Line)) return true;
-            else return false;
-        }
-
-        // Check if a string has special chars like @, !, >.
-        public static bool HasSpecialChars(string _Line)
-        {
-            return _Line.Any(c => !Char.IsLetterOrDigit(c));
+            return string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line);
         }
 
         // Check if the string is wrapped with string quotes or not.
-        public static bool IsString(string _Line)
+        public static bool IsString(string line)
         {
-            if (_Line.StartsWith("\"") && _Line.EndsWith("\"")) return true;
-            else if (_Line.StartsWith("'") && _Line.EndsWith("'")) return true;
-            return false;
+            return (line.StartsWith("\"") && line.EndsWith("\"")) || (line.StartsWith("'") && line.EndsWith("'"));
         }
 
         // Remove string quotes.
-        public static string Strings(string Line)
+        public static string Strings(string line)
         {
-            Line = Line.Trim();
-            if (Collection.String.IsString(Line))
-                return Line.Substring(1, Line.Length - 2);
-
-            return Line;
+            return IsString(line) ? line.Substring(1, line.Length - 2) : line;
         }
     }
 

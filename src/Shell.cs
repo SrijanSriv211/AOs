@@ -47,9 +47,9 @@ class Shell
             return true;
         }
 
-        else if (!Collection.String.IsEmpty(Environment.GetEnvironmentVariable(lower_input)))
+        else if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(lower_input)))
         {
-            if (Collection.Array.IsEmpty(input_args))
+            if (Utils.Array.IsEmpty(input_args))
                 Console.WriteLine(Environment.GetEnvironmentVariable(lower_input));
 
             else
@@ -63,7 +63,7 @@ class Shell
             foreach (string ext in extentions)
             {
                 string exe_name_with_ext = lower_input + ext;
-                if (!Collection.String.IsEmpty(LocateEXE(exe_name_with_ext)))
+                if (!Utils.String.IsEmpty(LocateEXE(exe_name_with_ext)))
                 {
                     CommandPrompt($"\"{exe_name_with_ext}\" {string.Join(" ", input_args)}");
                     return true;
@@ -72,7 +72,7 @@ class Shell
 
             // If no exe is located then try running a cmd command.
             string output = CommandPrompt($"\"{lower_input}\" {string.Join(" ", input_args)}", Obsidian.default_else_shell);
-            return Collection.String.IsEmpty(output) ? false : true;
+            return Utils.String.IsEmpty(output) ? false : true;
         }
     }
 
@@ -90,7 +90,7 @@ class Shell
         // Event handler for capturing the output
         DataReceivedEventHandler output_handler = (sender, e) =>
         {
-            if (!Collection.String.IsEmpty(e.Data))
+            if (!Utils.String.IsEmpty(e.Data))
             {
                 output_builder.AppendLine(e.Data); // Append the output to the StringBuilder
                 Console.WriteLine(e.Data); // Display the output in real-time

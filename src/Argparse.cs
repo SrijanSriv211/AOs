@@ -136,7 +136,7 @@ class Argparse
 
         foreach (var argument in arguments)
         {
-            string argName = string.Join(", ", Collection.Array.Reduce(argument.Names));
+            string argName = string.Join(", ", Utils.Array.Reduce(argument.Names));
             string defaultValue = argument.Default_value != null ? $" (default: {argument.Default_value})" : "";
             string isRequired = argument.Required != false ? $" (required: true)" : "";
             string isFlag = argument.Is_flag != false ? $" (is flag: true)" : "";
@@ -150,7 +150,7 @@ class Argparse
         help_list.Sort();
         name = name.StartsWith('_') ? name.Substring(1) : name;
 
-        if (Collection.String.IsEmpty(name))
+        if (Utils.String.IsEmpty(name))
         {
             Console.WriteLine("Type `help <command-name>` for more information on a specific command");
             foreach (string item in help_list)
@@ -168,7 +168,7 @@ class Argparse
             string match = "";
             foreach (string item in help_list)
             {
-                if (!Collection.String.IsEmpty(match))
+                if (!Utils.String.IsEmpty(match))
                 {
                     Console.WriteLine(match);
                     break;
@@ -179,13 +179,13 @@ class Argparse
                 {
                     if (parts[i].Contains(name))
                     {
-                        match = $"{Collection.String.Reduce(parts[i])} -> {Collection.String.Reduce(parts[i+1])}";
+                        match = $"{Utils.String.Reduce(parts[i])} -> {Utils.String.Reduce(parts[i+1])}";
                         break;
                     }
                 }
             }
 
-            if (Collection.String.IsEmpty(match))
+            if (Utils.String.IsEmpty(match))
                 new Error($"No information for command '{name}'");
         }
     }

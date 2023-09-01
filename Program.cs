@@ -8,7 +8,7 @@ Startup();
 
 void Startup()
 {
-    string[] argv = Collection.Array.Filter(args);
+    string[] argv = Utils.Array.Filter(args);
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments.", is_flag: true);
     parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string.");
@@ -18,7 +18,7 @@ void Startup()
     if (parsed_args.Count() == 0)
     {
         string startlist_path = Path.Combine(Obsidian.rootDir, "Files.x72\\root\\StartUp\\.startlist");
-        bool isEmpty = Collection.String.IsEmpty(
+        bool isEmpty = Utils.String.IsEmpty(
             FileIO.FileSystem.ReadAllText(startlist_path)
         );
 
@@ -127,7 +127,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     {
         string lowercase_cmd = i.cmd.ToLower();
 
-        if (Collection.String.IsEmpty(i.cmd))
+        if (Utils.String.IsEmpty(i.cmd))
             continue;
 
         else if (lowercase_cmd == "help" || Argparse.IsAskingForHelp(lowercase_cmd))
@@ -136,8 +136,8 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
         else if (i.cmd == "AOs1000")
             Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");
 
-        else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Collection.String.IsString(i.cmd))
-            Console.WriteLine(Collection.String.Strings(i.cmd));
+        else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Utils.String.IsString(i.cmd))
+            Console.WriteLine(Utils.String.Strings(i.cmd));
 
         else
         {
