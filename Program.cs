@@ -109,6 +109,7 @@ void run(Obsidian AOs, List<(string cmd, string[] args)> input)
 
 void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
+    //TODO: Write a custom Argparse class/system to handle commands.
     var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
     parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version.", is_flag: true, method: AOs.PrintVersion);

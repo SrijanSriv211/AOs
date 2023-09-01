@@ -1,3 +1,4 @@
+//TODO: Re-work Obsidian
 class Obsidian
 {
     public string Version = "AOs 2023 [Version 2.5]";
