@@ -1,4 +1,5 @@
 using System.Data;
+using System.Text.RegularExpressions;
 
 class Lexer
 {
@@ -13,38 +14,67 @@ class Lexer
 
     private void Parse(string[] toks)
     {
-        string expr = "";
         List<string> tokens = new();
-        List<string> current_list = new();
 
-        foreach (string tok in toks)
+        for (int i = 0; i < toks.Length; i++)
         {
-            if (Is_float(tok) || Is_operator(tok) || tok == "(" || tok == ")")
-                expr += tok;
+            string tok = toks[i];
 
-            else
+            if (Is_expr(tok))
             {
-                if (!Utils.String.IsEmpty(expr))
+                i++;
+
+                while (i < toks.Length && Is_expr(tok))
                 {
-                    tokens.Add(Evaluate(expr));
-                    expr = "";
+                    tok += toks[i];
+                    i++;
                 }
 
-                tokens.Add(tok);
+                i--;
             }
+
+            tokens.Add(tok);
         }
 
-        foreach (string i in tokens.ToArray())
+        List<string> current_list = new();
+        string pattern = @"^[-+*/0-9()]+$";
+        string expr = "";
+
+        foreach (string tok in tokens.ToArray())
         {
+            if ((Regex.IsMatch(tok, pattern) && !Is_operator(tok)) || Utils.String.IsEmpty(tok))
+            {
+                if (!Utils.String.IsEmpty(tok))
+                {
+                    expr += tok;
+                    continue;
+                }
+            }
+
+            else if (!Utils.String.IsEmpty(expr))
+            {
+                current_list.Add(Evaluate(expr));
+                expr = "";
+            }
+
             // Create a new sublist when encountering a semicolon
-            if (i == ";")
+            else if (tok == ";")
             {
                 Tokens.Add(current_list);
                 current_list = new List<string>();
             }
 
-            else
-                current_list.Add(i);
+            current_list.Add(tok);
+
+            // Create a new sublist when encountering a semicolon
+        //     if (i == ";")
+        //     {
+        //         Tokens.Add(current_list);
+        //         current_list = new List<string>();
+        //     }
+
+        //     else
+        //         current_list.Add(i);
         }
 
         // Add the last sublist to the result list
@@ -74,6 +104,7 @@ class Lexer
                 error_detail = error_detail.Substring(colon_index + 1).Trim();
 
             Error.Syntax(error_detail);
+            result = "";
         }
 
         return result;
@@ -154,7 +185,7 @@ class Lexer
                     Error.Syntax(error_detail);
                 }
 
-                tokens.Add(tok);
+                tokens.Add(Utils.String.Strings(tok));
                 tok = "";
             }
 
@@ -216,9 +247,14 @@ class Lexer
         return tokens.ToArray();
     }
 
+    private bool Is_expr(string str)
+    {
+        return Is_float(str) || Is_operator(str);
+    }
+
     private bool Is_operator(string str)
     {
-        return str == "+" || str == "-" || str == "*" || str == "/" || str == "%";
+        return str == "+" || str == "-" || str == "*" || str == "/" || str == "%" || str == "(" || str == ")";
     }
 
     private bool Is_symbol(string c)
@@ -231,19 +267,9 @@ class Lexer
         if (Utils.String.IsEmpty(str))
             return false;
 
-        static bool Is_identifier_symbol(char c)
-        {
-            return c == '~' || c == '!' || c == '@' || c == '#' ||
-                   c == '$' || c == '%' || c == '^' || c == '&' ||
-                   c == '(' || c == ')' || c == '_' || c == '+' ||
-                   c == '=' || c == '-' || c == '`' || c == '{' ||
-                   c == '}' || c == '[' || c == ']' || c == '.' ||
-                   c == ',' || c == ';' || c == '\'' || c == '"';
-        }
-
         for (int i = 0; i < str.Length; i++)
         {
-            if (!char.IsLetterOrDigit(str[i]) && !Is_identifier_symbol(str[i]))
+            if (!char.IsLetterOrDigit(str[i]) && str[i] != '_')
                 return false;
         }
 

@@ -7,11 +7,11 @@ namespace Utils
     {
         public static string[] SimplifyString(string[] str)
         {
-            List<string> tempArgs = new();
+            List<string> temp_args = new();
             for (int i = 0; i < str.Length; i++)
-                tempArgs.Add(String.Strings(str[i]));
+                temp_args.Add(String.Strings(str[i]));
 
-            return tempArgs.ToArray();
+            return temp_args.ToArray();
         }
     }
 
