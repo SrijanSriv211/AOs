@@ -235,9 +235,19 @@ class Lexer
         if (Utils.String.IsEmpty(str))
             return false;
 
+        static bool Is_identifier_symbol(char c)
+        {
+            return c == '~' || c == '!' || c == '@' || c == '#' ||
+                   c == '$' || c == '%' || c == '^' || c == '&' ||
+                   c == '(' || c == ')' || c == '_' || c == '+' ||
+                   c == '=' || c == '-' || c == '`' || c == '{' ||
+                   c == '}' || c == '[' || c == ']' || c == '.' ||
+                   c == ',' || c == ';' || c == '\'' || c == '"';
+        }
+
         for (int i = 0; i < str.Length; i++)
         {
-            if (!char.IsLetterOrDigit(str[i]))
+            if (!char.IsLetterOrDigit(str[i]) && !Is_identifier_symbol(str[i]))
                 return false;
         }
 

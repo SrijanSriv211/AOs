@@ -12,9 +12,9 @@ class Argparse
         this.desc = description;
     }
 
-    public void Add(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
+    public void Add(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false)
     {
-        arguments.Add(new Argument(names, help, default_value, is_flag, required, method));
+        arguments.Add(new Argument(names, help, default_value, is_flag, required));
         help_list.Add($"{string.Join(", ", names)} -> {help}");
     }
 
@@ -36,7 +36,7 @@ class Argparse
             }
 
             if (matching_argument.Is_flag)
-                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: "true", is_flag: matching_argument.Is_flag, method: matching_argument.Method));
+                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: "true", is_flag: matching_argument.Is_flag));
 
             else
             {
@@ -46,7 +46,7 @@ class Argparse
                     if (matching_argument.Default_value == null)
                     {
                         new Error($"Missing value for argument: {arg}");
-                        return new List<ParsedArgument>();
+                        out_value = null;
                     }
 
                     else
@@ -56,7 +56,7 @@ class Argparse
                 else
                     out_value = args[Array.IndexOf(args, arg) + 1];
 
-                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: out_value, is_flag: matching_argument.Is_flag, method: matching_argument.Method));
+                parsed_args.Add(new ParsedArgument(names: matching_argument.Names, value: out_value, is_flag: matching_argument.Is_flag));
                 i++;
             }
         }
@@ -82,14 +82,12 @@ class Argparse
         public string[] Names { get; set; }
         public string Value { get; set; }
         public bool Is_flag { get; set; }
-        public Delegate Method { get; set; }
 
-        public ParsedArgument(string[] names=null, string value=null, bool is_flag=false, Delegate method=null)
+        public ParsedArgument(string[] names=null, string value=null, bool is_flag=false)
         {
             this.Names = names ?? new string[0];
             this.Value = value;
             this.Is_flag = is_flag;
-            this.Method = method;
         }
     }
 
@@ -100,16 +98,14 @@ class Argparse
         public string Default_value { get; set; }
         public bool Is_flag { get; set; }
         public bool Required { get; set; }
-        public Delegate Method { get; set; }
 
-        public Argument(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false, Delegate method=null)
+        public Argument(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false)
         {
             this.Names = names;
             this.Help = help;
             this.Default_value = default_value;
             this.Is_flag = is_flag;
             this.Required = required;
-            this.Method = method;
         }
     }
 
