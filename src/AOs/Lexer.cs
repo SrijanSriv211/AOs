@@ -82,10 +82,11 @@ class Lexer
     private string[] Tokenizer()
     {
         List<string> tokens = new();
+        string tok = "";
 
         for (int i = 0; i < line.Length; i++)
         {
-            string tok = line[i].ToString();
+            tok += line[i].ToString();
 
             if (Utils.String.IsEmpty(tok))
             {
@@ -104,48 +105,6 @@ class Lexer
 
             else if (tok == "#")
                 break;
-
-            else if (Is_symbol(line[i]) && tok.Length == 1)
-            {
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_operator(line[i]) && tok.Length == 1)
-            {
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_identifier(tok))
-            {
-                i++;
-                while (i < line.Length && Is_identifier(line[i].ToString()))
-                {
-                    tok += line[i];
-                    i++;
-                }
-
-                i--;
-
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_float(tok))
-            {
-                i++;
-                while (i < line.Length && Is_float(line[i].ToString()))
-                {
-                    tok += line[i];
-                    i++;
-                }
-
-                i--;
-
-                tokens.Add(tok);
-                tok = "";
-            }
 
             else if (tok == "'" || tok == "\"")
             {
@@ -199,6 +158,48 @@ class Lexer
                 tok = "";
             }
 
+            else if (Is_symbol(tok))
+            {
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            else if (Is_operator(tok))
+            {
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            else if (Is_identifier(tok))
+            {
+                i++;
+                while (i < line.Length && Is_identifier(line[i].ToString()))
+                {
+                    tok += line[i];
+                    i++;
+                }
+
+                i--;
+
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            else if (Is_float(tok))
+            {
+                i++;
+                while (i < line.Length && Is_float(line[i].ToString()))
+                {
+                    tok += line[i];
+                    i++;
+                }
+
+                i--;
+
+                tokens.Add(tok);
+                tok = "";
+            }
+
             else
             {
                 tokens.Add(tok);
@@ -215,19 +216,14 @@ class Lexer
         return tokens.ToArray();
     }
 
-    private bool Is_operator(char c)
-    {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
-    }
-
     private bool Is_operator(string str)
     {
         return str == "+" || str == "-" || str == "*" || str == "/" || str == "%";
     }
 
-    private bool Is_symbol(char c)
+    private bool Is_symbol(string c)
     {
-        return c == '>' || c == '@';
+        return c == ">" || c == "@" || c == ";";
     }
 
     private bool Is_identifier(string str)
