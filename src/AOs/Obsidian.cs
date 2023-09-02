@@ -1,20 +1,19 @@
-//TODO: Re-work Obsidian
 class Obsidian
 {
+    public static string rootDir = AppDomain.CurrentDomain.BaseDirectory;
+    public static string default_else_shell = "cmd.exe";
+
     public string Version = "AOs 2023 [Version 2.5]";
 
-    public static string default_else_shell = "cmd.exe";
-    public static string rootDir = AppDomain.CurrentDomain.BaseDirectory;
+    private readonly string Title = "AOs";
+    private readonly string Prompt = "$ ";
 
-    private string Title = "AOs";
-    private string Prompt = "";
-
-    public Obsidian(string title="AOs", string prompt="$ ")
+    public Obsidian(string Title="AOs", string Prompt="$ ")
     {
-        Title = title;
-        Prompt = Utils.String.IsEmpty(prompt) ? SetPrompt(new string[]{"-r"}) : prompt;
+        this.Title = Title;
+        this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(new string[]{"-r"}) : Prompt;
     }
-
+    
     public List<(string cmd, string[] args)> TakeInput(string input = "")
     {
         List<(string cmd, string[] args)> output = new();
@@ -28,7 +27,7 @@ class Obsidian
             if (Utils.String.IsEmpty(CMD))
                 return new List<(string cmd, string[] args)>(); // (cmd: "", args: new string[0])
 
-            if (CMD[0] == '_')
+            if (CMD.First() == '_')
                 CMD = CMD.Substring(1).Trim();
         }
 
@@ -39,15 +38,20 @@ class Obsidian
         List<List<string>> ListOfToks = new Lexer(CMD).Tokens;
         foreach (var Toks in ListOfToks)
         {
-            // Split the Toks into a cmd and Args variable and array respectively.
-            string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
-            string input_cmd = preprocess_toks.FirstOrDefault();
-            string[] input_args = preprocess_toks.Skip(1).ToArray();
-
-            // Parse input.
-            if (!Utils.String.IsEmpty(input_cmd))
-                output.Add((input_cmd, input_args));
+            Console.WriteLine(Toks);
         }
+
+        // foreach (var Toks in ListOfToks)
+        // {
+        //     // Split the Toks into a cmd and Args variable and array respectively.
+        //     string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
+        //     string input_cmd = preprocess_toks.FirstOrDefault();
+        //     string[] input_args = preprocess_toks.Skip(1).ToArray();
+
+        //     // Parse input.
+        //     if (!Utils.String.IsEmpty(input_cmd))
+        //         output.Add((input_cmd, input_args));
+        // }
 
         return output;
     }
@@ -100,12 +104,16 @@ class Obsidian
 
     public string SetPrompt(string[] flags, string default_prompt="$ ")
     {
+        if (Utils.Array.IsEmpty(flags))
+            return default_prompt;
+
         var parser = new Argparse("prompt", "Specifies a new command prompt.");
 
         parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
         parser.Add(new string[] {"-r", "--reset", "--restore", "--default"}, "$ (dollar sign, reset the prompt)", is_flag: true);
 
         parser.Add(new string[] {"-s", "--space"}, "(space)", is_flag: true);
+        parser.Add(new string[] {"-b", "--backspace"}, "(backspace)", is_flag: true);
         parser.Add(new string[] {"-v", "--version"}, "Current AOs version", is_flag: true);
 
         parser.Add(new string[] {"-t", "--time"}, "Current time", is_flag: true);
@@ -114,103 +122,50 @@ class Obsidian
         parser.Add(new string[] {"-n", "--drive"}, "Current drive", is_flag: true);
 
         var parsed_args = parser.Parse(flags);
-        string new_prompt = string.Empty;
+        string new_prompt = "";
 
-        if (Utils.Array.IsEmpty(flags))
-            return default_prompt;
-
-        else
+        foreach (var arg in parsed_args)
         {
-            foreach (var arg in parsed_args)
+            if (Argparse.IsAskingForHelp(arg.Names))
             {
-                if (Argparse.IsAskingForHelp(arg.Names))
-                {
-                    parser.PrintHelp();
-                    return default_prompt;
-                }
-
-                else if (arg.Names.Contains("-r"))
-                    return default_prompt;
-
-                else if (arg.Names.Contains("-v"))
-                    new_prompt += new Obsidian().Version;
-
-                else if (arg.Names.Contains("-s"))
-                    new_prompt += " ";
-
-                else if (arg.Names.Contains("-t"))
-                    new_prompt += DateTime.Now.ToString("HH:mm:ss");
-
-                else if (arg.Names.Contains("-d"))
-                    new_prompt += DateTime.Now.ToString("dd-MM-yyyy");
-
-                else if (arg.Names.Contains("-p"))
-                    new_prompt += Directory.GetCurrentDirectory();
-
-                else if (arg.Names.Contains("-n"))
-                    new_prompt += Path.GetPathRoot(Environment.SystemDirectory);
-
-                else if (arg.Names.Any(name => name.StartsWith("-")))
-                {
-                    Error.UnrecognizedArgs(arg.Names);
-                    return default_prompt;
-                }
-
-                else
-                    new_prompt += arg;
+                parser.PrintHelp();
+                return default_prompt;
             }
+
+            else if (arg.Names.Contains("-r"))
+                return default_prompt;
+
+            else if (arg.Names.Contains("-v"))
+                new_prompt += new Obsidian().Version;
+
+            else if (arg.Names.Contains("-s"))
+                new_prompt += " ";
+
+            else if (arg.Names.Contains("-b"))
+                new_prompt += "\b \b";
+
+            else if (arg.Names.Contains("-t"))
+                new_prompt += DateTime.Now.ToString("HH:mm:ss");
+
+            else if (arg.Names.Contains("-d"))
+                new_prompt += DateTime.Now.ToString("dd-MM-yyyy");
+
+            else if (arg.Names.Contains("-p"))
+                new_prompt += Directory.GetCurrentDirectory();
+
+            else if (arg.Names.Contains("-n"))
+                new_prompt += Path.GetPathRoot(Environment.SystemDirectory);
+
+            else if (arg.Names.Any(name => name.StartsWith("-")))
+            {
+                Error.UnrecognizedArgs(arg.Names);
+                return default_prompt;
+            }
+
+            else
+                new_prompt += arg.Names.First();
         }
 
         return new_prompt;
-    }
-}
-
-class History
-{
-    public static void Set(string cmd)
-    {
-        string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}\n'{cmd}'\n\n");
-    }
-
-    public static void Get()
-    {
-        string format = "[dd-MM-yyyy HH:mm:ss]";
-
-        string[] history = FileIO.FileSystem.ReadAllLines($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
-
-        for (int i = 0; i < history.Length; i++)
-        {
-            if (Utils.String.IsEmpty(history[i]))
-                continue;
-
-            DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
-
-            Console.Write(history[i+1] + " ");
-            new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
-            i++;
-        }
-    }
-
-    public static void Clear()
-    {
-        FileIO.FileSystem.Delete($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
-    }
-}
-
-class TerminalColor
-{
-    public TerminalColor(string details, ConsoleColor Color, bool isNewLine=true)
-    {
-        var ForegroundColor = Console.ForegroundColor;
-        Console.ForegroundColor = Color;
-
-        if (isNewLine)
-            Console.WriteLine(details);
-
-        else
-            Console.Write(details);
-
-        Console.ForegroundColor = ForegroundColor;
     }
 }
