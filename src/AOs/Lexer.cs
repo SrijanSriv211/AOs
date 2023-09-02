@@ -170,10 +170,10 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_identifier(tok))
+            else if (Is_float(tok))
             {
                 i++;
-                while (i < line.Length && Is_identifier(line[i].ToString()))
+                while (i < line.Length && Is_float(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;
@@ -185,10 +185,10 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_float(tok))
+            else if (Is_identifier(tok))
             {
                 i++;
-                while (i < line.Length && Is_float(line[i].ToString()))
+                while (i < line.Length && Is_identifier(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;
