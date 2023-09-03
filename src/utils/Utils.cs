@@ -36,9 +36,9 @@ namespace Utils
         }
 
         // Check whether a string is just a whitespace.
-        public static bool WhiteSpace(string line)
+        public static bool IsWhiteSpace(string line)
         {
-            return line.Trim() == "";
+            return line != "" && line.Trim() == "";
         }
 
         // Check if the string is wrapped with string quotes or not.

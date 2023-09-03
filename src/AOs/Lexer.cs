@@ -15,6 +15,7 @@ class Lexer
     private void Parse(string[] toks)
     {
         List<string> current_list = new();
+        string pattern = @"^[-+*/0-9()]+$";
 
         for (int i = 0; i < toks.Length; i++)
         {
@@ -32,6 +33,12 @@ class Lexer
                 i++;
             }
 
+            else if (i < toks.Length-2 && Is_operator(tok) && Utils.String.IsWhiteSpace(toks[i+1]) && Regex.IsMatch(toks[i+2], pattern))
+            {
+                current_list.Add(tok + toks[i+2]);
+                i += 2;
+            }
+
             else
                 current_list.Add(tok);
         }
@@ -40,10 +47,12 @@ class Lexer
         Tokens.Add(current_list);
 
         // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k"
+        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k - 3+ 4"
+        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k -  3+ 4;this is a just a test"
         foreach (var i in Tokens)
         {
             foreach (var j in i)
-                Console.WriteLine(j);
+                Console.WriteLine($"[{j}]");
 
             Console.WriteLine("[---]");
         }
@@ -165,10 +174,12 @@ class Lexer
 
             else if (Is_expr(tok))
             {
+                string whitespaces = "";
+
                 i++;
                 while (i < line.Length && Is_expr(line[i].ToString()))
                 {
-                    if (i < line.Length-1 && Utils.String.WhiteSpace(line[i+1].ToString()))
+                    if (i < line.Length-1 && Utils.String.IsWhiteSpace(line[i+1].ToString()))
                     {
                         tok += line[i];
                         i += 2;
@@ -176,8 +187,8 @@ class Lexer
 
                     if (i < line.Length-1 && Is_operator(line[i].ToString()) && Is_identifier_string_only_search(line[i+1].ToString()))
                     {
-                        if (Utils.String.WhiteSpace(line[i-1].ToString()))
-                            tok += "\n";
+                        if (Utils.String.IsWhiteSpace(line[i-1].ToString()))
+                            whitespaces = line[i-1].ToString();
 
                         break;
                     }
@@ -189,6 +200,9 @@ class Lexer
                 i--;
 
                 tokens.Add(tok);
+                if (Utils.String.IsWhiteSpace(whitespaces))
+                    tokens.Add(whitespaces);
+
                 tok = "";
             }
 
