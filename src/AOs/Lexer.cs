@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 class Lexer
 {
-    public List<List<string>> Tokens = new();
+    public List<string[]> Tokens = new();
     private readonly string line;
 
     public Lexer(string line)
@@ -23,11 +23,11 @@ class Lexer
 
             if (tok == ";")
             {
-                Tokens.Add(current_list);
+                Tokens.Add(current_list.ToArray());
                 current_list = new List<string>();
             }
 
-            else if (Is_operator(tok) && Is_identifier_string_only_search(toks[i+1].ToString()))
+            else if (i < toks.Length-1 && Is_operator(tok) && Is_identifier_string_only_search(toks[i+1].ToString()))
             {
                 current_list.Add(tok + toks[i+1]);
                 i++;
@@ -44,17 +44,17 @@ class Lexer
         }
 
         // Add the last sublist to the result list
-        Tokens.Add(current_list);
+        Tokens.Add(current_list.ToArray());
 
-        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k"
-        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k - 3+ 4"
-        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k -  3+ 4;this is a just a test"
-        foreach (var i in Tokens)
+        // Evaluate all math expressions in Tokens and replace the answer with the expr.
+        foreach (var tokens in Tokens)
         {
-            foreach (var j in i)
-                Console.WriteLine($"[{j}]");
-
-            Console.WriteLine("[---]");
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string tok = tokens[i];
+                if (Regex.IsMatch(tok, pattern) && !Is_operator(tok))
+                    tokens[i] = Evaluate(tok);
+            }
         }
     }
 
@@ -259,7 +259,7 @@ class Lexer
                 tok = "";
             }
 
-            if (i == line.Length-1 && tok != ";")
+            if (i == line.Length-1 && tok != ";" && !Utils.String.IsEmpty(tok))
             {
                 tokens.Add(tok);
                 tok = "";

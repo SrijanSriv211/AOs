@@ -35,30 +35,25 @@ class Obsidian
         History.Set(CMD);
 
         // Some lexer stuff.
-        Lexer l = new(CMD);
-        // List<List<string>> ListOfToks = new Lexer(CMD).Tokens;
-        // foreach (var Toks in ListOfToks)
-        // {
-        //     // Split the Toks into a cmd and Args variable and array respectively.
-        //     // string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
-        //     string input_cmd = Toks.FirstOrDefault().Trim() ?? "";
-        //     string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
+        List<string[]> ListOfToks = new Lexer(CMD).Tokens;
+        foreach (var Toks in ListOfToks)
+        {
+            // Split the Toks into a cmd and Args variable and array respectively.
+            // string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
+            // string[] trimmed_toks = Utils.Array.Trim(Toks);
+            string input_cmd = Toks.FirstOrDefault();
+            string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
 
-        //     Console.WriteLine(input_cmd);
-        //     Console.WriteLine($"[{string.Join(",", input_args)}]");
-        // }
+            // if (Utils.String.IsEmpty(input_args.FirstOrDefault("")))
+            //     input_args = input_args.Skip(1).ToArray();
 
-        // foreach (var Toks in ListOfToks)
-        // {
-        //     // Split the Toks into a cmd and Args variable and array respectively.
-        //     string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
-        //     string input_cmd = preprocess_toks.FirstOrDefault();
-        //     string[] input_args = preprocess_toks.Skip(1).ToArray();
+            Console.WriteLine(input_cmd);
+            Console.WriteLine($"[{string.Join(",", input_args)}]");
 
-        //     // Parse input.
-        //     if (!Utils.String.IsEmpty(input_cmd))
-        //         output.Add((input_cmd, input_args));
-        // }
+            // Parse input.
+            if (!Utils.String.IsEmpty(input_cmd))
+                output.Add((input_cmd, input_args));
+        }
 
         return output;
     }

@@ -58,5 +58,9 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     //     }
     // }
 
-    // shout "Hello world!";1+3;"1+2";
+    // dotnet run -- -c "shout \"Hello world!\";1+3;\"1+2\"";
+    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k"
+    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k - 3+ 4"
+    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k -  3+ 4;this is a just a test"
+    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k;4"
 }
