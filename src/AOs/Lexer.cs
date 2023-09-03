@@ -16,7 +16,6 @@ class Lexer
     {
         List<string> current_list = new();
 
-        // foreach (var tok in toks)
         for (int i = 0; i < toks.Length; i++)
         {
             string tok = toks[i];
@@ -27,16 +26,20 @@ class Lexer
                 current_list = new List<string>();
             }
 
-            else
+            else if (Is_operator(tok) && Is_identifier_string_only_search(toks[i+1].ToString()))
             {
-                current_list.Add(tok);
+                current_list.Add(tok + toks[i+1]);
+                i++;
             }
+
+            else
+                current_list.Add(tok);
         }
 
         // Add the last sublist to the result list
         Tokens.Add(current_list);
 
-        //     prompt -p ~"Hello world!"$ ;test;1+2;2-3 +34/9 *48 -ab - k
+        // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k"
         foreach (var i in Tokens)
         {
             foreach (var j in i)
@@ -160,17 +163,25 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_operator(tok))
-            {
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_float(tok))
+            else if (Is_expr(tok))
             {
                 i++;
-                while (i < line.Length && Is_float(line[i].ToString()))
+                while (i < line.Length && Is_expr(line[i].ToString()))
                 {
+                    if (i < line.Length-1 && Utils.String.WhiteSpace(line[i+1].ToString()))
+                    {
+                        tok += line[i];
+                        i += 2;
+                    }
+
+                    if (i < line.Length-1 && Is_operator(line[i].ToString()) && Is_identifier_string_only_search(line[i+1].ToString()))
+                    {
+                        if (Utils.String.WhiteSpace(line[i-1].ToString()))
+                            tok += "\n";
+
+                        break;
+                    }
+
                     tok += line[i];
                     i++;
                 }
@@ -180,6 +191,38 @@ class Lexer
                 tokens.Add(tok);
                 tok = "";
             }
+
+            // else if (Is_operator(tok))
+            // {
+            //     i++;
+
+            //     // Check if the next character is also an operator or a digit
+            //     while (i + 1 < line.Length && (Is_operator(line[i].ToString()) || Is_float(line[i].ToString()) || Is_identifier(line[i].ToString())))
+            //     {
+            //         tok += line[i];
+            //         i++;
+            //     }
+
+            //     i--;
+
+            //     tokens.Add(tok);
+            //     tok = "";
+            // }
+
+            // else if (Is_float(tok))
+            // {
+            //     i++;
+            //     while (i < line.Length && Is_float(line[i].ToString()))
+            //     {
+            //         tok += line[i];
+            //         i++;
+            //     }
+
+            //     i--;
+
+            //     tokens.Add(tok);
+            //     tok = "";
+            // }
 
             else if (Is_identifier(tok))
             {
@@ -212,6 +255,11 @@ class Lexer
         return tokens.ToArray();
     }
 
+    private bool Is_expr(string str)
+    {
+        return Is_float(str) || Is_operator(str);
+    }
+
     private bool Is_operator(string str)
     {
         return str == "+" || str == "-" || str == "*" || str == "/" || str == "%" || str == "(" || str == ")";
@@ -230,6 +278,20 @@ class Lexer
         for (int i = 0; i < str.Length; i++)
         {
             if (!char.IsLetterOrDigit(str[i]) && str[i] != '_')
+                return false;
+        }
+
+        return true;
+    }
+
+    private bool Is_identifier_string_only_search(string str)
+    {
+        if (Utils.String.IsEmpty(str))
+            return false;
+
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (!char.IsLetter(str[i]) && str[i] != '_')
                 return false;
         }
 
