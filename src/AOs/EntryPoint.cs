@@ -77,8 +77,6 @@ class EntryPoint
         {
             foreach (var arg in parsed_args)
             {
-                Console.WriteLine($"[({string.Join(", ", arg.Names)}), {arg.Value}, is_flag: {arg.Is_flag}]");
-
                 if (Argparse.IsAskingForHelp(arg.Names))
                     parser.PrintHelp();
 
