@@ -42,9 +42,6 @@ class Obsidian
             string input_cmd = Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
 
-            Console.WriteLine(input_cmd);
-            Console.WriteLine($"[{string.Join(",", input_args)}]");
-
             // Parse input.
             if (!Utils.String.IsEmpty(input_cmd))
                 output.Add((input_cmd, input_args));

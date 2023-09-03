@@ -3,9 +3,17 @@ Console.OutputEncoding = Encoding.UTF8;
 
 new EntryPoint(args, main);
 
-void main(Obsidian AOs, List<(string cmd, string[] args)> input)
+static void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 {
-    //TODO: Write a custom Argparse class/system to handle commands.
+    foreach (var i in input)
+    {
+        Console.WriteLine(i.cmd);
+        Console.WriteLine($"args: ({string.Join(",", i.args)})");
+        Console.WriteLine("[---]");
+    }
+
+
+
     // var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
     // parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", is_flag: true, method: AOs.ClearConsole);
     // parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version.", is_flag: true, method: AOs.PrintVersion);
@@ -58,9 +66,9 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     //     }
     // }
 
-    // dotnet run -- -c "shout \"Hello world!\";1+3;\"1+2\"";
-    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k"
-    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k - 3+ 4"
-    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;-1+2;2-3 +34/9 *48 -ab - k -  3+ 4;this is a just a test"
-    // dotnet run -- -c "   prompt -p ~\"Hello world!\"$ ;test;1+2;2-3 +34/9 *48 -ab - k;4"
+    // shout "Hello world!";1+3;"1+2"
+    //    prompt -p ~"Hello world!"$ ;test;1+2;2-3 +34/9 *48 -ab - k
+    //    prompt -p ~"Hello world!"$ ;test;-1+2;2-3 +34/9 *48 -ab - k - 3+ 4
+    //    prompt -p ~"Hello world!"$ ;test;-1+2;2-3 +34/9 *48 -ab - k -  3+ 4;this is a just a test
+    //    prompt -p ~"Hello world!"$ ;test;1+2;2-3 +34/9 *48 -ab - k;4
 }

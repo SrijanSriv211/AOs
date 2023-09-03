@@ -54,6 +54,9 @@ class Lexer
                 string tok = tokens[i];
                 if (Regex.IsMatch(tok, pattern) && !Is_operator(tok))
                     tokens[i] = Evaluate(tok);
+
+                else if (Utils.String.IsString(tok))
+                    tokens[i] = Utils.String.Strings(tok);
             }
         }
     }
@@ -153,6 +156,7 @@ class Lexer
                     {
                         string error_detail = "missing terminating " + str_char_symbol.ToString() + " character";
                         Error.Syntax(error_detail);
+                        tok = "";
                     }
                 }
                 
@@ -160,9 +164,10 @@ class Lexer
                 {
                     string error_detail = "unexpected end of tokens after " + str_char_symbol.ToString();
                     Error.Syntax(error_detail);
+                    tok = "";
                 }
 
-                tokens.Add(Utils.String.Strings(tok));
+                tokens.Add(tok);
                 tok = "";
             }
 
