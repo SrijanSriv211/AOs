@@ -2,9 +2,8 @@ class Argparse
 {
     private readonly string name = "";
     private readonly string desc = "";
-
-    private readonly List<string> help_list = new List<string>();
-    private readonly List<Argument> arguments = new List<Argument>();
+    private readonly List<string> help_list = new();
+    private readonly List<Argument> arguments = new();
 
     public Argparse(string name, string description)
     {
