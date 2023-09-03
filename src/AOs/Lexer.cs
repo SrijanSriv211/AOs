@@ -206,38 +206,6 @@ class Lexer
                 tok = "";
             }
 
-            // else if (Is_operator(tok))
-            // {
-            //     i++;
-
-            //     // Check if the next character is also an operator or a digit
-            //     while (i + 1 < line.Length && (Is_operator(line[i].ToString()) || Is_float(line[i].ToString()) || Is_identifier(line[i].ToString())))
-            //     {
-            //         tok += line[i];
-            //         i++;
-            //     }
-
-            //     i--;
-
-            //     tokens.Add(tok);
-            //     tok = "";
-            // }
-
-            // else if (Is_float(tok))
-            // {
-            //     i++;
-            //     while (i < line.Length && Is_float(line[i].ToString()))
-            //     {
-            //         tok += line[i];
-            //         i++;
-            //     }
-
-            //     i--;
-
-            //     tokens.Add(tok);
-            //     tok = "";
-            // }
-
             else if (Is_identifier(tok))
             {
                 i++;

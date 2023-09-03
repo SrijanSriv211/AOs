@@ -39,13 +39,8 @@ class Obsidian
         foreach (var Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
-            // string[] preprocess_toks = Utils.Array.Trim(Utils.Array.Reduce(Toks.ToArray()));
-            // string[] trimmed_toks = Utils.Array.Trim(Toks);
             string input_cmd = Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
-
-            // if (Utils.String.IsEmpty(input_args.FirstOrDefault("")))
-            //     input_args = input_args.Skip(1).ToArray();
 
             Console.WriteLine(input_cmd);
             Console.WriteLine($"[{string.Join(",", input_args)}]");
