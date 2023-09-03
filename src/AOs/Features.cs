@@ -4,7 +4,7 @@ class Features
 {
     public static void Shout(string[] args)
     {
-        Console.WriteLine(string.Join(" ", Utils.Utils.SimplifyString(args)));
+        Console.WriteLine(string.Join("", args));
     }
 
     public static void Exit()
@@ -29,15 +29,8 @@ class Features
         Exit();
     }
 
-    public static void GetSetHistory(string[] args)
+    public static void GetSetHistory(string arg)
     {
-        string arg = args.FirstOrDefault();
-        if (args.Length > 1)
-        {
-            Error.TooManyArgs(args);
-            return;
-        }
-
         if (Utils.String.IsEmpty(arg))
             History.Get();
 

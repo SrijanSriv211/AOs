@@ -54,9 +54,6 @@ class Lexer
                 string tok = tokens[i];
                 if (Regex.IsMatch(tok, pattern) && !Is_operator(tok))
                     tokens[i] = Evaluate(tok);
-
-                else if (Utils.String.IsString(tok))
-                    tokens[i] = Utils.String.Strings(tok);
             }
         }
     }
@@ -264,7 +261,7 @@ class Lexer
 
         for (int i = 0; i < str.Length; i++)
         {
-            if (!char.IsLetterOrDigit(str[i]) && str[i] != '_')
+            if (!char.IsLetterOrDigit(str[i]) && str[i] != '_' && str[i] != '?')
                 return false;
         }
 
@@ -278,7 +275,7 @@ class Lexer
 
         for (int i = 0; i < str.Length; i++)
         {
-            if (!char.IsLetter(str[i]) && str[i] != '_')
+            if (!char.IsLetter(str[i]) && str[i] != '_' && str[i] != '?')
                 return false;
         }
 

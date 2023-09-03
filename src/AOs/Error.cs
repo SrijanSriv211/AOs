@@ -6,53 +6,53 @@ class Error
     }
 
     // No arguments.
-    public static void NoArgs()
+    public static void NoArgs(string cmd_name)
     {
-        new Error("NoArgumentError: No arguments were passed");
+        new Error($"NoArgumentError: No arguments were passed for '{cmd_name}'");
     }
 
     // Unrecognized arguments.
-    public static void UnrecognizedArgs(string[] _Flag)
+    public static void UnrecognizedArgs(string[] args)
     {
-        new Error($"Unrecognized arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
+        new Error($"Unrecognized arguments: {string.Join(", ", Utils.Array.Reduce(args))}");
     }
 
-    public static void UnrecognizedArgs(string _Flag)
+    public static void UnrecognizedArgs(string args)
     {
-        new Error($"Unrecognized arguments: {_Flag}");
+        new Error($"Unrecognized arguments: {args}");
     }
 
     // Not appropriate number of arguments.
-    public static void TooFewArgs(string[] _Flag)
+    public static void TooFewArgs(string[] args)
     {
-        new Error($"Too few arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
+        new Error($"Too few arguments: {string.Join(", ", Utils.Array.Reduce(args))}");
     }
 
-    public static void TooFewArgs(string _Flag)
+    public static void TooFewArgs(string args)
     {
-        new Error($"Too few arguments: {_Flag}");
+        new Error($"Too few arguments: {args}");
     }
 
-    public static void TooManyArgs(string[] _Flag)
+    public static void TooManyArgs(string[] args)
     {
-        new Error($"Too many arguments: {string.Join(", ", Utils.Array.Reduce(_Flag))}");
+        new Error($"Too many arguments: {string.Join(", ", Utils.Array.Reduce(args))}");
     }
 
-    public static void TooManyArgs(string _Flag)
+    public static void TooManyArgs(string args)
     {
-        new Error($"Too many arguments: {_Flag}");
+        new Error($"Too many arguments: {args}");
     }
 
     // Invalid Command.
-    public static void Command(string _Command, string _Details = "Command does not exist")
+    public static void Command(string cmd_name, string err_msg = "Command does not exist")
     {
-        new Error($"'{_Command}', {_Details}");
+        new Error($"'{cmd_name}', {err_msg}");
     }
 
     // Invalid syntax.
-    public static void Syntax(string _Details)
+    public static void Syntax(string err_msg)
     {
-        new Error($"SyntaxError: {_Details}");
+        new Error($"SyntaxError: {err_msg}");
     }
 
     // Division by 0.

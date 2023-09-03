@@ -26,10 +26,10 @@ class Obsidian
 
             if (Utils.String.IsEmpty(CMD))
                 return new List<(string cmd, string[] args)>(); // (cmd: "", args: new string[0])
-
-            if (CMD.First() == '_')
-                CMD = CMD.Substring(1).Trim();
         }
+
+        if (CMD.First() == '_')
+            CMD = CMD.Substring(1).Trim();
 
         // Set history.
         History.Set(CMD);
@@ -41,6 +41,12 @@ class Obsidian
             // Split the Toks into a cmd and Args variable and array respectively.
             string input_cmd = Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
+            for (int i = 0; i < input_args.Length; i++)
+            {
+                string arg = input_args[i];
+                if (Utils.String.IsString(arg))
+                    input_args[i] = Utils.String.Strings(arg);
+            }
 
             // Parse input.
             if (!Utils.String.IsEmpty(input_cmd))
@@ -94,6 +100,12 @@ class Obsidian
         };
 
         new TerminalColor(string.Join("\n", CreditCenter), ConsoleColor.White);
+    }
+
+    public void About()
+    {
+        string AboutAOs = "Command-line utility for improved efficiency and productivity.";
+        new TerminalColor(AboutAOs, ConsoleColor.White);
     }
 
     public string SetPrompt(string[] flags, string default_prompt="$ ")
