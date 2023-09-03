@@ -9,13 +9,34 @@ class Parser
         this.error_function = error_function;
     }
 
-    public void Add(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int max_args_length=-1, Delegate method=null)
+    public void Execute(ParsedCommand parsed_cmd)
+    {
+        if (parsed_cmd.Is_flag)
+        {
+            var action = parsed_cmd.Method as Action; // Cast the stored delegate to Action
+            action?.Invoke(); // Invoke the delegate with no arguments
+        }
+
+        else if (parsed_cmd.Max_args_length == 1)
+        {
+            var action = parsed_cmd.Method as Action<string>; // Cast the stored delegate to Action<string>
+            action?.Invoke(parsed_cmd.Values.FirstOrDefault("")); // Invoke the delegate with the provided arguments (i.args[0])
+        }
+
+        else if (parsed_cmd.Max_args_length > 1)
+        {
+            var action = parsed_cmd.Method as Action<string[]>; // Cast the stored delegate to Action<string[]>
+            action?.Invoke(parsed_cmd.Values); // Invoke the delegate with the provided arguments (i.args)
+        }
+    }
+
+    public void Add(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
     {
         if (default_values != null)
             is_flag = false;
 
         help_list.Add(cmd_names, help_message);
-        command_details.Add(new Command(cmd_names, help_message, default_values, is_flag, max_args_length, method));
+        command_details.Add(new Command(cmd_names, help_message, default_values, is_flag, min_args_length, max_args_length, method));
     }
 
     public ParsedCommand Parse(string cmd_name, string[] args)
@@ -38,11 +59,7 @@ class Parser
                 return new ParsedCommand();
             }
 
-            parsed_cmd.Cmd_name = cmd_name;
             parsed_cmd.Values = new string[]{"true"};
-            parsed_cmd.Is_flag = matching_cmd.Is_flag;
-            parsed_cmd.Max_args_length = matching_cmd.Max_args_length;
-            parsed_cmd.Method = matching_cmd.Method;
         }
 
         else
@@ -62,33 +79,24 @@ class Parser
             else
                 parsed_cmd.Values = args;
 
-            if (matching_cmd.Max_args_length > 0)
+            if (matching_cmd.Min_args_length > 0 && Utils.Array.Reduce(parsed_cmd.Values).Length < matching_cmd.Min_args_length)
             {
-                if (Utils.Array.Reduce(parsed_cmd.Values).Length > matching_cmd.Max_args_length)
-                {
-                    Error.TooManyArgs(Utils.Array.Reduce(parsed_cmd.Values));
-                    return new ParsedCommand();
-                }
-
-                else if (Utils.Array.Reduce(parsed_cmd.Values).Length < matching_cmd.Max_args_length)
-                {
-                    Error.TooFewArgs(Utils.Array.Reduce(parsed_cmd.Values));
-                    return new ParsedCommand();
-                }
+                Error.TooFewArgs(Utils.Array.Reduce(parsed_cmd.Values));
+                return new ParsedCommand();
             }
 
-            parsed_cmd.Cmd_name = cmd_name;
-            parsed_cmd.Is_flag = matching_cmd.Is_flag;
-            parsed_cmd.Max_args_length = matching_cmd.Max_args_length;
-            parsed_cmd.Method = matching_cmd.Method;
+            else if (matching_cmd.Max_args_length > 0 && Utils.Array.Reduce(parsed_cmd.Values).Length > matching_cmd.Max_args_length)
+            {
+                Error.TooManyArgs(Utils.Array.Reduce(parsed_cmd.Values));
+                return new ParsedCommand();
+            }
         }
 
-        for (int i = 0; i < parsed_cmd.Values.Length; i++)
-        {
-            string value = parsed_cmd.Values[i];
-            if (Utils.String.IsString(value))
-                parsed_cmd.Values[i] = Utils.String.Strings(value);
-        }
+        parsed_cmd.Cmd_name = cmd_name;
+        parsed_cmd.Is_flag = matching_cmd.Is_flag;
+        parsed_cmd.Min_args_length = matching_cmd.Min_args_length;
+        parsed_cmd.Max_args_length = matching_cmd.Max_args_length;
+        parsed_cmd.Method = matching_cmd.Method;
 
         return parsed_cmd;
     }
@@ -159,14 +167,16 @@ class Parser
         public string[] Values { get; set; }
         public bool Is_flag { get; set; }
         public int Max_args_length { get; set; }
+        public int Min_args_length { get; set; }
         public Delegate Method { get; set; }
 
-        public ParsedCommand(string cmd_name, string[] values, bool is_flag, int max_args_length, Delegate method)
+        public ParsedCommand(string cmd_name, string[] values, bool is_flag, int min_args_length, int max_args_length, Delegate method)
         {
             this.Cmd_name = cmd_name;
             this.Values = values;
             this.Is_flag = is_flag;
             this.Max_args_length = max_args_length;
+            this.Min_args_length = min_args_length;
             this.Method = method;
         }
     }
@@ -178,15 +188,17 @@ class Parser
         public string[] Default_values { get; set; }
         public bool Is_flag { get; set; }
         public int Max_args_length { get; set; }
+        public int Min_args_length { get; set; }
         public Delegate Method { get; set; }
 
-        public Command(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int max_args_length=-1, Delegate method=null)
+        public Command(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
         {
             this.Cmd_names = cmd_names;
             this.Help_message = help_message;
             this.Default_values = default_values;
             this.Is_flag = is_flag;
             this.Max_args_length = max_args_length;
+            this.Min_args_length = min_args_length;
             this.Method = method;
         }
     }

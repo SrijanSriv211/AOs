@@ -36,5 +36,8 @@ class Features
 
         else if (arg == "-c" || arg == "--clear")
             History.Clear();
+
+        else
+            Error.UnrecognizedArgs(arg);
     }
 }

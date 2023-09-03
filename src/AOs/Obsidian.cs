@@ -21,7 +21,7 @@ class Obsidian
 
         if (Utils.String.IsEmpty(CMD))
         {
-            new TerminalColor(Prompt, ConsoleColor.White, false);
+            new TerminalColor(this.Prompt, ConsoleColor.White, false);
             CMD = Console.ReadLine().Trim();
 
             if (Utils.String.IsEmpty(CMD))

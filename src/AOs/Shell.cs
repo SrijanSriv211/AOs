@@ -76,26 +76,27 @@ class Shell
         }
     }
 
-    public static string CommandPrompt(string args, string shell="cmd.exe")
+    //TODO: Rework this system.
+    public static string CommandPrompt(string args, string shell="")
     {
         using Process process = new();
-        process.StartInfo.FileName = shell;
+        process.StartInfo.FileName = shell ?? Obsidian.default_else_shell;
         process.StartInfo.Arguments = "/C " + args;
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
 
-        StringBuilder output_builder = new StringBuilder();
+        StringBuilder output_builder = new();
 
         // Event handler for capturing the output
-        DataReceivedEventHandler output_handler = (sender, e) =>
+        void output_handler(object sender, DataReceivedEventArgs e)
         {
             if (!Utils.String.IsEmpty(e.Data))
             {
                 output_builder.AppendLine(e.Data); // Append the output to the StringBuilder
                 Console.WriteLine(e.Data); // Display the output in real-time
             }
-        };
+        }
 
         // Redirect and handle standard output
         process.OutputDataReceived += output_handler;
