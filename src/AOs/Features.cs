@@ -2,34 +2,31 @@ using System.Diagnostics;
 
 class Features
 {
-    public static void Shout(string[] args)
-    {
-        Console.WriteLine(string.Join("", args));
-    }
+    private readonly SystemUtils sys_utils = new();
 
-    public static void Exit()
+    public void Exit()
     {
         Environment.Exit(0);
     }
 
-    public static void Restart()
+    public void Restart()
     {
-        Shell.CommandPrompt("shutdown /r /t0");
+        sys_utils.CommandPrompt("shutdown /r /t0");
     }
 
-    public static void Shutdown()
+    public void Shutdown()
     {
-        Shell.CommandPrompt("shutdown /s /t0");
+        sys_utils.CommandPrompt("shutdown /s /t0");
     }
 
-    public static void Refresh()
+    public void Refresh()
     {
         string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-        Shell.StartApp(AOsBinaryFilepath);
+        sys_utils.StartApp(AOsBinaryFilepath);
         Exit();
     }
 
-    public static void GetSetHistory(string arg)
+    public void GetSetHistory(string arg)
     {
         if (Utils.String.IsEmpty(arg))
             History.Get();
@@ -39,5 +36,19 @@ class Features
 
         else
             Error.UnrecognizedArgs(arg);
+    }
+
+    public void Shout(string[] args)
+    {
+        Console.WriteLine(string.Join("", args));
+    }
+
+    public void Terminal(string[] args)
+    {
+        if (Utils.Array.IsEmpty(args))
+            sys_utils.StartApp(Obsidian.default_else_shell);
+
+        else
+            sys_utils.CommandPrompt(string.Join("", args));
     }
 }

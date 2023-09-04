@@ -68,8 +68,8 @@ class Obsidian
         if (clear)
             ClearConsole();
 
-        Shell.RootPackages();
-        Shell.AskPass();
+        EntryPoint.RootPackages();
+        EntryPoint.AskPass();
     }
 
     public void PrintVersion()

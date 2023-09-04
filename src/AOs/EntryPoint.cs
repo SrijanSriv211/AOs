@@ -117,4 +117,46 @@ class EntryPoint
             }
         }
     }
+
+    public static void RootPackages()
+    {
+        string[] DirectoryList = new string[]
+        {
+            "Files.x72\\etc\\PowerToys",
+            "Files.x72\\root\\tmp",
+            "Files.x72\\root\\StartUp"
+        };
+
+        string[] FileList = new string[]
+        {
+            "Files.x72\\root\\.history",
+            "Files.x72\\root\\tmp\\BOOT.log",
+            "Files.x72\\root\\StartUp\\.startlist",
+            "Files.x72\\root\\tmp\\Crashreport.log"
+        };
+
+        foreach (string path in DirectoryList)
+            FileIO.FolderSystem.Create(Path.Combine(Obsidian.rootDir, path));
+
+        foreach (string path in FileList)
+            FileIO.FileSystem.Create(Path.Combine(Obsidian.rootDir, path));
+    }
+
+    public static void AskPass()
+    {
+        string Path = $"{Obsidian.rootDir}\\Files.x72\\root\\User.set";
+        if (!File.Exists(Path))
+            return;
+
+        while (true)
+        {
+            Console.Write("Enter password: ");
+            string Password = Console.ReadLine();
+            if (Password != FileIO.FileSystem.ReadAllText(Path))
+                new Error("Incorrect password.");
+
+            else
+                break;
+        }
+    }
 }
