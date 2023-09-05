@@ -19,7 +19,7 @@ static void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
     parser.Add(new string[]{ "shout", "echo" }, "Displays messages", is_flag: false, method: features.Shout);
     parser.Add(new string[]{ "history" }, "Displays the history of Commands.", default_values: new string[]{""}, max_args_length: 1, method: features.GetSetHistory);
-    parser.Add(new string[]{ "console", "terminal", "cmd" }, "Starts a new instance of the terminal.", default_values: new string[0], is_flag: false, method: features.Terminal);
+    parser.Add(new string[]{ ">", "console", "terminal", "cmd" }, "Starts a new instance of the terminal.", default_values: new string[0], is_flag: false, method: features.Terminal);
 
     foreach (var i in input)
     {

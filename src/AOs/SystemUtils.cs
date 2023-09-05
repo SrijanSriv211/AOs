@@ -1,9 +1,20 @@
 using System.Diagnostics;
-using System.Text;
 
 class SystemUtils
 {
     public Process process = new();
+
+    public int CommandPrompt(string cmd_args)
+    {
+        process.StartInfo.FileName = Obsidian.default_else_shell;
+        process.StartInfo.UseShellExecute = false;
+
+        process.StartInfo.Arguments = $"/C {cmd_args}";
+
+        process.Start();
+        process.WaitForExit();
+        return process.ExitCode;
+    }
 
     public void StartApp(string app_name, string[] app_args=null, bool is_admin=false)
     {
@@ -28,14 +39,13 @@ class SystemUtils
         }
     }
 
-    public void CommandPrompt(string cmd_args)
+    public static string RunSysOrEnvApps(string input_cmd)
     {
-        process.StartInfo.FileName = Obsidian.default_else_shell;
-        process.StartInfo.UseShellExecute = false;
+        // string[] file_exts = {".exe", ".msi", ".bat", ".cmd"};
 
-        process.StartInfo.Arguments = $"/C {cmd_args}";
+        if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input_cmd)))
+            return Environment.GetEnvironmentVariable(input_cmd);
 
-        process.Start();
-        process.WaitForExit();
+        return input_cmd;
     }
 }

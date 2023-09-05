@@ -47,8 +47,18 @@ class Parser
         // Return if no matching command was found.
         if (matching_cmd.Cmd_names == null)
         {
-            error_function(cmd_name);
-            return new ParsedCommand();
+            string env_name = SystemUtils.RunSysOrEnvApps(cmd_name);
+            if (env_name == cmd_name)
+            {
+                error_function(cmd_name);
+                return new ParsedCommand();
+            }
+
+            else
+            {
+                cmd_name = env_name;
+                matching_cmd.Default_values ??= new string[0];
+            }
         }
 
         if (matching_cmd.Is_flag)
