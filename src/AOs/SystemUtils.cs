@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using System.Security.Principal;
 
 class SystemUtils
 {
     public Process process = new();
+    private readonly bool is_AOs_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
     public int CommandPrompt(string cmd_args)
     {
@@ -10,6 +12,9 @@ class SystemUtils
         process.StartInfo.UseShellExecute = false;
 
         process.StartInfo.Arguments = $"/C {cmd_args}";
+
+        if (is_AOs_admin)
+            process.StartInfo.Verb = "runas";
 
         process.Start();
         process.WaitForExit();
@@ -25,7 +30,7 @@ class SystemUtils
         if (app_args != null)
             process.StartInfo.Arguments = string.Join("", app_args);
 
-        if (is_admin)
+        if (is_admin || is_AOs_admin)
             process.StartInfo.Verb = "runas";
 
         try
