@@ -35,10 +35,10 @@ class Obsidian
         History.Set(CMD);
 
         // Some lexer stuff.
-        Lexer l = new(CMD);
-        // List<string[]> ListOfToks = new Lexer(CMD).Tokens;
-        // foreach (var Toks in ListOfToks)
-        // {
+        List<string[]> ListOfToks = new Lexer(CMD).Tokens;
+        foreach (var Toks in ListOfToks)
+        {
+            Console.WriteLine($"(\n{string.Join("\n", Toks)}\n)");
         //     // Split the Toks into a cmd and Args variable and array respectively.
         //     string input_cmd = Toks.FirstOrDefault();
         //     string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
@@ -52,7 +52,7 @@ class Obsidian
         //     // Parse input.
         //     if (!Utils.String.IsEmpty(input_cmd))
         //         output.Add((input_cmd, input_args));
-        // }
+        }
 
         return output;
     }

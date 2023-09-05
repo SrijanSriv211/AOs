@@ -14,25 +14,50 @@ class Lexer
 
     private void Parse(string[] toks)
     {
-        // List<string> current_list = new();
-        // string pattern = @"^[-+*/0-9().]+$";
-        // string operator_pattern = @"^[-+*/]+$";
+        List<string> current_list = new();
 
+        Console.WriteLine(string.Join("", toks));
         for (int i = 0; i < toks.Length; i++)
         {
             string tok = toks[i];
 
-            Console.WriteLine(tok);
+            if (tok == ";")
+            {
+                Tokens.Add(current_list.ToArray());
+                current_list = new List<string>();
+            }
 
-            // if (tok == ";")
-            // {
-            //     Tokens.Add(current_list.ToArray());
-            //     current_list = new List<string>();
-            // }
+            else if (Is_expr(tok))
+            {
+                string expr = tok;
+                string whitespaces = "";
 
-            // else
-            //     current_list.Add(tok);
+                i++;
+                while (i < toks.Length && (Is_expr(toks[i]) || Utils.String.IsWhiteSpace(toks[i])))
+                {
+                    if (i < toks.Length-1 && Utils.String.IsWhiteSpace(toks[i]) && !Is_expr(toks[i+1]))
+                    {
+                        whitespaces = toks[i];
+                        break;
+                    }
+
+                    expr += toks[i];
+                    i++;
+                }
+
+                i--;
+
+                current_list.Add(Evaluate(expr));
+                if (Utils.String.IsWhiteSpace(whitespaces))
+                    current_list.Add(whitespaces);
+            }
+
+            else
+                current_list.Add(tok);
         }
+
+        // Add the last sublist to the result list
+        Tokens.Add(current_list.ToArray());
     }
 
     private string Evaluate(string expr)
@@ -154,7 +179,7 @@ class Lexer
             else if (Is_operator(tok))
             {
                 i++;
-                while (i < line.Length && Is_operator(line[i].ToString()))
+                while (i < line.Length && (Is_operator(line[i].ToString()) || Is_identifier(line[i].ToString())))
                 {
                     tok += line[i];
                     i++;
@@ -248,7 +273,11 @@ class Lexer
 
     private bool Is_expr(string str)
     {
-        return Is_float(str) || Is_operator(str);
+        string expression_pattern = @"^[-+*/0-9().]+$";
+        string operator_pattern = @"^[-+*/]+$";
+        str = str.Replace(" ", "");
+
+        return Regex.IsMatch(str, expression_pattern) && !Regex.IsMatch(str, operator_pattern);
     }
 
     private bool Is_operator(string str)
@@ -262,7 +291,7 @@ class Lexer
         return c == ">" || c == "@" || c == "!" || c == ";";
     }
 
-    private bool Is_valid_char_for_filename(char c)
+    private bool Is_valid_char_for_filename_in_windows(char c)
     {
         // "`-=~!@#$%^&()_+[]{};'.,"
         return c == '`' || c == '-' || c == '=' || c == '~' || c == '!' ||
@@ -279,7 +308,7 @@ class Lexer
 
         for (int i = 0; i < str.Length; i++)
         {
-            if (!char.IsLetterOrDigit(str[i]) && !Is_valid_char_for_filename(str[i]))
+            if (!char.IsLetterOrDigit(str[i]) && !Is_valid_char_for_filename_in_windows(str[i]))
                 return false;
         }
 
