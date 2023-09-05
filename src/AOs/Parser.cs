@@ -52,18 +52,8 @@ class Parser
         // Return if no matching command was found.
         if (matching_cmd.Cmd_names == null)
         {
-            string env_name = SystemUtils.RunSysOrEnvApps(lowercase_cmd);
-            if (env_name.ToLower() == lowercase_cmd)
-            {
-                error_function(cmd_name);
-                return new ParsedCommand();
-            }
-
-            else
-            {
-                cmd_name = env_name;
-                matching_cmd.Default_values ??= new string[0];
-            }
+            error_function(cmd_name);
+            return new ParsedCommand();
         }
 
         if (matching_cmd.Is_flag)
