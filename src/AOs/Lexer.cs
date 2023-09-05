@@ -16,7 +16,6 @@ class Lexer
     {
         List<string> current_list = new();
 
-        Console.WriteLine(string.Join("", toks));
         for (int i = 0; i < toks.Length; i++)
         {
             string tok = toks[i];

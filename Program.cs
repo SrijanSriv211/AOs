@@ -23,12 +23,10 @@ static void main(Obsidian AOs, List<(string cmd, string[] args)> input)
 
     foreach (var i in input)
     {
-        string lowercase_cmd = i.cmd.ToLower();
-
         if (Utils.String.IsEmpty(i.cmd))
             continue;
 
-        else if (lowercase_cmd == "help" || Argparse.IsAskingForHelp(lowercase_cmd))
+        else if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd.ToLower()))
             parser.GetHelp(i.args ?? new string[]{""});
 
         else if (i.cmd == "AOs1000")
@@ -38,6 +36,6 @@ static void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             Console.WriteLine(Utils.String.Strings(i.cmd));
 
         else
-            parser.Execute(parser.Parse(lowercase_cmd, i.args));
+            parser.Execute(parser.Parse(i.cmd, i.args));
     }
 }

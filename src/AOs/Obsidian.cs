@@ -36,16 +36,18 @@ class Obsidian
 
         // Some lexer stuff.
         List<string[]> ListOfToks = new Lexer(CMD).Tokens;
-        foreach (var Toks in ListOfToks)
+        foreach (string[] Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
             string input_cmd = Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
+
+            // Post-process input_cmd & input_args
+            input_cmd = Utils.String.IsString(input_cmd) ? Utils.String.Strings(input_cmd) : SystemUtils.RunSysOrEnvApps(input_cmd);
             for (int i = 0; i < input_args.Length; i++)
             {
                 string arg = input_args[i];
-                if (Utils.String.IsString(arg))
-                    input_args[i] = Utils.String.Strings(arg);
+                input_args[i] = Utils.String.IsString(arg) ? Utils.String.Strings(arg) : SystemUtils.RunSysOrEnvApps(arg);
             }
 
             // Parse input.

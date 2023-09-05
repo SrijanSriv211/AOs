@@ -11,6 +11,9 @@ class Parser
 
     public void Execute(ParsedCommand parsed_cmd)
     {
+        if (parsed_cmd.Cmd_name == null)
+            return;
+
         if (parsed_cmd.Is_flag)
         {
             var action = parsed_cmd.Method as Action; // Cast the stored delegate to Action
@@ -41,14 +44,16 @@ class Parser
 
     public ParsedCommand Parse(string cmd_name, string[] args)
     {
+        string lowercase_cmd = cmd_name.ToLower();
+
         ParsedCommand parsed_cmd = new();
-        Command matching_cmd = FindMatchingCommand(cmd_name);
+        Command matching_cmd = FindMatchingCommand(lowercase_cmd);
 
         // Return if no matching command was found.
         if (matching_cmd.Cmd_names == null)
         {
-            string env_name = SystemUtils.RunSysOrEnvApps(cmd_name);
-            if (env_name == cmd_name)
+            string env_name = SystemUtils.RunSysOrEnvApps(lowercase_cmd);
+            if (env_name.ToLower() == lowercase_cmd)
             {
                 error_function(cmd_name);
                 return new ParsedCommand();
