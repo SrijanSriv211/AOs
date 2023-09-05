@@ -14,9 +14,9 @@ class Lexer
 
     private void Parse(string[] toks)
     {
-        List<string> current_list = new();
-        string pattern = @"^[-+*/0-9()]+$";
-        string operator_pattern = @"^[-+*/]+$";
+        // List<string> current_list = new();
+        // string pattern = @"^[-+*/0-9().]+$";
+        // string operator_pattern = @"^[-+*/]+$";
 
         for (int i = 0; i < toks.Length; i++)
         {
@@ -24,55 +24,15 @@ class Lexer
 
             Console.WriteLine(tok);
 
-            if (tok == ";")
-            {
-                Tokens.Add(current_list.ToArray());
-                current_list = new List<string>();
-            }
+            // if (tok == ";")
+            // {
+            //     Tokens.Add(current_list.ToArray());
+            //     current_list = new List<string>();
+            // }
 
-            else
-                current_list.Add(tok);
+            // else
+            //     current_list.Add(tok);
         }
-
-        // for (int i = 0; i < toks.Length; i++)
-        // {
-        //     string tok = toks[i];
-
-        //     if (tok == ";")
-        //     {
-        //         Tokens.Add(current_list.ToArray());
-        //         current_list = new List<string>();
-        //     }
-
-        //     else if (i < toks.Length-1 && Is_operator(tok) && Is_identifier_string_only_search(toks[i+1].ToString()))
-        //     {
-        //         current_list.Add(tok + toks[i+1]);
-        //         i++;
-        //     }
-
-        //     else if (i < toks.Length-2 && Is_operator(tok) && Utils.String.IsWhiteSpace(toks[i+1]) && Regex.IsMatch(toks[i+2], pattern))
-        //     {
-        //         current_list.Add(tok + toks[i+2]);
-        //         i += 2;
-        //     }
-
-        //     else
-        //         current_list.Add(tok);
-        // }
-
-        // // Add the last sublist to the result list
-        // Tokens.Add(current_list.ToArray());
-
-        // // Evaluate all math expressions in Tokens and replace the answer with the expr.
-        // foreach (var tokens in Tokens)
-        // {
-        //     for (int i = 0; i < tokens.Length; i++)
-        //     {
-        //         string tok = tokens[i];
-        //         if (Regex.IsMatch(tok, pattern) && !Is_operator(tok))
-        //             tokens[i] = Evaluate(tok);
-        //     }
-        // }
     }
 
     private string Evaluate(string expr)
@@ -113,10 +73,10 @@ class Lexer
         {
             tok += line[i].ToString();
 
-            if (Utils.String.IsEmpty(tok))
+            if (Utils.String.IsWhiteSpace(tok))
             {
                 i++;
-                while (i < line.Length && Utils.String.IsEmpty(line[i].ToString()))
+                while (i < line.Length && Utils.String.IsWhiteSpace(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;
@@ -191,27 +151,11 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_expr(tok))
+            else if (Is_operator(tok))
             {
-                string whitespaces = "";
-
                 i++;
-                while (i < line.Length && Is_expr(line[i].ToString()))
+                while (i < line.Length && Is_operator(line[i].ToString()))
                 {
-                    if (i < line.Length-1 && Utils.String.IsWhiteSpace(line[i+1].ToString()))
-                    {
-                        tok += line[i];
-                        i += 2;
-                    }
-
-                    if (i < line.Length-1 && Is_operator(line[i].ToString()) && Is_identifier_string_only_search(line[i+1].ToString()))
-                    {
-                        if (Utils.String.IsWhiteSpace(line[i-1].ToString()))
-                            whitespaces = line[i-1].ToString();
-
-                        break;
-                    }
-
                     tok += line[i];
                     i++;
                 }
@@ -219,11 +163,57 @@ class Lexer
                 i--;
 
                 tokens.Add(tok);
-                if (Utils.String.IsWhiteSpace(whitespaces))
-                    tokens.Add(whitespaces);
-
                 tok = "";
             }
+
+            else if (Is_float(tok))
+            {
+                i++;
+                while (i < line.Length && Is_float(line[i].ToString()))
+                {
+                    tok += line[i];
+                    i++;
+                }
+
+                i--;
+
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            // else if (Is_expr(tok))
+            // {
+            //     string whitespaces = "";
+
+            //     i++;
+            //     while (i < line.Length && Is_expr(line[i].ToString()))
+            //     {
+            //         if (i < line.Length-1 && Utils.String.IsWhiteSpace(line[i+1].ToString()))
+            //         {
+            //             tok += line[i];
+            //             i += 2;
+            //         }
+
+            //         if (i < line.Length-1 && Is_operator(line[i].ToString()) && Is_identifier_string_only_search(line[i+1].ToString()))
+            //         {
+            //             if (Utils.String.IsWhiteSpace(line[i-1].ToString()))
+            //                 whitespaces = line[i-1].ToString();
+
+            //             break;
+            //         }
+
+            //         tok += line[i];
+            //         i++;
+            //     }
+
+            //     i--;
+
+            //     tokens.Add(tok);
+            //     if (Utils.String.IsWhiteSpace(whitespaces))
+            //         tokens.Add(whitespaces);
+
+            //     tok = "";
+            // }
 
             else if (Is_identifier(tok))
             {
@@ -290,20 +280,6 @@ class Lexer
         for (int i = 0; i < str.Length; i++)
         {
             if (!char.IsLetterOrDigit(str[i]) && !Is_valid_char_for_filename(str[i]))
-                return false;
-        }
-
-        return true;
-    }
-
-    private bool Is_identifier_string_only_search(string str)
-    {
-        if (Utils.String.IsEmpty(str))
-            return false;
-
-        for (int i = 0; i < str.Length; i++)
-        {
-            if (!char.IsLetter(str[i]) && !Is_valid_char_for_filename(str[i]))
                 return false;
         }
 
