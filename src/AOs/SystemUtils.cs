@@ -46,11 +46,34 @@ class SystemUtils
 
     public static string RunSysOrEnvApps(string input_cmd)
     {
-        // string[] file_exts = {".exe", ".msi", ".bat", ".cmd"};
-
         if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input_cmd)))
             return Environment.GetEnvironmentVariable(input_cmd);
 
+        else
+        {
+            string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
+            foreach (string ext in file_exts)
+            {
+                string exec_name = input_cmd + ext;
+                if (!Utils.String.IsEmpty(LocateEXE(exec_name.ToLower())))
+                    return LocateEXE(exec_name.ToLower());
+            }
+        }
+
         return input_cmd;
+    }
+
+    public static string LocateEXE(string Filename)
+    {
+        string[] folder_paths = Environment.GetEnvironmentVariable("path")?.Split(';');
+        foreach (string folder in folder_paths)
+        {
+            string exec_path = Path.Combine(folder, Filename);
+
+            if (File.Exists(exec_path))
+                return exec_path;
+        }
+
+        return "";
     }
 }
