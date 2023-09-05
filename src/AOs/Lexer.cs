@@ -206,40 +206,6 @@ class Lexer
                 tok = "";
             }
 
-            // else if (Is_expr(tok))
-            // {
-            //     string whitespaces = "";
-
-            //     i++;
-            //     while (i < line.Length && Is_expr(line[i].ToString()))
-            //     {
-            //         if (i < line.Length-1 && Utils.String.IsWhiteSpace(line[i+1].ToString()))
-            //         {
-            //             tok += line[i];
-            //             i += 2;
-            //         }
-
-            //         if (i < line.Length-1 && Is_operator(line[i].ToString()) && Is_identifier_string_only_search(line[i+1].ToString()))
-            //         {
-            //             if (Utils.String.IsWhiteSpace(line[i-1].ToString()))
-            //                 whitespaces = line[i-1].ToString();
-
-            //             break;
-            //         }
-
-            //         tok += line[i];
-            //         i++;
-            //     }
-
-            //     i--;
-
-            //     tokens.Add(tok);
-            //     if (Utils.String.IsWhiteSpace(whitespaces))
-            //         tokens.Add(whitespaces);
-
-            //     tok = "";
-            // }
-
             else if (Is_identifier(tok))
             {
                 i++;
