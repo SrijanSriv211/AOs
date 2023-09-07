@@ -10,6 +10,31 @@ class Lexer
     {
         this.line = line.Trim();
         Parse(Tokenizer());
+
+        foreach (string[] toks in Tokens)
+        {
+            for (int i = 0; i < toks.Length; i++)
+            {
+                string tok = toks[i];
+                if (tok.StartsWith("%") && tok.EndsWith("%") && tok.Length > 1)
+                    toks[i] = SystemUtils.RunSysOrEnvApps(tok.Substring(1, tok.Length-2).ToLower());
+
+                else if (Utils.String.IsString(tok) || tok == "∞" || double.TryParse(tok, out double _))
+                    toks[i] = Utils.String.Strings(tok);
+            }
+        }
+
+        // if (Utils.String.IsString(input_cmd) || input_cmd == "∞" || double.TryParse(input_cmd, out double _))
+        //     input_cmd = Utils.String.Strings(input_cmd);
+
+        // else if (input_cmd.StartsWith("%") && input_cmd.EndsWith("%"))
+        //     input_cmd = SystemUtils.RunSysOrEnvApps(input_cmd.Substring(1, input_cmd.Length-2).ToLower());
+
+        // for (int i = 0; i < input_args.Length; i++)
+        // {
+        //     string arg = input_args[i];
+        //     input_args[i] = Utils.String.IsString(arg) ? Utils.String.Strings(arg) : SystemUtils.RunSysOrEnvApps(arg.ToLower());
+        // }
     }
 
     private void Parse(string[] toks)
@@ -22,7 +47,7 @@ class Lexer
 
             if (tok == ";")
             {
-                Tokens.Add(current_list.ToArray());
+                this.Tokens.Add(current_list.ToArray());
                 current_list = new List<string>();
             }
 
@@ -56,7 +81,7 @@ class Lexer
         }
 
         // Add the last sublist to the result list
-        Tokens.Add(current_list.ToArray());
+        this.Tokens.Add(current_list.ToArray());
     }
 
     private string Evaluate(string expr)
@@ -117,7 +142,7 @@ class Lexer
 
             else if (tok == "'" || tok == "\"")
             {
-                char str_char_symbol = tok[0];
+                char str_char_symbol = tok.First();
 
                 i++;
                 if (i < line.Length)
@@ -141,14 +166,13 @@ class Lexer
                                 'f' => "\f",
                                 _ => "\\" + line[i].ToString(),
                             };
+
+                            continue;
                         }
 
-                        else
-                            tok += line[i];
-
+                        tok += line[i];
                         i++;
                     }
-                    tok += line[i];
 
                     if (i >= line.Length)
                     {
@@ -156,6 +180,9 @@ class Lexer
                         Error.Syntax(error_detail);
                         tok = "";
                     }
+
+                    else
+                        tok += line[i];
                 }
                 
                 else

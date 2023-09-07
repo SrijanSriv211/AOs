@@ -32,9 +32,6 @@ static void main(Obsidian AOs, List<(string cmd, string[] args)> input)
         else if (i.cmd == "AOs1000")
             Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");
 
-        else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Utils.String.IsString(i.cmd))
-            Console.WriteLine(Utils.String.Strings(i.cmd));
-
         else
             parser.Execute(parser.Parse(i.cmd, i.args));
     }
