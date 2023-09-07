@@ -42,23 +42,6 @@ class Obsidian
             string input_cmd = Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
 
-            // Post-process input_cmd & input_args
-            // input_cmd = Utils.String.IsString(Toks.FirstOrDefault()) ? Utils.String.Strings(Toks.FirstOrDefault()) : Toks.FirstOrDefault();
-            // if (Utils.String.IsString(input_cmd))
-            //     input_cmd = Utils.String.Strings(input_cmd);
-
-            // else if (input_cmd.StartsWith("%") && input_cmd.EndsWith("%"))
-            //     input_cmd = SystemUtils.RunSysOrEnvApps(input_cmd.Substring(1, input_cmd.Length-2).ToLower());
-
-            // else if (i.cmd == "∞" || double.TryParse(i.cmd, out double _) || Utils.String.IsString(i.cmd))
-            //     Console.WriteLine(Utils.String.Strings(i.cmd));
-
-            // for (int i = 0; i < input_args.Length; i++)
-            // {
-            //     string arg = input_args[i];
-            //     input_args[i] = Utils.String.IsString(arg) ? Utils.String.Strings(arg) : SystemUtils.RunSysOrEnvApps(arg.ToLower());
-            // }
-
             // Add input_cmd & input_args to output.
             if (!Utils.String.IsEmpty(input_cmd))
                 output.Add((input_cmd, input_args));

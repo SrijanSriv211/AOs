@@ -16,25 +16,13 @@ class Lexer
             for (int i = 0; i < toks.Length; i++)
             {
                 string tok = toks[i];
-                if (tok.StartsWith("%") && tok.EndsWith("%") && tok.Length > 1)
-                    toks[i] = SystemUtils.RunSysOrEnvApps(tok.Substring(1, tok.Length-2).ToLower());
-
-                else if (Utils.String.IsString(tok) || tok == "∞" || double.TryParse(tok, out double _))
+                if (Utils.String.IsString(tok))
                     toks[i] = Utils.String.Strings(tok);
+
+                else if (tok.StartsWith("%") && tok.EndsWith("%") && tok.Length > 1)
+                    toks[i] = SystemUtils.RunSysOrEnvApps(tok.Substring(1, tok.Length-2).ToLower());
             }
         }
-
-        // if (Utils.String.IsString(input_cmd) || input_cmd == "∞" || double.TryParse(input_cmd, out double _))
-        //     input_cmd = Utils.String.Strings(input_cmd);
-
-        // else if (input_cmd.StartsWith("%") && input_cmd.EndsWith("%"))
-        //     input_cmd = SystemUtils.RunSysOrEnvApps(input_cmd.Substring(1, input_cmd.Length-2).ToLower());
-
-        // for (int i = 0; i < input_args.Length; i++)
-        // {
-        //     string arg = input_args[i];
-        //     input_args[i] = Utils.String.IsString(arg) ? Utils.String.Strings(arg) : SystemUtils.RunSysOrEnvApps(arg.ToLower());
-        // }
     }
 
     private void Parse(string[] toks)
