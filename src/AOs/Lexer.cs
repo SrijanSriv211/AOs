@@ -154,11 +154,11 @@ class Lexer
                                 'f' => "\f",
                                 _ => "\\" + line[i].ToString(),
                             };
-
-                            continue;
                         }
 
-                        tok += line[i];
+                        else
+                            tok += line[i];
+
                         i++;
                     }
 

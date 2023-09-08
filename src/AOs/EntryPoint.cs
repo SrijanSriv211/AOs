@@ -123,16 +123,16 @@ class EntryPoint
         string[] DirectoryList = new string[]
         {
             "Files.x72\\etc\\PowerToys",
-            "Files.x72\\root\\tmp",
-            "Files.x72\\root\\StartUp"
+            "Files.x72\\etc\\tmp",
+            "Files.x72\\etc\\StartUp"
         };
 
         string[] FileList = new string[]
         {
+            "Files.x72\\etc\\StartUp\\.startlist",
             "Files.x72\\root\\.history",
-            "Files.x72\\root\\tmp\\BOOT.log",
-            "Files.x72\\root\\StartUp\\.startlist",
-            "Files.x72\\root\\tmp\\Crashreport.log"
+            "Files.x72\\root\\log\\BOOT.log",
+            "Files.x72\\root\\log\\Crashreport.log"
         };
 
         foreach (string path in DirectoryList)
