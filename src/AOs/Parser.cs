@@ -2,16 +2,16 @@ class Parser
 {
     private readonly Dictionary<string[], string> help_list = new();
     private readonly List<Command> command_details = new();
-    private readonly Action<string> error_function;
+    private readonly Action<string, string[]> error_function;
 
-    public Parser(Action<string> error_function)
+    public Parser(Action<string, string[]> error_function)
     {
         this.error_function = error_function;
     }
 
     public void Execute(ParsedCommand parsed_cmd)
     {
-        if (parsed_cmd.Cmd_name == null)
+        if (parsed_cmd.Cmd_name == null || parsed_cmd.Method == null)
             return;
 
         if (parsed_cmd.Is_flag)
@@ -52,7 +52,7 @@ class Parser
         // Return if no matching command was found.
         if (matching_cmd.Cmd_names == null)
         {
-            error_function(cmd_name);
+            error_function(cmd_name, args);
             return new ParsedCommand();
         }
 
@@ -109,26 +109,28 @@ class Parser
     public void GetHelp(string[] cmd_names)
     {
         cmd_names = Utils.Array.Reduce(cmd_names);
+        int max_padding_len = 50;
+        int count = 1;
 
         if (Utils.Array.IsEmpty(cmd_names))
         {
             Console.WriteLine("Type `help <command-name>` for more information on a specific command");
 
-            int count = 1;
             foreach (var item in help_list)
             {
                 string[] command_names = item.Key;
                 string description = item.Value;
+                int padding = Math.Max(max_padding_len - (int)Math.Log10(count), 0);
 
-                Console.Write("{0}. {1,-25}", count, $"{string.Join(", ", command_names)}");
+                Console.Write("{0}. {1," + -padding + "}", count, $"{string.Join(", ", command_names)}");
                 new TerminalColor(description, ConsoleColor.DarkGray);
+
                 count++;
             }
         }
 
         else
         {
-            int count = 1;
             foreach (var name in cmd_names)
             {
                 bool match_found = false;
@@ -139,7 +141,9 @@ class Parser
 
                     if (command_names.Contains(name))
                     {
-                        Console.Write("{0}. {1,-25}", count, $"{string.Join(", ", command_names)}");
+                        int padding = Math.Max(max_padding_len - (int)Math.Log10(count), 0);
+
+                        Console.Write("{0}. {1," + -padding + "}", count, $"{string.Join(", ", command_names)}");
                         new TerminalColor(description, ConsoleColor.DarkGray);
 
                         count++;

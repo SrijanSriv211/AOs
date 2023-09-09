@@ -1,16 +1,16 @@
 class TerminalColor
 {
-    public TerminalColor(string message, ConsoleColor Color, bool isNewLine=true)
+    public TerminalColor(string message, ConsoleColor color, bool is_newline=true)
     {
-        var ForegroundColor = Console.ForegroundColor;
-        Console.ForegroundColor = Color;
+        var default_color = Console.ForegroundColor;
+        Console.ForegroundColor = color;
 
-        if (isNewLine)
+        if (is_newline)
             Console.WriteLine(message);
 
         else
             Console.Write(message);
 
-        Console.ForegroundColor = ForegroundColor;
+        Console.ForegroundColor = default_color;
     }
 }

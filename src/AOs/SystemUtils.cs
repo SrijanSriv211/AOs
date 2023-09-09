@@ -1,10 +1,8 @@
 using System.Diagnostics;
-using System.Security.Principal;
 
 class SystemUtils
 {
     public Process process = new();
-    private readonly bool is_AOs_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
     public int CommandPrompt(string cmd_args)
     {
@@ -13,7 +11,7 @@ class SystemUtils
 
         process.StartInfo.Arguments = $"/C {cmd_args}";
 
-        if (is_AOs_admin)
+        if (Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
 
         process.Start();
@@ -30,7 +28,7 @@ class SystemUtils
         if (app_args != null)
             process.StartInfo.Arguments = string.Join("", app_args);
 
-        if (is_admin || is_AOs_admin)
+        if (is_admin || Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
 
         try
@@ -40,27 +38,47 @@ class SystemUtils
 
         catch (Exception e)
         {
-            new Error($"Error: Cannot open the app.\n{e}");
+            new Error($"Error: Cannot open the app.\n{e.Message}");
         }
     }
 
-    public static string RunSysOrEnvApps(string input_cmd)
+    public static bool RunSysOrEnvApps(string input_cmd)
     {
-        if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input_cmd)))
-            return Environment.GetEnvironmentVariable(input_cmd);
+        return false;
+        // if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input_cmd)))
+        //     return Environment.GetEnvironmentVariable(input_cmd);
+
+        // else
+        // {
+        //     string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
+        //     foreach (string ext in file_exts)
+        //     {
+        //         string exec_name = input_cmd + ext;
+        //         if (!Utils.String.IsEmpty(LocateEXE(exec_name.ToLower())))
+        //             return LocateEXE(exec_name.ToLower());
+        //     }
+        // }
+
+        // return input_cmd;
+    }
+
+    public static string CheckForSysOrEnvApps(string input)
+    {
+        if (input.StartsWith("%") && input.EndsWith("%") && input.Length > 1 && !Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input.Substring(1, input.Length-2).ToLower())))
+            return Environment.GetEnvironmentVariable(input.Substring(1, input.Length-2).ToLower());
 
         else
         {
-            string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
+            string[] file_exts = { "", ".exe", ".msi", ".bat", ".cmd" }; // "" empty string at the start of this array means that an extention as already passed.
             foreach (string ext in file_exts)
             {
-                string exec_name = input_cmd + ext;
+                string exec_name = input + ext;
                 if (!Utils.String.IsEmpty(LocateEXE(exec_name.ToLower())))
                     return LocateEXE(exec_name.ToLower());
             }
         }
 
-        return input_cmd;
+        return input;
     }
 
     public static string LocateEXE(string Filename)
@@ -75,5 +93,18 @@ class SystemUtils
         }
 
         return "";
+    }
+
+    public static void Track(int time_to_pause_in_milliseconds = 1000, int total_seconds = 100, string description = "Waiting...")
+    {
+        Console.WriteLine(description);
+
+        for (int time_elapsed = 1; time_elapsed <= total_seconds; time_elapsed++)
+        {
+            Thread.Sleep(time_to_pause_in_milliseconds);
+            new TerminalColor($"\r{time_elapsed}", ConsoleColor.White, false);
+        }
+
+        Console.WriteLine();
     }
 }

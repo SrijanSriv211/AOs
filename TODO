@@ -1,0 +1,109 @@
+'.' means DONE
+'x' means NOT TO BE DONE (REMOVED FEATURE)
+
+. clear           -> Clears the screen
+. version         -> Displays the AOs version
+. about           -> About AOs
+. shutdown        -> Shutdown the system
+. restart         -> Restart the system
+. exit            -> Exit AOs
+. reload          -> Restart AOs
+. credits         -> Credits for AOs
+. time            -> Show time
+. date            -> Show date
+. datetime        -> Show both date and time
+. shout           -> Displays messages
+. history         -> Displays the history of Commands
+. console         -> Starts a new instance of the terminal
+. title           -> Changes the title for AOs window
+. color           -> Changes the default AOs foreground and background colors
+. time            -> Displays current time and date
+. wait            -> Suspends processing of a command for the given number of seconds
+. pause           -> Suspends processing of a command and displays the message
+. run             -> Starts a specified program or command, given the full or sysenv path
+cat             -> Starts an installed program from the system
+allinstapps     -> Lists all installed apps on your machine
+prompt          -> Changes the command prompt
+backup          -> Creates a restore point of AOs
+ls              -> Displays a list of files and subdirectories in a directory
+cd              -> Changes the current directory
+touch           -> Creates a file or folder
+del             -> Deletes one or more files or folders
+ren             -> Renames a file or files
+copy            -> Advanced utility to copy files and directory trees
+move            -> Moves one or more files from one directory to another directory
+pixelate        -> Starts a website in a web browser
+commit          -> Edits the contents of a text file
+read            -> Displays the contents of a text file
+zip             -> Compresses or Decompresses files or folders. (-u flag to unzip)
+update          -> Check for Updates
+scan            -> Scans the integrity of all protected system files
+lock            -> Locks the System at Start-up
+terminate       -> Terminates current running process
+generate        -> Generates a random number between 0 and 1
+ran             -> Displays operating system configuration information
+tree            -> Graphically displays the directory structure of a drive or path
+diagxt          -> Displays machine specific properties and configuration
+restore         -> Restores system files and folders
+reset           -> Reset AOs
+assoc           -> Displays or modifies file extension associations
+attrib          -> Displays or changes file attributes
+break           -> Sets or clears extended ctrl+c checking
+bcdedit         -> Sets properties in boot database to control boot loading
+cacls           -> Displays or modifies access control lists (acls) of files
+call            -> Calls one batch program from another
+chcp            -> Displays or sets the active code page number
+chdir           -> Displays the name of or changes the current directory
+chkdsk          -> Checks a disk and displays a status report
+chkntfs         -> Displays or modifies the checking of disk at boot time
+comp            -> Compares the contents of two files or sets of files
+compact         -> Displays or alters the compression of files on ntfs partitions
+convert         -> Converts fat volumes to ntfs.  you cannot convert the current drive
+diskpart        -> Displays or configures disk partition properties
+doskey          -> Edits command lines, recalls windows commands, and creates macros
+driverquery     -> Displays current device driver status and properties
+echo            -> Displays messages, or turns command echoing on or off
+endlocal        -> Ends localization of environment changes in a batch file
+erase           -> Deletes one or more files
+fc              -> Compares two files or sets of files, and displays the differences between them
+find            -> Searches for a text string in a file or files
+findstr         -> Searches for strings in files
+for             -> Runs a specified command for each file in a set of files
+format          -> Formats a disk for use with windows
+fsutil          -> Displays or configures the file system properties
+ftype           -> Displays or modifies file types used in file extension associations
+goto            -> Directs the windows command interpreter to a labeled line in a batch program
+gpresult        -> Displays group policy information for machine or user
+graftabl        -> Enables windows to display an extended character set in graphics mode
+help            -> Provides help information for AOs commands
+icacls          -> Display, modify, backup, or restore acls for files and directories
+if              -> Performs conditional processing in batch programs
+label           -> Creates, changes, or deletes the volume label of a disk
+mklink          -> Creates symbolic links and hard links
+mode            -> Configures a system device
+more            -> Displays output one screen at a time
+openfiles       -> Displays files opened by remote users for a file share
+path            -> Displays or sets a search path for executable files
+popd            -> Restores the previous value of the current directory saved by pushd
+print           -> Prints a text file
+pushd           -> Saves the current directory then changes it
+recover         -> Recovers readable information from a bad or defective disk
+rem             -> Records comments (remarks) in batch files or config.sys
+replace         -> Replaces files
+robocopy        -> Advanced utility to copy files and directory trees
+set             -> Displays, sets, or removes windows environment variables
+setlocal        -> Begins localization of environment changes in a batch file
+sc              -> Displays or configures services (background processes)
+schtasks        -> Schedules commands and programs to run on a computer
+shift           -> Shifts the position of replaceable parameters in batch files
+sort            -> Sorts input
+subst           -> Associates a path with a drive letter
+verify          -> Tells windows whether to verify that your files are written correctly to a disk
+vol             -> Displays a disk volume label and serial number
+wmic            -> Displays wmi information inside interactive command shell
+srh             -> Searchs for a specific query on the internet
+wiki            -> Searchs for information on wikipedia
+ply             -> Searchs for a video on youtube based on a query
+weather         -> Displays today's weather in a city
+temperature     -> Displays today's temperature in a city
+settings        -> Starts the Windows settings page

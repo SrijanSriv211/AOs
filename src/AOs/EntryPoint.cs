@@ -1,5 +1,3 @@
-using System.Security.Principal;
-
 class EntryPoint
 {
     private readonly Obsidian AOs;
@@ -10,9 +8,7 @@ class EntryPoint
     {
         this.args = args;
         this.run_method = run_method;
-
-        bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        this.AOs = isAdmin ? new Obsidian("AOs (Administrator)") : new Obsidian();
+        this.AOs = new Obsidian();
 
         Startup();
     }
@@ -24,9 +20,9 @@ class EntryPoint
             run_method(AOs, input);
         }
 
-        catch (Exception err)
+        catch (Exception e)
         {
-            new Error(err.Message);
+            new Error(e.Message);
         }
     }
 
@@ -40,9 +36,9 @@ class EntryPoint
 
         var parsed_args = parser.Parse(argv);
 
-        if (parsed_args.Count() == 0)
+        if (parsed_args.Count() == 0 && argv.Length == 0)
         {
-            string startlist_path = Path.Combine(Obsidian.rootDir, "Files.x72\\root\\StartUp\\.startlist");
+            string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\StartUp\\.startlist");
             bool isEmpty = Utils.String.IsEmpty(
                 FileIO.FileSystem.ReadAllText(startlist_path)
             );
@@ -136,15 +132,15 @@ class EntryPoint
         };
 
         foreach (string path in DirectoryList)
-            FileIO.FolderSystem.Create(Path.Combine(Obsidian.rootDir, path));
+            FileIO.FolderSystem.Create(Path.Combine(Obsidian.root_dir, path));
 
         foreach (string path in FileList)
-            FileIO.FileSystem.Create(Path.Combine(Obsidian.rootDir, path));
+            FileIO.FileSystem.Create(Path.Combine(Obsidian.root_dir, path));
     }
 
     public static void AskPass()
     {
-        string Path = $"{Obsidian.rootDir}\\Files.x72\\root\\User.set";
+        string Path = $"{Obsidian.root_dir}\\Files.x72\\root\\User.set";
         if (!File.Exists(Path))
             return;
 

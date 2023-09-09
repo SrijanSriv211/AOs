@@ -1,16 +1,21 @@
+using System.Security.Principal;
+
 class Obsidian
 {
-    public static string rootDir = AppDomain.CurrentDomain.BaseDirectory;
+    public static string root_dir = AppDomain.CurrentDomain.BaseDirectory;
     public static string default_else_shell = "cmd.exe";
+    public static bool is_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+    public static ConsoleColor original_color_of_terminal = Console.ForegroundColor;
 
     public string Version = "AOs 2023 [Version 2.5]";
+    public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
 
     private readonly string Title = "AOs";
     private readonly string Prompt = "$ ";
 
     public Obsidian(string Title="AOs", string Prompt="$ ")
     {
-        this.Title = Title;
+        this.Title = is_admin ? $"{Title} (Administrator)" : Title;
         this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(new string[]{"-r"}) : Prompt;
     }
     
@@ -22,6 +27,8 @@ class Obsidian
         if (Utils.String.IsEmpty(CMD))
         {
             new TerminalColor(this.Prompt, ConsoleColor.White, false);
+
+            Console.ForegroundColor = Default_color;
             CMD = Console.ReadLine().Trim();
 
             if (Utils.String.IsEmpty(CMD))

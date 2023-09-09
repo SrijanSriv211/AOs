@@ -3,14 +3,14 @@ class History
     public static void Set(string cmd)
     {
         string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        FileIO.FileSystem.Write($"{Obsidian.rootDir}\\Files.x72\\root\\.history", $"{CurrentTime}\n'{cmd}'\n\n");
+        FileIO.FileSystem.Write($"{Obsidian.root_dir}\\Files.x72\\root\\.history", $"{CurrentTime}\n'{cmd}'\n\n");
     }
 
     public static void Get()
     {
+        string[] history = FileIO.FileSystem.ReadAllLines($"{Obsidian.root_dir}\\Files.x72\\root\\.history");
         string format = "[dd-MM-yyyy HH:mm:ss]";
-
-        string[] history = FileIO.FileSystem.ReadAllLines($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
+        int count = 1;
 
         for (int i = 0; i < history.Length; i++)
         {
@@ -19,14 +19,18 @@ class History
 
             DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
 
-            Console.Write(history[i+1] + " ");
+            int padding = Math.Max(100 - (int)Math.Log10(count), 0);
+
+            Console.Write("{0}. {1," + -padding + "}", count, $"{history[i+1]}");
             new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
+
+            count++;
             i++;
         }
     }
 
     public static void Clear()
     {
-        FileIO.FileSystem.Delete($"{Obsidian.rootDir}\\Files.x72\\root\\.history");
+        FileIO.FileSystem.Delete($"{Obsidian.root_dir}\\Files.x72\\root\\.history");
     }
 }
