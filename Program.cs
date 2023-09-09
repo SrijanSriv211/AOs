@@ -6,6 +6,11 @@ new EntryPoint(args, main);
 
 void CheckForError(string input_cmd, string[] input_args)
 {
+    input_cmd = SystemUtils.CheckForSysOrEnvApps(input_cmd);
+
+    for (int i = 0; i < input_args.Length; i++)
+        input_args[i] = SystemUtils.CheckForSysOrEnvApps(input_args[i]);
+
     if (!sys_utils.RunSysOrEnvApps(input_cmd, input_args))
         Error.Command(input_cmd);
 }
@@ -44,7 +49,9 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             continue;
 
         else if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd.ToLower()))
+        {
             parser.GetHelp(i.args ?? new string[]{""});
+        }
 
         else if (i.cmd == "AOs1000")
             Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");

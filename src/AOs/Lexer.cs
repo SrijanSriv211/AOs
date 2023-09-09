@@ -11,14 +11,14 @@ class Lexer
         this.line = line.Trim();
         Parse(Tokenizer());
 
-        foreach (string[] toks in Tokens)
-        {
-            for (int i = 0; i < toks.Length; i++)
-            {
-                if (toks[i].StartsWith("%") && toks[i].EndsWith("%") && toks[i].Length > 1)
-                    toks[i] = SystemUtils.CheckForSysOrEnvApps(toks[i]);
-            }
-        }
+        // foreach (string[] toks in Tokens)
+        // {
+        //     for (int i = 0; i < toks.Length; i++)
+        //     {
+        //         if (toks[i].StartsWith("%") && toks[i].EndsWith("%") && toks[i].Length > 1)
+        //             toks[i] = SystemUtils.CheckForSysOrEnvApps(toks[i]);
+        //     }
+        // }
     }
 
     private void Parse(string[] toks)
