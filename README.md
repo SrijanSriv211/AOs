@@ -1,6 +1,6 @@
 # <img title="AOs" src="https://github.com/Light-Lens/AOs/blob/master/img/AOs.ico?raw=true" width="32" height="32"> AOs
 
-A Command-line utility for improved efficiency and productivity. It is Simple and Powerful, capable of easing many tasks such as calculation, and opening any app installed on the host machine just from the command line.
+A Developer Command-line Tool Built for Developers by a Developer. It is Simple and Powerful, capable of easing tasks such as calculation or opening an app from the command line.
 
 ***
 

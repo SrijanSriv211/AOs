@@ -13,6 +13,4 @@ if os.path.exists("AOs") == False:
     os.mkdir("AOs")
 
 rmdir("bin", "obj")
-
-if __name__=="__main__":
-    os.system("dotnet publish --self-contained -c Release -o ./AOs")
+os.system("dotnet publish --self-contained -c Release -o ./AOs")

@@ -88,7 +88,7 @@ class Obsidian
             "Contact    -> QCoreNest@gmail.com",
             "",
             "____________________ Note (For Developers) ____________________",
-            "|| Command-line utility for improved efficiency and productivity.",
+            "|| A Developer Command-line Tool Built for Developers by a Developer.",
             "|| All code is licensed under an MIT license.",
             "|| This allows you to re-use the code freely, remixed in both commercial and non-commercial projects.",
             "|| The only requirement is to include the same license when distributing.",
@@ -106,7 +106,7 @@ class Obsidian
 
     public void About()
     {
-        string AboutAOs = "Command-line utility for improved efficiency and productivity.";
+        string AboutAOs = "A Developer Command-line Tool Built for Developers by a Developer.";
         new TerminalColor(AboutAOs, ConsoleColor.White);
     }
 
