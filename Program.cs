@@ -20,7 +20,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     Features features = new(AOs, sys_utils);
     Parser parser = new(CheckForError);
 
-    parser.Add(new string[]{ "!" }, "Switch the default-else shell (cmd, powershell)", default_values: new string[]{"cmd"}, max_args_length: 1, method: features.SwitchElseShell);
+    parser.Add(new string[]{ "!" }, "Switch the default-else shell (cmd, powershell)", default_values: new string[]{""}, max_args_length: 1, method: features.SwitchElseShell);
 
     parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: AOs.ClearConsole);
     parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: AOs.PrintVersion);
