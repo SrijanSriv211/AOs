@@ -4,70 +4,72 @@ class SystemUtils
 {
     public Process process = new();
 
-    public int CommandPrompt(string cmd_args)
+    public int CommandPrompt(string cmd_args, bool supress_error_msg=false)
     {
-        process.StartInfo.FileName = Obsidian.default_else_shell;
-        process.StartInfo.UseShellExecute = false;
+        this.process.StartInfo.FileName = Obsidian.default_else_shell;
+        this.process.StartInfo.Arguments = $"/C {cmd_args}";
+        this.process.StartInfo.UseShellExecute = false;
 
-        process.StartInfo.Arguments = $"/C {cmd_args}";
+        if (supress_error_msg)
+            this.process.StartInfo.RedirectStandardError = true;
 
         if (Obsidian.is_admin)
-            process.StartInfo.Verb = "runas";
+            this.process.StartInfo.Verb = "runas";
 
         try
         {
-            process.Start();
-            process.WaitForExit();
+            this.process.Start();
+            this.process.WaitForExit();
         }
 
         catch (Exception e)
         {
-            new Error($"Error:\n{e.Message}");
+            new Error(e.Message);
         }
 
-        return process.ExitCode;
+        return this.process.ExitCode;
     }
 
     public int CommandPrompt(string cmd_name, string[] cmd_args)
     {
-        process.StartInfo.FileName = cmd_name;
-        process.StartInfo.UseShellExecute = false;
+        this.process.StartInfo.FileName = cmd_name;
+        this.process.StartInfo.UseShellExecute = false;
 
         if (cmd_args != null)
-            process.StartInfo.Arguments = string.Join("", cmd_args);
+            this.process.StartInfo.Arguments = string.Join("", cmd_args);
 
         if (Obsidian.is_admin)
-            process.StartInfo.Verb = "runas";
+            this.process.StartInfo.Verb = "runas";
 
         try
         {
-            process.Start();
-            process.WaitForExit();
+            this.process.Start();
+            this.process.WaitForExit();
         }
 
         catch (Exception e)
         {
-            new Error($"Error:\n{e.Message}");
+            new Error(e.Message);
         }
 
-        return process.ExitCode;
+        return this.process.ExitCode;
     }
 
     public void StartApp(string app_name, string[] app_args=null, bool is_admin=false)
     {
-        process.StartInfo.FileName = app_name;
-        process.StartInfo.UseShellExecute = true;
-        process.StartInfo.CreateNoWindow = false;
+        this.process.StartInfo.FileName = app_name;
+        this.process.StartInfo.UseShellExecute = true;
+        this.process.StartInfo.CreateNoWindow = false;
 
         if (app_args != null)
-            process.StartInfo.Arguments = string.Join("", app_args);
+            this.process.StartInfo.Arguments = string.Join("", app_args);
 
         if (is_admin || Obsidian.is_admin)
-            process.StartInfo.Verb = "runas";
+            this.process.StartInfo.Verb = "runas";
 
         try
         {
-            process.Start();
+            this.process.Start();
         }
 
         catch (Exception e)
@@ -83,7 +85,7 @@ class SystemUtils
             if (input_cmd.EndsWith(".aos"))
             {
                 string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-                int return_val = CommandPrompt(AOsBinaryFilepath, new string[]{ $"\"{input_cmd}\"" });
+                CommandPrompt(AOsBinaryFilepath, new string[]{ $"\"{input_cmd}\"" });
                 return true;
             }
 
@@ -94,12 +96,11 @@ class SystemUtils
             }
         }
 
-        // else
-        // {
-        //     Console.WriteLine(CommandPrompt($"{input_cmd} {string.Join("", input_args)}"));
-        // }
-
-        return false;
+        else
+        {
+            int return_val = CommandPrompt($"{input_cmd} {string.Join("", input_args)}", true);
+            return return_val == 0;
+        }
     }
 
     public static string CheckForSysOrEnvApps(string input)

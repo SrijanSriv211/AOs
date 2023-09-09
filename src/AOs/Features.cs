@@ -80,9 +80,19 @@ class Features
 
         else
         {
-            ConsoleColor new_color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color_name, true);
-            AOs.Default_color = new_color;
+            try
+            {
+                ConsoleColor new_color = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color_name, true);
+                AOs.Default_color = new_color;
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
+
+        Console.ForegroundColor = AOs.Default_color;
     }
 
     public void Wait(string timespan)

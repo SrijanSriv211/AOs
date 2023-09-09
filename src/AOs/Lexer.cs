@@ -124,7 +124,7 @@ class Lexer
             else if (tok == "#")
                 break;
 
-            else if (tok == "'" || tok == "\"")
+            else if (tok == "'" || tok == "\"" || tok == "%")
             {
                 char str_char_symbol = tok.First();
 
@@ -269,12 +269,11 @@ class Lexer
 
     private bool Is_valid_char_for_filename_in_windows(char c)
     {
-        // "`-=~!@#$%^&()_+[]{};'.,"
+        // `-=~!@$^&?()_+[]{}.,
         return c == '`' || c == '-' || c == '=' || c == '~' || c == '!' ||
-               c == '@' || c == '$' || c == '%' || c == '^' || c == '&' ||
+               c == '@' || c == '$' || c == '^' || c == '&' || c == '?' ||
                c == '(' || c == ')' || c == '_' || c == '+' || c == '[' ||
-               c == ']' || c == '{' || c == '}' || c == '.' || c == ',' ||
-               c == '?';
+               c == ']' || c == '{' || c == '}' || c == '.' || c == ',';
     }
 
     private bool Is_identifier(string str)

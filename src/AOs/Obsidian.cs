@@ -18,17 +18,18 @@ class Obsidian
         this.Title = is_admin ? $"{Title} (Administrator)" : Title;
         this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(new string[]{"-r"}) : Prompt;
     }
-    
-    public List<(string cmd, string[] args)> TakeInput(string input = "")
+
+    public List<(string cmd, string[] args)> TakeInput(string input="")
     {
         List<(string cmd, string[] args)> output = new();
         string CMD = input.Trim();
+
+        Console.ForegroundColor = Default_color;
 
         if (Utils.String.IsEmpty(CMD))
         {
             new TerminalColor(this.Prompt, ConsoleColor.White, false);
 
-            Console.ForegroundColor = Default_color;
             CMD = Console.ReadLine().Trim();
 
             if (Utils.String.IsEmpty(CMD))
