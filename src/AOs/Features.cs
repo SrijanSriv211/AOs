@@ -2,12 +2,13 @@ using System.Diagnostics;
 
 class Features
 {
-    private readonly SystemUtils sys_utils = new();
+    private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
 
-    public Features(Obsidian AOs)
+    public Features(Obsidian AOs, SystemUtils sys_utils)
     {
         this.AOs = AOs;
+        this.sys_utils = sys_utils;
     }
 
     public void Exit()
@@ -46,6 +47,18 @@ class Features
     {
         Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
         Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
+    }
+
+    public void SwitchElseShell(string shell_name)
+    {
+        if (shell_name == "cmd")
+            Obsidian.default_else_shell = "cmd.exe";
+
+        else if (shell_name == "ps" || shell_name == "powershell")
+            Obsidian.default_else_shell = "powershell.exe";
+
+        else
+            Error.UnrecognizedArgs(shell_name);
     }
 
     public void GetSetHistory(string arg)
@@ -92,7 +105,7 @@ class Features
 
     public void Shout(string[] args)
     {
-        Console.WriteLine(string.Join("", args));
+        Console.WriteLine(string.Join("", Utils.Utils.SimplifyString(args)));
     }
 
     public void Pause(string[] args)
@@ -101,7 +114,7 @@ class Features
             Console.Write("Press any key to continue...");
 
         else
-            Console.Write(string.Join("", args));
+            Console.Write(string.Join("", Utils.Utils.SimplifyString(args)));
 
         Console.ReadKey();
     }
@@ -115,7 +128,7 @@ class Features
         {
             string cmd_name = args.FirstOrDefault();
             string[] cmd_args = Utils.Array.Trim(args.Skip(1).ToArray());
-            // sys_utils.CommandPrompt(string.Join("", args));
+
             sys_utils.CommandPrompt(cmd_name, cmd_args);
         }
     }
@@ -140,6 +153,9 @@ class Features
             Console.Title = Obsidian.is_admin ? "AOs (Administrator)" : "AOs";
 
         else
-            Console.Title = Obsidian.is_admin ? $"{string.Join("", args)} (Administrator)" : $"{string.Join("", args)}";
+        {
+            string title = string.Join("", Utils.Utils.SimplifyString(args));
+            Console.Title = Obsidian.is_admin ? $"{title} (Administrator)" : $"{title}";
+        }
     }
 }

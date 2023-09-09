@@ -15,17 +15,8 @@ class Lexer
         {
             for (int i = 0; i < toks.Length; i++)
             {
-                // string tok = toks[i];
-                // if (Utils.String.IsString(tok))
-                //     toks[i] = Utils.String.Strings(tok);
-
-                // toks[i] = SystemUtils.CheckForSysOrEnvApps(tok);
-                // toks[i] =  Utils.String.IsString(toks[i]) ? Utils.String.Strings(toks[i]) : SystemUtils.CheckForSysOrEnvApps(toks[i]);
-
                 if (toks[i].StartsWith("%") && toks[i].EndsWith("%") && toks[i].Length > 1)
                     toks[i] = SystemUtils.CheckForSysOrEnvApps(toks[i]);
-
-                // toks[i] =  SystemUtils.CheckForSysOrEnvApps(toks[i]);
             }
         }
     }

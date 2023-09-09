@@ -14,8 +14,17 @@ class SystemUtils
         if (Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
 
-        process.Start();
-        process.WaitForExit();
+        try
+        {
+            process.Start();
+            process.WaitForExit();
+        }
+
+        catch (Exception e)
+        {
+            new Error($"Error:\n{e.Message}");
+        }
+
         return process.ExitCode;
     }
 
@@ -30,15 +39,24 @@ class SystemUtils
         if (Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
 
-        process.Start();
-        process.WaitForExit();
+        try
+        {
+            process.Start();
+            process.WaitForExit();
+        }
+
+        catch (Exception e)
+        {
+            new Error($"Error:\n{e.Message}");
+        }
+
         return process.ExitCode;
     }
 
     public void StartApp(string app_name, string[] app_args=null, bool is_admin=false)
     {
-        process.StartInfo.UseShellExecute = true;
         process.StartInfo.FileName = app_name;
+        process.StartInfo.UseShellExecute = true;
         process.StartInfo.CreateNoWindow = false;
 
         if (app_args != null)
@@ -62,19 +80,24 @@ class SystemUtils
     {
         if (File.Exists(input_cmd))
         {
-            // if (input_cmd.EndsWith(".aos"))
-            // {
-            //     string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-            //     CommandPrompt($"{AOsBinaryFilepath} {arguments}");
-            //     return true;
-            // }
+            if (input_cmd.EndsWith(".aos"))
+            {
+                string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
+                int return_val = CommandPrompt(AOsBinaryFilepath, new string[]{ $"\"{input_cmd}\"" });
+                return true;
+            }
 
-            // else
-            // {
+            else
+            {
                 CommandPrompt(input_cmd, input_args);
                 return true;
-            // }
+            }
         }
+
+        // else
+        // {
+        //     Console.WriteLine(CommandPrompt($"{input_cmd} {string.Join("", input_args)}"));
+        // }
 
         return false;
     }
@@ -100,7 +123,9 @@ class SystemUtils
 
     public static string LocateExecutable(string Filename)
     {
-        string[] folder_paths = Environment.GetEnvironmentVariable("path")?.Split(';');
+        List<string> folder_paths = Environment.GetEnvironmentVariable("path")?.Split(';').ToList();
+        folder_paths.Add(Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys"));
+
         foreach (string folder in folder_paths)
         {
             string exec_path = Path.Combine(folder, Filename);
@@ -108,9 +133,6 @@ class SystemUtils
             if (File.Exists(exec_path))
                 return exec_path;
         }
-
-        // ELSE CASE
-        // code here.
 
         return "";
     }
