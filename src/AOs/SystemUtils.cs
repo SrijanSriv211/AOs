@@ -42,24 +42,30 @@ class SystemUtils
         }
     }
 
-    public static bool RunSysOrEnvApps(string input_cmd)
+    public bool RunSysOrEnvApps(string input_cmd, string[] input_args)
     {
+        string arguments = string.Join("", input_args);
+
+        Console.WriteLine(input_cmd);
+        Console.WriteLine(arguments);
+
+        if (File.Exists(input_cmd))
+        {
+            // if (input_cmd.EndsWith(".aos"))
+            // {
+            //     string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
+            //     CommandPrompt($"{AOsBinaryFilepath} {arguments}");
+            //     return true;
+            // }
+
+            // else
+            // {
+                CommandPrompt($"\"{input_cmd}\" {arguments}");
+                return true;
+            // }
+        }
+
         return false;
-        // if (!Utils.String.IsEmpty(Environment.GetEnvironmentVariable(input_cmd)))
-        //     return Environment.GetEnvironmentVariable(input_cmd);
-
-        // else
-        // {
-        //     string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
-        //     foreach (string ext in file_exts)
-        //     {
-        //         string exec_name = input_cmd + ext;
-        //         if (!Utils.String.IsEmpty(LocateEXE(exec_name.ToLower())))
-        //             return LocateEXE(exec_name.ToLower());
-        //     }
-        // }
-
-        // return input_cmd;
     }
 
     public static string CheckForSysOrEnvApps(string input)
@@ -69,19 +75,19 @@ class SystemUtils
 
         else
         {
-            string[] file_exts = { "", ".exe", ".msi", ".bat", ".cmd" }; // "" empty string at the start of this array means that an extention as already passed.
+            string[] file_exts = { "", ".aos", ".exe", ".msi", ".bat", ".cmd" }; // "" empty string at the start of this array means that an extention as already passed.
             foreach (string ext in file_exts)
             {
                 string exec_name = input + ext;
-                if (!Utils.String.IsEmpty(LocateEXE(exec_name.ToLower())))
-                    return LocateEXE(exec_name.ToLower());
+                if (!Utils.String.IsEmpty(LocateExecutable(exec_name.ToLower())))
+                    return LocateExecutable(exec_name.ToLower());
             }
         }
 
         return input;
     }
 
-    public static string LocateEXE(string Filename)
+    public static string LocateExecutable(string Filename)
     {
         string[] folder_paths = Environment.GetEnvironmentVariable("path")?.Split(';');
         foreach (string folder in folder_paths)
@@ -91,6 +97,9 @@ class SystemUtils
             if (File.Exists(exec_path))
                 return exec_path;
         }
+
+        // ELSE CASE
+        // code here.
 
         return "";
     }

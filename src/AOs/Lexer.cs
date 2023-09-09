@@ -19,9 +19,6 @@ class Lexer
                 if (Utils.String.IsString(tok))
                     toks[i] = Utils.String.Strings(tok);
 
-                // else if (tok.StartsWith("%") && tok.EndsWith("%") && tok.Length > 1)
-                //     toks[i] = SystemUtils.CheckForSysOrEnvApps(tok.Substring(1, tok.Length-2).ToLower());
-
                 toks[i] = SystemUtils.CheckForSysOrEnvApps(tok);
             }
         }

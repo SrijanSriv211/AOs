@@ -5,7 +5,8 @@ new EntryPoint(args, main);
 
 static void CheckForError(string input_cmd, string[] input_args)
 {
-    if (!SystemUtils.RunSysOrEnvApps(input_cmd))
+    SystemUtils sys_utils = new();
+    if (!sys_utils.RunSysOrEnvApps(input_cmd, input_args))
         Error.Command(input_cmd);
 }
 
