@@ -46,9 +46,6 @@ class SystemUtils
     {
         string arguments = string.Join("", input_args);
 
-        Console.WriteLine(input_cmd);
-        Console.WriteLine(arguments);
-
         if (File.Exists(input_cmd))
         {
             // if (input_cmd.EndsWith(".aos"))
@@ -60,7 +57,7 @@ class SystemUtils
 
             // else
             // {
-                CommandPrompt($"\"{input_cmd}\" {arguments}");
+                StartApp(input_cmd, input_args);
                 return true;
             // }
         }
