@@ -21,8 +21,8 @@
 . wait            -> Suspends processing of a command for the given number of seconds
 . pause           -> Suspends processing of a command and displays the message
 . run             -> Starts a specified program or command, given the full or sysenv path
-cat             -> Starts an installed program from the system
-allinstapps     -> Lists all installed apps on your machine
+. cat             -> Starts an installed program from the system
+x allinstapps     -> Lists all installed apps on your machine       [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called.]
 prompt          -> Changes the command prompt
 backup          -> Creates a restore point of AOs
 ls              -> Displays a list of files and subdirectories in a directory

@@ -4,6 +4,62 @@ class SystemUtils
 {
     public Process process = new();
 
+    public void ListInstalledApps()
+    {
+        this.process.StartInfo.FileName = "powershell.exe";
+        this.process.StartInfo.Arguments = $"\"Get-StartApps | Select-Object -ExpandProperty Name\"";
+
+        this.process.StartInfo.UseShellExecute = false;
+        this.process.StartInfo.RedirectStandardOutput = true;
+
+        try
+        {
+            this.process.Start();
+
+            string[] AppNames = Utils.Array.Trim(process.StandardOutput.ReadToEnd().Split("\n"));
+
+            this.process.WaitForExit();
+
+            for (int i = 0; i < AppNames.Length; i++)
+            {
+                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Console.WriteLine(AppNames[i]);
+            }
+        }
+
+        catch (Exception e)
+        {
+            new Error(e.Message);
+        }
+    }
+
+    public void FindAndRunInstalledApps(string appname)
+    {
+        this.process.StartInfo.FileName = "powershell.exe";
+        this.process.StartInfo.Arguments = $"\"Get-StartApps {appname} | Select-Object -ExpandProperty AppID\"";
+
+        this.process.StartInfo.UseShellExecute = false;
+        this.process.StartInfo.RedirectStandardOutput = true;
+
+        try
+        {
+            this.process.Start();
+            string AppID = process.StandardOutput.ReadToEnd();
+            this.process.WaitForExit();
+
+            if (!Utils.String.IsEmpty(AppID))
+                CommandPrompt($"start explorer {Path.Combine("shell:appsfolder", AppID)}");
+
+            else
+                new Error($"Cannot find the app '{appname}'");
+        }
+
+        catch (Exception e)
+        {
+            new Error(e.Message);
+        }
+    }
+
     public int CommandPrompt(string cmd_args, bool supress_error_msg=false)
     {
         this.process.StartInfo.FileName = Obsidian.default_else_shell;
@@ -55,14 +111,14 @@ class SystemUtils
         return this.process.ExitCode;
     }
 
-    public void StartApp(string app_name, string[] app_args=null, bool is_admin=false)
+    public void StartApp(string appname, string appargs=null, bool is_admin=false)
     {
-        this.process.StartInfo.FileName = app_name;
+        this.process.StartInfo.FileName = appname;
         this.process.StartInfo.UseShellExecute = true;
         this.process.StartInfo.CreateNoWindow = false;
 
-        if (app_args != null)
-            this.process.StartInfo.Arguments = string.Join("", app_args);
+        if (appargs != null)
+            this.process.StartInfo.Arguments = appargs;
 
         if (is_admin || Obsidian.is_admin)
             this.process.StartInfo.Verb = "runas";

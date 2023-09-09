@@ -159,6 +159,7 @@ class Features
             Console.Write(string.Join("", Utils.Utils.SimplifyString(args)));
 
         Console.ReadKey();
+        Console.WriteLine();
     }
 
     public void RunInTerminal(string[] args)
@@ -178,14 +179,14 @@ class Features
     public void RunApp(string[] args)
     {
         if (Utils.Array.IsEmpty(args))
-            sys_utils.StartApp(app_name: Obsidian.default_else_shell);
+            sys_utils.StartApp(Obsidian.default_else_shell);
 
         else
         {
-            string app_name = args.First();
-            string[] app_args = args.Length > 1 ? Utils.Array.Trim(args.Skip(1).ToArray()) : null;
+            string appname = args.First();
+            string app_args = args.Length > 1 ? string.Join("", Utils.Array.Trim(args.Skip(1).ToArray())) : null;
 
-            sys_utils.StartApp(app_name: app_name, app_args: app_args);
+            sys_utils.StartApp(appname, app_args);
         }
     }
 
@@ -198,6 +199,19 @@ class Features
         {
             string title = string.Join("", Utils.Utils.SimplifyString(args));
             Console.Title = Obsidian.is_admin ? $"{title} (Administrator)" : $"{title}";
+        }
+    }
+
+    public void Cat(string[] app_names)
+    {
+        if (Utils.Array.IsEmpty(app_names))
+            sys_utils.ListInstalledApps();
+
+        else
+        {
+            app_names = Utils.Array.Reduce(app_names);
+            foreach (string appname in app_names)
+                sys_utils.FindAndRunInstalledApps(appname);
         }
     }
 }
