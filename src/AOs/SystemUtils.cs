@@ -60,8 +60,6 @@ class SystemUtils
 
     public bool RunSysOrEnvApps(string input_cmd, string[] input_args)
     {
-        string arguments = string.Join("", input_args);
-
         if (File.Exists(input_cmd))
         {
             // if (input_cmd.EndsWith(".aos"))

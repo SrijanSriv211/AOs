@@ -112,7 +112,12 @@ class Features
             sys_utils.StartApp(Obsidian.default_else_shell);
 
         else
-            sys_utils.CommandPrompt(string.Join("", args));
+        {
+            string cmd_name = args.FirstOrDefault();
+            string[] cmd_args = Utils.Array.Trim(args.Skip(1).ToArray());
+            // sys_utils.CommandPrompt(string.Join("", args));
+            sys_utils.CommandPrompt(cmd_name, cmd_args);
+        }
     }
 
     public void RunApp(string[] args)

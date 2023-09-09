@@ -46,7 +46,7 @@ class Obsidian
         foreach (string[] Toks in ListOfToks)
         {
             // Split the Toks into a cmd and Args variable and array respectively.
-            string input_cmd = Toks.FirstOrDefault();
+            string input_cmd = Utils.String.IsString(Toks.FirstOrDefault()) ? Utils.String.Strings(Toks.FirstOrDefault()) : Toks.FirstOrDefault();
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
 
             // Add input_cmd & input_args to output.
