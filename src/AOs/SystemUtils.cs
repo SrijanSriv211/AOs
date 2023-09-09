@@ -19,6 +19,22 @@ class SystemUtils
         return process.ExitCode;
     }
 
+    public int CommandPrompt(string cmd_name, string[] cmd_args)
+    {
+        process.StartInfo.FileName = cmd_name;
+        process.StartInfo.UseShellExecute = false;
+
+        if (cmd_args != null)
+            process.StartInfo.Arguments = string.Join("", cmd_args);
+
+        if (Obsidian.is_admin)
+            process.StartInfo.Verb = "runas";
+
+        process.Start();
+        process.WaitForExit();
+        return process.ExitCode;
+    }
+
     public void StartApp(string app_name, string[] app_args=null, bool is_admin=false)
     {
         process.StartInfo.UseShellExecute = true;
@@ -57,7 +73,7 @@ class SystemUtils
 
             // else
             // {
-                StartApp(input_cmd, input_args);
+                CommandPrompt(input_cmd, input_args);
                 return true;
             // }
         }
