@@ -106,8 +106,9 @@ class Obsidian
 
     public void About()
     {
-        string AboutAOs = "A Developer Command-line Tool Built for Developers by a Developer.";
-        new TerminalColor(AboutAOs, ConsoleColor.White);
+        new TerminalColor("A Developer Command-line Tool Built for Developers by a Developer.", ConsoleColor.White);
+        new TerminalColor("For more information go to ", ConsoleColor.DarkGray, false);
+        new TerminalColor("https://github.com/Light-Lens/AOs.", ConsoleColor.Cyan);
     }
 
     public string SetPrompt(string[] flags, string default_prompt="$ ")
