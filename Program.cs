@@ -42,7 +42,8 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "wait", "timeout" }, "Suspend processing of a command for the given number of seconds", default_values: new string[]{""}, max_args_length: 1, method: features.Wait);
     parser.Add(new string[]{ "pause" }, "Suspend processing of a command and display the message", default_values: new string[0], method: features.Pause);
     parser.Add(new string[]{ "open", "run", "start" }, "Start a specified program or command, given the full or sysenv path", default_values: new string[0], method: features.RunApp);
-    parser.Add(new string[]{ "cat" }, "Start an installed program from the system", default_values: new string[0]{}, method: features.Cat);
+    parser.Add(new string[]{ "cat", "allinstapps", "installedapps", "allinstalledapps" }, "Start an installed program from the system", default_values: new string[0]{}, method: features.Cat);
+    parser.Add(new string[]{ "prompt" }, "Change the command prompt", default_values: new string[0]{}, method: features.ModifyPrompt);
 
     foreach (var i in input)
     {

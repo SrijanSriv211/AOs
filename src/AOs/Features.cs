@@ -214,4 +214,69 @@ class Features
                 sys_utils.FindAndRunInstalledApps(appname);
         }
     }
+
+    public void ModifyPrompt(string[] prompt)
+    {
+        List<string> Flags = new();
+        for (int i = 0; i < prompt.Length; i++)
+        {
+            if (Utils.String.IsString(prompt[i]))
+                Flags.Add(Utils.String.Strings(prompt[i]));
+
+            else
+            {
+                string flag = "";
+                for (int j = 0; j < prompt[i].Length; j++)
+                {
+                    if (prompt[i][j] == '-')
+                    {
+                        j++;
+                        if (prompt[i][j] == '-')
+                        {
+                            j++;
+                            while (j < prompt[i].Length && char.IsLetter(prompt[i][j]))
+                            {
+                                flag += prompt[i][j];
+                                j++;
+                            }
+
+                            j--;
+
+                            Flags.Add("--" + flag);
+                            flag = "";
+                        }
+
+                        else
+                        {
+                            while (j < prompt[i].Length && char.IsLetter(prompt[i][j]))
+                            {
+                                flag += prompt[i][j];
+                                j++;
+                            }
+
+                            j--;
+
+                            Flags.Add("-" + flag);
+                            flag = "";
+                        }
+                    }
+
+                    else
+                    {
+                        while (j < prompt[i].Length && prompt[i][j] != '-')
+                        {
+                            flag += prompt[i][j];
+                            j++;
+                        }
+
+                        j--;
+                        Flags.Add(flag);
+                        flag = "";
+                    }
+                }
+            }
+        }
+
+        Obsidian.PromptDummy = AOs.SetPrompt(Flags.ToArray());
+    }
 }

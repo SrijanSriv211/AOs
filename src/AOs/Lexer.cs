@@ -10,6 +10,16 @@ class Lexer
     {
         this.line = line.Trim();
         Parse(Tokenizer());
+
+        foreach (string[] tokens in Tokens)
+        {
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string token = tokens[i];
+                if (token.StartsWith("%") && token.EndsWith("%"))
+                    tokens[i] = SystemUtils.CheckForSysOrEnvApps(token);
+            }
+        }
     }
 
     private void Parse(string[] toks)

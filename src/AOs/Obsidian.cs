@@ -7,11 +7,12 @@ class Obsidian
     public static bool is_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     public static ConsoleColor original_color_of_terminal = Console.ForegroundColor;
 
+    public static string PromptDummy = "$ ";
     public string Version = "AOs 2023 [Version 2.5]";
     public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
 
     private readonly string Title = "AOs";
-    private readonly string Prompt = "$ ";
+    private string Prompt = "$ ";
 
     public Obsidian(string Title="AOs", string Prompt="$ ")
     {
@@ -25,6 +26,7 @@ class Obsidian
         string CMD = input.Trim();
 
         Console.ForegroundColor = Default_color;
+        this.Prompt = PromptDummy;
 
         if (Utils.String.IsEmpty(CMD))
         {
@@ -121,6 +123,7 @@ class Obsidian
         parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
         parser.Add(new string[] {"-r", "--reset", "--restore", "--default"}, "$ (dollar sign, reset the prompt)", is_flag: true);
 
+        parser.Add(new string[] {"-u", "--username"}, "%username%", is_flag: true);
         parser.Add(new string[] {"-s", "--space"}, "(space)", is_flag: true);
         parser.Add(new string[] {"-b", "--backspace"}, "(backspace)", is_flag: true);
         parser.Add(new string[] {"-v", "--version"}, "Current AOs version", is_flag: true);
@@ -164,6 +167,9 @@ class Obsidian
 
             else if (arg.Names.Contains("-n"))
                 new_prompt += Path.GetPathRoot(Environment.SystemDirectory);
+
+            else if (arg.Names.Contains("-u"))
+                new_prompt += Environment.GetEnvironmentVariable("username");
 
             else if (arg.Names.Any(name => name.StartsWith("-")))
             {
