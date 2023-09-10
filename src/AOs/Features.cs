@@ -279,4 +279,40 @@ class Features
 
         Obsidian.PromptDummy = AOs.SetPrompt(Flags.ToArray());
     }
+
+    public void LS(string[] dirname)
+    {
+        dirname = Utils.Utils.SimplifyString(Utils.Array.Reduce(dirname));
+
+        static void ShowDirs(string dir)
+        {
+            new TerminalColor(dir, ConsoleColor.White);
+            string[] entries = FileIO.FolderSystem.Read(dir);
+
+            for (int i = 0; i < entries.Length; i++)
+            {
+                int padding = Math.Max(100 - (int)Math.Log10(i+1), 0);
+
+                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Console.Write("{0," + -padding + "}", entries[i]);
+
+                if (File.Exists(entries[i]))
+                    new TerminalColor("FILE", ConsoleColor.DarkGray);
+
+                else if (Directory.Exists(entries[i]))
+                    new TerminalColor("FOLDER", ConsoleColor.DarkGray);
+            }
+
+            Console.WriteLine();
+        }
+
+        if (Utils.Array.IsEmpty(dirname))
+            ShowDirs(Directory.GetCurrentDirectory());
+
+        else
+        {
+            foreach (string dir in dirname)
+                ShowDirs(dir);
+        }
+    }
 }

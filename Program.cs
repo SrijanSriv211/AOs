@@ -44,6 +44,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "open", "run", "start" }, "Start a specified program or command, given the full or sysenv path", default_values: new string[0], method: features.RunApp);
     parser.Add(new string[]{ "cat", "allinstapps", "installedapps", "allinstalledapps" }, "Start an installed program from the system", default_values: new string[0]{}, method: features.Cat);
     parser.Add(new string[]{ "prompt" }, "Change the command prompt", default_values: new string[0]{}, method: features.ModifyPrompt);
+    parser.Add(new string[]{ "ls", "dir" }, "Displays a list of files and subdirectories in a directory", default_values: new string[0]{}, method: features.LS);
 
     foreach (var i in input)
     {

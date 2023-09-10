@@ -25,7 +25,7 @@
 x allinstapps     -> Lists all installed apps on your machine             [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called.]
 . prompt          -> Change the command prompt
 x backup          -> Creates a restore point of AOs                       [NOTE: Discontinued feature]
-ls              -> Displays a list of files and subdirectories in a directory
+ls              -> Display a list of files and subdirectories in a directory
 cd              -> Changes the current directory
 touch           -> Creates a file or folder
 del             -> Deletes one or more files or folders

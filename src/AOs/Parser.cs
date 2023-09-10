@@ -109,7 +109,7 @@ class Parser
     public void GetHelp(string[] cmd_names)
     {
         cmd_names = Utils.Array.Reduce(cmd_names);
-        int max_padding_len = 50;
+        int max_padding_len = 60;
         int count = 1;
 
         if (Utils.Array.IsEmpty(cmd_names))
@@ -122,7 +122,8 @@ class Parser
                 string description = item.Value;
                 int padding = Math.Max(max_padding_len - (int)Math.Log10(count), 0);
 
-                Console.Write("{0}. {1," + -padding + "}", count, $"{string.Join(", ", command_names)}");
+                new TerminalColor($"{count}. ", ConsoleColor.DarkGray, false);
+                Console.Write("{0," + -padding + "}", string.Join(", ", command_names));
                 new TerminalColor(description, ConsoleColor.DarkGray);
 
                 count++;

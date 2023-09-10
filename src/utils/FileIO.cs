@@ -69,8 +69,7 @@ class FileIO
 
         public static string[] Read(string Directoryname)
         {
-            //TODO: Read all the Filepaths and other dirnames in this folder. it can later be used for the 'ls' command.
-            return new string[0];
+            return Directory.GetFileSystemEntries(Directoryname, "*");
         }
     }
 }

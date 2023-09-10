@@ -21,7 +21,8 @@ class History
 
             int padding = Math.Max(100 - (int)Math.Log10(count), 0);
 
-            Console.Write("{0}. {1," + -padding + "}", count, $"{history[i+1]}");
+            new TerminalColor($"{count}. ", ConsoleColor.DarkGray, false);
+            Console.Write("{0," + -padding + "}", history[i+1]);
             new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
 
             count++;
