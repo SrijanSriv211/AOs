@@ -49,6 +49,20 @@ class Features
         Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
     }
 
+    public void ChangeCurrentDir(string dirname)
+    {
+        if (Utils.String.IsEmpty(dirname))
+            new TerminalColor(Directory.GetCurrentDirectory(), ConsoleColor.White);
+
+        else
+            Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
+    }
+
+    public void ChangeToPrevDir()
+    {
+        Directory.SetCurrentDirectory("..");
+    }
+
     public void SwitchElseShell(string shell_name)
     {
         if (Utils.String.IsEmpty(shell_name))
@@ -313,6 +327,40 @@ class Features
         {
             foreach (string dir in dirname)
                 ShowDirs(dir);
+        }
+    }
+
+    public void Touch(string[] content_to_create)
+    {
+        content_to_create = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_create));
+
+        foreach (string content in content_to_create)
+        {
+            if (content.ToLower() == "con")
+                new TerminalColor("Hello CON!", ConsoleColor.White);
+
+            else if (content.EndsWith("\\") || content.EndsWith("/"))
+                FileIO.FolderSystem.Create(content);
+
+            else
+                FileIO.FileSystem.Create(content);
+        }
+    }
+
+    public void Delete(string[] content_to_delete)
+    {
+        content_to_delete = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_delete));
+
+        foreach (string content in content_to_delete)
+        {
+            if (content.ToLower() == "con")
+                new TerminalColor("Don't Delete CON!", ConsoleColor.Cyan);
+
+            else if (Directory.Exists(content))
+                FileIO.FolderSystem.Delete(content);
+
+            else
+                FileIO.FileSystem.Delete(content);
         }
     }
 }

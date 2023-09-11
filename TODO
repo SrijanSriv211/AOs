@@ -22,13 +22,13 @@
 . pause           -> Suspends processing of a command and displays the message
 . run             -> Starts a specified program or command, given the full or sysenv path
 . cat             -> Starts an installed program from the system
-x allinstapps     -> Lists all installed apps on your machine             [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called.]
+x allinstapps     -> Lists all installed apps on your machine               [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called.]
 . prompt          -> Change the command prompt
-x backup          -> Creates a restore point of AOs                       [NOTE: Discontinued feature]
-ls              -> Display a list of files and subdirectories in a directory
-cd              -> Changes the current directory
-touch           -> Creates a file or folder
-del             -> Deletes one or more files or folders
+x backup          -> Creates a restore point of AOs                         [NOTE: Discontinued feature]
+. ls              -> Display a list of files and subdirectories in a directory
+. cd              -> Changes the current directory                          [NOTE: cd.. is an independent/separate command which change the current directory to previous directory]
+. touch           -> Creates a file or folder
+. del             -> Deletes one or more files or folders
 ren             -> Renames a file or files
 copy            -> Advanced utility to copy files and directory trees
 move            -> Moves one or more files from one directory to another directory

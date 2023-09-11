@@ -8,7 +8,8 @@ class FileIO
             {
                 // Create the folder if it doesn't exist.
                 string FolderPath = Path.GetDirectoryName(Filepath);
-                FolderSystem.Create(FolderPath);
+                if (!Utils.String.IsEmpty(FolderPath))
+                    FolderSystem.Create(FolderPath);
 
                 // Create the file in that folder.
                 File.Create(Filepath).Dispose();
@@ -21,7 +22,8 @@ class FileIO
             {
                 // Create the folder if it doesn't exist.
                 string FolderPath = Path.GetDirectoryName(Filepath);
-                FolderSystem.Create(FolderPath);
+                if (!Utils.String.IsEmpty(FolderPath))
+                    FolderSystem.Create(FolderPath);
 
                 // Create the file in that folder.
                 File.Create(Filepath).Dispose();
@@ -34,6 +36,9 @@ class FileIO
         {
             if (File.Exists(Filepath))
                 File.Delete(Filepath);
+
+            else
+                new Error($"'{Filepath}' does not exist");
         }
 
         public static string ReadAllText(string Filepath)
@@ -64,7 +69,10 @@ class FileIO
         public static void Delete(string Directoryname)
         {
             if (Directory.Exists(Directoryname))
-                Directory.Delete(Directoryname);
+                Directory.Delete(Directoryname, true);
+
+            else
+                new Error($"'{Directoryname}' does not exist");
         }
 
         public static string[] Read(string Directoryname)

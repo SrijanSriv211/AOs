@@ -147,16 +147,25 @@ class SystemUtils
 
             else
             {
-                CommandPrompt(input_cmd, input_args);
+                string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
+                if (file_exts.Any(input_cmd.EndsWith))
+                    CommandPrompt(input_cmd, input_args);
+
+                else
+                    CommandPrompt($"start {input_cmd} {input_args}");
+
                 return true;
             }
         }
 
-        else
-        {
-            int return_val = CommandPrompt($"{input_cmd} {string.Join("", input_args)}", true);
-            return return_val == 0;
-        }
+        //? Maybe used in future but not for now.
+        // else
+        // {
+        //     int return_val = CommandPrompt($"{input_cmd} {string.Join("", input_args)}", true);
+        //     return return_val == 0;
+        // }
+
+        return false;
     }
 
     public static string CheckForSysOrEnvApps(string input)
@@ -169,9 +178,9 @@ class SystemUtils
             string[] file_exts = { "", ".aos", ".exe", ".msi", ".bat", ".cmd" }; // "" empty string at the start of this array means that an extention as already passed.
             foreach (string ext in file_exts)
             {
-                string exec_name = input + ext;
-                if (!Utils.String.IsEmpty(LocateExecutable(exec_name.ToLower())))
-                    return LocateExecutable(exec_name.ToLower());
+                string exec_name = LocateExecutable((input + ext).ToLower());;
+                if (!Utils.String.IsEmpty(exec_name))
+                    return exec_name;
             }
         }
 

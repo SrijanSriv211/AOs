@@ -35,7 +35,7 @@ class Parser
 
     public void Add(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
     {
-        if (default_values != null)
+        if (default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
         help_list.Add(cmd_names, help_message);

@@ -32,7 +32,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "credits" }, "Credit for AOs", method: AOs.Credits);
     parser.Add(new string[]{ "time", "clock" }, "Display current time", method: features.GetTime);
     parser.Add(new string[]{ "date", "calendar" }, "Display today's date", method: features.GetDate);
-    parser.Add(new string[]{ "datetime" }, "Display today's date", method: features.GetDateTime);
+    parser.Add(new string[]{ "datetime" }, "Display today's time and date", method: features.GetDateTime);
 
     parser.Add(new string[]{ "shout", "echo" }, "Display messages", is_flag: false, method: features.Shout);
     parser.Add(new string[]{ "history" }, "Display the history of Commands", default_values: new string[]{""}, max_args_length: 1, method: features.GetSetHistory);
@@ -45,6 +45,10 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "cat", "allinstapps", "installedapps", "allinstalledapps" }, "Start an installed program from the system", default_values: new string[0]{}, method: features.Cat);
     parser.Add(new string[]{ "prompt" }, "Change the command prompt", default_values: new string[0]{}, method: features.ModifyPrompt);
     parser.Add(new string[]{ "ls", "dir" }, "Displays a list of files and subdirectories in a directory", default_values: new string[0]{}, method: features.LS);
+    parser.Add(new string[]{ "cd" }, "Change the current directory", new string[]{""}, max_args_length: 1, method: features.ChangeCurrentDir);
+    parser.Add(new string[]{ "cd.." }, "Change to previous directory", method: features.ChangeToPrevDir);
+    parser.Add(new string[]{ "touch", "create" }, "Create a file or folder", is_flag: false, min_args_length: 1, method: features.Touch);
+    parser.Add(new string[]{ "del", "delete", "rm", "rmdir" }, "Delete one or more files or folders", is_flag: false, min_args_length: 1, method: features.Delete);
 
     foreach (var i in input)
     {
