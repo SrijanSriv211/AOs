@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-class Features
+partial class Features
 {
     private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
@@ -11,10 +11,10 @@ class Features
         this.sys_utils = sys_utils;
     }
 
-    public void Exit()
-    {
-        Environment.Exit(0);
-    }
+    // public void Exit()
+    // {
+    //     Environment.Exit(0);
+    // }
 
     public void Restart()
     {

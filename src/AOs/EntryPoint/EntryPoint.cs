@@ -36,6 +36,7 @@ class EntryPoint
 
         var parsed_args = parser.Parse(argv);
 
+        //TODO: Re-work this startup function.
         if (parsed_args.Count() == 0 && argv.Length == 0)
         {
             string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\StartUp\\.startlist");
