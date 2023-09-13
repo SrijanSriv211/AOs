@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 partial class Features
 {
     private readonly SystemUtils sys_utils;
@@ -9,135 +11,135 @@ partial class Features
         this.sys_utils = sys_utils;
     }
 
-    // public void Exit()
-    // {
-    //     Environment.Exit(0);
-    // }
+    public void Exit()
+    {
+        Environment.Exit(0);
+    }
 
-    // public void Restart()
-    // {
-    //     sys_utils.CommandPrompt("shutdown /r /t0");
-    // }
+    public void Restart()
+    {
+        sys_utils.CommandPrompt("shutdown /r /t0");
+    }
 
-    // public void Shutdown()
-    // {
-    //     sys_utils.CommandPrompt("shutdown /s /t0");
-    // }
+    public void Shutdown()
+    {
+        sys_utils.CommandPrompt("shutdown /s /t0");
+    }
 
-    // public void Refresh()
-    // {
-    //     string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-    //     sys_utils.StartApp(AOsBinaryFilepath);
-    //     Exit();
-    // }
+    public void Refresh()
+    {
+        string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
+        sys_utils.StartApp(AOsBinaryFilepath);
+        Exit();
+    }
 
-    // public void GetTime()
-    // {
-    //     Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
-    // }
+    public void GetTime()
+    {
+        Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
+    }
 
-    // public void GetDate()
-    // {
-    //     Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
-    // }
+    public void GetDate()
+    {
+        Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
+    }
 
-    // public void GetDateTime()
-    // {
-    //     Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
-    //     Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
-    // }
+    public void GetDateTime()
+    {
+        Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
+        Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
+    }
 
-    // public void ChangeCurrentDir(string dirname)
-    // {
-    //     if (Utils.String.IsEmpty(dirname))
-    //         new TerminalColor(Directory.GetCurrentDirectory(), ConsoleColor.White);
+    public void ChangeCurrentDir(string dirname)
+    {
+        if (Utils.String.IsEmpty(dirname))
+            new TerminalColor(Directory.GetCurrentDirectory(), ConsoleColor.White);
 
-    //     else
-    //         Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
-    // }
+        else
+            Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
+    }
 
-    // public void ChangeToPrevDir()
-    // {
-    //     Directory.SetCurrentDirectory("..");
-    // }
+    public void ChangeToPrevDir()
+    {
+        Directory.SetCurrentDirectory("..");
+    }
 
-    // public void SwitchElseShell(string shell_name)
-    // {
-    //     if (Utils.String.IsEmpty(shell_name))
-    //         Console.WriteLine(Obsidian.default_else_shell);
+    public void SwitchElseShell(string shell_name)
+    {
+        if (Utils.String.IsEmpty(shell_name))
+            Console.WriteLine(Obsidian.default_else_shell);
 
-    //     else if (shell_name == "cmd")
-    //         Obsidian.default_else_shell = "cmd.exe";
+        else if (shell_name == "cmd")
+            Obsidian.default_else_shell = "cmd.exe";
 
-    //     else if (shell_name == "ps" || shell_name == "powershell")
-    //         Obsidian.default_else_shell = "powershell.exe";
+        else if (shell_name == "ps" || shell_name == "powershell")
+            Obsidian.default_else_shell = "powershell.exe";
 
-    //     else
-    //         Error.UnrecognizedArgs(shell_name);
-    // }
+        else
+            Error.UnrecognizedArgs(shell_name);
+    }
 
-    // public void GetSetHistory(string arg)
-    // {
-    //     if (Utils.String.IsEmpty(arg))
-    //         History.Get();
+    public void GetSetHistory(string arg)
+    {
+        if (Utils.String.IsEmpty(arg))
+            History.Get();
 
-    //     else if (arg == "-c" || arg == "--clear")
-    //         History.Clear();
+        else if (arg == "-c" || arg == "--clear")
+            History.Clear();
 
-    //     else
-    //         Error.UnrecognizedArgs(arg);
-    // }
+        else
+            Error.UnrecognizedArgs(arg);
+    }
 
-    // public void ChangeColor(string color_name)
-    // {
-    //     static void help_for_color()
-    //     {
-    //         new Error("`color` value was not defined. Please use a defined color value");
-    //         string[] list_of_colors = new string[]
-    //         {
-    //             "Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed",
-    //             "DarkMagenta", "DarkYellow", "Gray", "DarkGray", "Blue",
-    //             "Green", "Cyan", "Red", "Magenta", "Yellow", "White"
-    //         };
+    public void ChangeColor(string color_name)
+    {
+        static void help_for_color()
+        {
+            new Error("`color` value was not defined. Please use a defined color value");
+            string[] list_of_colors = new string[]
+            {
+                "Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed",
+                "DarkMagenta", "DarkYellow", "Gray", "DarkGray", "Blue",
+                "Green", "Cyan", "Red", "Magenta", "Yellow", "White"
+            };
 
-    //         for (int i = 0; i < list_of_colors.Length; i++)
-    //         {
-    //             Console.Write($"{i}. ");
-    //             if (i == 0)
-    //             {
-    //                 var default_color = Console.BackgroundColor;
-    //                 Console.BackgroundColor = ConsoleColor.White;
+            for (int i = 0; i < list_of_colors.Length; i++)
+            {
+                Console.Write($"{i}. ");
+                if (i == 0)
+                {
+                    var default_color = Console.BackgroundColor;
+                    Console.BackgroundColor = ConsoleColor.White;
 
-    //                 new TerminalColor(list_of_colors[i], (ConsoleColor)i);
+                    new TerminalColor(list_of_colors[i], (ConsoleColor)i);
 
-    //                 Console.BackgroundColor = default_color;
-    //             }
+                    Console.BackgroundColor = default_color;
+                }
 
-    //             else
-    //                 new TerminalColor(list_of_colors[i], (ConsoleColor)i);
-    //         }
-    //     }
+                else
+                    new TerminalColor(list_of_colors[i], (ConsoleColor)i);
+            }
+        }
 
-    //     if (Utils.String.IsEmpty(color_name))
-    //         AOs.Default_color = Obsidian.original_color_of_terminal;
+        if (Utils.String.IsEmpty(color_name))
+            AOs.Default_color = Obsidian.original_color_of_terminal;
 
-    //     else
-    //     {
-    //         if (int.TryParse(color_name, out int color_num))
-    //         {
-    //             if (color_num < 0 || color_num > 15)
-    //                 help_for_color();
+        else
+        {
+            if (int.TryParse(color_name, out int color_num))
+            {
+                if (color_num < 0 || color_num > 15)
+                    help_for_color();
 
-    //             else
-    //                 AOs.Default_color = (ConsoleColor)color_num;
-    //         }
+                else
+                    AOs.Default_color = (ConsoleColor)color_num;
+            }
 
-    //         else
-    //             help_for_color();
-    //     }
+            else
+                help_for_color();
+        }
 
-    //     Console.ForegroundColor = AOs.Default_color;
-    // }
+        Console.ForegroundColor = AOs.Default_color;
+    }
 
     public void Wait(string timespan)
     {
