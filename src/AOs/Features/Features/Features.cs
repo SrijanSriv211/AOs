@@ -342,14 +342,8 @@ partial class Features
             else if (content.EndsWith("\\") || content.EndsWith("/"))
                 FileIO.FolderSystem.Create(content);
 
-            else if (File.Exists(content))
-                FileIO.FileSystem.Create(content);
-
             else
-            {
-                new Error($"'{content}' does not exist");
-                return;
-            }
+                FileIO.FileSystem.Create(content);
         }
     }
 

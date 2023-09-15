@@ -29,12 +29,12 @@ x backup          -> Creates a restore point of AOs                         [NOT
 . cd              -> Changes the current directory                          [NOTE: cd.. is an independent/separate command which change the current directory to previous directory]
 . touch           -> Creates a file or folder
 . del             -> Deletes one or more files or folders
-ren             -> Renames a file or files
-copy            -> Advanced utility to copy files and directory trees
-move            -> Moves one or more files from one directory to another directory
+. ren             -> Renames a file or files
+. copy            -> Advanced utility to copy files and directory trees
+. move            -> Moves one or more files from one directory to another directory
 pixelate        -> Starts a website in a web browser
-commit          -> Edits the contents of a text file
 read            -> Displays the contents of a text file
+commit          -> Edits the contents of a text file
 zip             -> Compresses or Decompresses files or folders. (-u flag to unzip)
 update          -> Check for Updates
 scan            -> Scans the integrity of all protected system files

@@ -48,7 +48,29 @@ partial class FileIO
                 return;
             }
 
-            // Directory.Copy(Source, Destination, true);
+            // https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
+            // Get information about the source directory
+            var dir = new DirectoryInfo(Source);
+
+            // Cache directories before we start copying
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // Create the destination directory
+            Create(Destination);
+
+            // Get the files in the source directory and copy to the destination directory
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string Target_Filepath = Path.Combine(Destination, file.Name);
+                file.CopyTo(Target_Filepath);
+            }
+
+            // copy subdirectories recursively
+            foreach (DirectoryInfo subDir in dirs)
+            {
+                string newDestinationDir = Path.Combine(Destination, subDir.Name);
+                Copy(subDir.FullName, newDestinationDir);
+            }
         }
 
         public static string[] Read(string Directoryname)
