@@ -47,8 +47,11 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "ls", "dir" }, "Displays a list of files and subdirectories in a directory", default_values: new string[0]{}, method: features.LS);
     parser.Add(new string[]{ "cd" }, "Change the current directory", new string[]{""}, max_args_length: 1, method: features.ChangeCurrentDir);
     parser.Add(new string[]{ "cd.." }, "Change to previous directory", method: features.ChangeToPrevDir);
-    parser.Add(new string[]{ "touch", "create" }, "Create a file or folder", is_flag: false, min_args_length: 1, method: features.Touch);
+    parser.Add(new string[]{ "touch", "create" }, "Create a one or more files or folders", is_flag: false, min_args_length: 1, method: features.Touch);
     parser.Add(new string[]{ "del", "delete", "rm", "rmdir" }, "Delete one or more files or folders", is_flag: false, min_args_length: 1, method: features.Delete);
+    parser.Add(new string[]{ "ren", "rename", "rn" }, "Rename a file or folder", is_flag: false, min_args_length: 2, max_args_length: 2, method: features.Move);
+    parser.Add(new string[]{ "mv", "move" }, "Move a file or folder", is_flag: false, min_args_length: 2, max_args_length: 2, method: features.Move);
+    parser.Add(new string[]{ "cp", "copy" }, "Copy a file or folder", is_flag: false, min_args_length: 2, max_args_length: 2, method: features.Copy);
 
     foreach (var i in input)
     {

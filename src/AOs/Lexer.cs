@@ -181,6 +181,21 @@ class Lexer
                 tok = "";
             }
 
+            else if (Is_identifier(tok))
+            {
+                i++;
+                while (i < line.Length && Is_identifier(line[i].ToString()))
+                {
+                    tok += line[i];
+                    i++;
+                }
+
+                i--;
+
+                tokens.Add(tok);
+                tok = "";
+            }
+
             else if (Is_symbol(tok))
             {
                 tokens.Add(tok);
@@ -206,21 +221,6 @@ class Lexer
             {
                 i++;
                 while (i < line.Length && Is_float(line[i].ToString()))
-                {
-                    tok += line[i];
-                    i++;
-                }
-
-                i--;
-
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_identifier(tok))
-            {
-                i++;
-                while (i < line.Length && Is_identifier(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;

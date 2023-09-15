@@ -342,8 +342,14 @@ partial class Features
             else if (content.EndsWith("\\") || content.EndsWith("/"))
                 FileIO.FolderSystem.Create(content);
 
-            else
+            else if (File.Exists(content))
                 FileIO.FileSystem.Create(content);
+
+            else
+            {
+                new Error($"'{content}' does not exist");
+                return;
+            }
         }
     }
 
@@ -359,8 +365,54 @@ partial class Features
             else if (Directory.Exists(content))
                 FileIO.FolderSystem.Delete(content);
 
-            else
+            else if (File.Exists(content))
                 FileIO.FileSystem.Delete(content);
+
+            else
+            {
+                new Error($"'{content}' does not exist");
+                return;
+            }
         }
+    }
+
+    public void Move(string[] content_to_rename)
+    {
+        content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
+
+        string old_name = content_to_rename[0];
+        string new_name = content_to_rename[1];
+
+        if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
+            new TerminalColor("Hello CON!", ConsoleColor.White);
+
+        else if (Directory.Exists(old_name))
+            FileIO.FolderSystem.Move(old_name, new_name);
+
+        else if (File.Exists(old_name))
+            FileIO.FileSystem.Move(old_name, new_name);
+
+        else
+            new Error($"'{old_name}' does not exist");
+    }
+
+    public void Copy(string[] content_to_rename)
+    {
+        content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
+
+        string old_name = content_to_rename[0];
+        string new_name = content_to_rename[1];
+
+        if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
+            new TerminalColor("Hello CON!", ConsoleColor.White);
+
+        else if (Directory.Exists(old_name))
+            FileIO.FolderSystem.Copy(old_name, new_name);
+
+        else if (File.Exists(old_name))
+            FileIO.FileSystem.Copy(old_name, new_name);
+
+        else
+            new Error($"'{old_name}' does not exist");
     }
 }
