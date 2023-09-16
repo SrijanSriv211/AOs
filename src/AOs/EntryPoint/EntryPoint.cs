@@ -31,88 +31,104 @@ class EntryPoint
         string[] argv = Utils.Array.Filter(args);
 
         var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.");
-        parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments.", is_flag: true);
-        parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string.");
+        parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
+        parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
+        parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
 
         var parsed_args = parser.Parse(argv);
 
         //TODO: Re-work this startup function.
-        if (parsed_args.Count() == 0 && argv.Length == 0)
+        foreach (var args in parsed_args)
         {
-            string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\StartUp\\.startlist");
-            bool isEmpty = Utils.String.IsEmpty(
-                FileIO.FileSystem.ReadAllText(startlist_path)
-            );
-
-            if (File.Exists(startlist_path) && !isEmpty)
+            if (Argparse.IsAskingForHelp(args.Names))
             {
-                AOs.Entrypoint(false);
-                foreach (string appname in File.ReadLines(startlist_path))
-                {
-                    // break if "." is in place of appname
-                    // all apps after the dot will be marked as disabled.
-                    if (appname == ".")
-                        break;
-
-                    else if (appname.EndsWith(".aos"))
-                    {
-                        foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), appname) ))
-                            Run(AOs.TakeInput(current_line));
-                    }
-                }
-            }
-
-            else
-            {
-                AOs.Entrypoint();
-                while (true)
-                    Run(AOs.TakeInput());
             }
         }
 
-        else
-        {
-            foreach (var arg in parsed_args)
-            {
-                if (Argparse.IsAskingForHelp(arg.Names))
-                    parser.PrintHelp();
+        // if (parsed_args.Count() == 0 && argv.Length == 0)
+        // {
+        //     string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\StartUp\\.startlist");
+        //     bool isEmpty = Utils.String.IsEmpty(
+        //         FileIO.FileSystem.ReadAllText(startlist_path)
+        //     );
 
-                else if (arg.Names.Contains("-c"))
-                {
-                    string out_value = arg.Value;
-                    if (out_value == null || Utils.String.IsEmpty(out_value))
-                        return;
+        //     if (File.Exists(startlist_path) && !isEmpty)
+        //     {
+        //         AOs.Entrypoint(false);
+        //         foreach (string appname in File.ReadLines(startlist_path))
+        //         {
+        //             // break if "." is in place of appname
+        //             // all apps after the dot will be marked as disabled.
+        //             if (appname == ".")
+        //                 break;
 
-                    AOs.Entrypoint(false);
-                    Run(AOs.TakeInput(out_value));
-                }
+        //             else if (appname.EndsWith(".aos"))
+        //             {
+        //                 foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), appname) ))
+        //                     Run(AOs.TakeInput(current_line));
+        //             }
+        //         }
+        //     }
 
-                else
-                {
-                    AOs.Entrypoint(false);
-                    foreach (string filename in arg.Names)
-                    {
-                        if (!filename.EndsWith(".aos"))
-                        {
-                            new Error($"{filename}: File format not recognized.");
-                            return;
-                        }
+        //     else
+        //     {
+        //         AOs.Entrypoint();
+        //         while (true)
+        //             Run(AOs.TakeInput());
+        //     }
+        // }
 
-                        else if (!File.Exists(filename))
-                        {
-                            new Error($"{filename}: No such file or directory.");
-                            return;
-                        }
+        // else
+        // {
+        //     foreach (var arg in parsed_args)
+        //     {
+        //         if (Argparse.IsAskingForHelp(arg.Names))
+        //             parser.PrintHelp();
 
-                        else
-                        {
-                            foreach (string current_line in FileIO.FileSystem.ReadAllLines(filename))
-                                Run(AOs.TakeInput(current_line));
-                        }
-                    }
-                }
-            }
-        }
+        //         else if (arg.Names.Contains("-a"))
+        //         {
+        //             SystemUtils sys_utils = new();
+
+        //             string AOsBinaryFilepath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+        //             sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
+        //         }
+
+        //         else if (arg.Names.Contains("-c"))
+        //         {
+        //             string out_value = arg.Value;
+        //             if (out_value == null || Utils.String.IsEmpty(out_value))
+        //                 return;
+
+        //             AOs.Entrypoint(false);
+        //             Run(AOs.TakeInput(out_value));
+        //         }
+
+        //         else
+        //         {
+        //             AOs.Entrypoint(false);
+        //             foreach (string filename in arg.Names)
+        //             {
+        //                 if (!filename.EndsWith(".aos"))
+        //                 {
+        //                     new Error($"{filename}: File format not recognized.");
+        //                     return;
+        //                 }
+
+        //                 else if (!File.Exists(filename))
+        //                 {
+        //                     new Error($"{filename}: No such file or directory.");
+        //                     return;
+        //                 }
+
+        //                 else
+        //                 {
+        //                     foreach (string current_line in FileIO.FileSystem.ReadAllLines(filename))
+        //                         Run(AOs.TakeInput(current_line));
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     public static void RootPackages()

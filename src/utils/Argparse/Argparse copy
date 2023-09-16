@@ -2,9 +2,8 @@ partial class Argparse
 {
     private readonly string name = "";
     private readonly string desc = "";
-
+    private readonly List<string> help_list = new();
     private readonly List<Argument> arguments = new();
-    private readonly Dictionary<string[], string> help_list = new();
 
     public Argparse(string name, string description)
     {
@@ -12,13 +11,10 @@ partial class Argparse
         this.desc = description;
     }
 
-    public void Add(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, bool required=false, int min_args_length=0, int max_args_length=0, Delegate method=null)
+    public void Add(string[] names, string help="", string default_value=null, bool is_flag=false, bool required=false)
     {
-        if (default_values != null || max_args_length > 0 || min_args_length > 0)
-            is_flag = false;
-
-        help_list.Add(cmd_names, help_message);
-        arguments.Add(new Argument(cmd_names, help_message, default_values, is_flag, required, min_args_length, max_args_length, method));
+        arguments.Add(new Argument(names, help, default_value, is_flag, required));
+        help_list.Add($"{string.Join(", ", names)} -> {help}");
     }
 
     public List<ParsedArgument> Parse(string[] args, Action<string> error_func=null)
