@@ -291,7 +291,8 @@ partial class Features
             }
         }
 
-        Obsidian.PromptDummy = AOs.SetPrompt(Flags.ToArray());
+        Obsidian.PromptPreset = Flags.ToArray();
+        AOs.SetPrompt(Flags.ToArray());
     }
 
     public void LS(string[] dirname)

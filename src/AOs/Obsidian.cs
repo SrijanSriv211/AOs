@@ -7,7 +7,7 @@ class Obsidian
     public static bool is_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     public static ConsoleColor original_color_of_terminal = Console.ForegroundColor;
 
-    public static string PromptDummy = "$ ";
+    public static string[] PromptPreset = new string[]{"-r"};
     public string Version = "AOs 2023 [Version 2.5]";
     public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
 
@@ -17,7 +17,7 @@ class Obsidian
     public Obsidian(string Title="AOs", string Prompt="$ ")
     {
         this.Title = is_admin ? $"{Title} (Administrator)" : Title;
-        this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(new string[]{"-r"}) : Prompt;
+        this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(PromptPreset) : Prompt;
     }
 
     public List<(string cmd, string[] args)> TakeInput(string input="")
@@ -26,7 +26,7 @@ class Obsidian
         string CMD = input.Trim();
 
         Console.ForegroundColor = Default_color;
-        this.Prompt = PromptDummy;
+        this.Prompt = SetPrompt(PromptPreset);
 
         if (Utils.String.IsEmpty(CMD))
         {
