@@ -27,6 +27,22 @@ partial class Lexer
             else if (tok == "#")
                 break;
 
+            // Designed to extract command line args.
+            else if (tok == "$")
+            {
+                i++;
+                while (i < line.Length && char.IsDigit(line[i]))
+                {
+                    tok += line[i];
+                    i++;
+                }
+
+                i--;
+
+                tokens.Add(tok);
+                tok = "";
+            }
+
             else if (tok == "'" || tok == "\"" || tok == "%")
             {
                 char str_char_symbol = tok.First();

@@ -15,11 +15,8 @@ partial class Argparse
         this.error_func = error_func;
     }
 
-    public void Add(string[] cmd_names, string help_message, string default_value=null, bool is_flag=true, bool required=false)
+    public void Add(string[] cmd_names, string help_message, string default_value=null, bool is_flag=false, bool required=false)
     {
-        if (default_value != null)
-            is_flag = false;
-
         help_list.Add(cmd_names, help_message);
         arguments.Add(new Argument(cmd_names, help_message, default_value, is_flag, required));
     }

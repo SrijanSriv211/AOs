@@ -70,8 +70,10 @@ class EntryPoint
 
         else
         {
-            foreach (var arg in parsed_args)
+            for (int i = 0; i < parsed_args.ToArray().Length; i++)
             {
+                var arg = parsed_args[i];
+
                 if (Argparse.IsAskingForHelp(arg.Names))
                     parser.PrintHelp();
 
@@ -92,26 +94,47 @@ class EntryPoint
                     Run(AOs.TakeInput(arg.Value));
                 }
 
-                else
+                else if (!arg.Names.First().EndsWith(".aos") && i == 0)
+                {
+                    new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension");
+                    return;
+                }
+
+                else if (!File.Exists(arg.Names.First()) && i == 0)
+                {
+                    new Error($"{arg.Names.First()}: No such file.");
+                    return;
+                }
+
+                else if (arg.Names.First().EndsWith(".aos") && i == 0)
                 {
                     AOs.Entrypoint(false);
-                    if (!arg.Names.First().EndsWith(".aos"))
+                    List<string> program_args = new();
+                    for (int j = 0; j < parsed_args.ToArray().Length; j++)
                     {
-                        new Error($"{arg.Names.First()}: File format not recognized.");
-                        return;
+                        if (parsed_args[j].KnownType == "Unknown")
+                            program_args.Add(parsed_args[j].Names.First());
                     }
 
-                    else if (!File.Exists(arg.Names.First()))
+                    foreach (string current_line in FileIO.FileSystem.ReadAllLines(arg.Names.First()))
                     {
-                        new Error($"{arg.Names.First()}: No such file or directory.");
-                        return;
+                        List<string[]> ListOfToks = new Lexer(current_line).Tokens;
+                        foreach (string[] Toks in ListOfToks)
+                        {
+                            for (int k = 0; k < Toks.Length; k++)
+                            {
+                                if (Toks[k].StartsWith("$"))
+                                {
+                                    if (int.TryParse(Toks[k].Substring(1), out int arg_index) && arg_index < this.args.Length)
+                                        Toks[k] = this.args[arg_index];
+                                }
+                            }
+
+                            Run(AOs.TakeInput(string.Join("", Toks)));
+                        }
                     }
 
-                    else
-                    {
-                        foreach (string current_line in FileIO.FileSystem.ReadAllLines(arg.Names.First()))
-                            Run(AOs.TakeInput(current_line));
-                    }
+                    return;
                 }
             }
         }
