@@ -37,11 +37,82 @@ class EntryPoint
 
         var parsed_args = parser.Parse(argv);
 
-        //TODO: Re-work this startup function.
-        foreach (var args in parsed_args)
+        if (parsed_args.Count() == 0 && argv.Length == 0)
         {
-            if (Argparse.IsAskingForHelp(args.Names))
+            string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\StartUp\\.startlist");
+            bool isEmpty = Utils.String.IsEmpty(FileIO.FileSystem.ReadAllText(startlist_path));
+
+            if (File.Exists(startlist_path) && !isEmpty)
             {
+                AOs.Entrypoint(false);
+                foreach (string appname in File.ReadLines(startlist_path))
+                {
+                    // break if "." is in place of appname
+                    // all apps after the dot will be marked as disabled.
+                    if (appname == ".")
+                        break;
+
+                    else if (appname.EndsWith(".aos"))
+                    {
+                        foreach (string current_line in FileIO.FileSystem.ReadAllLines( Path.Combine(Path.GetDirectoryName(startlist_path), appname) ))
+                            Run(AOs.TakeInput(current_line));
+                    }
+                }
+            }
+
+            else
+            {
+                AOs.Entrypoint();
+                while (true)
+                    Run(AOs.TakeInput());
+            }
+        }
+
+        else
+        {
+            foreach (var arg in parsed_args)
+            {
+                if (Argparse.IsAskingForHelp(arg.Names))
+                    parser.PrintHelp();
+
+                else if (arg.Names.Contains("-a"))
+                {
+                    SystemUtils sys_utils = new();
+
+                    string AOsBinaryFilepath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
+                }
+
+                else if (arg.Names.Contains("-c"))
+                {
+                    if (arg.Value == null || Utils.String.IsEmpty(arg.Value))
+                        return;
+
+                    AOs.Entrypoint(false);
+                    Run(AOs.TakeInput(arg.Value));
+                }
+
+                else
+                {
+                    AOs.Entrypoint(false);
+                    if (!arg.Names.First().EndsWith(".aos"))
+                    {
+                        new Error($"{arg.Names.First()}: File format not recognized.");
+                        return;
+                    }
+
+                    else if (!File.Exists(arg.Names.First()))
+                    {
+                        new Error($"{arg.Names.First()}: No such file or directory.");
+                        return;
+                    }
+
+                    else
+                    {
+                        foreach (string current_line in FileIO.FileSystem.ReadAllLines(arg.Names.First()))
+                            Run(AOs.TakeInput(current_line));
+                    }
+                }
             }
         }
 
