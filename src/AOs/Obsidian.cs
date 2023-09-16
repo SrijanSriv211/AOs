@@ -48,13 +48,15 @@ class Obsidian
         List<string[]> ListOfToks = new Lexer(CMD).Tokens;
         foreach (string[] Toks in ListOfToks)
         {
+            if (Utils.String.IsEmpty(Toks.FirstOrDefault()))
+                continue;
+
             // Split the Toks into a cmd and Args variable and array respectively.
             string input_cmd = Utils.String.Strings(Toks.FirstOrDefault());
             string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
 
             // Add input_cmd & input_args to output.
-            if (!Utils.String.IsEmpty(input_cmd))
-                output.Add((input_cmd, input_args));
+            output.Add((input_cmd, input_args));
         }
 
         return output;

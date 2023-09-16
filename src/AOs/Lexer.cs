@@ -181,10 +181,16 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_identifier(tok))
+            else if (Is_symbol(tok))
+            {
+                tokens.Add(tok);
+                tok = "";
+            }
+
+            else if (Is_operator(tok))
             {
                 i++;
-                while (i < line.Length && Is_identifier(line[i].ToString()))
+                while (i < line.Length && (Is_operator(line[i].ToString()) || Is_identifier(line[i].ToString())))
                 {
                     tok += line[i];
                     i++;
@@ -196,16 +202,10 @@ class Lexer
                 tok = "";
             }
 
-            else if (Is_symbol(tok))
-            {
-                tokens.Add(tok);
-                tok = "";
-            }
-
-            else if (Is_operator(tok))
+            else if (Is_identifier(tok))
             {
                 i++;
-                while (i < line.Length && (Is_operator(line[i].ToString()) || Is_identifier(line[i].ToString())))
+                while (i < line.Length && Is_identifier(line[i].ToString()))
                 {
                     tok += line[i];
                     i++;
@@ -275,7 +275,7 @@ class Lexer
                c == '=' || c == '+' || c == '-' || c == '*' || c == '/' ||
                c == '%' || c == '_' || c == '.' || c == '[' || c == ']' ||
                c == ',' || c == '{' || c == '}' || c == '|' || c == ':' ||
-               c == '<' || c == '\\';
+               c == '<' || c == '>' || c == '\\';
     }
 
     private bool Is_identifier(string str)
