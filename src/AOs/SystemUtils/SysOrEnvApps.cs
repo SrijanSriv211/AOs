@@ -22,7 +22,6 @@ partial class SystemUtils
                 return true;
             }
 
-
             else
             {
                 string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
