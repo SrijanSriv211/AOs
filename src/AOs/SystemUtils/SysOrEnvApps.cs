@@ -14,9 +14,6 @@ partial class SystemUtils
 
             args_to_be_passed.AddRange(input_args);
 
-            foreach (var item in args_to_be_passed)
-                Console.WriteLine($"[{item}]");
-
             if (input_cmd.EndsWith(".aos"))
             {
                 string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
@@ -33,7 +30,6 @@ partial class SystemUtils
 
                 else
                     CommandPrompt($"start {string.Join("", args_to_be_passed)}");
-                    // CommandPrompt($"start {input_cmd} {input_args}");
 
                 return true;
             }
