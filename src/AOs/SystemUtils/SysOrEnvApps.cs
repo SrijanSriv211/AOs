@@ -6,10 +6,22 @@ partial class SystemUtils
     {
         if (File.Exists(input_cmd))
         {
+            List<string> args_to_be_passed = new()
+            {
+                $"\"{input_cmd}\"",
+                " "
+            };
+
+            args_to_be_passed.AddRange(input_args);
+
+            foreach (var item in args_to_be_passed)
+                Console.WriteLine($"[{item}]");
+
             if (input_cmd.EndsWith(".aos"))
             {
                 string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-                CommandPrompt(AOsBinaryFilepath, new string[]{ $"\"{input_cmd}\"" });
+                CommandPrompt(AOsBinaryFilepath, args_to_be_passed.ToArray());
+
                 return true;
             }
 
@@ -20,7 +32,8 @@ partial class SystemUtils
                     CommandPrompt(input_cmd, input_args);
 
                 else
-                    CommandPrompt($"start {input_cmd} {input_args}");
+                    CommandPrompt($"start {string.Join("", args_to_be_passed)}");
+                    // CommandPrompt($"start {input_cmd} {input_args}");
 
                 return true;
             }

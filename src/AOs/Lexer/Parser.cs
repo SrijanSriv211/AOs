@@ -12,19 +12,22 @@ partial class Lexer
             {
                 this.Tokens.Add(current_list.ToArray());
                 current_list = new List<string>();
+
+                if (i-1 < toks.Length && Utils.String.IsWhiteSpace(toks[i+1]))
+                    i++;
             }
 
             else if (Is_expr(tok))
             {
                 string expr = tok;
-                string whitespaces = "";
+                // string whitespaces = "";
 
                 i++;
                 while (i < toks.Length && (Is_expr(toks[i]) || Utils.String.IsWhiteSpace(toks[i])))
                 {
                     if (i < toks.Length-1 && Utils.String.IsWhiteSpace(toks[i]) && !Is_expr(toks[i+1]))
                     {
-                        whitespaces = toks[i];
+                        // whitespaces = toks[i];
                         break;
                     }
 
@@ -35,8 +38,8 @@ partial class Lexer
                 i--;
 
                 current_list.Add(Evaluate(expr));
-                if (Utils.String.IsWhiteSpace(whitespaces))
-                    current_list.Add(whitespaces);
+                // if (Utils.String.IsWhiteSpace(whitespaces))
+                //     current_list.Add(whitespaces);
             }
 
             else

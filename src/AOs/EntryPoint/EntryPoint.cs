@@ -109,13 +109,13 @@ class EntryPoint
                 else if (arg.Names.First().EndsWith(".aos") && i == 0)
                 {
                     AOs.Entrypoint(false);
+
+                    // Get a list of all arguments passsed in the command-line.
                     List<string> program_args = new();
                     for (int j = 0; j < parsed_args.ToArray().Length; j++)
-                    {
-                        if (parsed_args[j].KnownType == "Unknown")
-                            program_args.Add(parsed_args[j].Names.First());
-                    }
+                        program_args.Add(parsed_args[j].Names.First());
 
+                    // Repalce $0 with args[0], $1 with args[1], $2 with args[2] and so on.
                     foreach (string current_line in FileIO.FileSystem.ReadAllLines(arg.Names.First()))
                     {
                         List<string[]> ListOfToks = new Lexer(current_line).Tokens;
