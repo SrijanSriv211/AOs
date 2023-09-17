@@ -35,13 +35,6 @@ partial class SystemUtils
             }
         }
 
-        //? Maybe used in future but not for now.
-        // else
-        // {
-        //     int return_val = CommandPrompt($"{input_cmd} {string.Join("", input_args)}", true);
-        //     return return_val == 0;
-        // }
-
         return false;
     }
 
