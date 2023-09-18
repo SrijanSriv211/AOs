@@ -53,17 +53,14 @@ partial class EntryPoint
 
         else
         {
-            var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.", Error.UnrecognizedArgs);
+            var parser = new Argparse("AOs", "A Developer Command-line Tool Built for Developers by a Developer.", Error.UnrecognizedArgs);
             parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
             parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
             parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
-
             var parsed_args = parser.Parse(args);
 
-            for (int i = 0; i < parsed_args.ToArray().Length; i++)
+            foreach (var arg in parsed_args)
             {
-                var arg = parsed_args[i];
-
                 if (Argparse.IsAskingForHelp(arg.Names))
                     parser.PrintHelp();
 

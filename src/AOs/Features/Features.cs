@@ -410,4 +410,122 @@ partial class Features
         else
             new Error($"'{old_name}' does not exist");
     }
+
+    public void Pixelate(string[] websites_to_open)
+    {
+        static bool ValidateUrlWithUri(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
+        foreach (string website_url in websites_to_open)
+        {
+            if (ValidateUrlWithUri(website_url))
+                sys_utils.StartApp(website_url);
+
+            else
+                new Error($"Can't open the website '{website_url}': Invalid URL");
+        }
+    }
+
+    public void Read(string[] args)
+    {
+        static void err(string filename)
+        {
+            new Error($"{filename}: No such file or directory");
+        }
+
+        var parser = new Argparse("read", "Displays the contents of a text file.", err);
+        parser.Add(new string[]{"-l", "--line"}, "Shows information about a specific line.", default_value: "-1");
+
+        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
+        var parsed_args = parser.Parse(args);
+
+        string filepath = "";
+        int line_to_read = -1;
+        foreach (var arg in parsed_args)
+        {
+            if (arg.Names.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
+            {
+                new Error($"{line_to_read}: Invalid line number");
+                return;
+            }
+
+            else if (arg.KnownType == "Unknown")
+                filepath = arg.Names.First();
+        }
+
+        string[] lines = FileIO.FileSystem.ReadAllLines(filepath);
+        if (line_to_read < 1)
+        {
+            for (int i = 0; i < lines.Length; i++)
+            {
+                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Console.WriteLine(lines[i]);
+            }
+        }
+
+        else
+        {
+            if (line_to_read-1 < lines.Length)
+            {
+                new TerminalColor($"{line_to_read}. ", ConsoleColor.DarkGray, false);
+                Console.WriteLine(lines[line_to_read-1]);
+            }
+        }
+    }
+
+
+    public void Commit(string[] args)
+    {
+        static void err(string filename)
+        {
+            new Error($"{filename}: No such file or directory.");
+        }
+
+        var parser = new Argparse("commit", "Edit the contents of a text file", err);
+        parser.Add(new string[]{"-l", "--line"}, "Edit specific line in a text file", default_value: "-1");
+
+        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
+        var parsed_args = parser.Parse(args);
+
+        List<string> Content_to_commit = new();
+        string filepath = "";
+        int line_to_read = -1;
+        foreach (var arg in parsed_args)
+        {
+            if (arg.Names.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
+            {
+                new Error($"{line_to_read}: Invalid line number");
+                return;
+            }
+
+            else if (arg.KnownType == "Unknown" && Utils.String.IsEmpty(filepath))
+                filepath = arg.Names.First();
+
+            else if (arg.KnownType == "Unknown")
+                Content_to_commit.Add(arg.Names.First());
+        }
+
+        if (line_to_read == 0)
+            FileIO.FileSystem.Overwrite(filepath, Content_to_commit.ToArray());
+
+        else if (line_to_read < 1)
+        {
+            foreach (string content in Content_to_commit)
+                FileIO.FileSystem.Write(filepath, content);
+        }
+
+        else
+        {
+            string[] lines = FileIO.FileSystem.ReadAllLines(filepath);
+            if (line_to_read-1 < lines.Length)
+            {
+                for (int i = 0; i < Content_to_commit.Count; i++)
+                    lines[line_to_read-1+i] = Content_to_commit[i];
+
+                FileIO.FileSystem.Overwrite(filepath, lines);
+            }
+        }
+    }
 }

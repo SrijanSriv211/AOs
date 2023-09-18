@@ -18,18 +18,14 @@ partial class FileIO
 
         public static void Write(string Filepath, string Content)
         {
-            if (!File.Exists(Filepath))
-            {
-                // Create the folder if it doesn't exist.
-                string FolderPath = Path.GetDirectoryName(Filepath);
-                if (!Utils.String.IsEmpty(FolderPath))
-                    FolderSystem.Create(FolderPath);
-
-                // Create the file in that folder.
-                File.Create(Filepath).Dispose();
-            }
-
+            Create(Filepath);
             File.AppendAllText(Filepath, Content);
+        }
+
+        public static void Overwrite(string Filepath, string[] Content)
+        {
+            Create(Filepath);
+            File.WriteAllLines(Filepath, Content);
         }
 
         public static void Delete(string Filepath)
