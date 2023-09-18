@@ -49,6 +49,50 @@ partial class EntryPoint
                 }
             }
         }
+
+        else
+        {
+            var parser = new Argparse("AOs", "A Command-line utility for improved efficiency and productivity.", Error.UnrecognizedArgs);
+            parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
+            parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
+            parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
+
+            var parsed_args = parser.Parse(args);
+
+            for (int i = 0; i < parsed_args.ToArray().Length; i++)
+            {
+                var arg = parsed_args[i];
+
+                if (Argparse.IsAskingForHelp(arg.Names))
+                    parser.PrintHelp();
+
+                else if (arg.Names.Contains("-a"))
+                {
+                    SystemUtils sys_utils = new();
+
+                    string AOsBinaryFilepath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
+                    Environment.Exit(0);
+                }
+
+                else if (arg.Names.Contains("-c"))
+                {
+                    if (arg.Value == null || Utils.String.IsEmpty(arg.Value))
+                    {
+                        new Error($"Argument expected for the {string.Join(", ", arg.Names)} option.");
+                        Environment.Exit(1);
+                    }
+
+                    Execute(arg.Value);
+                }
+
+                else
+                {
+                    new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension");
+                    Environment.Exit(1);
+                }
+            }
+        }
     }
 
     private void Execute()
