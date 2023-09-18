@@ -4,5 +4,3 @@ shout ""
 >git commit -m $1
 shout ""
 >git push origin master
-
-asdf
