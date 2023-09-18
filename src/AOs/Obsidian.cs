@@ -65,22 +65,12 @@ class Obsidian
     public void ClearConsole()
     {
         Console.Clear();
-        new TerminalColor(Version, ConsoleColor.Yellow);
-    }
-
-    public void Entrypoint(bool clear=true)
-    {
-        Console.Title = Title;
-        if (clear)
-            ClearConsole();
-
-        EntryPoint.RootPackages();
-        EntryPoint.AskPass();
+        new TerminalColor(this.Version, ConsoleColor.Yellow);
     }
 
     public void PrintVersion()
     {
-        Console.WriteLine(Version);
+        Console.WriteLine(this.Version);
     }
 
     public void Credits()
