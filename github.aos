@@ -1,6 +1,0 @@
->git status
->git add $2
-shout ""
->git commit -m $1
-shout ""
->git push origin master
