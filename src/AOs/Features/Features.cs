@@ -78,8 +78,8 @@ partial class Features
              "AUTHOR           : Light-Lens (Srijan Srivastava)",
             $"REGISTERED OWNER : {Environment.GetEnvironmentVariable("username")}",
              "",
-             "ROOT DIRECTORY     : AOs",
-             "SYSTEM DIRECTORY   : AOs\\Files.x72\\root",
+            $"ROOT DIRECTORY     : {Obsidian.root_dir}",
+            $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
              "",
              "SERVER HOST     : https://github.com/Light-Lens/AOs.git",
              "SYSTEM LANGUAGE : en-in; English (India)"
