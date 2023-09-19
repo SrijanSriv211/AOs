@@ -13,7 +13,17 @@ partial class FileIO
         public static void Delete(string Directoryname)
         {
             if (Directory.Exists(Directoryname))
-                Directory.Delete(Directoryname, true);
+            {
+                try
+                {
+                    Directory.Delete(Directoryname, true);
+                }
+
+                catch (Exception e)
+                {
+                    new Error(e.Message);
+                }
+            }
 
             else
                 new Error($"'{Directoryname}' does not exist");
@@ -33,7 +43,15 @@ partial class FileIO
                 return;
             }
 
-            Directory.Move(Source, Destination);
+            try
+            {
+                Directory.Move(Source, Destination);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static void Copy(string Source, string Destination)
@@ -50,28 +68,36 @@ partial class FileIO
                 return;
             }
 
-            // https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
-            // Get information about the source directory
-            var dir = new DirectoryInfo(Source);
-
-            // Cache directories before we start copying
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            // Create the destination directory
-            Create(Destination);
-
-            // Get the files in the source directory and copy to the destination directory
-            foreach (FileInfo file in dir.GetFiles())
+            try
             {
-                string Target_Filepath = Path.Combine(Destination, file.Name);
-                file.CopyTo(Target_Filepath);
+                // https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
+                // Get information about the source directory
+                var dir = new DirectoryInfo(Source);
+
+                // Cache directories before we start copying
+                DirectoryInfo[] dirs = dir.GetDirectories();
+
+                // Create the destination directory
+                Create(Destination);
+
+                // Get the files in the source directory and copy to the destination directory
+                foreach (FileInfo file in dir.GetFiles())
+                {
+                    string Target_Filepath = Path.Combine(Destination, file.Name);
+                    file.CopyTo(Target_Filepath);
+                }
+
+                // copy subdirectories recursively
+                foreach (DirectoryInfo subDir in dirs)
+                {
+                    string newDestinationDir = Path.Combine(Destination, subDir.Name);
+                    Copy(subDir.FullName, newDestinationDir);
+                }
             }
 
-            // copy subdirectories recursively
-            foreach (DirectoryInfo subDir in dirs)
+            catch (Exception e)
             {
-                string newDestinationDir = Path.Combine(Destination, subDir.Name);
-                Copy(subDir.FullName, newDestinationDir);
+                new Error(e.Message);
             }
         }
 
@@ -91,7 +117,15 @@ partial class FileIO
                 return;
             }
 
-            ZipFile.CreateFromDirectory(Source_dirname, zip_path);
+            try
+            {
+                ZipFile.CreateFromDirectory(Source_dirname, zip_path);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static void Decompress(string zip_path, string Destination_dirname)
@@ -102,8 +136,16 @@ partial class FileIO
                 return;
             }
 
-            Create(Destination_dirname);
-            ZipFile.ExtractToDirectory(zip_path, Destination_dirname, true);
+            try
+            {
+                Create(Destination_dirname);
+                ZipFile.ExtractToDirectory(zip_path, Destination_dirname, true);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
     }
 }

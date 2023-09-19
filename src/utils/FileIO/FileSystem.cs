@@ -19,19 +19,45 @@ partial class FileIO
         public static void Write(string Filepath, string Content)
         {
             Create(Filepath);
-            File.AppendAllText(Filepath, Content);
+            try
+            {
+                File.AppendAllText(Filepath, Content);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static void Overwrite(string Filepath, string[] Content)
         {
             Create(Filepath);
-            File.WriteAllLines(Filepath, Content);
+            try
+            {
+                File.WriteAllLines(Filepath, Content);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static void Delete(string Filepath)
         {
             if (File.Exists(Filepath))
-                File.Delete(Filepath);
+            {
+                try
+                {
+                    File.Delete(Filepath);
+                }
+
+                catch (Exception e)
+                {
+                    new Error(e.Message);
+                }
+            }
 
             else
                 new Error($"'{Filepath}' does not exist");
@@ -51,7 +77,15 @@ partial class FileIO
                 return;
             }
 
-            File.Move(Source, Destination);
+            try
+            {
+                File.Move(Source, Destination);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static void Copy(string Source, string Destination)
@@ -68,7 +102,15 @@ partial class FileIO
                 return;
             }
 
-            File.Copy(Source, Destination, true);
+            try
+            {
+                File.Copy(Source, Destination, true);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+            }
         }
 
         public static string ReadAllText(string Filepath)
