@@ -4,7 +4,7 @@ partial class Argparse
     private readonly string desc = "";
 
     private readonly List<Argument> arguments = new();
-    private readonly Dictionary<string[], string> help_list = new();
+    // private readonly Dictionary<string[], string> help_list = new();
     private readonly Action<string> error_func;
 
     public Argparse(string name, string description, Action<string> error_func=null)
@@ -17,7 +17,7 @@ partial class Argparse
 
     public void Add(string[] cmd_names, string help_message, string default_value=null, bool is_flag=false, bool required=false)
     {
-        help_list.Add(cmd_names, help_message);
+        // help_list.Add(cmd_names, help_message);
         arguments.Add(new Argument(cmd_names, help_message, default_value, is_flag, required));
     }
 

@@ -1,6 +1,6 @@
 partial class Argparse
 {
-    private struct Argument
+    public struct Argument
     {
         public string[] Names { get; set; }
         public string Help { get; set; }

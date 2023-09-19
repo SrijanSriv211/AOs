@@ -306,7 +306,7 @@ partial class Features
 
             for (int i = 0; i < entries.Length; i++)
             {
-                int padding = Math.Max(100 - (int)Math.Log10(i+1), 0);
+                int padding = Utils.Maths.CalcPadding(i+1, 100);
 
                 new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", entries[i]);

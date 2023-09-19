@@ -19,7 +19,7 @@ class History
 
             DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
 
-            int padding = Math.Max(100 - (int)Math.Log10(count), 0);
+            int padding = Utils.Maths.CalcPadding(count, 100);
 
             new TerminalColor($"{count}. ", ConsoleColor.DarkGray, false);
             Console.Write("{0," + -padding + "}", history[i+1]);
