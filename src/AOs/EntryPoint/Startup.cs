@@ -2,6 +2,7 @@ partial class EntryPoint
 {
     private void Startup()
     {
+        this.features.ChangeTitle(new string[]{"AOs"});
         if (this.args.Length == 0)
         {
             this.AOs.ClearConsole();
@@ -96,13 +97,13 @@ partial class EntryPoint
     private void Execute()
     {
         while (true)
-            this.run_method(this.AOs, AOs.TakeInput());
+            this.run_method(this.AOs, this.parser, AOs.TakeInput());
     }
 
     private void Execute(string input)
     {
         if (!Utils.String.IsEmpty(input))
-            this.run_method(this.AOs, AOs.TakeInput(input));
+            this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
     }
 
     private void Execute(string[] inputs)
@@ -110,7 +111,7 @@ partial class EntryPoint
         foreach (string input in inputs)
         {
             if (!Utils.String.IsEmpty(input))
-                this.run_method(this.AOs, AOs.TakeInput(input));
+                this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
         }
     }
 

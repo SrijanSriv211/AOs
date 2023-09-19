@@ -1,5 +1,26 @@
 partial class Argparse
 {
+    public void PrintHelp()
+    {
+        new TerminalColor("Name:", ConsoleColor.Yellow);
+        Console.WriteLine($"{this.name}\n");
+        new TerminalColor("Description:", ConsoleColor.Cyan);
+        Console.WriteLine($"{this.desc}\n");
+        new TerminalColor("Usage:", ConsoleColor.Blue);
+        Console.WriteLine($"{this.name} [OPTIONS]\n");
+        new TerminalColor("Options:", ConsoleColor.Magenta);
+
+        foreach (var argument in arguments)
+        {
+            string argName = string.Join(", ", Utils.Array.Reduce(argument.Names));
+            string defaultValue = argument.Default_value != null ? $" (default: {argument.Default_value})" : "";
+            string isRequired = argument.Required != false ? $" (required: true)" : "";
+            string isFlag = argument.Is_flag != false ? $" (is flag: true)" : "";
+
+            Console.WriteLine($"{argName}: {argument.Help}{defaultValue}{isRequired}{isFlag}");
+        }
+    }
+
     public void PrintHelp(Argument details)
     {
         string names = string.Join(", ", details.Names);

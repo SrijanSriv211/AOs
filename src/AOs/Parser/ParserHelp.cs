@@ -8,13 +8,13 @@ partial class Parser
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
-        Console.Write("{0," + -Utils.Maths.CalcPadding(1) + "}", names);
+        new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(1) + "}", names), ConsoleColor.Gray, false);
         new TerminalColor(desc + "\n", ConsoleColor.DarkGray);
 
         new TerminalColor("Details:", ConsoleColor.Blue);
-        Console.WriteLine($"{names} [OPTIONS] {default_value}{is_flag}");
-        Console.WriteLine($"Maximum arguments: {details.Max_args_length}");
-        Console.WriteLine($"Minimum arguments: {details.Min_args_length}\n");
+        new TerminalColor($"{names} [OPTIONS] {default_value}{is_flag}", ConsoleColor.Gray);
+        new TerminalColor($"Maximum arguments: {details.Max_args_length}", ConsoleColor.Gray);
+        new TerminalColor($"Minimum arguments: {details.Min_args_length}\n", ConsoleColor.Gray);
 
         if (!details.Is_flag && details.Supported_args != null)
         {
@@ -22,11 +22,10 @@ partial class Parser
             new TerminalColor("Options:", ConsoleColor.Magenta);
             foreach (var supported_args in details.Supported_args)
             {
-                int padding = Utils.Maths.CalcPadding(i);
                 string arg_names = string.Join(", ", supported_args.Key);
                 string arg_desc = supported_args.Value;
 
-                Console.Write("{0," + -padding + "}", arg_names);
+                new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(i) + "}", arg_names), ConsoleColor.Gray, false);
                 new TerminalColor(arg_desc, ConsoleColor.DarkGray);
                 i++;
             }
@@ -47,12 +46,11 @@ partial class Parser
             {
                 var detail = command_details[i];
 
-                string[] command_names = detail.Cmd_names;
+                string command_names = string.Join(", ", detail.Cmd_names);
                 string description = detail.Help_message;
-                int padding = Utils.Maths.CalcPadding(i+1);
 
                 new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
-                Console.Write("{0," + -padding + "}", string.Join(", ", command_names));
+                new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(i+1) + "}", command_names), ConsoleColor.Gray, false);
                 new TerminalColor(description, ConsoleColor.DarkGray);
             }
         }

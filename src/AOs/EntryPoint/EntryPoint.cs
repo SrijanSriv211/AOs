@@ -1,10 +1,14 @@
 partial class EntryPoint
 {
+    public Parser parser;
+    private Features features;
+
     private readonly Obsidian AOs;
     private readonly string[] args;
-    private readonly Action<Obsidian, List<(string, string[])>> run_method;
+    private readonly Action<Obsidian, Parser, List<(string, string[])>> run_method;
+    private readonly SystemUtils sys_utils = new();
 
-    public EntryPoint(string[] args, Action<Obsidian, List<(string, string[])>> run_method)
+    public EntryPoint(string[] args, Action<Obsidian, Parser, List<(string, string[])>> run_method)
     {
         this.args = args;
         this.run_method = run_method;
@@ -12,6 +16,7 @@ partial class EntryPoint
 
         CreateRootPackages();
         AskPassword();
+        LoadFeatures();
         Startup();
     }
 

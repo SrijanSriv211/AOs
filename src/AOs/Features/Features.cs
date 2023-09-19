@@ -166,12 +166,7 @@ partial class Features
 
     public void Pause(string[] args)
     {
-        if (Utils.Array.IsEmpty(args))
-            Console.Write("Press any key to continue...");
-
-        else
-            Console.Write(string.Join("", Utils.Utils.SimplifyString(args)));
-
+        Shout(args);
         Console.ReadKey();
         Console.WriteLine();
     }
@@ -436,7 +431,7 @@ partial class Features
         }
 
         var parser = new Argparse("read", "Displays the contents of a text file.", err);
-        parser.Add(new string[]{"-l", "--line"}, "Shows information about a specific line.", default_value: "-1");
+        parser.Add(new string[]{"-l", "--line"}, "Shows information about a specific line", default_value: "-1");
 
         args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
         var parsed_args = parser.Parse(args);
