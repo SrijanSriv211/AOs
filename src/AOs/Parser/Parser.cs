@@ -1,6 +1,5 @@
 partial class Parser
 {
-    // private readonly Dictionary<string[], string> help_list = new();
     private readonly List<Command> command_details = new();
     private readonly Action<string, string[]> error_function;
 
@@ -14,7 +13,6 @@ partial class Parser
         if (supported_args != null || default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
-        // help_list.Add(cmd_names, help_message);
         command_details.Add(new Command(cmd_names, help_message, supported_args, default_values, is_flag, min_args_length, max_args_length, method));
     }
 
