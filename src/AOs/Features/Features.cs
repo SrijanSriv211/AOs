@@ -50,6 +50,49 @@ partial class Features
         Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
     }
 
+    public void GenRandomNum()
+    {
+        Random random = new();
+        Console.WriteLine(random.NextDouble());
+    }
+
+    public void SysInfo()
+    {
+        sys_utils.CommandPrompt("systeminfo");
+    }
+
+    public void Tree()
+    {
+        sys_utils.CommandPrompt("tree");
+    }
+
+    public void Diagxt()
+    {
+        string[] details = {
+             "NAME        : AOs 2.5",
+            $"BUILD       : Release Build {AOs.BuildNo}",
+            $"VERSION     : {AOs.Version}",
+            $"PROCESS     : {Process.GetCurrentProcess().MainModule.FileName}",
+             "SYSTEM TYPE : x72",
+             "",
+             "AUTHOR           : Light-Lens (Srijan Srivastava)",
+            $"REGISTERED OWNER : {Environment.GetEnvironmentVariable("username")}",
+             "",
+             "ROOT DIRECTORY     : AOs",
+             "SYSTEM DIRECTORY   : AOs\\Files.x72\\root",
+             "",
+             "SERVER HOST     : https://github.com/Light-Lens/AOs.git",
+             "SYSTEM LANGUAGE : en-in; English (India)"
+        };
+
+        new TerminalColor(string.Join("\n", details), ConsoleColor.White);
+    }
+
+    public void ChangeToPrevDir()
+    {
+        Directory.SetCurrentDirectory("..");
+    }
+
     public void ChangeCurrentDir(string dirname)
     {
         if (Utils.String.IsEmpty(dirname))
@@ -57,11 +100,6 @@ partial class Features
 
         else
             Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
-    }
-
-    public void ChangeToPrevDir()
-    {
-        Directory.SetCurrentDirectory("..");
     }
 
     public void SwitchElseShell(string shell_name)
@@ -297,7 +335,7 @@ partial class Features
 
             for (int i = 0; i < entries.Length; i++)
             {
-                int padding = Utils.Maths.CalcPadding(i+1, 100);
+                int padding = Utils.Maths.CalculatePadding(i+1, 100);
 
                 new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", entries[i]);

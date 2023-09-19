@@ -30,7 +30,7 @@ partial class Argparse
         string is_required = details.Required != false ? $" (required: true)" : "";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
-        Console.Write("{0," + -Utils.Maths.CalcPadding(1) + "}", names);
+        Console.Write("{0," + -Utils.Maths.CalculatePadding(1) + "}", names);
         new TerminalColor(desc + "\n", ConsoleColor.DarkGray);
 
         new TerminalColor("Details:", ConsoleColor.Blue);
@@ -51,7 +51,7 @@ partial class Argparse
 
                 string[] command_names = detail.Names;
                 string description = detail.Help;
-                int padding = Utils.Maths.CalcPadding(i+1);
+                int padding = Utils.Maths.CalculatePadding(i+1);
 
                 new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", string.Join(", ", command_names));

@@ -8,8 +8,10 @@ class Obsidian
     public static ConsoleColor original_color_of_terminal = Console.ForegroundColor;
 
     public static string[] PromptPreset = new string[]{"-r"};
-    public string Version = "AOs 2023 [Version 2.5]";
     public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
+
+    public string Version = "AOs 2023 [Version 2.5]";
+    public int BuildNo = 4912;
 
     private readonly string Title = "AOs";
     private string Prompt = "$ ";
@@ -65,7 +67,9 @@ class Obsidian
     public void ClearConsole()
     {
         Console.Clear();
-        new TerminalColor(this.Version, ConsoleColor.Yellow);
+        Console.Write("\x1b[3J"); // https://stackoverflow.com/a/75492171/18121288
+        new TerminalColor(this.Version, ConsoleColor.Yellow, false);
+        new TerminalColor($"\t({Environment.GetEnvironmentVariable("username")})", ConsoleColor.White);
     }
 
     public void PrintVersion()

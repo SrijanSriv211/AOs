@@ -15,7 +15,6 @@ partial class EntryPoint
         this.AOs = new Obsidian();
 
         CreateRootPackages();
-        AskPassword();
         LoadFeatures();
         Startup();
     }
@@ -42,17 +41,5 @@ partial class EntryPoint
 
         foreach (string path in FileList)
             FileIO.FileSystem.Create(Path.Combine(Obsidian.root_dir, path));
-    }
-
-    public static void AskPassword()
-    {
-        string Path = $"{Obsidian.root_dir}\\Files.x72\\root\\User.set";
-        if (!File.Exists(Path))
-            return;
-
-        Console.Write("Enter password: ");
-        string Password = Console.ReadLine();
-        if (Password != FileIO.FileSystem.ReadAllText(Path))
-            new Error("Incorrect password.");
     }
 }

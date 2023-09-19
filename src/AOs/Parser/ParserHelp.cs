@@ -10,7 +10,7 @@ partial class Parser
         string min_args_len = details.Min_args_length == 0 ? "Minimum arguments: ∞" : $"Minimum arguments: {details.Min_args_length}";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
-        new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(1) + "}", names), ConsoleColor.Gray, false);
+        new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(1) + "}", names), ConsoleColor.Gray, false);
         new TerminalColor(desc + "\n", ConsoleColor.DarkGray);
 
         new TerminalColor("Details:", ConsoleColor.Blue);
@@ -29,7 +29,7 @@ partial class Parser
                 string arg_names = string.Join(", ", supported_args.Key);
                 string arg_desc = supported_args.Value;
 
-                new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(i) + "}", arg_names), ConsoleColor.Gray, false);
+                new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(i) + "}", arg_names), ConsoleColor.Gray, false);
                 new TerminalColor(arg_desc, ConsoleColor.DarkGray);
                 i++;
             }
@@ -54,7 +54,7 @@ partial class Parser
                 string description = detail.Help_message;
 
                 new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
-                new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(i+1) + "}", command_names), ConsoleColor.Gray, false);
+                new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(i+1) + "}", command_names), ConsoleColor.Gray, false);
                 new TerminalColor(description, ConsoleColor.DarkGray);
             }
         }

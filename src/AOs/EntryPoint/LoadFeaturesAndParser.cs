@@ -37,6 +37,10 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "time", "clock" }, "Display current time", method: this.features.GetTime);
         this.parser.Add(new string[]{ "date", "calendar" }, "Display today's date", method: this.features.GetDate);
         this.parser.Add(new string[]{ "datetime" }, "Display today's time and date", method: this.features.GetDateTime);
+        this.parser.Add(new string[]{ "ran", "random", "generate" }, "Generate a random number between 0 and 1", method: this.features.GenRandomNum);
+        this.parser.Add(new string[]{ "sysinfo", "systeminfo", "osinfo" }, "Display operating system configuration information", method: this.features.SysInfo);
+        this.parser.Add(new string[]{ "tree" }, "Graphically display the directory structure of a drive or path", method: this.features.Tree);
+        this.parser.Add(new string[]{ "diagxt" }, "Display AOs specific properties and configuration", method: this.features.Diagxt);
 
         this.parser.Add(new string[]{ "shout", "echo" }, "Display messages", is_flag: false, method: this.features.Shout);
         this.parser.Add(
