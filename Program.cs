@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 Console.OutputEncoding = Encoding.UTF8;
 
 SystemUtils sys_utils = new();
@@ -20,7 +21,15 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     Features features = new(AOs, sys_utils);
     Parser parser = new(CheckForError);
 
-    parser.Add(new string[]{ "!" }, "Switch the default-else shell (cmd, powershell)", default_values: new string[]{""}, max_args_length: 1, method: features.SwitchElseShell);
+    parser.Add(
+        new string[]{ "!" }, "Switch the default-else shell",
+        supported_args: new Dictionary<string[], string>
+                        {
+                            {new string[]{ "cmd" }, "Switch the default-else shell to cmd.exe"},
+                            {new string[]{ "ps", "powershell" }, "Switch the default-else shell to powershell.exe"}
+                        },
+        default_values: new string[]{""}, max_args_length: 1, method: features.SwitchElseShell
+    );
 
     parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: AOs.ClearConsole);
     parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: AOs.PrintVersion);
@@ -35,7 +44,16 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "datetime" }, "Display today's time and date", method: features.GetDateTime);
 
     parser.Add(new string[]{ "shout", "echo" }, "Display messages", is_flag: false, method: features.Shout);
-    parser.Add(new string[]{ "history" }, "Display the history of Commands", default_values: new string[]{""}, max_args_length: 1, method: features.GetSetHistory);
+
+    parser.Add(
+        new string[]{ "history" }, "Display the history of Commands",
+        supported_args: new Dictionary<string[], string>
+                        {
+                            {new string[]{ "-c", "--clear" }, "Clear the history"},
+                        },
+        default_values: new string[]{""}, max_args_length: 1, method: features.GetSetHistory
+    );
+
     parser.Add(new string[]{ ">", "console", "terminal", "cmd", "call" }, "Call a specified program or command, given the full or sysenv path in terminal", default_values: new string[0], method: features.RunInTerminal);
     parser.Add(new string[]{ "title" }, "Change the title for AOs window", default_values: new string[0]{}, method: features.ChangeTitle);
     parser.Add(new string[]{ "color" }, "Change the default AOs foreground colors", default_values: new string[]{""}, max_args_length: 1, method: features.ChangeColor);
@@ -45,7 +63,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
     parser.Add(new string[]{ "cat", "allinstapps", "installedapps", "allinstalledapps" }, "Start an installed program from the system", default_values: new string[0]{}, method: features.Cat);
     parser.Add(new string[]{ "prompt" }, "Change the command prompt", default_values: new string[0]{}, method: features.ModifyPrompt);
     parser.Add(new string[]{ "ls", "dir" }, "Displays a list of files and subdirectories in a directory", default_values: new string[0]{}, method: features.LS);
-    parser.Add(new string[]{ "cd" }, "Change the current directory", new string[]{""}, max_args_length: 1, method: features.ChangeCurrentDir);
+    parser.Add(new string[]{ "cd" }, "Change the current directory", default_values: new string[]{""}, max_args_length: 1, method: features.ChangeCurrentDir);
     parser.Add(new string[]{ "cd.." }, "Change to previous directory", method: features.ChangeToPrevDir);
     parser.Add(new string[]{ "touch", "create" }, "Create a one or more files or folders", min_args_length: 1, method: features.Touch);
     parser.Add(new string[]{ "del", "delete", "rm", "rmdir" }, "Delete one or more files or folders", min_args_length: 1, method: features.Delete);
@@ -62,9 +80,7 @@ void main(Obsidian AOs, List<(string cmd, string[] args)> input)
             continue;
 
         else if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd.ToLower()))
-        {
             parser.GetHelp(i.args ?? new string[]{""});
-        }
 
         else if (i.cmd == "AOs1000")
             Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");

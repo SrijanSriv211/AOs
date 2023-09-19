@@ -1,6 +1,6 @@
 partial class Parser
 {
-    private readonly Dictionary<string[], string> help_list = new();
+    // private readonly Dictionary<string[], string> help_list = new();
     private readonly List<Command> command_details = new();
     private readonly Action<string, string[]> error_function;
 
@@ -9,13 +9,13 @@ partial class Parser
         this.error_function = error_function;
     }
 
-    public void Add(string[] cmd_names, string help_message, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
+    public void Add(string[] cmd_names, string help_message, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
     {
-        if (default_values != null || max_args_length > 0 || min_args_length > 0)
+        if (supported_args != null || default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
-        help_list.Add(cmd_names, help_message);
-        command_details.Add(new Command(cmd_names, help_message, default_values, is_flag, min_args_length, max_args_length, method));
+        // help_list.Add(cmd_names, help_message);
+        command_details.Add(new Command(cmd_names, help_message, supported_args, default_values, is_flag, min_args_length, max_args_length, method));
     }
 
     public ParsedCommand Parse(string cmd_name, string[] args)

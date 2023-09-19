@@ -75,51 +75,6 @@ partial class Argparse
         }
     }
 
-    // public void GetHelp(string name="")
-    // {
-    //     // help_list.Sort();
-    //     // name = name.StartsWith('_') ? name.Substring(1) : name;
-
-    //     // if (Utils.String.IsEmpty(name))
-    //     // {
-    //     //     Console.WriteLine("Type `help <command-name>` for more information on a specific command");
-    //     //     foreach (string item in help_list)
-    //     //         Console.WriteLine(item);
-    //     // }
-
-    //     // else
-    //     // {
-    //     //     if (name == ",")
-    //     //     {
-    //     //         Error.Syntax("Invalid syntax");
-    //     //         return;
-    //     //     }
-
-    //     //     string match = "";
-    //     //     foreach (string item in help_list)
-    //     //     {
-    //     //         if (!Utils.String.IsEmpty(match))
-    //     //         {
-    //     //             Console.WriteLine(match);
-    //     //             break;
-    //     //         }
-
-    //     //         string[] parts = item.Split("->");
-    //     //         for (int i = 0; i < parts.Length; i++)
-    //     //         {
-    //     //             if (parts[i].Contains(name))
-    //     //             {
-    //     //                 match = $"{Utils.String.Reduce(parts[i])} -> {Utils.String.Reduce(parts[i+1])}";
-    //     //                 break;
-    //     //             }
-    //     //         }
-    //     //     }
-
-    //     //     if (Utils.String.IsEmpty(match))
-    //     //         new Error($"No information for command '{name}'");
-    //     // }
-    // }
-
     public static bool IsAskingForHelp(string arg)
     {
         string[] help_flags = { "/?", "-h", "--help", "??" };
