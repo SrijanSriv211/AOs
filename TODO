@@ -35,7 +35,7 @@ x backup          -> Create a restore point of AOs                         [NOTE
 . pixelate        -> Start a website in a web browser
 . read            -> Display the contents of a text file
 . commit          -> Edit the contents of a text file
-zip             -> Compresse or Decompresses files or folders. (-u flag to unzip)
+. zip             -> Compresse or Decompresses files or folders (-u flag to unzip)
 generate        -> Generate a random number between 0 and 1                [NOTE: Use my AND algo for this]
 scan            -> Scan the integrity of all protected system files
 lock            -> Lock the System at Start-up

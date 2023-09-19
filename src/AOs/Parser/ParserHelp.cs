@@ -6,6 +6,8 @@ partial class Parser
         string desc = details.Help_message;
         string default_value = (details.Default_values != null && !Utils.Array.IsEmpty(details.Default_values)) ? $" (default: {string.Join(", ", details.Default_values)})" : "";
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
+        string max_args_len = details.Max_args_length == 0 ? "Maximum arguments: ∞" : $"Maximum arguments: {details.Max_args_length}";
+        string min_args_len = details.Min_args_length == 0 ? "Minimum arguments: ∞" : $"Minimum arguments: {details.Min_args_length}";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
         new TerminalColor(string.Format("{0," + -Utils.Maths.CalcPadding(1) + "}", names), ConsoleColor.Gray, false);
@@ -13,8 +15,10 @@ partial class Parser
 
         new TerminalColor("Details:", ConsoleColor.Blue);
         new TerminalColor($"{names} [OPTIONS] {default_value}{is_flag}", ConsoleColor.Gray);
-        new TerminalColor($"Maximum arguments: {details.Max_args_length}", ConsoleColor.Gray);
-        new TerminalColor($"Minimum arguments: {details.Min_args_length}\n", ConsoleColor.Gray);
+
+        new TerminalColor(max_args_len, ConsoleColor.Gray);
+        new TerminalColor(min_args_len, ConsoleColor.Gray);
+        Console.WriteLine();
 
         if (!details.Is_flag && details.Supported_args != null)
         {

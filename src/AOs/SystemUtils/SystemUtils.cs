@@ -66,8 +66,8 @@ partial class SystemUtils
 
         for (int time_elapsed = 1; time_elapsed <= total_seconds; time_elapsed++)
         {
-            Thread.Sleep(time_to_pause_in_milliseconds);
             new TerminalColor($"\r{time_elapsed}", ConsoleColor.White, false);
+            Thread.Sleep(time_to_pause_in_milliseconds);
         }
 
         Console.WriteLine();

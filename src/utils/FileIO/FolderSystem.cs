@@ -1,3 +1,5 @@
+using System.IO.Compression;
+
 partial class FileIO
 {
     public class FolderSystem
@@ -75,7 +77,33 @@ partial class FileIO
 
         public static string[] Read(string Directoryname)
         {
+            if (!Directory.Exists(Directoryname))
+                return new string[0];
+
             return Directory.GetFileSystemEntries(Directoryname, "*");
+        }
+
+        public static void Compress(string Source_dirname, string zip_path)
+        {
+            if (!Directory.Exists(Source_dirname))
+            {
+                new Error($"{Source_dirname}: No such directory.");
+                return;
+            }
+
+            ZipFile.CreateFromDirectory(Source_dirname, zip_path);
+        }
+
+        public static void Decompress(string zip_path, string Destination_dirname)
+        {
+            if (!File.Exists(zip_path))
+            {
+                new Error($"{zip_path}: No such file.");
+                return;
+            }
+
+            Create(Destination_dirname);
+            ZipFile.ExtractToDirectory(zip_path, Destination_dirname, true);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.Win32;
 
 partial class Features
 {
@@ -166,7 +167,7 @@ partial class Features
 
     public void Pause(string[] args)
     {
-        Shout(args);
+        Console.Write(string.Join("", Utils.Utils.SimplifyString(args)));
         Console.ReadKey();
         Console.WriteLine();
     }
@@ -177,12 +178,7 @@ partial class Features
             sys_utils.StartApp(Obsidian.default_else_shell);
 
         else
-        {
-            string cmd_name = args.FirstOrDefault();
-            string[] cmd_args = Utils.Array.Trim(args.Skip(1).ToArray());
-
-            sys_utils.CommandPrompt(cmd_name, cmd_args);
-        }
+            sys_utils.CommandPrompt(string.Join("", args));
     }
 
     public void RunApp(string[] args)
@@ -218,7 +214,7 @@ partial class Features
 
         else
         {
-            app_names = Utils.Array.Reduce(app_names);
+            app_names = Utils.Array.Reduce(Utils.Array.Filter(app_names));
             foreach (string appname in app_names)
                 sys_utils.FindAndRunInstalledApps(appname);
         }
@@ -408,6 +404,7 @@ partial class Features
 
     public void Pixelate(string[] websites_to_open)
     {
+        websites_to_open = Utils.Array.Reduce(Utils.Array.Filter(websites_to_open));
         static bool ValidateUrlWithUri(string url)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
@@ -521,6 +518,38 @@ partial class Features
 
                 FileIO.FileSystem.Overwrite(filepath, lines);
             }
+        }
+    }
+
+    public void WinRAR(string[] args)
+    {
+        var parser = new Argparse("zip", "Compress or Decompress files or folders", Error.UnrecognizedArgs);
+        parser.Add(new string[]{"-u", "--uncompress", "--decompress"}, "Decompress zip files", is_flag: true);
+
+        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
+        var parsed_args = parser.Parse(args);
+
+        bool unzip = false;
+        List<string> Content_to_zip = new();
+        foreach (var arg in parsed_args)
+        {
+            if (arg.Names.Contains("-u"))
+                unzip = true;
+
+            else if (arg.KnownType == "Unknown" && !Utils.String.IsEmpty(arg.Names.First()))
+                Content_to_zip.Add(arg.Names.First());
+        }
+
+        if (unzip)
+        {
+            foreach (string content in Content_to_zip)
+                FileIO.FolderSystem.Decompress(content, $"{content}.zip");
+        }
+
+        else
+        {
+            foreach (string content in Content_to_zip)
+                FileIO.FolderSystem.Compress(content, $"{content}.zip");
         }
     }
 }

@@ -99,5 +99,13 @@ partial class EntryPoint
             },
             min_args_length: 2, method: this.features.Commit
         );
+        this.parser.Add(
+            new string[]{ "zip", "rar", "winrar" }, "Compress or Decompress files or folders",
+            supported_args: new Dictionary<string[], string>
+            {
+                {new string[]{"-u", "--uncompress", "--decompress"}, "Decompress zip files"},
+            },
+            min_args_length: 1, method: this.features.WinRAR
+        );
     }
 }
