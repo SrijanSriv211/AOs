@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using Microsoft.Win32;
 
-partial class Features
+class Features
 {
+    private readonly Utils.Https https = new();
     private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
 
@@ -442,19 +442,68 @@ partial class Features
 
     public void Pixelate(string[] websites_to_open)
     {
-        websites_to_open = Utils.Array.Reduce(Utils.Array.Filter(websites_to_open));
         static bool ValidateUrlWithUri(string url)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
-        foreach (string website_url in websites_to_open)
+        static void err(string website_url)
         {
-            if (ValidateUrlWithUri(website_url))
-                sys_utils.StartApp(website_url);
+            new Error($"Can't open the website '{website_url}': Invalid URL");
+        }
+
+        string engine_name = "google", city_name = "muzaffarpur";
+        var parser = new Argparse("pixelate", "Start a website in a web browser", err);
+        parser.Add(new string[]{"-e", "--engine"}, "Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)", default_value: engine_name);
+        parser.Add(new string[]{"-w", "--weather"}, "Display today's weather in a city", default_value: city_name);
+        parser.Add(new string[]{"-t", "--temp", "--temperature"}, "Display today's temperature in a city", default_value: city_name);
+
+        websites_to_open = Utils.Utils.SimplifyString(Utils.Array.Reduce(Utils.Array.Filter(websites_to_open)));
+        var parsed_args = parser.Parse(websites_to_open);
+
+        List<string> queries = new();
+        foreach (var arg in parsed_args)
+        {
+            if (arg.Names.Contains("-e"))
+                engine_name = arg.Value;
+
+            else if (arg.Names.Contains("-w"))
+            {
+                new TerminalColor($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
+                string weather = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
+                Console.WriteLine(weather);
+            }
+
+            else if (arg.Names.Contains("-t"))
+            {
+                new TerminalColor($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
+                string temp = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
+                Console.WriteLine((temp[0] == '+') ? temp.Substring(1) : temp);
+            }
+
+            else if (arg.KnownType == "Unknown")
+                queries.Add(arg.Names.First());
+        }
+
+        Dictionary<string, string> engines = new()
+        {
+            {"bing", "https://www.bing.com/search?q="},
+            {"google", "https://www.google.com/search?q="},
+            {"duckduckgo", "https://duckduckgo.com/?q="},
+            {"ddg", "https://duckduckgo.com/?q="},
+            {"youtube", "https://www.youtube.com/results?search_query="},
+            {"yt", "https://www.youtube.com/results?search_query="},
+            {"wikipedia", "https://en.wikipedia.org/wiki/"},
+            {"wiki", "https://en.wikipedia.org/wiki/"}
+        };
+
+        foreach (string query in queries)
+        {
+            if (ValidateUrlWithUri(query))
+                sys_utils.StartApp(query);
 
             else
-                new Error($"Can't open the website '{website_url}': Invalid URL");
+                sys_utils.StartApp(engines[engine_name] + query);
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 class Obsidian
 {
@@ -11,7 +12,7 @@ class Obsidian
     public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
 
     public string Version = "AOs 2023 [Version 2.5]";
-    public int BuildNo = 4912;
+    public readonly int BuildNo = 0;
 
     private readonly string Title = "AOs";
     private string Prompt = "$ ";
@@ -20,6 +21,12 @@ class Obsidian
     {
         this.Title = is_admin ? $"{Title} (Administrator)" : Title;
         this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(PromptPreset) : Prompt;
+
+        // Update build no.
+        string[] files = FileIO.FolderSystem.Read(".");
+        string build_file = files.FirstOrDefault(file => Regex.IsMatch(file, @"^.\\\d+$"));
+        if (build_file != null)
+            this.BuildNo = Convert.ToInt16(build_file.Substring(2));
     }
 
     public List<(string cmd, string[] args)> TakeInput(string input="")

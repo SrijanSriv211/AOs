@@ -16,6 +16,8 @@
 . ran             -> Display operating system configuration information
 . tree            -> Graphically display the directory structure of a drive or path
 . diagxt          -> Display AOs specific properties and configuration
+scan            -> Scan the integrity of all protected system files
+update          -> Check for Updates
 . shout           -> Display messages
 . history         -> Display the history of Commands
 . console         -> Start a new instance of the terminal
@@ -40,16 +42,14 @@ x backup          -> Create a restore point of AOs                         [NOTE
 . read            -> Display the contents of a text file
 . commit          -> Edit the contents of a text file
 . zip             -> Compresse or Decompresses files or folders (-u flag to unzip)
-scan            -> Scan the integrity of all protected system files
 lock            -> Lock the System at Start-up                              [NOTE: Discontinued feature]
-update          -> Check for Updates
 terminate       -> Terminate current running process
 restore         -> Restore system files and folders                         [NOTE: Discontinued feature]
 reset           -> Reset AOs                                                [NOTE: Discontinued feature]
-srh             -> Search for a specific query on the internet
+srh             -> Search for a specific query on the internet              [NOTE: Implementd in pixelate]
 wiki            -> Search for information on wikipedia                      [NOTE: Discontinued feature]
-ply             -> Search for a video on youtube based on a query
-weather         -> Display today's weather in a city
-temperature     -> Display today's temperature in a city
+ply             -> Search for a video on youtube based on a query           [NOTE: Implementd in pixelate]
+weather         -> Display today's weather in a city                        [NOTE: Implementd in pixelate]
+temperature     -> Display today's temperature in a city                    [NOTE: Implementd in pixelate]
 settings        -> Start the Windows settings page                          [NOTE: Included in 'cat']
 filer           -> Encrypt any text

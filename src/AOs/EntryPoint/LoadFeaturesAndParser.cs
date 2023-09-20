@@ -86,7 +86,16 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "ren", "rename", "rn" }, "Rename a file or folder", min_args_length: 2, max_args_length: 2, method: this.features.Move);
         this.parser.Add(new string[]{ "mv", "move" }, "Move a file or folder", min_args_length: 2, max_args_length: 2, method: this.features.Move);
         this.parser.Add(new string[]{ "cp", "copy" }, "Copy a file or folder", min_args_length: 2, max_args_length: 2, method: this.features.Copy);
-        this.parser.Add(new string[]{ "pixelate", "leaf", "corner" }, "Start a website in a web browser", min_args_length: 1, method: this.features.Pixelate);
+        this.parser.Add(
+            new string[]{ "pixelate", "leaf", "corner" }, "Start a website in a web browser",
+            supported_args: new Dictionary<string[], string>
+            {
+                {new string[]{"-e", "--engine"}, "Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)"},
+                {new string[]{"-w", "--weather"}, "Display today's weather in a city"},
+                {new string[]{"-t", "--temp", "--temperature"}, "Display today's temperature in a city"}
+            },
+            min_args_length: 1, method: this.features.Pixelate
+        );
         this.parser.Add(
             new string[]{ "read", "type" }, "Display the contents of a text file",
             supported_args: new Dictionary<string[], string>
