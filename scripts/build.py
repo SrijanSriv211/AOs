@@ -6,24 +6,17 @@ def rmdir(*folders):
             shutil.rmtree(i)
 
 def update_build_no():
-    # Get a list of all files in the current directory with names consisting only of digits
-    files = glob.glob("[0-9]*")
+    if os.path.isfile("scripts\\build.txt") == False:
+        with open("scripts\\build.txt", "w") as f:
+            f.write("0")
 
-    # Filter the list to only include files (not directories) and pick the first one
-    file_with_numbers_name = next(filter(lambda f: not os.path.isdir(f), files), None)
+        return "0"
 
-    # If a file with a name consisting only of digits exists in the current directory
-    if file_with_numbers_name:
-        print("Updating build number")
+    build_no = str(int(open("scripts\\build.txt", "r").read()) + 1)
+    with open("scripts\\build.txt", "w") as f:
+        f.write(build_no)
 
-        new_name = str(int(file_with_numbers_name) + 1)
-        os.rename(file_with_numbers_name, new_name)
-        return new_name
-
-    else:
-        print("No build file found")
-        os.system("echo.>0")
-        return 0
+    return build_no
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "clean":
