@@ -14,7 +14,7 @@ static void main(Obsidian AOs, Parser parser, List<(string cmd, string[] args)> 
             parser.GetHelp(i.args ?? new string[]{""});
 
         else if (i.cmd == "AOs1000")
-            Console.WriteLine("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!");
+            new TerminalColor("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
 
         else
             parser.Execute(parser.Parse(i.cmd, i.args));

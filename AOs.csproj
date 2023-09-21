@@ -1,18 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+<OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>AOs</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
     <Version>2.5</Version>
-    <AssemblyVersion>2.5</AssemblyVersion>
     <ApplicationIcon>img/AOs.ico</ApplicationIcon>
-
-    <FileDescription>A Developer Command-line Tool Built for Developers by a Developer</FileDescription>
-    <FileVersion>2.5</FileVersion>
+    <Description>A Developer Command-line Tool Built for Developers by a Developer.</Description>
+    <FileVersion>2.5.0</FileVersion>
     <Company>Light-Lens</Company>
     <Authors>Srijan Srivastava</Authors>
     <Product>AOs</Product>

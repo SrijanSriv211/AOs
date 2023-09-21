@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 partial class SystemUtils
 {
     public bool RunSysOrEnvApps(string input_cmd, string[] input_args)
@@ -16,9 +14,7 @@ partial class SystemUtils
 
             if (input_cmd.EndsWith(".aos"))
             {
-                string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-                CommandPrompt(AOsBinaryFilepath, args_to_be_passed.ToArray());
-
+                CommandPrompt(Obsidian.AOsBinaryFilepath, args_to_be_passed.ToArray());
                 return true;
             }
 

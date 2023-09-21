@@ -54,7 +54,7 @@ partial class EntryPoint
 
         else
         {
-            var parser = new Argparse("AOs", "A Developer Command-line Tool Built for Developers by a Developer.", Error.UnrecognizedArgs);
+            var parser = new Argparse("AOs", Obsidian.AOsDesc, Error.UnrecognizedArgs);
             parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
             parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
             parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
@@ -69,7 +69,7 @@ partial class EntryPoint
                 {
                     SystemUtils sys_utils = new();
 
-                    string AOsBinaryFilepath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    string AOsBinaryFilepath = Obsidian.AOsBinaryFilepath;
                     sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
                     Environment.Exit(0);
                 }

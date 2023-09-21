@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 class Features
 {
     private readonly Utils.Https https = new();
@@ -29,8 +27,7 @@ class Features
 
     public void Refresh()
     {
-        string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
-        sys_utils.StartApp(AOsBinaryFilepath);
+        sys_utils.StartApp(Obsidian.AOsBinaryFilepath);
         Exit();
     }
 
@@ -72,7 +69,7 @@ class Features
              "NAME        : AOs 2.5",
             $"BUILD       : Release Build {AOs.BuildNo}",
             $"VERSION     : {AOs.Version}",
-            $"PROCESS     : {Process.GetCurrentProcess().MainModule.FileName}",
+            $"PROCESS     : {Obsidian.AOsBinaryFilepath}",
              "SYSTEM TYPE : x72",
              "",
              "AUTHOR           : Light-Lens (Srijan Srivastava)",
@@ -81,7 +78,7 @@ class Features
             $"ROOT DIRECTORY     : {Obsidian.root_dir}",
             $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
              "",
-             "SERVER HOST     : https://github.com/Light-Lens/AOs.git",
+            $"GITHUB REPO     : {Obsidian.AOsRepo}",
              "SYSTEM LANGUAGE : en-in; English (India)"
         };
 

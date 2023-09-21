@@ -1,5 +1,5 @@
+using System.Diagnostics;
 using System.Security.Principal;
-using System.Text.RegularExpressions;
 
 class Obsidian
 {
@@ -12,7 +12,11 @@ class Obsidian
     public ConsoleColor Default_color { get; set; } = Console.ForegroundColor;
 
     public string Version = "AOs 2023 [Version 2.5]";
-    public readonly int BuildNo = 0;
+
+    public readonly static string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
+    public readonly static string AOsDesc = "A Developer Command-line Tool Built for Developers by a Developer.";
+    public readonly static string AOsRepo = "https://github.com/Light-Lens/AOs";
+    public readonly int BuildNo = FileVersionInfo.GetVersionInfo(AOsBinaryFilepath).FileBuildPart;
 
     private readonly string Title = "AOs";
     private string Prompt = "$ ";
@@ -21,12 +25,6 @@ class Obsidian
     {
         this.Title = is_admin ? $"{Title} (Administrator)" : Title;
         this.Prompt = Utils.String.IsEmpty(Prompt) ? SetPrompt(PromptPreset) : Prompt;
-
-        // Update build no.
-        string[] files = FileIO.FolderSystem.Read(".");
-        string build_file = files.FirstOrDefault(file => Regex.IsMatch(file, @"^.\\\d+$"));
-        if (build_file != null)
-            this.BuildNo = Convert.ToInt16(build_file.Substring(2));
     }
 
     public List<(string cmd, string[] args)> TakeInput(string input="")
@@ -87,23 +85,23 @@ class Obsidian
     public void Credits()
     {
         string[] CreditCenter = {
-            "_________ Team AOS ________",
-            "Author     -> Srijan Srivastava",
-            "Github     -> github.com/Light-Lens/AOs",
-            "Contact    -> QCoreNest@gmail.com",
-            "",
-            "____________________ Note (For Developers) ____________________",
-            "|| A Developer Command-line Tool Built for Developers by a Developer.",
-            "|| All code is licensed under an MIT license.",
-            "|| This allows you to re-use the code freely, remixed in both commercial and non-commercial projects.",
-            "|| The only requirement is to include the same license when distributing.",
-            "",
-            "____________________ Note (For All) ____________________",
-            "|| Warning - Do not Delete any File",
-            "|| or it may Cause Corruption",
-            "|| and may lead to instability.",
-            "",
-            "Type 'help' to get information about all supported command."
+             "_________ Team AOS ________",
+             "Author     -> Srijan Srivastava",
+             "Github     -> github.com/Light-Lens/AOs",
+             "Contact    -> QCoreNest@gmail.com",
+             "",
+             "____________________ Note (For Developers) ____________________",
+            $"|| {AOsDesc}",
+             "|| All code is licensed under an MIT license.",
+             "|| This allows you to re-use the code freely, remixed in both commercial and non-commercial projects.",
+             "|| The only requirement is to include the same license when distributing.",
+             "",
+             "____________________ Note (For All) ____________________",
+             "|| Warning - Do not Delete any File",
+             "|| or it may Cause Corruption",
+             "|| and may lead to instability.",
+             "",
+             "Type 'help' to get information about all supported command."
         };
 
         new TerminalColor(string.Join("\n", CreditCenter), ConsoleColor.White);
@@ -111,9 +109,9 @@ class Obsidian
 
     public void About()
     {
-        new TerminalColor("A Developer Command-line Tool Built for Developers by a Developer.", ConsoleColor.White);
+        new TerminalColor(AOsDesc, ConsoleColor.White);
         new TerminalColor("For more information go to ", ConsoleColor.DarkGray, false);
-        new TerminalColor("https://github.com/Light-Lens/AOs.", ConsoleColor.Cyan);
+        new TerminalColor(AOsRepo, ConsoleColor.Cyan);
     }
 
     public string SetPrompt(string[] flags, string default_prompt="$ ")

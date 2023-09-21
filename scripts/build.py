@@ -5,7 +5,7 @@ def rmdir(*folders):
         if os.path.exists(i):
             shutil.rmtree(i)
 
-def update_build_no(dump_file_path=""):
+def update_build_no():
     # Get a list of all files in the current directory with names consisting only of digits
     files = glob.glob("[0-9]*")
 
@@ -18,21 +18,19 @@ def update_build_no(dump_file_path=""):
 
         new_name = str(int(file_with_numbers_name) + 1)
         os.rename(file_with_numbers_name, new_name)
-
-        if dump_file_path != "":
-            os.system(f"copy {new_name} {dump_file_path}\\{new_name} /Y")
+        return new_name
 
     else:
         print("No build file found")
         os.system("echo.>0")
+        return 0
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "clean":
-        rmdir("bin", "obj", "AOs")
+        rmdir("AOs")
 
     elif sys.argv[1] == "run":
-        update_build_no()
-        os.system(f"dotnet run -- {' '.join(sys.argv[2:])}")
+        os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()} -- {' '.join(sys.argv[2:])}")
 
 else:
     rmdir("AOs")
@@ -40,5 +38,6 @@ else:
         os.mkdir("AOs")
 
     rmdir("bin", "obj")
-    update_build_no("AOs")
-    os.system("dotnet publish --self-contained -c Release -o ./AOs")
+    os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
+
+rmdir("bin", "obj")
