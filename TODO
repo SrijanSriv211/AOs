@@ -1,6 +1,10 @@
 '.' means DONE
 'x' means NOT TO BE DONE (REMOVED FEATURE)
 
+........................................................................................................................
+...........................................................Commands.....................................................
+........................................................................................................................
+@               -> Experimental commands
 . clear           -> Clear the screen
 . version         -> Display the AOs version
 . about           -> About AOs
@@ -52,4 +56,73 @@ ply             -> Search for a video on youtube based on a query           [NOT
 weather         -> Display today's weather in a city                        [NOTE: Implementd in pixelate]
 temperature     -> Display today's temperature in a city                    [NOTE: Implementd in pixelate]
 settings        -> Start the Windows settings page                          [NOTE: Included in 'cat']
+
 filer           -> Encrypt any text
+dev, developer	-> Developer tools:
+	[
+		NOTE: dev command will also maintain some build number for projects and will have more stuff in it,
+		it will compile projects based on their file extentions.
+	]
+
+	-h, --help, ??, /?, -?:
+		show info about any programming language, or a developer command
+
+	cloc:
+		Count the lines of code in a directory
+
+	server:
+		Start a local web-server
+
+	clean:
+		Delete temp/unnecessary files created by the programming language in the project
+
+	git:
+		Use git to maintain version control
+
+	ver, version:
+		Show the build no of the current project
+
+	new (args_to_be_passed -> dotnet, python, g++, gcc, java, kotlin, go, rust, swift, node):
+		Create a new project,
+		setup build version control,
+		configure it with the programming language,
+		`git init` and ask for the github repo link,
+
+	new (args_to_be_passed -> dirpath):
+		code [dirpath]						[NOTE: default_value for dirpath is '.']
+
+	[
+		NOTE: you don't need to type `dev pastel test.pastel` to run the program,
+		just do `dev test.pastel` or `dev my_progam.py` or `dev k.c++` and
+		developer command will automatically identify the programming language.
+	]
+	[when no argument is passed]:
+		AOs				-> Run a AOs file
+		pastel			-> Run a Pastel project
+		dotnet			-> Build or run a .NET project
+		python			-> Run a Python project
+		g++				-> Build a C++ project
+		gcc				-> Build a C project
+		java			-> Run a Java project
+		kotlin			-> Run a Kotlin project
+		go				-> Build a Go project
+		cargo			-> Run a Rust project
+		swift			-> Run a Swift project
+		node			-> Run a JavaScript project
+		batch			-> Run a batch project
+
+	[
+		NOTE: you don't need to type `dev -c pastel test.pastel` to compile the program,
+		just do `dev -c test.pastel` or `dev -c my_progam.py` or `dev -c k.c++` and
+		developer command will automatically identify the programming language.
+	]
+	-b, -c, --build, --compile:
+		pastel			-> Run a Pastel project
+		dotnet			-> Build a .NET project
+		g++				-> Build a C++ project
+		gcc				-> Build a C project
+		java			-> Build a Java project
+		kotlin			-> Build a Kotlin project
+		go				-> Build a Go project
+		rust			-> Build a Rust project
+		swift			-> Build a Swift project
