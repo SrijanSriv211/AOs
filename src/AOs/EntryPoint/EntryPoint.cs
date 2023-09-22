@@ -19,7 +19,15 @@ partial class EntryPoint
         Startup();
     }
 
-    public static void CreateRootPackages()
+    private static void PreStartupLogging(string content)
+    {
+        string current_time = $"[{DateTime.Now:h:mm:ss tt} {DateTime.Now:dddd, dd MMMM yyyy}]";
+        string boot_log_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\log\\BOOT.log");
+
+        FileIO.FileSystem.Write(boot_log_path, $"{current_time}\t{content} \n");
+    }
+
+    private static void CreateRootPackages()
     {
         string[] DirectoryList = new string[]
         {
@@ -36,10 +44,43 @@ partial class EntryPoint
             "Files.x72\\root\\log\\Crashreport.log"
         };
 
+        static void LogRootPackages(string full_path, bool is_file)
+        {
+            new TerminalColor("Checking ", ConsoleColor.White, false);
+            new TerminalColor(full_path, ConsoleColor.Gray);
+            PreStartupLogging($"Checking {full_path}");
+
+            if ((is_file && File.Exists(full_path)) || (!is_file && Directory.Exists(full_path)))
+            {
+                new TerminalColor("Found ", ConsoleColor.Green, false);
+                new TerminalColor(full_path, ConsoleColor.Gray);
+                PreStartupLogging($"Found {full_path}");
+                return;
+            }
+
+            new TerminalColor("Not found ", ConsoleColor.Red, false);
+            new TerminalColor(full_path, ConsoleColor.Gray);
+            PreStartupLogging($"Not found {full_path}");
+
+            new TerminalColor("Creating ", ConsoleColor.White, false);
+            new TerminalColor(full_path, ConsoleColor.Gray);
+            PreStartupLogging($"Creating {full_path}");
+        }
+
         foreach (string path in DirectoryList)
-            FileIO.FolderSystem.Create(Path.Combine(Obsidian.root_dir, path));
+        {
+            string full_path = Path.Combine(Obsidian.root_dir, path);
+
+            LogRootPackages(full_path, false);
+            FileIO.FolderSystem.Create(full_path);
+        }
 
         foreach (string path in FileList)
-            FileIO.FileSystem.Create(Path.Combine(Obsidian.root_dir, path));
+        {
+            string full_path = Path.Combine(Obsidian.root_dir, path);
+
+            LogRootPackages(full_path, true);
+            FileIO.FileSystem.Create(full_path);
+        }
     }
 }

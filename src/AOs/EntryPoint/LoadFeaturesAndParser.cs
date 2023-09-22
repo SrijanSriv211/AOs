@@ -13,9 +13,19 @@ partial class EntryPoint
 
     private void LoadFeatures()
     {
+        new TerminalColor("Loading ", ConsoleColor.White, false);
+        new TerminalColor("features", ConsoleColor.Gray);
+        PreStartupLogging("Loading features");
         this.features = new(this.AOs, this.sys_utils);
+
+        PreStartupLogging("Loading parser");
+        new TerminalColor("Loading ", ConsoleColor.White, false);
+        new TerminalColor("parser", ConsoleColor.Gray);
         this.parser = new(CheckForError);
 
+        PreStartupLogging("Initiating parser");
+        new TerminalColor("Initiating ", ConsoleColor.White, false);
+        new TerminalColor("parser", ConsoleColor.Gray);
         this.parser.Add(
             new string[]{ "!" }, "Switch the default-else shell",
             supported_args: new Dictionary<string[], string>
@@ -26,6 +36,9 @@ partial class EntryPoint
             default_values: new string[]{""}, max_args_length: 1, method: this.features.SwitchElseShell
         );
 
+        new TerminalColor("Initiating ", ConsoleColor.White, false);
+        new TerminalColor("features", ConsoleColor.Gray);
+        PreStartupLogging("Initiating features");
         this.parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: this.AOs.ClearConsole);
         this.parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: this.AOs.PrintVersion);
         this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: this.AOs.About);
