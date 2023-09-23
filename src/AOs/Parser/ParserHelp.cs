@@ -7,7 +7,7 @@ partial class Parser
         string default_value = (details.Default_values != null && !Utils.Array.IsEmpty(details.Default_values)) ? $" (default: {string.Join(", ", details.Default_values)})" : "";
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
         string max_args_len = details.Max_args_length == 0 ? "Maximum arguments: ∞" : $"Maximum arguments: {details.Max_args_length}";
-        string min_args_len = details.Min_args_length == 0 ? "Minimum arguments: ∞" : $"Minimum arguments: {details.Min_args_length}";
+        string min_args_len = $"Minimum arguments: {details.Min_args_length}";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
         new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(1) + "}", names), ConsoleColor.Gray, false);
@@ -15,26 +15,30 @@ partial class Parser
 
         new TerminalColor("Details:", ConsoleColor.Blue);
         new TerminalColor($"{names} [OPTIONS] {default_value}{is_flag}", ConsoleColor.Gray);
-
-        new TerminalColor(max_args_len, ConsoleColor.Gray);
-        new TerminalColor(min_args_len, ConsoleColor.Gray);
         Console.WriteLine();
 
-        if (!details.Is_flag && details.Supported_args != null)
+        if (!details.Is_flag)
         {
-            int i = 1;
-            new TerminalColor("Options:", ConsoleColor.Magenta);
-            foreach (var supported_args in details.Supported_args)
-            {
-                string arg_names = string.Join(", ", supported_args.Key);
-                string arg_desc = supported_args.Value;
-
-                new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(i) + "}", arg_names), ConsoleColor.Gray, false);
-                new TerminalColor(arg_desc, ConsoleColor.DarkGray);
-                i++;
-            }
-
+            new TerminalColor(max_args_len, ConsoleColor.Gray);
+            new TerminalColor(min_args_len, ConsoleColor.Gray);
             Console.WriteLine();
+
+            if (details.Supported_args != null)
+            {
+                int i = 1;
+                new TerminalColor("Options:", ConsoleColor.Magenta);
+                foreach (var supported_args in details.Supported_args)
+                {
+                    string arg_names = string.Join(", ", supported_args.Key);
+                    string arg_desc = supported_args.Value;
+
+                    new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(i) + "}", arg_names), ConsoleColor.Gray, false);
+                    new TerminalColor(arg_desc, ConsoleColor.DarkGray);
+                    i++;
+                }
+
+                Console.WriteLine();
+            }
         }
     }
 

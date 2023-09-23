@@ -45,6 +45,7 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", method: this.features.Shutdown);
         this.parser.Add(new string[]{ "restart" }, "Restart the host machine", method: this.features.Restart);
         this.parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", method: this.features.Exit);
+        this.parser.Add(new string[]{ "admin" }, "Launch an AOs instance as administrator", method: this.features.Admin);
         this.parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", method: this.features.Refresh);
         this.parser.Add(new string[]{ "credits" }, "Credit for AOs", method: this.AOs.Credits);
         this.parser.Add(new string[]{ "time", "clock" }, "Display current time", method: this.features.GetTime);
@@ -54,6 +55,7 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "sysinfo", "systeminfo", "osinfo" }, "Display operating system configuration information", method: this.features.SysInfo);
         this.parser.Add(new string[]{ "tree" }, "Graphically display the directory structure of a drive or path", method: this.features.Tree);
         this.parser.Add(new string[]{ "diagxt" }, "Display AOs specific properties and configuration", method: this.features.Diagxt);
+        this.parser.Add(new string[]{ "scan" }, "Scan the integrity of all protected system files", method: this.features.Scan);
 
         this.parser.Add(new string[]{ "shout", "echo" }, "Display messages", is_flag: false, method: this.features.Shout);
         this.parser.Add(

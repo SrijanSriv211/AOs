@@ -31,6 +31,11 @@ class Features
         Exit();
     }
 
+    public void Admin()
+    {
+        sys_utils.StartApp(Obsidian.AOsBinaryFilepath, is_admin: true);
+    }
+
     public void GetTime()
     {
         Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
@@ -83,6 +88,27 @@ class Features
         };
 
         new TerminalColor(string.Join("\n", details), ConsoleColor.White);
+    }
+
+    public void Scan()
+    {
+        if (Obsidian.is_admin)
+        {
+            sys_utils.CommandPrompt("sfc /scannow");
+            sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
+            sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
+            sys_utils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
+            new TerminalColor($"Please check '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
+            new TerminalColor($"and '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
+        }
+
+        else
+        {
+            new Error("Please run AOs as Administrator to scan the integrity of all protected system files.");
+            new TerminalColor("Type", ConsoleColor.Gray, false);
+            new TerminalColor(" 'admin' ", ConsoleColor.White, false);
+            new TerminalColor("to run AOs in Administrator", ConsoleColor.Gray);
+        }
     }
 
     public void ChangeToPrevDir()

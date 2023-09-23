@@ -1,7 +1,4 @@
-﻿using System.Text;
-Console.OutputEncoding = Encoding.UTF8;
-
-new EntryPoint(args, main);
+﻿new EntryPoint(args, main);
 
 static void main(Obsidian AOs, Parser parser, List<(string cmd, string[] args)> input)
 {
