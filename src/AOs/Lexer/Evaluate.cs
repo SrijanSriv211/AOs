@@ -2,11 +2,11 @@ partial class Lexer
 {
     private string Evaluate(string expr)
     {
-        string result = "";
         System.Data.DataTable dt = new();
 
         expr = expr.Replace(" ", "");
 
+        string result;
         try
         {
             result = dt.Compute(expr, "").ToString();
@@ -23,6 +23,7 @@ partial class Lexer
                 error_detail = error_detail.Substring(colon_index + 1).Trim();
 
             Error.Syntax(error_detail);
+            EntryPoint.CrashreportLogging(e.ToString());
             result = "";
         }
 

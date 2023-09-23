@@ -21,6 +21,7 @@ partial class SystemUtils
         catch (Exception e)
         {
             new Error(e.Message);
+            EntryPoint.CrashreportLogging(e.ToString());
         }
 
         return this.process.ExitCode;
@@ -46,6 +47,7 @@ partial class SystemUtils
         catch (Exception e)
         {
             new Error(e.Message);
+            EntryPoint.CrashreportLogging(e.ToString());
         }
 
         return this.process.ExitCode;
@@ -71,6 +73,7 @@ partial class SystemUtils
         catch (Exception e)
         {
             new Error($"Error: Cannot open the app.\n{e.Message}");
+            EntryPoint.CrashreportLogging(e.ToString());
         }
     }
 }

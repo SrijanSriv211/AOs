@@ -1,4 +1,4 @@
-import shutil, glob, sys, os
+import shutil, sys, os
 
 def rmdir(*folders):
     for i in folders:
@@ -23,7 +23,11 @@ if len(sys.argv) > 1:
         rmdir("bin", "obj", "AOs")
 
     elif sys.argv[1] == "run":
-        os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()} -- {' '.join(sys.argv[2:])}")
+        if sys.argv[2:]:
+            os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()} -- {' '.join(sys.argv[2:])}")
+
+        else:
+            os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()}")
 
 else:
     rmdir("AOs")

@@ -19,6 +19,14 @@ partial class EntryPoint
         Startup();
     }
 
+    public static void CrashreportLogging(string content)
+    {
+        string current_time = $"[{DateTime.Now:h:mm:ss tt} {DateTime.Now:dddd, dd MMMM yyyy}]";
+        string boot_log_path = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\log\\Crashreport.log");
+
+        FileIO.FileSystem.Write(boot_log_path, $"{current_time}\t{content} \n");
+    }
+
     private static void PreStartupLogging(string content)
     {
         string current_time = $"[{DateTime.Now:h:mm:ss tt} {DateTime.Now:dddd, dd MMMM yyyy}]";
@@ -60,6 +68,7 @@ partial class EntryPoint
 
             new TerminalColor("Not found ", ConsoleColor.Red, false);
             new TerminalColor(full_path, ConsoleColor.Gray);
+            CrashreportLogging($"Not found {full_path}");
             PreStartupLogging($"Not found {full_path}");
 
             new TerminalColor("Creating ", ConsoleColor.White, false);

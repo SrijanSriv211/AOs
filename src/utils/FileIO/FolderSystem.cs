@@ -22,6 +22,7 @@ partial class FileIO
                 catch (Exception e)
                 {
                     new Error(e.Message);
+                    EntryPoint.CrashreportLogging(e.ToString());
                 }
             }
 
@@ -51,6 +52,7 @@ partial class FileIO
             catch (Exception e)
             {
                 new Error(e.Message);
+                EntryPoint.CrashreportLogging(e.ToString());
             }
         }
 
@@ -98,6 +100,7 @@ partial class FileIO
             catch (Exception e)
             {
                 new Error(e.Message);
+                EntryPoint.CrashreportLogging(e.ToString());
             }
         }
 
@@ -125,6 +128,7 @@ partial class FileIO
             catch (Exception e)
             {
                 new Error(e.Message);
+                EntryPoint.CrashreportLogging(e.ToString());
             }
         }
 
@@ -145,6 +149,7 @@ partial class FileIO
             catch (Exception e)
             {
                 new Error(e.Message);
+                EntryPoint.CrashreportLogging(e.ToString());
             }
         }
     }

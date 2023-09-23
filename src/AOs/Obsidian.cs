@@ -1,4 +1,3 @@
-using System.Text;
 using System.Diagnostics;
 using System.Security.Principal;
 
@@ -72,9 +71,11 @@ class Obsidian
 
     public void ClearConsole()
     {
+        /*https://learn.microsoft.com/en-us/windows/console/clearing-the-screen
+        https://stackoverflow.com/a/75492171/18121288*/
         Console.Clear();
-        Console.OutputEncoding = Encoding.UTF8;
-        Console.Write("\x1b[3J"); // https://stackoverflow.com/a/75492171/18121288
+        Console.Write("\x1b[3J");
+
         new TerminalColor(this.Version, ConsoleColor.Yellow, false);
         new TerminalColor($"\t({Environment.GetEnvironmentVariable("username")})", ConsoleColor.White);
     }
