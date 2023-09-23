@@ -54,25 +54,16 @@ partial class EntryPoint
 
         static void LogRootPackages(string full_path, bool is_file)
         {
-            new TerminalColor("Checking ", ConsoleColor.White, false);
-            new TerminalColor(full_path, ConsoleColor.Gray);
             PreStartupLogging($"Checking {full_path}");
 
             if ((is_file && File.Exists(full_path)) || (!is_file && Directory.Exists(full_path)))
             {
-                new TerminalColor("Found ", ConsoleColor.Green, false);
-                new TerminalColor(full_path, ConsoleColor.Gray);
                 PreStartupLogging($"Found {full_path}");
                 return;
             }
 
-            new TerminalColor("Not found ", ConsoleColor.Red, false);
-            new TerminalColor(full_path, ConsoleColor.Gray);
             CrashreportLogging($"Not found {full_path}");
             PreStartupLogging($"Not found {full_path}");
-
-            new TerminalColor("Creating ", ConsoleColor.White, false);
-            new TerminalColor(full_path, ConsoleColor.Gray);
             PreStartupLogging($"Creating {full_path}");
         }
 
