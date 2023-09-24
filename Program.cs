@@ -3,6 +3,10 @@
 Console.OutputEncoding = Encoding.UTF8;
 new EntryPoint(args, main);
 
+/* ----------------------------------------------------------------------------------------
+                            TODO: Further clean the code.
+-------------------------------------------------------------------------------------------*/
+
 static void main(Obsidian AOs, Parser parser, List<(string cmd, string[] args)> input)
 {
     foreach (var i in input)

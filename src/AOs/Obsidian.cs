@@ -16,6 +16,7 @@ class Obsidian
     public readonly static string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
     public readonly static string AOsDesc = "A Developer Command-line Tool Built for Developers by a Developer.";
     public readonly static string AOsRepo = "https://github.com/Light-Lens/AOs";
+    public readonly static SystemUtils sys_utils;
     public readonly int BuildNo = FileVersionInfo.GetVersionInfo(AOsBinaryFilepath).FileBuildPart;
 
     private readonly string Title = "AOs";
@@ -73,8 +74,9 @@ class Obsidian
     {
         /*https://learn.microsoft.com/en-us/windows/console/clearing-the-screen
         https://stackoverflow.com/a/75492171/18121288*/
+        sys_utils.CommandPrompt("cls");
         Console.Clear();
-        Console.Write("\x1b[3J");
+        // Console.Write("\x1b[3J");
 
         new TerminalColor(this.Version, ConsoleColor.Yellow, false);
         new TerminalColor($"\t({Environment.GetEnvironmentVariable("username")})", ConsoleColor.White);

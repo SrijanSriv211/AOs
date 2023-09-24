@@ -36,3 +36,4 @@ else:
 
     rmdir("bin", "obj")
     os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
+    rmdir("bin", "obj")
