@@ -2,9 +2,25 @@
 'x' means NOT TO BE DONE (REMOVED FEATURE)
 
 ........................................................................................................................
+........................................................Non-Commands....................................................
+........................................................................................................................
+Further clean the code, specially Obsidian and EntryPoint.
+If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
+
+........................................................................................................................
 ...........................................................Commands.....................................................
 ........................................................................................................................
+/* Not sure to do or not */
+let 			-> Store data to a variable:
+	To use the variable type '$[the-name-of-the-variable]'.
+	'let' command can store any value to variables. Even store values from other commands like the 'datetime' command.
+
+Direct/Indirect implementation of pastel in AOs.
+
+/* Experimental commands */
 @               -> Experimental commands
+
+/* Flagged commands */
 . clear           -> Clear the screen
 . version         -> Display the AOs version
 . about           -> About AOs
@@ -16,14 +32,19 @@
 . time            -> Show time
 . date            -> Show date
 . datetime        -> Show both date and time
-. generate        -> Generate a random number between 0 and 1                [NOTE: Use my AND algo for this]
+. generate        -> Generate a random number between 0 and 1
 . ran             -> Display operating system configuration information
 . tree            -> Graphically display the directory structure of a drive or path
 . diagxt          -> Display AOs specific properties and configuration
-.scan            -> Scan the integrity of all protected system files
+. scan            -> Scan the integrity of all protected system files
 update          -> Check for Updates
+
+/* Unflagged commands */
 . shout           -> Display messages
-. history         -> Display the history of Commands
+. history         -> Display the history of Commands:
+	-c, --clear:
+		Clear the history
+
 . console         -> Start a new instance of the terminal
 . title           -> Change the title for AOs window
 . color           -> Change the default AOs foreground and background colors
@@ -32,8 +53,38 @@ update          -> Check for Updates
 . pause           -> Suspend processing of a command and displays the message
 . run             -> Start a specified program or command, given the full or sysenv path
 . cat             -> Start an installed program from the system
-x allinstapps     -> List all installed apps on your machine               [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called.]
-. prompt          -> Change the command prompt
+x allinstapps     -> List all installed apps on your machine               [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called]
+. prompt          -> Change the command prompt:
+	-h, --help:
+		Display all supported arguments
+
+	-r, --reset, --restore, --default:
+		$ (dollar sign, reset the prompt)
+
+	-u, --username:
+		%username%
+
+	-s, --space:
+		(space)
+
+	-b, --backspace:
+		(backspace)
+
+	-v, --version:
+		Current AOs version
+
+	-t, --time:
+		Current time
+
+	-d, --date:
+		Current date
+
+	-p, --path:
+		Current path
+
+	-n, --drive:
+		Current drive
+
 x backup          -> Create a restore point of AOs                         [NOTE: Discontinued feature]
 . ls              -> Display a list of files and subdirectories in a directory
 . cd              -> Change the current directory                          [NOTE: cd.. is an independent/separate command which change the current directory to previous directory]
@@ -42,21 +93,41 @@ x backup          -> Create a restore point of AOs                         [NOTE
 . ren             -> Rename a file or files
 . copy            -> Advanced utility to copy files and directory trees
 . move            -> Move one or more files from one directory to another directory
-. pixelate        -> Start a website in a web browser
+. pixelate        -> Start a website in a web browser:
+	-e, --engine:
+		Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)
+
+	-w, --weather:
+		Display today's weather in a city
+
+	-t, --temp, --temperature:
+		Display today's temperature in a city
+
 . read            -> Display the contents of a text file
-. commit          -> Edit the contents of a text file
-. zip             -> Compresse or Decompresses files or folders (-u flag to unzip)
-lock            -> Lock the System at Start-up                              [NOTE: Discontinued feature]
-restore         -> Restore system files and folders                         [NOTE: Discontinued feature]
-reset           -> Reset AOs                                                [NOTE: Discontinued feature]
-srh             -> Search for a specific query on the internet              [NOTE: Implementd in pixelate]
-wiki            -> Search for information on wikipedia                      [NOTE: Discontinued feature]
-ply             -> Search for a video on youtube based on a query           [NOTE: Implementd in pixelate]
-weather         -> Display today's weather in a city                        [NOTE: Implementd in pixelate]
-temperature     -> Display today's temperature in a city                    [NOTE: Implementd in pixelate]
-settings        -> Start the Windows settings page                          [NOTE: Included in 'cat']
+	-l, --line:
+		Shows information about a specific line
+
+. commit          -> Edit the contents of a text file:
+	-l, --line:
+		Edit specific line in a text file
+
+. zip             -> Compresse or Decompresses files or folders (-u flag to unzip):
+	-u, --uncompress, --decompress:
+		Decompress zip files
+
+x lock            -> Lock the System at Start-up                              [NOTE: Discontinued feature]
+x restore         -> Restore system files and folders                         [NOTE: Discontinued feature]
+x reset           -> Reset AOs                                                [NOTE: Discontinued feature]
+x srh             -> Search for a specific query on the internet              [NOTE: Implemented in pixelate]
+x wiki            -> Search for information on wikipedia                      [NOTE: Implemented in pixelate]
+x ply             -> Search for a video on youtube based on a query           [NOTE: Implemented in pixelate]
+x weather         -> Display today's weather in a city                        [NOTE: Implemented in pixelate]
+x temperature     -> Display today's temperature in a city                    [NOTE: Implemented in pixelate]
+x settings        -> Start the Windows settings page                          [NOTE: Included in 'cat' command]
 terminate       -> Terminate current running process
 filer           -> Encrypt any text
+
+/* Developer features */
 dev, developer	-> Developer tools:
 	[
 		NOTE: dev command will also maintain some build number for projects and will have more stuff in it,

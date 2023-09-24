@@ -3,9 +3,8 @@
 Console.OutputEncoding = Encoding.UTF8;
 new EntryPoint(args, main);
 
-/* ----------------------------------------------------------------------------------------
-                            TODO: Further clean the code.
--------------------------------------------------------------------------------------------*/
+// TODO: Further clean the code.
+// TODO: If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 
 static void main(Obsidian AOs, Parser parser, List<(string cmd, string[] args)> input)
 {
