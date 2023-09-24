@@ -29,6 +29,14 @@ if len(sys.argv) > 1:
         else:
             os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()}")
 
+    elif sys.argv[1] == "execute":
+        if os.path.isfile("./AOs/AOs.exe"):
+            os.system(f".\\AOs\\AOs.exe {' '.join(sys.argv[2:])}")
+
+        else:
+            print("Please build AOs to execute.")
+            print("Type 'build' to build AOs then type 'build execute' to execute the build executable..")
+
 else:
     rmdir("AOs")
     if os.path.exists("AOs") == False:

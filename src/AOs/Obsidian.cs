@@ -16,7 +16,7 @@ class Obsidian
     public readonly static string AOsBinaryFilepath = Process.GetCurrentProcess().MainModule.FileName;
     public readonly static string AOsDesc = "A Developer Command-line Tool Built for Developers by a Developer.";
     public readonly static string AOsRepo = "https://github.com/Light-Lens/AOs";
-    public readonly static SystemUtils sys_utils;
+    public readonly static SystemUtils sys_utils = new();
     public readonly int BuildNo = FileVersionInfo.GetVersionInfo(AOsBinaryFilepath).FileBuildPart;
 
     private readonly string Title = "AOs";
@@ -72,10 +72,10 @@ class Obsidian
 
     public void ClearConsole()
     {
+        sys_utils.CommandPrompt("cls"); //* This is better solution over the below one.
         /*https://learn.microsoft.com/en-us/windows/console/clearing-the-screen
         https://stackoverflow.com/a/75492171/18121288*/
-        sys_utils.CommandPrompt("cls");
-        Console.Clear();
+        // Console.Clear();
         // Console.Write("\x1b[3J");
 
         new TerminalColor(this.Version, ConsoleColor.Yellow, false);
