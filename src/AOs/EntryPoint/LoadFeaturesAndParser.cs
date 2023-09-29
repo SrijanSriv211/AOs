@@ -32,14 +32,14 @@ partial class EntryPoint
 
         PreStartupLogging("Initiating features");
         this.parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: this.AOs.ClearConsole);
-        this.parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: this.AOs.PrintVersion);
-        this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: this.AOs.About);
+        this.parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: features.PrintVersion);
+        this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: features.About);
         this.parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", method: this.features.Shutdown);
         this.parser.Add(new string[]{ "restart" }, "Restart the host machine", method: this.features.Restart);
         this.parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", method: this.features.Exit);
         this.parser.Add(new string[]{ "admin" }, "Launch an AOs instance as administrator", method: this.features.Admin);
         this.parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", method: this.features.Refresh);
-        this.parser.Add(new string[]{ "credits" }, "Credit for AOs", method: this.AOs.Credits);
+        this.parser.Add(new string[]{ "credits" }, "Credit for AOs", method: Obsidian.Credits);
         this.parser.Add(new string[]{ "time", "clock" }, "Display current time", method: this.features.GetTime);
         this.parser.Add(new string[]{ "date", "calendar" }, "Display today's date", method: this.features.GetDate);
         this.parser.Add(new string[]{ "datetime" }, "Display today's time and date", method: this.features.GetDateTime);

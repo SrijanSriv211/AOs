@@ -54,7 +54,7 @@ partial class EntryPoint
 
         else
         {
-            var parser = new Argparse("AOs", Obsidian.AOsDesc, Error.UnrecognizedArgs);
+            var parser = new Argparse("AOs", Obsidian.about_AOs, Error.UnrecognizedArgs);
             parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
             parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
             parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
@@ -69,7 +69,7 @@ partial class EntryPoint
                 {
                     SystemUtils sys_utils = new();
 
-                    string AOsBinaryFilepath = Obsidian.AOsBinaryFilepath;
+                    string AOsBinaryFilepath = Obsidian.AOs_binary_path;
                     sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
                     Environment.Exit(0);
                 }
@@ -97,21 +97,47 @@ partial class EntryPoint
     private void Execute()
     {
         while (true)
-            this.run_method(this.AOs, this.parser, AOs.TakeInput());
+        {
+            try
+            {
+                this.run_method(this.AOs, this.parser, AOs.TakeInput());
+            }
+
+            catch (Exception e)
+            {
+                CrashreportLogging(e.ToString());
+            }
+        }
     }
 
     private void Execute(string input)
     {
-        if (!Utils.String.IsEmpty(input))
-            this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+        try
+        {
+            if (!Utils.String.IsEmpty(input))
+                this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+        }
+
+        catch (Exception e)
+        {
+            CrashreportLogging(e.ToString());
+        }
     }
 
     private void Execute(string[] inputs)
     {
         foreach (string input in inputs)
         {
-            if (!Utils.String.IsEmpty(input))
-                this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+            try
+            {
+                if (!Utils.String.IsEmpty(input))
+                    this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+            }
+
+            catch (Exception e)
+            {
+                CrashreportLogging(e.ToString());
+            }
         }
     }
 

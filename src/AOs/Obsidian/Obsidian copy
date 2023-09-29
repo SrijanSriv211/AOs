@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Security.Principal;
 
-class Obsidian
+partial class Obsidian
 {
     public static string root_dir = AppDomain.CurrentDomain.BaseDirectory;
     public static string default_else_shell = "cmd.exe";

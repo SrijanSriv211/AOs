@@ -14,7 +14,7 @@ partial class SystemUtils
 
             if (input_cmd.EndsWith(".aos"))
             {
-                CommandPrompt(Obsidian.AOsBinaryFilepath, args_to_be_passed.ToArray());
+                CommandPrompt(Obsidian.AOs_binary_path, args_to_be_passed.ToArray());
                 return true;
             }
 
@@ -55,8 +55,11 @@ partial class SystemUtils
 
     public static string LocateExecutable(string Filename)
     {
-        List<string> folder_paths = Environment.GetEnvironmentVariable("path")?.Split(';').ToList();
-        folder_paths.Add(Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys"));
+        List<string> folder_paths = new() {
+            Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys")
+        };
+
+        folder_paths.AddRange(Environment.GetEnvironmentVariable("path")?.Split(';').ToList());
 
         foreach (string folder in folder_paths)
         {

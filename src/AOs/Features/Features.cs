@@ -27,13 +27,25 @@ class Features
 
     public void Refresh()
     {
-        sys_utils.StartApp(Obsidian.AOsBinaryFilepath);
+        sys_utils.StartApp(Obsidian.AOs_binary_path);
         Exit();
     }
 
     public void Admin()
     {
-        sys_utils.StartApp(Obsidian.AOsBinaryFilepath, is_admin: true);
+        sys_utils.StartApp(Obsidian.AOs_binary_path, is_admin: true);
+    }
+
+    public void PrintVersion()
+    {
+        Console.WriteLine(AOs.version);
+    }
+
+    public void About()
+    {
+        new TerminalColor(Obsidian.about_AOs, ConsoleColor.White);
+        new TerminalColor("For more information go to ", ConsoleColor.DarkGray, false);
+        new TerminalColor(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
     }
 
     public void GetTime()
@@ -71,10 +83,10 @@ class Features
     public void Diagxt()
     {
         string[] details = {
-             "NAME        : AOs 2.5",
-            $"BUILD       : Release Build {AOs.BuildNo}",
-            $"VERSION     : {AOs.Version}",
-            $"PROCESS     : {Obsidian.AOsBinaryFilepath}",
+            $"NAME        : AOs {Obsidian.version_no}",
+            $"BUILD       : Release Build {Obsidian.build_no}",
+            $"VERSION     : {AOs.version}",
+            $"PROCESS     : {Obsidian.AOs_binary_path}",
              "SYSTEM TYPE : x72",
              "",
              "AUTHOR           : Light-Lens (Srijan Srivastava)",
@@ -83,7 +95,7 @@ class Features
             $"ROOT DIRECTORY     : {Obsidian.root_dir}",
             $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
              "",
-            $"GITHUB REPO     : {Obsidian.AOsRepo}",
+            $"GITHUB REPO     : {Obsidian.AOs_repo_link}",
              "SYSTEM LANGUAGE : en-in; English (India)"
         };
 
@@ -183,7 +195,7 @@ class Features
         }
 
         if (Utils.String.IsEmpty(color_name))
-            AOs.Default_color = Obsidian.original_color_of_terminal;
+            AOs.current_foreground_color = Obsidian.original_foreground_color;
 
         else
         {
@@ -193,14 +205,14 @@ class Features
                     help_for_color();
 
                 else
-                    AOs.Default_color = (ConsoleColor)color_num;
+                    AOs.current_foreground_color = (ConsoleColor)color_num;
             }
 
             else
                 help_for_color();
         }
 
-        Console.ForegroundColor = AOs.Default_color;
+        Console.ForegroundColor = AOs.current_foreground_color;
     }
 
     public void Wait(string timespan)
@@ -343,7 +355,7 @@ class Features
             }
         }
 
-        Obsidian.PromptPreset = Flags.ToArray();
+        AOs.prompt_preset = Flags.ToArray();
         AOs.SetPrompt(Flags.ToArray());
     }
 
