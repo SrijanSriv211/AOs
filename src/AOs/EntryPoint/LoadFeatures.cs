@@ -42,6 +42,7 @@ partial class EntryPoint
             default_values: new string[]{""}, max_args_length: 1, method: this.features.GetSetHistory
         );
         this.parser.Add(new string[]{ ">", "console", "terminal", "cmd", "call" }, "Call a specified program or command, given the full or sysenv path in terminal", default_values: new string[0], method: this.features.RunInTerminal);
+        this.parser.Add(new string[]{ "open", "run", "start" }, "Start a specified program or command, given the full or sysenv path", default_values: new string[0], method: this.features.RunApp);
         this.parser.Add(new string[]{ "title" }, "Change the title for AOs window", default_values: new string[0]{}, method: this.features.ChangeTitle);
         this.parser.Add(new string[]{ "color" }, "Change the default AOs foreground colors", default_values: new string[]{""}, max_args_length: 1, method: this.features.ChangeColor);
         this.parser.Add(new string[]{ "wait", "timeout" }, "Suspend processing of a command for the given number of seconds", default_values: new string[]{""}, max_args_length: 1, method: this.features.Wait);
@@ -49,7 +50,6 @@ partial class EntryPoint
             new string[]{ "pause" }, "Suspend processing of a command and display the message",
             default_values: new string[]{"Press any key to continue..."}, method: this.features.Pause
         );
-        this.parser.Add(new string[]{ "open", "run", "start" }, "Start a specified program or command, given the full or sysenv path", default_values: new string[0], method: this.features.RunApp);
         this.parser.Add(new string[]{ "cat", "allinstapps", "installedapps", "allinstalledapps" }, "Start an installed program from the system", default_values: new string[0]{}, method: this.features.Cat);
         this.parser.Add(
             new string[]{ "prompt" }, "Change the command prompt",

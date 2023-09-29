@@ -1,13 +1,14 @@
 class Features
 {
-    private readonly Utils.Https https = new();
+    private readonly Utils.Https https;
     private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
 
-    public Features(Obsidian AOs, SystemUtils sys_utils)
+    public Features(Obsidian AOs)
     {
         this.AOs = AOs;
-        this.sys_utils = sys_utils;
+        this.https = new();
+        this.sys_utils = new();
     }
 
     public void Exit()
@@ -93,7 +94,9 @@ class Features
             $"REGISTERED OWNER : {Environment.GetEnvironmentVariable("username")}",
              "",
             $"ROOT DIRECTORY     : {Obsidian.root_dir}",
+            $"USER DIRECTORY     : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc")}",
             $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
+            $"STARTUP DIRECTORY  : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup")}",
              "",
             $"GITHUB REPO     : {Obsidian.AOs_repo_link}",
              "SYSTEM LANGUAGE : en-in; English (India)"
@@ -263,7 +266,6 @@ class Features
         {
             string appname = args.First();
             string app_args = args.Length > 1 ? string.Join("", Utils.Array.Trim(args.Skip(1).ToArray())) : null;
-
             sys_utils.StartApp(appname, app_args);
         }
     }

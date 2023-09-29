@@ -5,14 +5,15 @@ partial class EntryPoint
 
     private readonly Obsidian AOs;
     private readonly string[] args;
-    private readonly SystemUtils sys_utils = Obsidian.sys_utils;
+    private readonly SystemUtils sys_utils;
 
     public EntryPoint(string[] args)
     {
         this.args = args;
         this.AOs = new Obsidian();
 
-        this.features = new(this.AOs, this.sys_utils);
+        this.sys_utils = new();
+        this.features = new(this.AOs);
         this.parser = new(CheckForError);
 
         CheckRootPackages();
@@ -25,7 +26,10 @@ partial class EntryPoint
         input_cmd = SystemUtils.CheckForSysOrEnvApps(input_cmd);
 
         for (int i = 0; i < input_args.Length; i++)
-            input_args[i] = SystemUtils.CheckForSysOrEnvApps(input_args[i]);
+        {
+            if (input_args[i].StartsWith("%") && input_args[i].EndsWith("%"))
+                input_args[i] = SystemUtils.CheckForSysOrEnvApps(input_args[i]);
+        }
 
         if (!this.sys_utils.RunSysOrEnvApps(input_cmd, input_args))
             Error.Command(input_cmd);

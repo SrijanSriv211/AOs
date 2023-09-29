@@ -1,16 +1,22 @@
 partial class Obsidian
 {
-    public string version;
     public string[] prompt_preset;
-    public ConsoleColor current_foreground_color = original_foreground_color;
+    public ConsoleColor current_foreground_color;
 
+    public readonly string version;
+
+    private readonly SystemUtils sys_utils;
     private string prompt;
 
     public Obsidian()
     {
-        this.version = $"AOs 2023 [Version {version_no}]";
-        this.prompt = "$ ";
         this.prompt_preset = new string[0];
+        this.current_foreground_color = original_foreground_color;
+
+        this.version = $"AOs 2023 [Version {version_no}]";
+        this.sys_utils = new();
+
+        this.prompt = "$ ";
     }
 
     public List<(string cmd, string[] args)> TakeInput(string input="")

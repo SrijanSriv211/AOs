@@ -60,12 +60,12 @@ update          -> Check for Updates
 		Clear the history
 
 . console         -> Start a new instance of the terminal
+. run             -> Start a specified program or command, given the full or sysenv path
 . title           -> Change the title for AOs window
 . color           -> Change the default AOs foreground and background colors
 . time            -> Display current time and date
 . wait            -> Suspend processing of a command for the given number of seconds
 . pause           -> Suspend processing of a command and displays the message
-. run             -> Start a specified program or command, given the full or sysenv path
 . cat             -> Start an installed program from the system
 x allinstapps     -> List all installed apps on your machine               [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called]
 . prompt          -> Change the command prompt:

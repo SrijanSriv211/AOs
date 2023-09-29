@@ -7,7 +7,6 @@ partial class Obsidian
 
     public readonly static string about_AOs = "A Developer Command-line Tool Built for Developers by a Developer.";
     public readonly static string AOs_repo_link = "https://github.com/Light-Lens/AOs";
-    public readonly static SystemUtils sys_utils = new();
 
     public readonly static string root_dir = AppDomain.CurrentDomain.BaseDirectory;
     public readonly static bool is_admin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
