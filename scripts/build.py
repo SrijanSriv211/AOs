@@ -39,13 +39,13 @@ if len(sys.argv) > 1:
     if sys.argv[1] == "help" or sys.argv[1] == "-h" or sys.argv[1] == "--help" or sys.argv[1] == "-?" or sys.argv[1] == "??":
         print("If no argument is passed     -> Build AOs from source")
         print("execute                      -> Run AOs release executable")
-        print("clean                        -> Remove 'bin', 'obj' and 'AOs' folders from the root directory.")
+        print("clean                        -> Remove 'bin', 'obj' folders from the root directory.")
         print("srun                         -> Run AOs but don't update the build no.")
         print("run                          -> Run AOs and update the build no.")
 
     # delete the following folder
     elif sys.argv[1] == "clean":
-        rmdir("bin", "obj", "AOs")
+        rmdir("bin", "obj")
 
     # run and update the build no.
     elif sys.argv[1] == "run":

@@ -1,4 +1,5 @@
 bin/
 obj/
+/AOs/
 github.bat
 build.bat
