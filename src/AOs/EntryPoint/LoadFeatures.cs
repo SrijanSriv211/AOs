@@ -1,25 +1,7 @@
 partial class EntryPoint
 {
-    private void CheckForError(string input_cmd, string[] input_args)
-    {
-        input_cmd = SystemUtils.CheckForSysOrEnvApps(input_cmd);
-
-        for (int i = 0; i < input_args.Length; i++)
-            input_args[i] = SystemUtils.CheckForSysOrEnvApps(input_args[i]);
-
-        if (!this.sys_utils.RunSysOrEnvApps(input_cmd, input_args))
-            Error.Command(input_cmd);
-    }
-
     private void LoadFeatures()
     {
-        PreStartupLogging("Loading features");
-        this.features = new(this.AOs, this.sys_utils);
-
-        PreStartupLogging("Loading parser");
-        this.parser = new(CheckForError);
-
-        PreStartupLogging("Initiating parser");
         this.parser.Add(
             new string[]{ "!" }, "Switch the default-else shell",
             supported_args: new Dictionary<string[], string>
@@ -30,7 +12,6 @@ partial class EntryPoint
             default_values: new string[]{""}, max_args_length: 1, method: this.features.SwitchElseShell
         );
 
-        PreStartupLogging("Initiating features");
         this.parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: this.AOs.ClearConsole);
         this.parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: features.PrintVersion);
         this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: features.About);

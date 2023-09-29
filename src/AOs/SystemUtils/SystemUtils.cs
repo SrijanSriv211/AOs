@@ -30,7 +30,7 @@ partial class SystemUtils
         catch (Exception e)
         {
             new Error(e.Message);
-            EntryPoint.CrashreportLogging(e.ToString());
+            EntryPoint.CrashreportLog(e.ToString());
         }
     }
 
@@ -58,7 +58,7 @@ partial class SystemUtils
         catch (Exception e)
         {
             new Error(e.Message);
-            EntryPoint.CrashreportLogging(e.ToString());
+            EntryPoint.CrashreportLog(e.ToString());
         }
     }
 

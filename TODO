@@ -7,19 +7,18 @@
 ........................................................................................................................
 ........................................................Non-Commands....................................................
 ........................................................................................................................
-Further clean the code, specially Obsidian and EntryPoint.
+. Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 If the input is some thing like 'powertoys::<file-name>', directly call the file just from the 'PowerToys' folder without checking for similar executable files in the current folder.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
-# Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
+Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
 
 ........................................................................................................................
 ...........................................................Commands.....................................................
 ........................................................................................................................
-/* Not sure to do or not */
-let 			-> Store data to a variable:
+~ let 			-> Store data to a variable:
 	To use the variable type '$[the-name-of-the-variable]'.
 	'let' command can store any value to variables. Even store values from other commands like the 'datetime' command.
 

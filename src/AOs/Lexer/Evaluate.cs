@@ -23,7 +23,7 @@ partial class Lexer
                 error_detail = error_detail.Substring(colon_index + 1).Trim();
 
             Error.Syntax(error_detail);
-            EntryPoint.CrashreportLogging(e.ToString());
+            EntryPoint.CrashreportLog(e.ToString());
             result = "";
         }
 
