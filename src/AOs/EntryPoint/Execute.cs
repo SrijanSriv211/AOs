@@ -1,12 +1,30 @@
 partial class EntryPoint
 {
+    private void Main(List<(string cmd, string[] args)> input)
+    {
+        foreach (var i in input)
+        {
+            if (Utils.String.IsEmpty(i.cmd))
+                continue;
+
+            else if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd.ToLower()))
+                this.parser.GetHelp(i.args ?? new string[]{""});
+
+            else if (i.cmd == "AOs1000")
+                new TerminalColor("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
+
+            else
+                this.parser.Execute(this.parser.Parse(i.cmd, i.args));
+        }
+    }
+
     private void Execute()
     {
         while (true)
         {
             try
             {
-                this.run_method(this.AOs, this.parser, AOs.TakeInput());
+                this.Main(AOs.TakeInput());
             }
 
             catch (Exception e)
@@ -21,7 +39,7 @@ partial class EntryPoint
         try
         {
             if (!Utils.String.IsEmpty(input))
-                this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+                this.Main(AOs.TakeInput(input));
         }
 
         catch (Exception e)
@@ -37,7 +55,7 @@ partial class EntryPoint
             try
             {
                 if (!Utils.String.IsEmpty(input))
-                    this.run_method(this.AOs, this.parser, AOs.TakeInput(input));
+                    this.Main(AOs.TakeInput(input));
             }
 
             catch (Exception e)
