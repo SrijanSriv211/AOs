@@ -18,33 +18,50 @@ def update_build_no():
 
     return build_no
 
-for i in sys.argv:
-    print(i)
+def run_AOs(argv, build_no):
+    if argv[2:]:
+        os.system(f"dotnet run -p:FileVersion=2.5.{build_no} -- {' '.join(argv[2:])}")
 
-# if len(sys.argv) > 1:
-#     if sys.argv[1] == "clean":
-#         rmdir("bin", "obj", "AOs")
+    else:
+        os.system(f"dotnet run -p:FileVersion=2.5.{build_no}")
 
-#     elif sys.argv[1] == "run":
-#         if sys.argv[2:]:
-#             os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()} -- {' '.join(sys.argv[2:])}")
+def build_AOs():
+    rmdir("AOs")
+    if os.path.exists("AOs") == False:
+        os.mkdir("AOs")
 
-#         else:
-#             os.system(f"dotnet run -p:FileVersion=2.5.{update_build_no()}")
+    rmdir("bin", "obj")
+    os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
+    rmdir("bin", "obj")
 
-#     elif sys.argv[1] == "execute":
-#         if os.path.isfile("./AOs/AOs.exe"):
-#             os.system(f".\\AOs\\AOs.exe {' '.join(sys.argv[2:])}")
+if len(sys.argv) > 1:
+    # print help message
+    if sys.argv[1] == "help" or sys.argv[1] == "-h" or sys.argv[1] == "--help" or sys.argv[1] == "-?" or sys.argv[1] == "??":
+        print("If no argument is passed     -> Build AOs from source")
+        print("execute                      -> Run AOs release executable")
+        print("clean                        -> Remove 'bin', 'obj' and 'AOs' folders from the root directory.")
+        print("srun                         -> Run AOs but don't update the build no.")
+        print("run                          -> Run AOs and update the build no.")
 
-#         else:
-#             print("Please build AOs to execute.")
-#             print("Type 'build' to build AOs then type 'build execute' to execute the build executable..")
+    # delete the following folder
+    elif sys.argv[1] == "clean":
+        rmdir("bin", "obj", "AOs")
 
-# else:
-#     rmdir("AOs")
-#     if os.path.exists("AOs") == False:
-#         os.mkdir("AOs")
+    # run and update the build no.
+    elif sys.argv[1] == "run":
+        run_AOs(sys.argv, update_build_no())
 
-#     rmdir("bin", "obj")
-#     os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
-#     rmdir("bin", "obj")
+    # 'srun' -> silent run, run but don't update the build no.
+    elif sys.argv[1] == "srun":
+        run_AOs(sys.argv, get_build_no())
+
+    elif sys.argv[1] == "execute":
+        if os.path.isfile("./AOs/AOs.exe") == False:
+            print("building AOs")
+            build_AOs()
+
+        print("executing AOs")
+        os.system(f".\\AOs\\AOs.exe {' '.join(sys.argv[2:])}")
+
+else:
+    build_AOs()
