@@ -1,7 +1,6 @@
 '#' means Comment (to be ignored)
 '.' means DONE
 'x' means NOT TO BE DONE (REMOVED FEATURE)
-'~' means Feature for AOs 2.6
 '\\\' means Continue the current line in a newline
 
 ........................................................................................................................
@@ -9,9 +8,6 @@
 ........................................................................................................................
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
-If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
-If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
-If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
@@ -20,15 +16,20 @@ Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'F
 ........................................................................................................................
 ...........................................................Commands.....................................................
 ........................................................................................................................
-~ let 			-> Store data to a variable:
+/* AOs 2.6 features */
+let -> Store data to a variable:
 	To use the variable type '$[the-name-of-the-variable]'.
 	'let' command can store any value to variables. Even store values from other commands like the 'datetime' command.
 
-~ Direct/Indirect implementation of pastel in AOs. \\\
+Direct/Indirect implementation of pastel in AOs. \\\
 'include', 'import' command will import a '.pastel' and load all it's functions into AOs as make them work like in-built commands. \\\
 Meaning if you have a pastel file having a function 'test' and comment on top of the defination of the function then you import that file using the 'include' command then the function test will work like any other AOs command. \\\
 Meaning when you will type 'help test' you will get all the details including a help message from the comment on top of the defination of the very same function in the '.pastel' file. \\\
 In the 'help' command the function will be listed, but only for that instance of AOs because include is not a permanent include.
+
+If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
+If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
+If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
 
 /* Experimental commands */
 @               -> Experimental commands
