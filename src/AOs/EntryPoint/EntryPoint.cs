@@ -6,7 +6,7 @@ partial class EntryPoint
     private readonly Obsidian AOs;
     private readonly string[] args;
     private readonly Action<Obsidian, Parser, List<(string, string[])>> run_method;
-    private readonly SystemUtils sys_utils = new();
+    private readonly SystemUtils sys_utils = Obsidian.sys_utils;
 
     public EntryPoint(string[] args, Action<Obsidian, Parser, List<(string, string[])>> run_method)
     {

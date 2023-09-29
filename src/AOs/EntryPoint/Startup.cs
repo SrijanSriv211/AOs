@@ -67,10 +67,8 @@ partial class EntryPoint
 
                 else if (arg.Names.Contains("-a"))
                 {
-                    SystemUtils sys_utils = new();
-
                     string AOsBinaryFilepath = Obsidian.AOs_binary_path;
-                    sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
+                    this.sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
                     Environment.Exit(0);
                 }
 
