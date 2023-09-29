@@ -11,7 +11,11 @@ partial class EntryPoint
                 this.parser.GetHelp(i.args ?? new string[]{""});
 
             else if (i.cmd == "AOs1000")
-                new TerminalColor("AOs1000!\nCONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!\nIt was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
+            {
+                new TerminalColor("AOs1000!", ConsoleColor.White);
+                new TerminalColor("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
+                new TerminalColor("It was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
+            }
 
             else
                 this.parser.Execute(this.parser.Parse(i.cmd, i.args));

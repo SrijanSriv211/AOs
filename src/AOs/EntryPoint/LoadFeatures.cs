@@ -12,6 +12,7 @@ partial class EntryPoint
             default_values: new string[]{""}, max_args_length: 1, method: this.features.SwitchElseShell
         );
 
+        // Flagged commands
         this.parser.Add(new string[]{ "cls", "clear" }, "Clear the screen", method: this.AOs.ClearConsole);
         this.parser.Add(new string[]{ "version", "ver", "-v" }, "Displays the AOs version", method: features.PrintVersion);
         this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: features.About);
@@ -30,6 +31,7 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "diagxt" }, "Display AOs specific properties and configuration", method: this.features.Diagxt);
         this.parser.Add(new string[]{ "scan" }, "Scan the integrity of all protected system files", method: this.features.Scan);
 
+        // Unflagged commands
         this.parser.Add(new string[]{ "shout", "echo" }, "Display messages", is_flag: false, method: this.features.Shout);
         this.parser.Add(
             new string[]{ "history" }, "Display the history of Commands",

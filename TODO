@@ -9,7 +9,9 @@
 ........................................................................................................................
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
-If the input is some thing like 'powertoys::<file-name>', directly call the file just from the 'PowerToys' folder without checking for similar executable files in the current folder.
+If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
+If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
+If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
