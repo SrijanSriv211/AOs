@@ -1,0 +1,6 @@
+class Setup
+{
+    public Setup()
+    {
+    }
+}
