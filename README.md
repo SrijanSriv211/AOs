@@ -39,21 +39,35 @@ AOs is officially untested on other development environments whilst we focus on 
 ### :bangbang: Prerequisites
 You need to install the following on your machine.
 - [Dotnet Core 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- [Python 3.10](https://www.python.org/downloads/release/python-3109/)
 - [Visual Studio Code](https://code.visualstudio.com/)
 
 ### :pencil: Getting Started
 1. Clone the repository with `git clone https://github.com/Light-Lens/AOs`.
 2. `cd AOs`
-3. To run the program use:
+3. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
-$ dotnet run
+cd AOs
+$ python -m venv .venv
+$ .venv\Scripts\activate
 ```
-4. To compile the program don't use `dotnet build`, instead run:
+4. Install python dependencies:
+```console
+$ pip install -r requirements.txt
+```
+5. To run the program use:
+```console
+$ python scripts\build.py run
+```
+6. To compile the program don't use `dotnet build`, instead run:
 ```console
 $ python scripts\build.py
 ```
-
 This will create an executable in the `AOs` folder with all required files to run.
+7. To execute the compiled program use:
+```console
+$ python scripts\build.py execute
+```
 
 ***
 
