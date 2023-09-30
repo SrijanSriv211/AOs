@@ -18,14 +18,14 @@ $ help
 
 :heavy_check_mark: Correct way:
 ```console
-AOs 2023 [Version 2.3]
+AOs 2023 [Version 2.5]
 $ "path\\to\\dir"
 $ "path/to/dir"
 ```
 
 :x: Wrong way:
 ```console
-AOs 2023 [Version 2.3]
+AOs 2023 [Version 2.5]
 $ "path\to\dir"
 ```
 
@@ -69,7 +69,7 @@ $ python scripts\build.py execute
 ```
 ```console
 AOs 2023 [Version 2.5]
-$ help
+$ diagxt
 ```
 
 ***
