@@ -128,6 +128,19 @@ class Features
 
     public void CheckForAOsUpdates()
     {
+        string update_utility_path = Path.Combine(Obsidian.root_dir, "UPR.exe");
+        if (File.Exists(update_utility_path))
+        {
+            Console.WriteLine("Checking for Updates");
+            sys_utils.CommandPrompt($"\"{update_utility_path}\" {Obsidian.build_no}");
+        }
+
+        else
+        {
+            new Error("Cannot find the update utility.");
+            new TerminalColor("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
+            new TerminalColor("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
+        }
     }
 
     public void ChangeToPrevDir()

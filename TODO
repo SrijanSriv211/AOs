@@ -51,7 +51,7 @@ If the input is 'startup::<file-name>', run the file from the 'Startup' folder w
 . tree            -> Graphically display the directory structure of a drive or path
 . diagxt          -> Display AOs specific properties and configuration
 . scan            -> Scan the integrity of all protected system files
-update          -> Check for AOs updates
+. update          -> Check for AOs updates
 
 /* Unflagged commands */
 . shout           -> Display messages
