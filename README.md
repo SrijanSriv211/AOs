@@ -47,7 +47,6 @@ You need to install the following on your machine.
 2. `cd AOs`
 3. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
-cd AOs
 $ python -m venv .venv
 $ .venv\Scripts\activate
 ```
@@ -67,6 +66,9 @@ This will create an executable in the `AOs` folder with all required files to ru
 7. To execute the compiled program use:
 ```console
 $ python scripts\build.py execute
+
+AOs 2023 [Version 2.5]
+$ help
 ```
 
 ***
