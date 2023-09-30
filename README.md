@@ -66,7 +66,8 @@ This will create an executable in the `AOs` folder with all required files to ru
 7. To execute the compiled program use:
 ```console
 $ python scripts\build.py execute
-
+```
+```console
 AOs 2023 [Version 2.5]
 $ help
 ```
