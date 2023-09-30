@@ -1,6 +1,7 @@
+/AOs/
+/.venv/
 bin/
 obj/
-/AOs/
-github.bat
+github.py
 build.bat
-/.venv/
+github.bat
