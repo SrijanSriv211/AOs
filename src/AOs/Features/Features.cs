@@ -126,6 +126,10 @@ class Features
         }
     }
 
+    public void CheckForAOsUpdates()
+    {
+    }
+
     public void ChangeToPrevDir()
     {
         Directory.SetCurrentDirectory("..");
@@ -494,24 +498,23 @@ class Features
         parser.Add(new string[]{"-e", "--engine"}, "Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)", default_value: engine_name);
         parser.Add(new string[]{"-w", "--weather"}, "Display today's weather in a city", default_value: city_name);
         parser.Add(new string[]{"-t", "--temp", "--temperature"}, "Display today's temperature in a city", default_value: city_name);
-
-        websites_to_open = Utils.Utils.SimplifyString(Utils.Array.Reduce(Utils.Array.Filter(websites_to_open)));
-        var parsed_args = parser.Parse(websites_to_open);
+        var parsed_args = parser.Parse(Utils.Array.Reduce(Utils.Array.Filter(websites_to_open)));
 
         List<string> queries = new();
         foreach (var arg in parsed_args)
         {
-            if (arg.Names.Contains("-e"))
+            string[] websites = Utils.Utils.SimplifyString(arg.Names);
+            if (websites.Contains("-e"))
                 engine_name = arg.Value;
 
-            else if (arg.Names.Contains("-w"))
+            else if (websites.Contains("-w"))
             {
                 new TerminalColor($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
                 string weather = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
                 Console.WriteLine(weather);
             }
 
-            else if (arg.Names.Contains("-t"))
+            else if (websites.Contains("-t"))
             {
                 new TerminalColor($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
                 string temp = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
@@ -519,7 +522,7 @@ class Features
             }
 
             else if (arg.KnownType == "Unknown")
-                queries.Add(arg.Names.First());
+                queries.Add(websites.First());
         }
 
         Dictionary<string, string> engines = new()
@@ -553,24 +556,25 @@ class Features
 
         var parser = new Argparse("read", "Displays the contents of a text file.", err);
         parser.Add(new string[]{"-l", "--line"}, "Shows information about a specific line", default_value: "-1");
+        var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
-        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
-        var parsed_args = parser.Parse(args);
-
+        // Get all the files to read from.
         string filepath = "";
         int line_to_read = -1;
         foreach (var arg in parsed_args)
         {
-            if (arg.Names.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
+            string[] filename = Utils.Utils.SimplifyString(arg.Names);
+            if (filename.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
                 new Error($"{line_to_read}: Invalid line number");
                 return;
             }
 
             else if (arg.KnownType == "Unknown")
-                filepath = arg.Names.First();
+                filepath = filename.First();
         }
 
+        // Read the files.
         string[] lines = FileIO.FileSystem.ReadAllLines(filepath);
         if (line_to_read < 1)
         {
@@ -594,35 +598,37 @@ class Features
 
     public void Commit(string[] args)
     {
-        static void err(string filename)
+        static void err(string argument)
         {
-            new Error($"{filename}: No such file or directory.");
+            new Error($"{argument}: Invalid argument.");
         }
 
+        // Initialize the parser.
         var parser = new Argparse("commit", "Edit the contents of a text file", err);
         parser.Add(new string[]{"-l", "--line"}, "Edit specific line in a text file", default_value: "-1");
+        var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
-        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
-        var parsed_args = parser.Parse(args);
-
-        List<string> Content_to_commit = new();
+        // Get all the filenames and the data to commit to.
         string filepath = "";
         int line_to_read = -1;
+        List<string> Content_to_commit = new();
         foreach (var arg in parsed_args)
         {
-            if (arg.Names.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
+            string[] filenames = Utils.Utils.SimplifyString(arg.Names);
+            if (filenames.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
                 new Error($"{line_to_read}: Invalid line number");
                 return;
             }
 
             else if (arg.KnownType == "Unknown" && Utils.String.IsEmpty(filepath))
-                filepath = arg.Names.First();
+                filepath = filenames.First();
 
             else if (arg.KnownType == "Unknown")
-                Content_to_commit.Add(arg.Names.First());
+                Content_to_commit.Add(filenames.First());
         }
 
+        // Write/Overwrite the files with their respective data.
         if (line_to_read == 0)
             FileIO.FileSystem.Overwrite(filepath, Content_to_commit.ToArray());
 
@@ -649,21 +655,22 @@ class Features
     {
         var parser = new Argparse("zip", "Compress or Decompress files or folders", Error.UnrecognizedArgs);
         parser.Add(new string[]{"-u", "--uncompress", "--decompress"}, "Decompress zip files", is_flag: true);
+        var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
-        args = Utils.Utils.SimplifyString(Utils.Array.Reduce(args));
-        var parsed_args = parser.Parse(args);
-
+        // Get all the filenames and the data to commit to.
         bool unzip = false;
         List<string> Content_to_zip = new();
         foreach (var arg in parsed_args)
         {
-            if (arg.Names.Contains("-u"))
+            string[] filenames = Utils.Utils.SimplifyString(arg.Names);
+            if (filenames.Contains("-u"))
                 unzip = true;
 
-            else if (arg.KnownType == "Unknown" && !Utils.String.IsEmpty(arg.Names.First()))
-                Content_to_zip.Add(arg.Names.First());
+            else if (arg.KnownType == "Unknown" && !Utils.String.IsEmpty(filenames.First()))
+                Content_to_zip.Add(filenames.First());
         }
 
+        // Compress/Decompress the files with their respective data.
         if (unzip)
         {
             foreach (string content in Content_to_zip)

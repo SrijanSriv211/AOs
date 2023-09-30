@@ -3,3 +3,4 @@ obj/
 /AOs/
 github.bat
 build.bat
+/.venv/
