@@ -97,6 +97,7 @@ class Features
             $"USER DIRECTORY     : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc")}",
             $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
             $"STARTUP DIRECTORY  : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup")}",
+            $"POWERTOYS DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys")}",
              "",
             $"GITHUB REPO     : {Obsidian.AOs_repo_link}",
              "SYSTEM LANGUAGE : en-in; English (India)"
