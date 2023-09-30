@@ -696,4 +696,45 @@ class Features
                 FileIO.FolderSystem.Compress(content, $"{content}.zip");
         }
     }
+
+    public void Terminate(string[] appnames)
+    {
+        appnames = Utils.Array.Reduce(Utils.Array.Filter(appnames));
+
+        if (Utils.Array.IsEmpty(appnames))
+        {
+            System.Diagnostics.Process[] all_process = System.Diagnostics.Process.GetProcesses();
+            foreach (System.Diagnostics.Process p in all_process)
+            {
+                Console.Write("{0," + -Utils.Maths.CalculatePadding(100, 100) + "}", p.ProcessName);
+                new TerminalColor($"Process ID: {p.Id}", ConsoleColor.DarkGray);
+            }
+        }
+
+        else
+        {
+            System.Diagnostics.Process[] all_process = {};
+            foreach (string appname in appnames)
+            {
+                string name = Utils.String.Strings(appname);
+
+                if (Utils.String.IsEmpty(name))
+                {
+                    IntPtr handle = WindowManager.GetForegroundWindow();
+                    WindowManager.GetWindowThreadProcessId(handle, out uint process_id);
+                    all_process = new[]{System.Diagnostics.Process.GetProcessById((int)process_id)};
+                }
+
+                else
+                    all_process = System.Diagnostics.Process.GetProcessesByName(appname);
+            }
+
+            // Close the first instance of the process
+            foreach (System.Diagnostics.Process process in all_process)
+            {
+                if (!process.CloseMainWindow())
+                    process.Kill();
+            }
+        }
+    }
 }

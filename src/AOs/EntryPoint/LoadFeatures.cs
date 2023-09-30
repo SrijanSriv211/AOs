@@ -111,5 +111,6 @@ partial class EntryPoint
             },
             min_args_length: 1, method: this.features.WinRAR
         );
+        this.parser.Add(new string[]{ "terminate", "taskkill", "tasklist", "kill", "close" }, "Terminate a specific running process", default_values: new string[0]{}, method: this.features.Terminate);
     }
 }
