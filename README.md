@@ -85,6 +85,11 @@ This is will first build AOs if it already isn't and it will execute the `AOs\AO
 
 ***
 
+## :notebook_with_decorative_cover: The Plan
+The plan for AOs is two-fold: to create a powerful tool for developers to help them build simple applications from a calculator to large project like a Game Engine. AOs is also aimed to control almost every aspect of an operating system just from the command line. From controling the volume to changing settings, everything could be done with AOs without breaking anything.
+
+***
+
 ## :warning: License and Contributions
 All code is licensed under an MIT license. This allows you to re-use the code freely, remixed in both commercial and non-commercial projects. The only requirement is to include the same license when distributing.
 
