@@ -741,9 +741,9 @@ class Features
 
     public void Filer(string[] args)
     {
-        string filer_path = Path.Combine(Obsidian.root_dir, "Filer.exe");
+        string filer_path = Path.Combine(Obsidian.root_dir, "filer_cli.exe");
         if (File.Exists(filer_path))
-            sys_utils.CommandPrompt($"\"{filer_path}\" {args}");
+            sys_utils.CommandPrompt($"\"{filer_path}\" {string.Join("", args)}");
 
         else
         {

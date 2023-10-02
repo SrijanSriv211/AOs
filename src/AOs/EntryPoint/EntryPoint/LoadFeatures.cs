@@ -116,7 +116,15 @@ partial class EntryPoint
             new string[]{ "filer" }, "A powerful text encryption and decryption program.",
             supported_args: new Dictionary<string[], string>
             {
-                {new string[]{"-h"}, "Show help message"},
+                {new string[]{"-h", "--help"}, "Show help message"},
+                {new string[]{"-s"}, "A random seed in the range (0, 1) that acts like a password"},
+                {new string[]{"-o"}, "Place the output into <file>"},
+                {new string[]{"-m"}, "The maximum length of a string in each chunk"},
+                {new string[]{"-c"}, "The common exponent used with the random encryption key to encrypt or decrypt text"},
+                {new string[]{"-t"}, "Text input from the command line"},
+                {new string[]{"-f"}, "Takes a text file as an input"},
+                {new string[]{"-e"}, "Encrypt the message"},
+                {new string[]{"-d"}, "Decrypt the message"},
             },
             min_args_length: 1, method: this.features.Filer
         );

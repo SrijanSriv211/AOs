@@ -32,9 +32,26 @@ def build_UPR(output_dir):
     rmdirs("build")
     os.remove("UPR.spec")
 
+def build_Filer(output_dir):
+    options = [
+        "src\\vendor\\Filer\\filer_cli.py",
+        "--distpath", output_dir,
+        "--icon", "src\\vendor\\Filer\\img\\logo.ico",
+        "--clean",
+        "--onefile"
+    ]
+
+    PyInstaller.__main__.run(options)
+
+    rmdirs("build")
+    os.remove("filer_cli.spec")
+
 def run_AOs(argv, build_no):
     if os.path.isfile("bin\\Debug\\net7.0\\UPR.exe") == False:
         build_UPR("bin\\Debug\\net7.0")
+
+    if os.path.isfile("bin\\Debug\\net7.0\\filer_cli.exe") == False:
+        build_Filer("bin\\Debug\\net7.0")
 
     if argv[2:]:
         os.system(f"dotnet run -p:FileVersion=2.5.{build_no} -- {' '.join(argv[2:])}")
@@ -49,6 +66,7 @@ def build_AOs():
 
     os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
     build_UPR("AOs")
+    build_Filer("AOs")
 
 if len(sys.argv) > 1:
     # print help message
