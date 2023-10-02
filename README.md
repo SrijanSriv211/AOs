@@ -57,7 +57,9 @@ cd "src\vendor\Filer\src\vendor"
 git submodule update --init
 ```
 To clone the necessary submodules for Filer (submodule for AOs).
+
 2. Open a new Terminal instance in the root `AOs` directory.
+
 3. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
 $ python -m venv .venv
