@@ -51,21 +51,17 @@ If the repository was cloned non-recursively previously, use `git submodule upda
 
 <ins>**2. Configuring the dependencies:**</ins>
 
-1. After cloning the necessary submodules for AOs:
+1. After cloning the necessary submodules for AOs, clone the necessary submodules for Filer (submodule for AOs):
 ```console
 cd "src\vendor\Filer\src\vendor"
 git submodule update --init
 ```
-To clone the necessary submodules for Filer (submodule for AOs).
-
-2. Open a new Terminal instance in the root `AOs` directory.
-
-3. Create a virtual environment and activate it (e.g. conda or venv):
+2. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
 $ python -m venv .venv
 $ .venv\Scripts\activate
 ```
-4. Install python dependencies:
+3. Install python dependencies:
 ```console
 $ pip install -r requirements.txt
 ```
