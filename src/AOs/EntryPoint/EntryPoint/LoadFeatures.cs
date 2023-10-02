@@ -113,12 +113,12 @@ partial class EntryPoint
         );
         this.parser.Add(new string[]{ "terminate", "taskkill", "tasklist", "kill", "close" }, "Terminate a specific running process", default_values: new string[0]{}, method: this.features.Terminate);
         this.parser.Add(
-            new string[]{ "filer" }, "Encrypt or Decrypt any text file",
+            new string[]{ "filer" }, "A powerful text encryption and decryption program.",
             supported_args: new Dictionary<string[], string>
             {
-                {new string[]{"-u", "--uncompress", "--decompress"}, "Decompress zip files"},
+                {new string[]{"-h"}, "Show help message"},
             },
-            min_args_length: 1, method: this.features.WinRAR
+            min_args_length: 1, method: this.features.Filer
         );
     }
 }

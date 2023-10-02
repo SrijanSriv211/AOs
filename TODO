@@ -139,7 +139,7 @@ x weather         -> Display today's weather in a city                        [N
 x temperature     -> Display today's temperature in a city                    [NOTE: Implemented in pixelate]
 x settings        -> Start the Windows settings page                          [NOTE: Included in 'cat' command]
 .terminate       -> Terminate current running process
-filer           -> Encrypt any text
+. filer           -> Encrypt any text
 
 /* Developer features */
 dev, developer	-> Developer tools:

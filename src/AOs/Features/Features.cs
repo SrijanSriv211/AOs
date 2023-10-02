@@ -738,4 +738,18 @@ class Features
             }
         }
     }
+
+    public void Filer(string[] args)
+    {
+        string filer_path = Path.Combine(Obsidian.root_dir, "Filer.exe");
+        if (File.Exists(filer_path))
+            sys_utils.CommandPrompt($"\"{filer_path}\" {args}");
+
+        else
+        {
+            new Error("Cannot find the Filer.");
+            new TerminalColor("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
+            new TerminalColor("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
+        }
+    }
 }
