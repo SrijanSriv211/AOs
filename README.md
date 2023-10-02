@@ -43,8 +43,17 @@ You need to install the following on your machine.
 - [Visual Studio Code](https://code.visualstudio.com/)
 
 ### :pencil: Getting Started
-1. Clone the repository with `git clone https://github.com/Light-Lens/AOs`.
-2. `cd AOs`
+<ins>**1. Downloading the repository:**</ins>
+
+Start by cloning the repository with `git clone --recursive https://github.com/Light-Lens/AOs`.
+
+If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
+
+<ins>**2. Configuring the dependencies:**</ins>
+
+1. If `src\vendor\Filer\src\vendor`
+
+
 3. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
 $ python -m venv .venv

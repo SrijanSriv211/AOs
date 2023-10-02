@@ -1,0 +1,3 @@
+[submodule "src/vendor/Filer"]
+	path = src/vendor/Filer
+	url = https://github.com/Light-Lens/Filer.git
