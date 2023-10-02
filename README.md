@@ -51,9 +51,13 @@ If the repository was cloned non-recursively previously, use `git submodule upda
 
 <ins>**2. Configuring the dependencies:**</ins>
 
-1. If `src\vendor\Filer\src\vendor`
-
-
+1. After cloning the necessary submodules for AOs:
+```console
+cd "src\vendor\Filer\src\vendor"
+git submodule update --init
+```
+To clone the necessary submodules for Filer (submodule for AOs).
+2. Open a new Terminal instance in the root `AOs` directory.
 3. Create a virtual environment and activate it (e.g. conda or venv):
 ```console
 $ python -m venv .venv
@@ -63,23 +67,23 @@ $ .venv\Scripts\activate
 ```console
 $ pip install -r requirements.txt
 ```
-5. To run the program use:
+
+<ins>**3. Running and Compiling AOs:**</ins>
+
+1. To run the program use:
 ```console
 $ python scripts\build.py run
 ```
-6. To compile the program don't use `dotnet build`, instead run:
+2. To compile the program don't use `dotnet build`, instead run:
 ```console
 $ python scripts\build.py
 ```
 This will create an executable in the `AOs` folder with all required files to run.
-7. To execute the compiled program use:
+3. To execute the compiled program use:
 ```console
 $ python scripts\build.py execute
 ```
-```console
-AOs 2023 [Version 2.5]
-$ diagxt
-```
+This is will first build AOs if it already isn't and it will execute the `AOs\AOs.exe` executable.
 
 ***
 
