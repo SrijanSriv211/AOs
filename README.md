@@ -10,7 +10,7 @@ A Developer Command-line Tool Built for Developers by a Developer. It is Simple 
 2. Extract `AOs.zip` file and run `AOs.exe` file.
 3. To see a list of all supported commands, type `help` in the AOs window:
 ```console
-AOs 2023 [Version 2.5]
+AOs 2023 [Version 2.5]  (User)
 $ help
 ```
 
@@ -18,14 +18,14 @@ $ help
 
 :heavy_check_mark: Correct way:
 ```console
-AOs 2023 [Version 2.5]
+AOs 2023 [Version 2.5]  (User)
 $ "path\\to\\dir"
 $ "path/to/dir"
 ```
 
 :x: Wrong way:
 ```console
-AOs 2023 [Version 2.5]
+AOs 2023 [Version 2.5]  (User)
 $ "path\to\dir"
 ```
 

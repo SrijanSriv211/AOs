@@ -9,6 +9,7 @@
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 . Fix the bug in Filer where it sometimes tries decrypt "099" for some reason. Debug it and fix it.
+Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
