@@ -36,8 +36,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 
 ## Usage
 1. Run multiple commands in a single line:
-    a. To save your valuable time, AOs is here supporting with the most popular, semicolon `;`
-    b. Now you can execute commands automatically without waiting for the first one to finish then execute the second, one-by-one. AOs will do it automatically for you
+    Save your valuable time by using semicolon `;` execute multiple AOs commands in a single file. This will automatically execute those commands without you waiting for the first one to finish then execute the second manually one-by-one. AOs follows the same multi-line execution conventions as in C#.
 
     ```console
     AOs 2023 [Version 2.5]  (User)
