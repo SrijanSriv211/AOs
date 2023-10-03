@@ -29,7 +29,7 @@ AOs 2023 [Version 2.5]  (User)
 $ "path\to\dir"
 ```
 
-AOs follows the same string handling conventions as in any programming language.
+AOs follows the same string handling conventions as in C#.
 
 ***
 
