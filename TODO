@@ -9,7 +9,6 @@
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 . Fix the bug in Filer where it sometimes tries decrypt "099" for some reason. Debug it and fix it.
-Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
@@ -19,6 +18,7 @@ Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'F
 ...........................................................Commands.....................................................
 ........................................................................................................................
 /* AOs 2.6 features */
+Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 let -> Store data to a variable:
 	To use the variable type '$[the-name-of-the-variable]'.
 	'let' command can store any value to variables. Even store values from other commands like the 'datetime' command.
