@@ -2,8 +2,12 @@ partial class DeveloperFeatures
 {
     public readonly Parser parser;
 
+    private readonly SystemUtils sys_utils;
+
     public DeveloperFeatures()
     {
+        this.sys_utils = new();
+
         this.parser = new(CheckForError);
         this.LoadDevFeatures();
     }
