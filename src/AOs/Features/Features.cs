@@ -27,6 +27,11 @@ class Features
         sys_utils.CommandPrompt("shutdown /s /t0");
     }
 
+    public void Lock()
+    {
+        sys_utils.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
+    }
+
     public void Refresh()
     {
         sys_utils.StartApp(Obsidian.AOs_binary_path);

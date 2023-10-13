@@ -42,6 +42,7 @@ If the input is 'startup::<file-name>', run the file from the 'Startup' folder w
 . about           -> About AOs
 . shutdown        -> Shutdown the system
 . restart         -> Restart the system
+. lock            -> Lock the system
 . exit            -> Exit AOs
 . reload          -> Restart AOs
 . credits         -> Credit for AOs

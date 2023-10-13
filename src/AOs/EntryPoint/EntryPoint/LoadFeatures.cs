@@ -18,6 +18,7 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "about", "info" }, "About AOs", method: features.About);
         this.parser.Add(new string[]{ "shutdown" }, "Shutdown the host machine", method: this.features.Shutdown);
         this.parser.Add(new string[]{ "restart" }, "Restart the host machine", method: this.features.Restart);
+        this.parser.Add(new string[]{ "lock", "deeplock" }, "Lock the host machine", method: this.features.Lock);
         this.parser.Add(new string[]{ "quit", "exit" }, "Exit AOs", method: this.features.Exit);
         this.parser.Add(new string[]{ "admin" }, "Launch an AOs instance as administrator", method: this.features.Admin);
         this.parser.Add(new string[]{ "reload", "refresh" }, "Restart AOs", method: this.features.Refresh);
