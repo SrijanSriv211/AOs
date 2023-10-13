@@ -12,7 +12,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 
 ## Highlights
 1. Developer commands
-2. Encrypt or Decrypt any text
+2. Run multiple commands in a single line
 
 ## New Features
 1. Developer commands

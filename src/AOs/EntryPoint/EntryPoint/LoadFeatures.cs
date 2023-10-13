@@ -127,5 +127,21 @@ partial class EntryPoint
             },
             min_args_length: 1, method: this.features.Filer
         );
+
+        // Developer commands
+        this.parser.Add(
+            new string[]{ "dev", "developer" }, "Developer tools",
+            supported_args: new Dictionary<string[], string>
+            {
+                {new string[]{"-h", "--help"}, "Show information about a developer command"},
+                {new string[]{"new"}, "Create a new project"},
+                {new string[]{"git", "github"}, "Use git to maintain version control"},
+                {new string[]{"cloc", "countlinesofcode"}, "Count the lines of code in a project directory"},
+                {new string[]{"server"}, "Start a local web-server"},
+                {new string[]{"clean"}, "Delete temp/unnecessary files created by the programming language in the project"},
+                {new string[]{"ver", "version"}, "Show the current build number of the project"},
+            },
+            is_flag: false, method: this.features.DevCMD
+        );
     }
 }

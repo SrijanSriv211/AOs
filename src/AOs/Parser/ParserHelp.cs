@@ -7,7 +7,7 @@ partial class Parser
         string default_value = (details.Default_values != null && !Utils.Array.IsEmpty(details.Default_values)) ? $" (default: {string.Join(", ", details.Default_values)})" : "";
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
         string max_args_len = details.Max_args_length == 0 ? "Maximum arguments: ∞" : $"Maximum arguments: {details.Max_args_length}";
-        string min_args_len = $"Minimum arguments: {details.Min_args_length}";
+        string min_args_len = details.Min_args_length == -1 ? "Minimum arguments: ∞" : $"Minimum arguments: {details.Max_args_length}";
 
         new TerminalColor("Name:", ConsoleColor.Cyan);
         new TerminalColor(string.Format("{0," + -Utils.Maths.CalculatePadding(1) + "}", names), ConsoleColor.Gray, false);

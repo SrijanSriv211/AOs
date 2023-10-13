@@ -3,6 +3,7 @@ class Features
     private readonly Utils.Https https;
     private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
+    private readonly DeveloperFeatures developer_features = new();
 
     public Features(Obsidian AOs)
     {
@@ -751,5 +752,21 @@ class Features
             new TerminalColor("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
             new TerminalColor("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
+    }
+
+    public void DevCMD(string[] args)
+    {
+        // Split the Toks into a cmd and Args variable and array respectively.
+        string input_cmd = Utils.String.Strings(args.FirstOrDefault());
+        string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
+
+        if (Utils.String.IsEmpty(input_cmd))
+            return;
+
+        else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
+            this.developer_features.parser.GetHelp(input_args ?? new string[]{""});
+
+        else
+            this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));
     }
 }
