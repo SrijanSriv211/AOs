@@ -81,13 +81,15 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     ```
 
 3. Control host system volume:
-    AOs had
+    AOs had the `volume` command as an experimental command (previously known as overload command) since `AOs 2.3.8`. However, now in AOs 2.5, the `vol` command is officially becoming a mainstream command of AOs, in other words, the `volume` command is no more an experimental command.
+
+    This command is used to control the volume of the host operating system volume through the command-line of AOs. It gives you the ability to mute/unmute your operating system volume, as well as, it allows you to dynamically control the volume of your system by increasing or decreasing the volume by the given levels. Also it allows you to set the volume to a specific level.
 
     ```console
     AOs 2023 [Version 2.5]  (User)
     $ help vol
     Name:
-    vol, volume                                                 Set the system master volume to a specific level
+    vol, volume                                                 Control the host operating system volume
 
     Details:
     vol, volume [OPTIONS]
@@ -96,21 +98,21 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     Minimum arguments: 2
 
     Options:
-    -m                                                          Mute/Unmute the system master volume
+    -m                                                          Mute/Unmute host operating system volume
     -i                                                          Increase/Decrease the volume by then given value
 
-    $ vol -m # Mute the system master volume
-    $ vol -m # Unmute the system master volume
-    $ vol -i -20 # Decrease the system master volume by 20 levels
-    $ vol # When no argument is passed, then print the current system master volume
+    $ vol -m # Mute the host operating system volume
+    $ vol -m # Unmute the host operating system volume
+    $ vol -i -20 # Decrease the host operating system volume by 20 levels
+    $ vol # When no argument is passed, then print the current host operating system volume
     80
-    $ vol -i 20 # Increase the system master volume by 20 levels
+    $ vol -i 20 # Increase the host operating system volume by 20 levels
     $ vol
     100
-    $ vol 10 # Set the system master volume to 10
+    $ vol 10 # Set the host operating system volume to 10
     $ vol
     9.999999
-    $ vol 100 # Set the system master volume to 100
+    $ vol 100 # Set the host operating system volume to 100
     $ vol
     100
     ```
