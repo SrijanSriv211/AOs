@@ -767,8 +767,8 @@ class Features
             return;
         }
 
-        var parser = new Argparse("vol", "Set the system master volume to a specific level", Error.UnrecognizedArgs);
-        parser.Add(new string[]{"-m"}, "Mute/Unmute the system master volume", is_flag: true);
+        var parser = new Argparse("vol", "Control the host operating system volume", Error.UnrecognizedArgs);
+        parser.Add(new string[]{"-m"}, "Mute/Unmute host operating system volume", is_flag: true);
         parser.Add(new string[]{"-i"}, "Increase/Decrease the volume by then given value", is_flag: false);
         var parsed_args = parser.Parse(Utils.Array.Reduce(vol_level));
 

@@ -129,7 +129,7 @@ partial class EntryPoint
             min_args_length: 1, method: this.features.Filer
         );
         this.parser.Add(
-            new string[]{ "vol", "volume" }, "Set the system master volume to a specific level",
+            new string[]{ "vol", "volume" }, "Control the host operating system volume",
             supported_args: new Dictionary<string[], string>
             {
                 {new string[]{"-m"}, "Mute/Unmute the system master volume"},
