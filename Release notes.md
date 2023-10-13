@@ -18,8 +18,9 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 ## New Features
 1. Developer commands
 2. Encrypt or Decrypt any text
-3. Run multiple commands in a single line
-4. Execute a command direcly from the command-line
+3. Control host system volume
+4. Run multiple commands in a single line
+5. Execute a command direcly from the command-line
 
 ## Improvements
 1. Less crashes
@@ -79,7 +80,42 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     -d                                                          Decrypt the message
     ```
 
-3. Run multiple commands in a single line:
+3. Control host system volume:
+    AOs had
+
+    ```console
+    AOs 2023 [Version 2.5]  (User)
+    $ help vol
+    Name:
+    vol, volume                                                 Set the system master volume to a specific level
+
+    Details:
+    vol, volume [OPTIONS]
+
+    Maximum arguments: 2
+    Minimum arguments: 2
+
+    Options:
+    -m                                                          Mute/Unmute the system master volume
+    -i                                                          Increase/Decrease the volume by then given value
+
+    $ vol -m # Mute the system master volume
+    $ vol -m # Unmute the system master volume
+    $ vol -i -20 # Decrease the system master volume by 20 levels
+    $ vol # When no argument is passed, then print the current system master volume
+    80
+    $ vol -i 20 # Increase the system master volume by 20 levels
+    $ vol
+    100
+    $ vol 10 # Set the system master volume to 10
+    $ vol
+    9.999999
+    $ vol 100 # Set the system master volume to 100
+    $ vol
+    100
+    ```
+
+4. Run multiple commands in a single line:
     Save your valuable time by using semicolon `;` execute multiple AOs commands in a single file. This will automatically execute those commands without you waiting for the first one to finish then execute the second manually one-by-one. AOs follows the same multi-line execution conventions as in C#.
 
     ```console
