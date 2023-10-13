@@ -760,6 +760,7 @@ class Features
         string input_cmd = Utils.String.Strings(args.FirstOrDefault());
         string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
 
+        // Execute the developer commands.
         if (Utils.String.IsEmpty(input_cmd))
             return;
 
