@@ -58,14 +58,25 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 
     ```console
     AOs 2023 [Version 2.5]  (User)
-    $ dev help
-    Type `help <command-name>` for more information on a specific command
-    1. new                                                         Create a new project
-    2. git, github                                                 Use git to maintain version control
-    3. cloc, countlinesofcode                                      Count the lines of code in a project directory
-    4. clean                                                       Delete temp/unnecessary files created by the programming language in the project
-    5. ver, version                                                Show the current build number of the project
-    6. server                                                      Start a local web-server
+    $ help filer
+    Name:
+    filer                                                       A powerful text encryption and decryption program.
+
+    Details:
+    filer [OPTIONS]
+
+    Maximum arguments: ∞
+    Minimum arguments: 0
+
+    Options:
+    -h, --help                                                  Show help message
+    -s                                                          A random seed in the range (0, 1) that acts like a password
+    -o                                                          Place the output into <file>
+    -m                                                          The maximum length of a string in each chunk
+    -t                                                          Text input from the command line
+    -f                                                          Takes a text file as an input
+    -e                                                          Encrypt the message
+    -d                                                          Decrypt the message
     ```
 
 3. Run multiple commands in a single line:
