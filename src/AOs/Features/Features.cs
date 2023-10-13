@@ -759,6 +759,47 @@ class Features
         }
     }
 
+    public void ControlVolume(string[] vol_level)
+    {
+        if (Utils.Array.IsEmpty(vol_level))
+        {
+            Console.WriteLine(WindowsVolumeControl.AudioManager.GetMasterVolume());
+            return;
+        }
+
+        var parser = new Argparse("vol", "Set the system master volume to a specific level", Error.UnrecognizedArgs);
+        parser.Add(new string[]{"-m"}, "Mute/Unmute the system master volume", is_flag: true);
+        parser.Add(new string[]{"-i"}, "Increase/Decrease the volume by then given value", is_flag: false);
+        var parsed_args = parser.Parse(Utils.Array.Reduce(vol_level));
+
+        if (parsed_args[0].Names.Contains("-m"))
+            WindowsVolumeControl.AudioManager.ToggleMasterVolumeMute();
+
+        else if (parsed_args[0].Names.Contains("-i"))
+        {
+            if (int.TryParse(parsed_args[0].Value, out int level))
+            {
+                if (level < -100 || level > 100)
+                    new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100");
+
+                else
+                    WindowsVolumeControl.AudioManager.StepMasterVolume(level);
+            }
+        }
+
+        else
+        {
+            if (int.TryParse(parsed_args[0].Names.FirstOrDefault(), out int level))
+            {
+                if (level < 0 || level > 100)
+                    new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100");
+
+                else
+                    WindowsVolumeControl.AudioManager.SetMasterVolume(level);
+            }
+        }
+    }
+
     public void DevCMD(string[] args)
     {
         // Split the Toks into a cmd and Args variable and array respectively.
