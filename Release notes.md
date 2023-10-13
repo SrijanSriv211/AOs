@@ -13,6 +13,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 ## Highlights
 1. Developer commands
 2. Run multiple commands in a single line
+3. Removal of some features from AOs 2.4
 
 ## New Features
 1. Developer commands
@@ -35,7 +36,39 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 3. Not executing when suitable .NET Framework is not installed on the host machine
 
 ## Usage
-1. Run multiple commands in a single line:
+1. Developer commands:
+    The all new `developer` command is designed to help developers develop their apps.
+
+    ```console
+    AOs 2023 [Version 2.5]  (User)
+    $ dev help
+    Type `help <command-name>` for more information on a specific command
+    1. new                                                         Create a new project
+    2. git, github                                                 Use git to maintain version control
+    3. cloc, countlinesofcode                                      Count the lines of code in a project directory
+    4. clean                                                       Delete temp/unnecessary files created by the programming language in the project
+    5. ver, version                                                Show the current build number of the project
+    6. server                                                      Start a local web-server
+    ```
+
+2. Encrypt or Decrypt any text:
+    Now I introduce a new command, the `filer` command. Designed to encrypt or decrypt text using a very powerful custom text encryption and decryption algorithm with the help of the Absolute Number Disorder (AND) random number generator. I build Filer back in 2021, and was planned to be a part of AOs 1.7 but unfortunately it couldn't be. However, from AOs 2.5, Filer is officially integrated into the powerful environment of AOs.
+
+    Filer could be found on [github](https://github.com/Light-Lens/Filer.git)
+
+    ```console
+    AOs 2023 [Version 2.5]  (User)
+    $ dev help
+    Type `help <command-name>` for more information on a specific command
+    1. new                                                         Create a new project
+    2. git, github                                                 Use git to maintain version control
+    3. cloc, countlinesofcode                                      Count the lines of code in a project directory
+    4. clean                                                       Delete temp/unnecessary files created by the programming language in the project
+    5. ver, version                                                Show the current build number of the project
+    6. server                                                      Start a local web-server
+    ```
+
+3. Run multiple commands in a single line:
     Save your valuable time by using semicolon `;` execute multiple AOs commands in a single file. This will automatically execute those commands without you waiting for the first one to finish then execute the second manually one-by-one. AOs follows the same multi-line execution conventions as in C#.
 
     ```console
