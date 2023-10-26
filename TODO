@@ -145,6 +145,8 @@ x settings        -> Start the Windows settings page                          [N
 . filer           -> Encrypt any text
 . vol             -> Set the system master volume to a specific level
 
+/* AOs 2.6 features */
+NOTE: Now developer feature is a part of AOs 2.6 development plan.
 /* Developer features */
 dev, developer	-> Developer tools:
 	[
