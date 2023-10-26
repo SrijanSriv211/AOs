@@ -124,3 +124,25 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     AOs 2023 [Version 2.5]  (User)
     $ sfc /scannow; DISM /Online /Cleanup-image /Restorehealth
     ```
+
+5. Execute a command direcly from the command-line:
+    Now apart from executing an AOs outside of AOs from the command-line, you can also execute any AOs command directly from the command-line. He following shows you how to do that.
+
+    ```console
+    $ AOs --help
+    Name:
+    AOs
+
+    Description:
+    A Developer Command-line Tool Built for Developers by a Developer.
+
+    Usage:
+    AOs [OPTIONS]
+
+    Options:
+    -h, --help: Display all supported arguments (is flag: true)
+    -a, --admin: Run as administrator (is flag: true)
+    -c, --cmd: Program passed in as string
+    $ AOs --cmd "shout Hello world!"
+    Hello world!
+    ```
