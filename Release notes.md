@@ -11,14 +11,16 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 5. Usage
 
 ## Highlights
-1. Run multiple commands in a single line
-2. Removal of some features from AOs 2.4
+1. Developer commands
+2. Run multiple commands in a single line
+3. Removal of some features from AOs 2.4
 
 ## New Features
-1. Encrypt or Decrypt any text
-2. Control host system volume
-3. Run multiple commands in a single line
-4. Execute a command direcly from the command-line
+1. Developer commands
+2. Encrypt or Decrypt any text
+3. Control host system volume
+4. Run multiple commands in a single line
+5. Execute a command direcly from the command-line
 
 ## Improvements
 1. Less crashes
@@ -35,7 +37,22 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 3. Not executing when suitable .NET Framework is not installed on the host machine
 
 ## Usage
-1. Encrypt or Decrypt any text:
+1. Developer commands:
+    The all new `developer` command is designed to help developers develop their apps.
+
+    ```console
+    AOs 2023 [Version 2.5]  (User)
+    $ dev help
+    Type `help <command-name>` for more information on a specific command
+    1. new                                                         Create a new project
+    2. git, github                                                 Use git to maintain version control
+    3. cloc, countlinesofcode                                      Count the lines of code in a project directory
+    4. clean                                                       Delete temp/unnecessary files created by the programming language in the project
+    5. ver, version                                                Show the current build number of the project
+    6. server                                                      Start a local web-server
+    ```
+
+2. Encrypt or Decrypt any text:
     Now I introduce a new command, the `filer` command. Designed to encrypt or decrypt text using a very powerful custom text encryption and decryption algorithm with the help of the Absolute Number Disorder (AND) random number generator. I build Filer back in 2021, and was planned to be a part of AOs 1.7 but unfortunately it couldn't be. However, from AOs 2.5, Filer is officially integrated into the powerful environment of AOs.
 
     Filer could be found on [github](https://github.com/Light-Lens/Filer.git)
@@ -63,7 +80,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     -d                                                          Decrypt the message
     ```
 
-2. Control host system volume:
+3. Control host system volume:
     AOs had the `volume` command as an experimental command (previously known as overload command) since `AOs 2.3.8`. However, now in AOs 2.5, the `vol` command is officially becoming a mainstream command of AOs, in other words, the `volume` command is no more an experimental command.
 
     This command is used to control the volume of the host operating system volume through the command-line of AOs. It gives you the ability to mute/unmute your operating system volume, as well as, it allows you to dynamically control the volume of your system by increasing or decreasing the volume by the given levels. Also it allows you to set the volume to a specific level.
@@ -100,7 +117,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     100
     ```
 
-3. Run multiple commands in a single line:
+4. Run multiple commands in a single line:
     Save your valuable time by using semicolon `;` execute multiple AOs commands in a single file. This will automatically execute those commands without you waiting for the first one to finish then execute the second manually one-by-one. AOs follows the same multi-line execution conventions as in C#.
 
     ```console
@@ -108,7 +125,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     $ sfc /scannow; DISM /Online /Cleanup-image /Restorehealth
     ```
 
-4. Execute a command direcly from the command-line:
+5. Execute a command direcly from the command-line:
     Now apart from executing an AOs outside of AOs from the command-line, you can also execute any AOs command directly from the command-line. He following shows you how to do that.
 
     ```console
