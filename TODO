@@ -15,7 +15,8 @@ Make AOs launch with windows terminal using 'wt.exe AOs.exe'
 Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
 
 /* BUG */
-leaf https://google.com is not working for some reason
+leaf https://google.com is not working for some reason.
+sometimes the ">" input doesn't work. CMD opens and closes immediately and automatically.
 
 ........................................................................................................................
 ...........................................................Commands.....................................................
@@ -148,8 +149,6 @@ x settings        -> Start the Windows settings page                          [N
 . filer           -> Encrypt any text
 . vol             -> Set the system master volume to a specific level
 
-/* AOs 2.6 features */
-NOTE: Now developer feature is a part of AOs 2.6 development plan.
 /* Developer features */
 dev, developer	-> Developer tools:
 	[
