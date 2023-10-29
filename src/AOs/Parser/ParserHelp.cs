@@ -14,7 +14,7 @@ partial class Parser
         new TerminalColor(desc + "\n", ConsoleColor.DarkGray);
 
         new TerminalColor("Details:", ConsoleColor.Blue);
-        new TerminalColor($"{names} [OPTIONS] {default_value}{is_flag}", ConsoleColor.Gray);
+        new TerminalColor($"{names} {(details.Is_flag ? "" : "[OPTIONS]")} {default_value}{is_flag}", ConsoleColor.Gray);
         Console.WriteLine();
 
         if (!details.Is_flag)
