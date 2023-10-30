@@ -157,11 +157,15 @@ class Features
 
     public void ChangeCurrentDir(string dirname)
     {
+        dirname = Utils.String.Strings(dirname);
         if (Utils.String.IsEmpty(dirname))
             TerminalColor.Print(Directory.GetCurrentDirectory(), ConsoleColor.White);
 
+        else if (Directory.Exists(dirname))
+            Directory.SetCurrentDirectory(dirname);
+
         else
-            Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
+            new Error($"Folder with name '{dirname}' does not exist.");
     }
 
     public void SwitchElseShell(string shell_name)
