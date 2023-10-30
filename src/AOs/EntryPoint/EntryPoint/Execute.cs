@@ -12,9 +12,9 @@ partial class EntryPoint
 
             else if (i.cmd == "AOs1000")
             {
-                new TerminalColor("AOs1000!", ConsoleColor.White);
-                new TerminalColor("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
-                new TerminalColor("It was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
+                TerminalColor.Print("AOs1000!", ConsoleColor.White);
+                TerminalColor.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
+                TerminalColor.Print("It was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
             else

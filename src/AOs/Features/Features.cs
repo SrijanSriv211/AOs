@@ -50,9 +50,9 @@ class Features
 
     public void About()
     {
-        new TerminalColor(Obsidian.about_AOs, ConsoleColor.White);
-        new TerminalColor("For more information go to ", ConsoleColor.DarkGray, false);
-        new TerminalColor(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
+        TerminalColor.Print(Obsidian.about_AOs, ConsoleColor.White);
+        TerminalColor.Print("For more information go to ", ConsoleColor.DarkGray, false);
+        TerminalColor.Print(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
     }
 
     public void GetTime()
@@ -109,7 +109,7 @@ class Features
              "SYSTEM LANGUAGE : en-in; English (India)"
         };
 
-        new TerminalColor(string.Join("\n", details), ConsoleColor.White);
+        TerminalColor.Print(string.Join("\n", details), ConsoleColor.White);
     }
 
     public void Scan()
@@ -120,16 +120,16 @@ class Features
             sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
             sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
             sys_utils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
-            new TerminalColor($"Please check '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
-            new TerminalColor($"and '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
+            TerminalColor.Print($"Please check '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
+            TerminalColor.Print($"and '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
         }
 
         else
         {
             new Error("Please run AOs as Administrator to scan the integrity of all protected system files.");
-            new TerminalColor("Type", ConsoleColor.Gray, false);
-            new TerminalColor(" 'admin' ", ConsoleColor.White, false);
-            new TerminalColor("to run AOs in Administrator", ConsoleColor.Gray);
+            TerminalColor.Print("Type", ConsoleColor.Gray, false);
+            TerminalColor.Print(" 'admin' ", ConsoleColor.White, false);
+            TerminalColor.Print("to run AOs in Administrator", ConsoleColor.Gray);
         }
     }
 
@@ -145,8 +145,8 @@ class Features
         else
         {
             new Error("Cannot find the update utility.");
-            new TerminalColor("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
-            new TerminalColor("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
+            TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
+            TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
     }
 
@@ -158,7 +158,7 @@ class Features
     public void ChangeCurrentDir(string dirname)
     {
         if (Utils.String.IsEmpty(dirname))
-            new TerminalColor(Directory.GetCurrentDirectory(), ConsoleColor.White);
+            TerminalColor.Print(Directory.GetCurrentDirectory(), ConsoleColor.White);
 
         else
             Directory.SetCurrentDirectory(Utils.String.Strings(dirname));
@@ -211,13 +211,13 @@ class Features
                     var default_color = Console.BackgroundColor;
                     Console.BackgroundColor = ConsoleColor.White;
 
-                    new TerminalColor(list_of_colors[i], (ConsoleColor)i);
+                    TerminalColor.Print(list_of_colors[i], (ConsoleColor)i);
 
                     Console.BackgroundColor = default_color;
                 }
 
                 else
-                    new TerminalColor(list_of_colors[i], (ConsoleColor)i);
+                    TerminalColor.Print(list_of_colors[i], (ConsoleColor)i);
             }
         }
 
@@ -391,21 +391,21 @@ class Features
 
         static void ShowDirs(string dir)
         {
-            new TerminalColor(dir, ConsoleColor.White);
+            TerminalColor.Print(dir, ConsoleColor.White);
             string[] entries = FileIO.FolderSystem.Read(dir);
 
             for (int i = 0; i < entries.Length; i++)
             {
                 int padding = Utils.Maths.CalculatePadding(i+1, 100);
 
-                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", entries[i]);
 
                 if (File.Exists(entries[i]))
-                    new TerminalColor("FILE", ConsoleColor.DarkGray);
+                    TerminalColor.Print("FILE", ConsoleColor.DarkGray);
 
                 else if (Directory.Exists(entries[i]))
-                    new TerminalColor("FOLDER", ConsoleColor.DarkGray);
+                    TerminalColor.Print("FOLDER", ConsoleColor.DarkGray);
             }
 
             Console.WriteLine();
@@ -428,7 +428,7 @@ class Features
         foreach (string content in content_to_create)
         {
             if (content.ToLower() == "con")
-                new TerminalColor("Hello CON!", ConsoleColor.White);
+                TerminalColor.Print("Hello CON!", ConsoleColor.White);
 
             else if (content.EndsWith("\\") || content.EndsWith("/"))
                 FileIO.FolderSystem.Create(content);
@@ -445,7 +445,7 @@ class Features
         foreach (string content in content_to_delete)
         {
             if (content.ToLower() == "con")
-                new TerminalColor("Don't Delete CON!", ConsoleColor.Cyan);
+                TerminalColor.Print("Don't Delete CON!", ConsoleColor.Cyan);
 
             else if (Directory.Exists(content))
                 FileIO.FolderSystem.Delete(content);
@@ -469,7 +469,7 @@ class Features
         string new_name = content_to_rename[1];
 
         if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
-            new TerminalColor("Hello CON!", ConsoleColor.White);
+            TerminalColor.Print("Hello CON!", ConsoleColor.White);
 
         else if (Directory.Exists(old_name))
             FileIO.FolderSystem.Move(old_name, new_name);
@@ -489,7 +489,7 @@ class Features
         string new_name = content_to_rename[1];
 
         if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
-            new TerminalColor("Hello CON!", ConsoleColor.White);
+            TerminalColor.Print("Hello CON!", ConsoleColor.White);
 
         else if (Directory.Exists(old_name))
             FileIO.FolderSystem.Copy(old_name, new_name);
@@ -529,14 +529,14 @@ class Features
 
             else if (websites.Contains("-w"))
             {
-                new TerminalColor($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
+                TerminalColor.Print($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
                 string weather = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
                 Console.WriteLine(weather);
             }
 
             else if (websites.Contains("-t"))
             {
-                new TerminalColor($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
+                TerminalColor.Print($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
                 string temp = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
                 Console.WriteLine((temp[0] == '+') ? temp.Substring(1) : temp);
             }
@@ -600,7 +600,7 @@ class Features
         {
             for (int i = 0; i < lines.Length; i++)
             {
-                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine(lines[i]);
             }
         }
@@ -609,7 +609,7 @@ class Features
         {
             if (line_to_read-1 < lines.Length)
             {
-                new TerminalColor($"{line_to_read}. ", ConsoleColor.DarkGray, false);
+                TerminalColor.Print($"{line_to_read}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine(lines[line_to_read-1]);
             }
         }
@@ -714,7 +714,7 @@ class Features
             foreach (System.Diagnostics.Process p in all_process)
             {
                 Console.Write("{0," + -Utils.Maths.CalculatePadding(100, 100) + "}", p.ProcessName);
-                new TerminalColor($"Process ID: {p.Id}", ConsoleColor.DarkGray);
+                TerminalColor.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
             }
         }
 
@@ -754,8 +754,8 @@ class Features
         else
         {
             new Error("Cannot find the Filer.");
-            new TerminalColor("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
-            new TerminalColor("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
+            TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
+            TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
     }
 

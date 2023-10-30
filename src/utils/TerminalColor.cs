@@ -1,6 +1,6 @@
 class TerminalColor
 {
-    public TerminalColor(string message, ConsoleColor color, bool is_newline=true)
+    public static void Print(string message, ConsoleColor color, bool is_newline=true)
     {
         var default_color = Console.ForegroundColor;
         Console.ForegroundColor = color;
@@ -12,5 +12,16 @@ class TerminalColor
             Console.Write(message);
 
         Console.ForegroundColor = default_color;
+    }
+
+    public static string TakeInput(ConsoleColor color)
+    {
+        var default_color = Console.ForegroundColor;
+        Console.ForegroundColor = color;
+
+        string output = Console.ReadLine();
+
+        Console.ForegroundColor = default_color;
+        return output;
     }
 }

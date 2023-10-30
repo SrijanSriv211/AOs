@@ -22,8 +22,8 @@ partial class EntryPoint
 
         foreach (var contents in all_startup_apps_content)
         {
-            new TerminalColor($"> ", ConsoleColor.DarkGray, false);
-            new TerminalColor($"{contents.Key}", ConsoleColor.White);
+            TerminalColor.Print($"> ", ConsoleColor.DarkGray, false);
+            TerminalColor.Print($"{contents.Key}", ConsoleColor.White);
             Execute(contents.Value);
         }
 

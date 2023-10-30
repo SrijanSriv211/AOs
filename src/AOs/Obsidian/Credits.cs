@@ -22,6 +22,6 @@ partial class Obsidian
              "Type 'help' to get information about all supported command."
         };
 
-        new TerminalColor(string.Join("\n", CreditCenter), ConsoleColor.White);
+        TerminalColor.Print(string.Join("\n", CreditCenter), ConsoleColor.White);
     }
 }

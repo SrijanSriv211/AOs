@@ -2,13 +2,13 @@ partial class Argparse
 {
     public void PrintHelp()
     {
-        new TerminalColor("Name:", ConsoleColor.Yellow);
+        TerminalColor.Print("Name:", ConsoleColor.Yellow);
         Console.WriteLine($"{this.name}\n");
-        new TerminalColor("Description:", ConsoleColor.Cyan);
+        TerminalColor.Print("Description:", ConsoleColor.Cyan);
         Console.WriteLine($"{this.desc}\n");
-        new TerminalColor("Usage:", ConsoleColor.Blue);
+        TerminalColor.Print("Usage:", ConsoleColor.Blue);
         Console.WriteLine($"{this.name} [OPTIONS]\n");
-        new TerminalColor("Options:", ConsoleColor.Magenta);
+        TerminalColor.Print("Options:", ConsoleColor.Magenta);
 
         foreach (var argument in arguments)
         {
@@ -29,11 +29,11 @@ partial class Argparse
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
         string is_required = details.Required != false ? $" (required: true)" : "";
 
-        new TerminalColor("Name:", ConsoleColor.Cyan);
+        TerminalColor.Print("Name:", ConsoleColor.Cyan);
         Console.Write("{0," + -Utils.Maths.CalculatePadding(1) + "}", names);
-        new TerminalColor(desc + "\n", ConsoleColor.DarkGray);
+        TerminalColor.Print(desc + "\n", ConsoleColor.DarkGray);
 
-        new TerminalColor("Details:", ConsoleColor.Blue);
+        TerminalColor.Print("Details:", ConsoleColor.Blue);
         Console.WriteLine($"{names} [OPTIONS] {default_value}{is_flag}{is_required}");
     }
 
@@ -53,9 +53,9 @@ partial class Argparse
                 string description = detail.Help;
                 int padding = Utils.Maths.CalculatePadding(i+1);
 
-                new TerminalColor($"{i+1}. ", ConsoleColor.DarkGray, false);
+                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", string.Join(", ", command_names));
-                new TerminalColor(description, ConsoleColor.DarkGray);
+                TerminalColor.Print(description, ConsoleColor.DarkGray);
             }
         }
 

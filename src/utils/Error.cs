@@ -2,7 +2,7 @@ class Error
 {
     public Error(string details)
     {
-        new TerminalColor(details, ConsoleColor.Red);
+        TerminalColor.Print(details, ConsoleColor.Red);
     }
 
     // No arguments.

@@ -21,9 +21,9 @@ class History
 
             int padding = Utils.Maths.CalculatePadding(count, 100);
 
-            new TerminalColor($"{count}. ", ConsoleColor.DarkGray, false);
+            TerminalColor.Print($"{count}. ", ConsoleColor.DarkGray, false);
             Console.Write("{0," + -padding + "}", history[i+1]);
-            new TerminalColor($"[{datetime}]", ConsoleColor.DarkGray);
+            TerminalColor.Print($"[{datetime}]", ConsoleColor.DarkGray);
 
             count++;
             i++;
