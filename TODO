@@ -8,6 +8,7 @@
 ........................................................................................................................
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
+Optimize and clean the 'dev new' function.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
@@ -160,7 +161,7 @@ dev, developer	-> Developer tools:
 	-h, --help, ??, /?, -?:
 		show info about any programming language, or a developer command
 
-	cloc:
+#	cloc:
 		Count the lines of code in a directory
 
 	server:
@@ -169,7 +170,7 @@ dev, developer	-> Developer tools:
 	clean:
 		Delete temp/unnecessary files created by the programming language in the project
 
-	git:
+#	git:
 		Use git to maintain version control
 
 	ver, version:
