@@ -4,4 +4,9 @@ partial class DeveloperFeatures
     {
         Console.WriteLine("Clean project");
     }
+
+    private void Tasks()
+    {
+        Console.WriteLine("Tasks");
+    }
 }

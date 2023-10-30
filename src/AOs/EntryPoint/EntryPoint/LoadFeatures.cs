@@ -145,8 +145,7 @@ partial class EntryPoint
             {
                 {new string[]{"-h", "--help"}, "Show information about a developer command"},
                 {new string[]{"new"}, "Create a new project"},
-                {new string[]{"git", "github"}, "Use git to maintain version control"},
-                {new string[]{"cloc", "countlinesofcode"}, "Count the lines of code in a project directory"},
+                {new string[]{"tasks"}, "List all custom tasks to run in a developer environment"},
                 {new string[]{"server"}, "Start a local web-server"},
                 {new string[]{"clean"}, "Delete temp/unnecessary files created by the programming language in the project"},
                 {new string[]{"ver", "version"}, "Show the current build number of the project"},
