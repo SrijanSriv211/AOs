@@ -150,7 +150,7 @@ partial class EntryPoint
                 {new string[]{"clean"}, "Delete temp/unnecessary files created by the programming language in the project"},
                 {new string[]{"ver", "version"}, "Show the current build number of the project"},
             },
-            is_flag: false, method: this.features.DevCMD
+            default_values: new string[]{"help"}, is_flag: false, method: this.features.DevCMD
         );
     }
 }
