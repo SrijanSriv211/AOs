@@ -1,6 +1,7 @@
+using System.Text.Json;
+
 partial class DeveloperFeatures
 {
-    //TODO: Optimize and clean this function.
     private void New(string folder_name)
     {
         // Create new project.
@@ -41,32 +42,42 @@ partial class DeveloperFeatures
         // Setup AOs.dev
         FileIO.FolderSystem.Create("AOs.dev");
 
-        string CurrentDir = Directory.GetCurrentDirectory().Replace("\\", "\\\\");
+        string CurrentDir = Directory.GetCurrentDirectory();
 
         // Setup project.json
-        string[] project_template = {
-            "{",
-            $"\t\"project-name\": \"{Path.GetFileName(CurrentDir)}\",",
-            $"\t\"project-path\": \"{CurrentDir}\",",
-            $"\t\"github URL\": \"{repo_data[0]}\",",
-            $"\t\"github branch\": \"{repo_data[1]}\",",
-            "\t\"build\": 0",
-            "}"
+        ProjectTemplate project_template = new()
+        {
+            project_name = Path.GetFileName(CurrentDir),
+            project_path = CurrentDir,
+            github_URL = repo_data[0],
+            github_branch = repo_data[1],
+            build = 0,
+            clean_project_waste = new List<string>()
         };
 
-        foreach (string i in project_template)
-            FileIO.FileSystem.Write("AOs.dev\\project.json", i + "\n");
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string project_json_obj = JsonSerializer.Serialize(project_template, options);
+        FileIO.FileSystem.Write("AOs.dev\\project.json", project_json_obj);
 
         // Setup tasks.json
-        string[] tasks_template = {
-            "{",
-            $"\t\"help\": [",
-            $"\t\t\"dotnet help\"",
-            $"\t]",
-            "}"
+        TasksConfig tasks_template = new()
+        {
+            tasks = new()
+            {
+                {
+                    "help", new TasksDetails()
+                    {
+                        description = "Show the dotnet help message",
+                        args = "dotnet help",
+                        is_flag = true,
+                        update_build_number = false,
+                        call_other_tasks = new List<string>()
+                    }
+                }
+            }
         };
 
-        foreach (string i in tasks_template)
-            FileIO.FileSystem.Write("AOs.dev\\tasks.json", i + "\n");
+        string tasks_json_obj = JsonSerializer.Serialize(tasks_template, options);
+        FileIO.FileSystem.Write("AOs.dev\\tasks.json", tasks_json_obj);
     }
 }
