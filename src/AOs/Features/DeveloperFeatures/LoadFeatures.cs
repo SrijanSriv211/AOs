@@ -14,6 +14,5 @@ partial class DeveloperFeatures
         );
         this.parser.Add(new string[]{"clean"}, "Delete temp/unnecessary files created by the programming language in the project", is_flag: true, method: this.CleanProject);
         this.parser.Add(new string[]{"-v", "ver", "version"}, "Show the current build number of the project", is_flag: true, method: this.ShowBuildNo);
-        this.parser.Add(new string[]{"server"}, "Start a local web-server", is_flag: true, method: this.StartLocalServer);
     }
 }
