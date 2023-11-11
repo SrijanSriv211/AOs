@@ -45,7 +45,7 @@ partial class EntryPoint
         this.parser.Add(new string[]{ "sysinfo", "systeminfo", "osinfo" }, "Display operating system configuration information", method: this.features.SysInfo);
         this.parser.Add(new string[]{ "tree" }, "Graphically display the directory structure of a drive or path", method: this.features.Tree);
         this.parser.Add(new string[]{ "diagxt" }, "Display AOs specific properties and configuration", method: this.features.Diagxt);
-        this.parser.Add(new string[]{ "scan" }, "Scan the integrity of all protected system files", method: this.features.Scan);
+        this.parser.Add(new string[]{ "scan", "deepscan" }, "Scan the integrity of all protected system files", method: this.features.Scan);
         this.parser.Add(new string[]{ "update" }, "Check for AOs updates", method: this.features.CheckForAOsUpdates);
 
         // Unflagged commands
