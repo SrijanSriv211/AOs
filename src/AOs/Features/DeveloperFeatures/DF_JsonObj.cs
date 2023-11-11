@@ -13,8 +13,7 @@ partial class DeveloperFeatures
     public class TasksDetails
     {
         public string description { get; set; }
-        public string args { get; set; }
-        public bool is_flag { get; set; }
+        public string command { get; set; }
         public bool update_build_number { get; set; }
         public List<string> call_other_tasks { get; set; }
     }

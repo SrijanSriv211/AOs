@@ -46,6 +46,21 @@ partial class FileIO
             }
         }
 
+        public static void Overwrite(string Filepath, string Content)
+        {
+            Create(Filepath);
+            try
+            {
+                File.WriteAllText(Filepath, Content);
+            }
+
+            catch (Exception e)
+            {
+                new Error(e.Message);
+                EntryPoint.CrashreportLog(e.ToString());
+            }
+        }
+
         public static void Delete(string Filepath)
         {
             if (File.Exists(Filepath))

@@ -806,17 +806,6 @@ class Features
 
     public void DevCMD(string[] args)
     {
-        string json_data = FileIO.FileSystem.ReadAllText("AOs.dev\\tasks.json");
-        DeveloperFeatures.TasksConfig tasks = new();
-        List<string> list_of_tasks = new();
-
-        if (!Utils.String.IsEmpty(json_data))
-        {
-            tasks = System.Text.Json.JsonSerializer.Deserialize<DeveloperFeatures.TasksConfig>(json_data);
-            foreach (var task in tasks.tasks)
-                list_of_tasks.Add(task.Key);
-        }
-
         // Split the Toks into a cmd and Args variable and array respectively.
         string input_cmd = Utils.String.Strings(args.FirstOrDefault());
         string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
@@ -827,10 +816,6 @@ class Features
 
         else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
             this.developer_features.parser.GetHelp(input_args ?? new string[]{""});
-
-        else if (list_of_tasks.Contains(input_cmd.ToLower()))
-        {
-        }
 
         else
             this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));

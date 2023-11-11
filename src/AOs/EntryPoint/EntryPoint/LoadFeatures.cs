@@ -145,10 +145,10 @@ partial class EntryPoint
             {
                 {new string[]{"-h", "--help"}, "Show information about a developer command"},
                 {new string[]{"new"}, "Create a new project"},
-                {new string[]{"tasks"}, "List all custom tasks to run in a developer environment"},
-                {new string[]{"server"}, "Start a local web-server"},
+                {new string[]{"-t", "tasks"}, "List all custom tasks to run in a developer environment"},
                 {new string[]{"clean"}, "Delete temp/unnecessary files created by the programming language in the project"},
-                {new string[]{"ver", "version"}, "Show the current build number of the project"},
+                {new string[]{"-v", "ver", "version"}, "Show the current build number of the project"},
+                {new string[]{"server"}, "Start a local web-server"},
             },
             default_values: new string[]{"help"}, is_flag: false, method: this.features.DevCMD
         );

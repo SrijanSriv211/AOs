@@ -68,8 +68,7 @@ partial class DeveloperFeatures
                     "help", new TasksDetails()
                     {
                         description = "Show the dotnet help message",
-                        args = "dotnet help",
-                        is_flag = true,
+                        command = "dotnet help",
                         update_build_number = false,
                         call_other_tasks = new List<string>()
                     }
