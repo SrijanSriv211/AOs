@@ -42,8 +42,10 @@ partial class DeveloperFeatures
         {
             if (task_name == task.Key)
             {
+                // Execute the task
                 sys_utils.CommandPrompt(task.Value.command + " " + string.Join(" ", task_args));
 
+                // Update the build number
                 if (task.Value.update_build_number)
                 {
                     string json_data = FileIO.FileSystem.ReadAllText("AOs.dev\\project.json");
@@ -54,6 +56,10 @@ partial class DeveloperFeatures
                     string project_json_obj = JsonSerializer.Serialize(project_data, options);
                     FileIO.FileSystem.Overwrite("AOs.dev\\project.json", project_json_obj);
                 }
+
+                // Execute other tasks
+                foreach (string other_task in task.Value.call_other_tasks)
+                    ExecTask(new string[] {other_task}, tasks);
             }
         }
     }
