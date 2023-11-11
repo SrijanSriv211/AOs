@@ -21,6 +21,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
 3. Control host system volume
 4. Run multiple commands in a single line
 5. Execute a command direcly from the command-line
+6. New Experimental commands
 
 ## Improvements
 1. Less crashes
