@@ -45,11 +45,9 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     $ dev help
     Type `help <command-name>` for more information on a specific command
     1. new                                                         Create a new project
-    2. git, github                                                 Use git to maintain version control
-    3. cloc, countlinesofcode                                      Count the lines of code in a project directory
-    4. clean                                                       Delete temp/unnecessary files created by the programming language in the project
-    5. ver, version                                                Show the current build number of the project
-    6. server                                                      Start a local web-server
+    2. -t, tasks                                                   List or run custom task in the developer environment
+    3. clean                                                       Delete temporary/unnecessary files created in the project
+    4. -v, ver, version                                            Show the current build number of the project
     ```
 
 2. Encrypt or Decrypt any text:
@@ -146,3 +144,23 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     $ AOs --cmd "shout Hello world!"
     Hello world!
     ```
+
+6. ~~Overload~~ Experimental commands:
+    Let's see what features are new and what features are removed from the Overload (now Experimental) commands feature.
+
+    ```diff
+    AOs 2023 [Version 2.5]  (User)
+    $ @
+    Type `help <command-name>` for more information on a specific command
+    1. itsmagic                                                    It's magic, it's magic.
+    2. switch                                                      Switch between applications using the App IDs
+    3. studybyte                                                   Starts Studybyte
+    + 4. cpix                                                        Starts Cpix
+    - 5. deeplock    -> Locks windows itself
+    - 6. deepscan    -> Scans the host operating system
+    - 7. todo        -> Create and manages a todo list
+    - 8. vol         -> Set the system master volume to a specific level
+    - 10. cosine      -> Calculate the cosine similarity between two sentences
+    ```
+
+    From AOs 2.5 and onwards, `deeplock`, `deepscan` and `vol` are not experimental but mainstream commands. Therefore, to use these commands you don't need to type `@deeplock`, `@deepscan` or `@vol`, these commands can be used without the `@` prefix.
