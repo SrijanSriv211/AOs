@@ -161,7 +161,7 @@ AOs 2.5 feature a wide range of changes all of which might be hard to discuss bu
     - 6. deepscan    -> Scans the host operating system
     - 7. todo        -> Create and manages a todo list
     - 8. vol         -> Set the system master volume to a specific level
-    - 10. cosine      -> Calculate the cosine similarity between two sentences
+    - 10. cosine     -> Calculate the cosine similarity between two sentences
     ```
 
     From AOs 2.5 and onwards, `deeplock`, `deepscan` and `vol` are not experimental but mainstream commands. Therefore, to use these commands you don't need to type `@deeplock`, `@deepscan` or `@vol`, these commands can be used without the `@` prefix.
