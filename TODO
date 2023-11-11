@@ -8,7 +8,7 @@
 ........................................................................................................................
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
-Optimize and clean the 'dev new' function.
+. Optimize and clean the 'dev new' function.
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
@@ -40,7 +40,7 @@ If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' f
 If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
 
 /* Experimental commands */
-@               -> Experimental commands
+. @               -> Experimental commands
 
 /* Flagged commands */
 . clear           -> Clear the screen

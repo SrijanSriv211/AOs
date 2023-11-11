@@ -2,6 +2,21 @@ partial class EntryPoint
 {
     private void LoadFeatures()
     {
+        // Experimental commands
+        this.parser.Add(
+            new string[]{ "@" }, "Experimental/Overload commands",
+            supported_args: new Dictionary<string[], string>
+            {
+                {new string[]{"-h", "--help"}, "Show information about a developer command"},
+                {new string[]{"itsmagic"}, "It's magic, it's magic."},
+                {new string[]{"switch"}, "Switch between applications using the App IDs"},
+                {new string[]{"studybyte"}, "Starts Studybyte"},
+                {new string[]{"cpix"}, "Starts Cpix"}
+            },
+            default_values: new string[]{"help"}, is_flag: false, method: this.features.ExperimentCMD
+        );
+
+        // Default-else shell command
         this.parser.Add(
             new string[]{ "!" }, "Switch the default-else shell",
             supported_args: new Dictionary<string[], string>

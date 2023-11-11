@@ -4,6 +4,7 @@ class Features
     private readonly SystemUtils sys_utils;
     private readonly Obsidian AOs;
     private readonly DeveloperFeatures developer_features = new();
+    private readonly ExperimentalFeatures experimental_features = new();
 
     public Features(Obsidian AOs)
     {
@@ -819,5 +820,22 @@ class Features
 
         else
             this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));
+    }
+
+    public void ExperimentCMD(string[] args)
+    {
+        // Split the Toks into a cmd and Args variable and array respectively.
+        string input_cmd = Utils.String.Strings(args.FirstOrDefault());
+        string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
+
+        // Execute the developer commands.
+        if (Utils.String.IsEmpty(input_cmd))
+            return;
+
+        else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
+            this.experimental_features.parser.GetHelp(input_args ?? new string[]{""});
+
+        else
+            this.experimental_features.parser.Execute(this.experimental_features.parser.Parse(input_cmd, input_args));
     }
 }
