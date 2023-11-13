@@ -19,6 +19,8 @@ partial class Argparse
 
             Console.WriteLine($"{argName}: {argument.Help}{defaultValue}{isRequired}{isFlag}");
         }
+
+        Console.WriteLine();
     }
 
     public void PrintHelp(Argument details)

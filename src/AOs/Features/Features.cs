@@ -386,7 +386,9 @@ class Features
             }
         }
 
-        AOs.prompt_preset = Flags.ToArray();
+        if (!Argparse.IsAskingForHelp(Flags.ToArray()))
+            AOs.prompt_preset = Flags.ToArray();
+
         AOs.SetPrompt(Flags.ToArray());
     }
 
