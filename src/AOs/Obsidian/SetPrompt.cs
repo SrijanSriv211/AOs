@@ -31,9 +31,7 @@ partial class Obsidian
             if (Argparse.IsAskingForHelp(arg.Names))
             {
                 parser.PrintHelp();
-                this.prompt = "$ ";
-                this.prompt_preset = new string[0];
-                break;
+                return;
             }
 
             else if (arg.Names.Contains("-r"))
