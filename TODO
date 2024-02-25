@@ -7,6 +7,7 @@
 ........................................................Non-Commands....................................................
 ........................................................................................................................
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
+Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
