@@ -19,6 +19,7 @@ Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'F
 . Leaf https://google.com is not working for some reason.
 . Sometimes the ">" input doesn't work. CMD opens and closes immediately and automatically.
 . When changing the prompt then typing "prompt -h", then the prompt resets for some reason. Fix it.
+The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 
 ........................................................................................................................
 ...........................................................Commands.....................................................
