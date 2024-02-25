@@ -9,7 +9,7 @@
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 . Optimize and clean the 'dev new' function.
-Upgrade dotnet from donet 7 to 8 for AOs 2.6
+. Upgrade dotnet from donet 7 to 8 for AOs 2.6
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
@@ -20,13 +20,14 @@ Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'F
 . Leaf https://google.com is not working for some reason.
 . Sometimes the ">" input doesn't work. CMD opens and closes immediately and automatically.
 . When changing the prompt then typing "prompt -h", then the prompt resets for some reason. Fix it.
-The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
-Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 
 ........................................................................................................................
 ...........................................................Commands.....................................................
 ........................................................................................................................
 /* AOs 2.6 features */
+The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
+Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
+When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 let -> Store data to a variable:
