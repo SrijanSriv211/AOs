@@ -9,17 +9,17 @@
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
 Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 
-/* Not sure to do or not */
-Make AOs launch with windows terminal using 'wt.exe AOs.exe'
-Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
-
 ........................................................................................................................
 ........................................................Commands........................................................
 ........................................................................................................................
+Make AOs launch with windows terminal using 'wt.exe AOs.exe' from a batch file.
+Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
+
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
 Autocomplete filenames when pressed tab.
+Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
 
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
