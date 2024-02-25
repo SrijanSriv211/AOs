@@ -1,0 +1,14 @@
+{
+  "project_name": "AOs-2.6",
+  "project_path": "D:\\Dev Projects\\AOs\\AOs-2.6",
+  "github_URL": "https://github.com/Light-Lens/AOs.git",
+  "github_branch": "master",
+  "build": 2,
+  "clean_project_waste": [
+    "UPR.spec",
+    "filer_cli.spec",
+    "bin",
+    "obj",
+    "build"
+  ]
+}
