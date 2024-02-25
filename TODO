@@ -6,28 +6,19 @@
 ........................................................................................................................
 ........................................................Non-Commands....................................................
 ........................................................................................................................
-. Further clean the code, specially Obsidian and EntryPoint.
-. If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
-. Optimize and clean the 'dev new' function.
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
 Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
 
-/* BUGS */
-. Fix the bug in Filer where it sometimes tries decrypt "099" for some reason. Debug it and fix it.
-. Leaf https://google.com is not working for some reason.
-. Sometimes the ">" input doesn't work. CMD opens and closes immediately and automatically.
-. When changing the prompt then typing "prompt -h", then the prompt resets for some reason. Fix it.
-
 ........................................................................................................................
-...........................................................Commands.....................................................
+........................................................Commands........................................................
 ........................................................................................................................
-/* AOs 2.6 features */
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
+
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 let -> Store data to a variable:
@@ -43,191 +34,3 @@ In the 'help' command the function will be listed, but only for that instance of
 If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
 If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
-
-/* Experimental commands */
-. @               -> Experimental commands
-
-/* Flagged commands */
-. clear           -> Clear the screen
-. version         -> Display the AOs version
-. about           -> About AOs
-. shutdown        -> Shutdown the system
-. restart         -> Restart the system
-. lock            -> Lock the system
-. exit            -> Exit AOs
-. reload          -> Restart AOs
-. credits         -> Credit for AOs
-. time            -> Show time
-. date            -> Show date
-. datetime        -> Show both date and time
-. generate        -> Generate a random number between 0 and 1
-. ran             -> Display operating system configuration information
-. tree            -> Graphically display the directory structure of a drive or path
-. diagxt          -> Display AOs specific properties and configuration
-. scan            -> Scan the integrity of all protected system files
-. update          -> Check for AOs updates
-
-/* Unflagged commands */
-. shout           -> Display messages
-. history         -> Display the history of Commands:
-	-c, --clear:
-		Clear the history
-
-. console         -> Start a new instance of the terminal
-. run             -> Start a specified program or command, given the full or sysenv path
-. title           -> Change the title for AOs window
-. color           -> Change the default AOs foreground and background colors
-. time            -> Display current time and date
-. wait            -> Suspend processing of a command for the given number of seconds
-. pause           -> Suspend processing of a command and displays the message
-. cat             -> Start an installed program from the system
-x allinstapps     -> List all installed apps on your machine               [NOTE: it is now a part of cat. If no command is passed in cat then this command will automatically be called]
-. prompt          -> Change the command prompt:
-	-h, --help:
-		Display all supported arguments
-
-	-r, --reset, --restore, --default:
-		$ (dollar sign, reset the prompt)
-
-	-u, --username:
-		%username%
-
-	-s, --space:
-		(space)
-
-	-b, --backspace:
-		(backspace)
-
-	-v, --version:
-		Current AOs version
-
-	-t, --time:
-		Current time
-
-	-d, --date:
-		Current date
-
-	-p, --path:
-		Current path
-
-	-n, --drive:
-		Current drive
-
-x backup          -> Create a restore point of AOs                         [NOTE: Discontinued feature]
-. ls              -> Display a list of files and subdirectories in a directory
-. cd              -> Change the current directory                          [NOTE: cd.. is an independent/separate command which change the current directory to previous directory]
-. touch           -> Create a file or folder
-. del             -> Delete one or more files or folders
-. ren             -> Rename a file or files
-. copy            -> Advanced utility to copy files and directory trees
-. move            -> Move one or more files from one directory to another directory
-. pixelate        -> Start a website in a web browser:
-	-e, --engine:
-		Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)
-
-	-w, --weather:
-		Display today's weather in a city
-
-	-t, --temp, --temperature:
-		Display today's temperature in a city
-
-. read            -> Display the contents of a text file
-	-l, --line:
-		Shows information about a specific line
-
-. commit          -> Edit the contents of a text file:
-	-l, --line:
-		Edit specific line in a text file
-
-. zip             -> Compresse or Decompresses files or folders (-u flag to unzip):
-	-u, --uncompress, --decompress:
-		Decompress zip files
-
-x lock            -> Lock the System at Start-up                              [NOTE: Discontinued feature]
-x restore         -> Restore system files and folders                         [NOTE: Discontinued feature]
-x reset           -> Reset AOs                                                [NOTE: Discontinued feature]
-x srh             -> Search for a specific query on the internet              [NOTE: Implemented in pixelate]
-x wiki            -> Search for information on wikipedia                      [NOTE: Implemented in pixelate]
-x ply             -> Search for a video on youtube based on a query           [NOTE: Implemented in pixelate]
-x weather         -> Display today's weather in a city                        [NOTE: Implemented in pixelate]
-x temperature     -> Display today's temperature in a city                    [NOTE: Implemented in pixelate]
-x settings        -> Start the Windows settings page                          [NOTE: Included in 'cat' command]
-.terminate       -> Terminate current running process
-. filer           -> Encrypt any text
-. vol             -> Set the system master volume to a specific level
-
-/* Developer features */
-dev, developer	-> Developer tools:
-	[
-		NOTE: dev command will also maintain some build number for projects and will have more stuff in it,
-		it will compile projects based on their file extentions.
-	]
-
-	-h, --help, ??, /?, -?:
-		show info about any programming language, or a developer command
-
-#	cloc:
-		Count the lines of code in a directory
-
-	server:
-		Start a local web-server
-
-	clean:
-		Delete temp/unnecessary files created by the programming language in the project
-
-#	git:
-		Use git to maintain version control
-
-	ver, version:
-		Show the build no of the current project
-
-	new (args_to_be_passed -> dotnet, python, g++, gcc, java, kotlin, go, rust, swift, node):
-		Create a new project,
-		setup build version control,
-		configure it with the programming language,
-		`git init` and ask for the github repo link,
-
-	new (args_to_be_passed -> dirpath):
-		code [dirpath]						[NOTE: default_value for dirpath is '.']
-
-	[
-		NOTE: you don't need to type `dev pastel test.pastel` to run the program,
-		just do `dev test.pastel` or `dev my_progam.py` or `dev k.c++` and
-		developer command will automatically identify the programming language.
-		Create a 'aos.dev' file in 'aos.dev' folder in the root directory.
-		'aos.dev' file will contain all the build and running related commands,
-		it will provide a proper and customizable environment for the build system.
-	]
-#	[when no argument is passed]:
-#		AOs				-> Run a AOs file
-#		pastel			-> Run a Pastel project
-#		dotnet			-> Build or run a .NET project
-#		python			-> Run a Python project
-#		g++				-> Build a C++ project
-#		gcc				-> Build a C project
-#		java			-> Run a Java project
-#		kotlin			-> Run a Kotlin project
-#		go				-> Build a Go project
-#		cargo			-> Run a Rust project
-#		swift			-> Run a Swift project
-#		node			-> Run a JavaScript project
-#		batch			-> Run a batch project
-
-#	[
-#		NOTE: you don't need to type `dev -c pastel test.pastel` to compile the program,
-#		just do `dev -c test.pastel` or `dev -c my_progam.py` or `dev -c k.c++` and
-#		developer command will automatically identify the programming language.
-#	]
-#	-b, -c, --build, --compile:
-#		pastel			-> Run a Pastel project
-#		dotnet			-> Build a .NET project
-#		g++				-> Build a C++ project
-#		gcc				-> Build a C project
-#		java			-> Build a Java project
-#		kotlin			-> Build a Kotlin project
-#		go				-> Build a Go project
-#		rust			-> Build a Rust project
-#		swift			-> Build a Swift project
-
-#	-e, --execute:
-#		execute without build.
