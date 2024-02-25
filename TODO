@@ -9,6 +9,7 @@
 . Further clean the code, specially Obsidian and EntryPoint.
 . If any .aos or any other .exe, .msi, .bat, .cmd, etc file executable exists in the 'PowerToys' folder make it a global command for AOs.
 . Optimize and clean the 'dev new' function.
+Upgrade dotnet from donet 7 to 8 for AOs 2.6
 
 /* Not sure to do or not */
 Make AOs launch with windows terminal using 'wt.exe AOs.exe'
