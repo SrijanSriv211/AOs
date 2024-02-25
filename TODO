@@ -20,6 +20,7 @@ Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
 Autocomplete filenames when pressed tab.
 Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
+The "desk" command will be a talktive AI integrated in AOs which will use a classification model and pre-written responses. It will be used to further help users use AOs and further get them to know about AOs and it's features.
 
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
