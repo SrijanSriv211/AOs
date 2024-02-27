@@ -22,6 +22,10 @@ Autocomplete filenames when pressed tab.
 Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
 Save Filer, Wikipedia, play YouTube videos in 'PowerToys' and access them from the folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
 The "desk" command will be a talktive AI integrated in AOs which will use a classification model and pre-written responses. It will be used to further help users use AOs and further get them to know about AOs and it's features.
+Remove datetime, random, sysinfo, tree, corner, shout
+Fix bug 'start .' doesn't open the current folder and shows a crash error. More in Crashreport.log
+In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
+Make the 'help <command-name>' page more useful and informational about the command.
 
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
