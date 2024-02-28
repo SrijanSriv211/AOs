@@ -15,6 +15,8 @@ Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 Make AOs launch with windows terminal using 'wt.exe AOs.exe' from a batch file.
 Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
 
+Use "Python.Runtime" module in C# for better connection between C# and Python code.
+
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
