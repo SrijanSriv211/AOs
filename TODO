@@ -8,22 +8,22 @@
 ........................................................................................................................
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
 Re-work 'build.py' and leave all the stuff to 'AOs.dev'
+Make AOs launch with windows terminal using from a batch file.
+Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
+
+Use "Python.Runtime" module in C# for better connection between C# and Python code.
+Implement a spell-checker (wagner-ficher) algo in AOs error log.
+Autocomplete filenames when pressed tab.
 
 ........................................................................................................................
 ........................................................Commands........................................................
 ........................................................................................................................
-Make AOs launch with windows terminal using 'wt.exe AOs.exe' from a batch file.
-Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
-
-Use "Python.Runtime" module in C# for better connection between C# and Python code.
-
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
-Autocomplete filenames when pressed tab.
+IMprove "AOs.dev"
 Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
 Save Filer, Wikipedia, play YouTube videos in 'PowerToys' and access them from the folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
-The "desk" command will be a talktive AI integrated in AOs which will use a classification model and pre-written responses. It will be used to further help users use AOs and further get them to know about AOs and it's features.
 Remove datetime, random, sysinfo, tree, corner, shout
 Fix bug 'start .' doesn't open the current folder and shows a crash error. More in Crashreport.log
 In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
@@ -31,15 +31,6 @@ Make the 'help <command-name>' page more useful and informational about the comm
 
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
-let -> Store data to a variable:
-	To use the variable type '$[the-name-of-the-variable]'.
-	'let' command can store any value to variables. Even store values from other commands like the 'datetime' command.
-
-Direct/Indirect implementation of pastel in AOs. \\\
-'include', 'import' command will import a '.pastel' and load all it's functions into AOs as make them work like in-built commands. \\\
-Meaning if you have a pastel file having a function 'test' and comment on top of the defination of the function then you import that file using the 'include' command then the function test will work like any other AOs command. \\\
-Meaning when you will type 'help test' you will get all the details including a help message from the comment on top of the defination of the very same function in the '.pastel' file. \\\
-In the 'help' command the function will be listed, but only for that instance of AOs because include is not a permanent include.
 
 If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
