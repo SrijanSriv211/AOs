@@ -10,6 +10,7 @@
 Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 Make AOs launch with windows terminal using from a batch file.
 Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
+Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight [Not sure if this is going to be a command or a global feature].
 
 Use "Python.Runtime" module in C# for better connection between C# and Python code.
 Implement a spell-checker (wagner-ficher) algo in AOs error log.
