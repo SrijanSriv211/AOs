@@ -30,6 +30,24 @@ Fix bug 'start .' doesn't open the current folder and shows a crash error. More 
 In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
 Make the 'help <command-name>' page more useful and informational about the command.
 
+olor - Changes your PC's theme from Dark mode to Light mode.
+wlpr, wallpaper - Changes your PC's wallpaper.
+auspecto - Convert any audio file into a spectrogram from audio processing for AI.
+msoffice - Automate creation and management via any of MS Office tool. *I don't really know how to build this one but this is in my TODO list.
+autokey - Automate keyboard or mouse keys to perform any task requiring interaction keyboard or mouse. *Useful for going AFK. I'll be using an AI system to make it work more human-like.
+displaysettings - Change your display settings directly from the command line
+
+wiki - Search for information on wikipedia
+play - Search for a video on youtube and automatically play the first one.
+srh - Search for any thing on Google, Bing, Yahoo, YouTube, Wikipedia, Britannica.
+srz - Summarize any text or text file using a simple summarization algorithm.
+intscrape: Crawl websites to scrape their URL, Text and other metadata. *Useful for search engines and my NLI
+
+Experimental commands:
+@ regedit - Modify Windows Registry settings. *I don't really know how to implement it.
+@ updos - Update your operating system directly from command line. *Haven't started to work on this yet.
+@ scrn - Take Screenshot. *It's a bit slow.
+
 Improve help messages, giving more detail about the command - such as how to use - when the input is like `help <command-name>`
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 
