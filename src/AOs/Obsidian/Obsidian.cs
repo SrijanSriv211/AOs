@@ -10,10 +10,10 @@ partial class Obsidian
 
     public Obsidian()
     {
-        this.prompt_preset = new string[0];
+        this.prompt_preset = Array.Empty<string>();
         this.current_foreground_color = original_foreground_color;
 
-        this.version = $"AOs 2023 [Version {version_no}]";
+        this.version = $"AOs 2024 [Version {version_no}]";
         this.sys_utils = new();
 
         this.prompt = "$ ";

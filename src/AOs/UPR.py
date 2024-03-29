@@ -24,5 +24,4 @@ else:
     print(f"Your version: {Fore.WHITE}{Style.BRIGHT}{current_version}")
     print(f"Latest version: {Fore.WHITE}{Style.BRIGHT}{latest_version}")
 
-    # print(f"Get the Latest version here: {Fore.CYAN}{Style.BRIGHT}https://github.com/Light-Lens/AOs/releases/download/{tag_name}/AOs.zip")
     print(f"Get the Latest version here: {Fore.CYAN}{Style.BRIGHT}{download_link}")
