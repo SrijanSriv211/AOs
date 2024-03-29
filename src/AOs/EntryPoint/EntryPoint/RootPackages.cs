@@ -1,28 +1,6 @@
 partial class EntryPoint
 {
-    private void CheckRootPackages()
-    {
-        string[] DirectoryList = LoadRootPackagesData().Item1;
-        string[] FileList = LoadRootPackagesData().Item2;
-
-        foreach (string path in DirectoryList)
-        {
-            string full_path = Path.Combine(Obsidian.root_dir, path);
-
-            LogRootPackagesHealth(full_path, false);
-            FileIO.FolderSystem.Create(full_path);
-        }
-
-        foreach (string path in FileList)
-        {
-            string full_path = Path.Combine(Obsidian.root_dir, path);
-
-            LogRootPackagesHealth(full_path, true);
-            FileIO.FileSystem.Create(full_path);
-        }
-    }
-
-    private (string[], string[]) LoadRootPackagesData()
+    private static void CheckRootPackages()
     {
         string[] DirectoryList = new string[]
         {
@@ -39,20 +17,10 @@ partial class EntryPoint
             "Files.x72\\root\\log\\Crashreport.log"
         };
 
-        return (DirectoryList, FileList);
-    }
+        foreach (string path in DirectoryList)
+            FileIO.FolderSystem.Create(Path.Combine(Obsidian.root_dir, path));
 
-    private void LogRootPackagesHealth(string full_path, bool is_file)
-    {
-        StartupLog($"Checking {full_path}");
-
-        if ((is_file && File.Exists(full_path)) || (!is_file && Directory.Exists(full_path)))
-        {
-            StartupLog($"Found {full_path}");
-            return;
-        }
-
-        StartupLog($"Not found {full_path}");
-        StartupLog($"Creating {full_path}");
+        foreach (string path in FileList)
+            FileIO.FileSystem.Create(Path.Combine(Obsidian.root_dir, path));
     }
 }
