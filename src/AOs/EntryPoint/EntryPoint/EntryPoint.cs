@@ -21,6 +21,7 @@ partial class EntryPoint
         Startup();
     }
 
+    //TODO: Add comment here explaining what this function does.
     private void CheckForError(string input_cmd, string[] input_args)
     {
         input_cmd = SystemUtils.CheckForSysOrEnvApps(input_cmd);

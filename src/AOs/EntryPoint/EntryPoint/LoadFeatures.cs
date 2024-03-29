@@ -1,5 +1,6 @@
 partial class EntryPoint
 {
+    //TODO: Move all features to a json file and read that json file to make features implementation and AOs extention easier.
     private void LoadFeatures()
     {
         // Experimental commands
