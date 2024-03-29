@@ -3,7 +3,7 @@
   "project_path": "D:\\Dev Projects\\AOs\\AOs-2.6",
   "github_URL": "https://github.com/Light-Lens/AOs.git",
   "github_branch": "master",
-  "build": 5300,
+  "build": 5303,
   "clean_project_waste": [
     "UPR.spec",
     "filer_cli.spec",

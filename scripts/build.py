@@ -47,24 +47,24 @@ def build_Filer(output_dir):
     os.remove("filer_cli.spec")
 
 def run_AOs(argv, build_no):
-    if os.path.isfile("bin\\Debug\\net7.0\\UPR.exe") == False:
-        build_UPR("bin\\Debug\\net7.0")
+    if os.path.isfile("bin\\Debug\\net8.0\\UPR.exe") == False:
+        build_UPR("bin\\Debug\\net8.0")
 
-    if os.path.isfile("bin\\Debug\\net7.0\\filer_cli.exe") == False:
-        build_Filer("bin\\Debug\\net7.0")
+    if os.path.isfile("bin\\Debug\\net8.0\\filer_cli.exe") == False:
+        build_Filer("bin\\Debug\\net8.0")
 
     if argv[2:]:
-        os.system(f"dotnet run -p:FileVersion=2.5.{build_no} -- {' '.join(argv[2:])}")
+        os.system(f"dotnet run -p:FileVersion=2.6.{build_no} -- {' '.join(argv[2:])}")
 
     else:
-        os.system(f"dotnet run -p:FileVersion=2.5.{build_no}")
+        os.system(f"dotnet run -p:FileVersion=2.6.{build_no}")
 
 def build_AOs():
     rmdirs("AOs")
     if os.path.exists("AOs") == False:
         os.mkdir("AOs")
 
-    os.system(f"dotnet publish --self-contained -p:FileVersion=2.5.{update_build_no()} -c Release -o ./AOs")
+    os.system(f"dotnet publish --self-contained -p:FileVersion=2.6.{update_build_no()} -c Release -o ./AOs")
     build_UPR("AOs")
     build_Filer("AOs")
 
