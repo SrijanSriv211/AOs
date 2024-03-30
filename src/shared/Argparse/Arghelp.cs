@@ -68,7 +68,7 @@ partial class Argparse
                 Argument matching_cmd = FindMatchingArgument(name);
                 if (matching_cmd.Names == null)
                 {
-                    new Error($"No information for command '{name}'");
+                    _ = new Error($"No information for command '{name}'", "runtime error");
                     continue;
                 }
 

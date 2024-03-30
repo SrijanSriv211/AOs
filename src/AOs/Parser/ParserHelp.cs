@@ -70,7 +70,7 @@ partial class Parser
                 Command matching_cmd = FindMatchingCommand(name);
                 if (matching_cmd.Cmd_names == null)
                 {
-                    new Error($"No information for command '{name}'");
+                    new Error($"No information for command '{name}'", "parser error");
                     continue;
                 }
 

@@ -4,13 +4,11 @@ partial class SystemUtils
     {
         if (File.Exists(input_cmd))
         {
-            List<string> args_to_be_passed = new()
-            {
+            List<string> args_to_be_passed = [
                 $"\"{input_cmd}\"",
-                " "
-            };
-
-            args_to_be_passed.AddRange(input_args);
+                " ",
+                .. input_args,
+            ];
 
             if (input_cmd.EndsWith(".aos"))
             {
@@ -20,7 +18,7 @@ partial class SystemUtils
 
             else
             {
-                string[] file_exts = { ".exe", ".msi", ".bat", ".cmd" };
+                string[] file_exts = [".exe", ".msi", ".bat", ".cmd"];
                 if (file_exts.Any(input_cmd.EndsWith))
                     CommandPrompt(input_cmd, input_args);
 

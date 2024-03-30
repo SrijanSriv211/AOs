@@ -4,13 +4,13 @@ partial class EntryPoint
     private void Startup()
     {
         // Change the title of the window to AOs.
-        this.features.ChangeTitle(new string[]{"AOs"});
+        this.features.ChangeTitle(["AOs"]);
 
         // Init argument parser
         var parser = new Argparse("AOs", Obsidian.about_AOs, Error.UnrecognizedArgs);
-        parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
-        parser.Add(new string[] {"-a", "--admin"}, "Run as administrator", is_flag: true);
-        parser.Add(new string[] {"-c", "--cmd"}, "Program passed in as string");
+        parser.Add(["-h", "--help"], "Display all supported arguments", is_flag: true);
+        parser.Add(["-a", "--admin"], "Run as administrator", is_flag: true);
+        parser.Add(["-c", "--cmd"], "Program passed in as string");
         var parsed_args = parser.Parse(args);
 
         /*
@@ -66,8 +66,8 @@ partial class EntryPoint
                 // suggesting that an argument is expected for this particular flag to work.
                 if (arg.Value == null || Utils.String.IsEmpty(arg.Value))
                 {
-                    _ = new Error($"Argument expected for the {string.Join(", ", arg.Names)} option.");
-                    break;
+                    _ = new Error($"Argument expected for the {string.Join(", ", arg.Names)} option.", "boot error");
+                    Environment.Exit(1);
                 }
 
                 // Execute the command if provided
@@ -89,8 +89,8 @@ partial class EntryPoint
             else
             {
                 // Throw error if a file with another extention is passed.
-                _ = new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension");
-                break;
+                _ = new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension", "filesystem i/o error");
+                Environment.Exit(1);
             }
         }
     }
@@ -104,7 +104,7 @@ partial class EntryPoint
         // Throw error and exit the program as a whole if that file does not exist or cannot be located.
         if (!File.Exists(filename))
         {
-            _ = new Error($"Can't open file '{filename}': No such file or directory");
+            _ = new Error($"Can't open file '{filename}': No such file or directory", "filesystem i/o error");
             Environment.Exit(1);
         }
 

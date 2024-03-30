@@ -10,18 +10,18 @@ partial class Obsidian
 
         var parser = new Argparse("prompt", "Specifies a new command prompt.", Error.UnrecognizedArgs);
 
-        parser.Add(new string[] {"-h", "--help"}, "Display all supported arguments", is_flag: true);
-        parser.Add(new string[] {"-r", "--reset", "--restore", "--default"}, "$ (dollar sign, reset the prompt)", is_flag: true);
+        parser.Add(["-h", "--help"], "Display all supported arguments", is_flag: true);
+        parser.Add(["-r", "--reset", "--restore", "--default"], "$ (dollar sign, reset the prompt)", is_flag: true);
 
-        parser.Add(new string[] {"-u", "--username"}, "%username%", is_flag: true);
-        parser.Add(new string[] {"-s", "--space"}, "(space)", is_flag: true);
-        parser.Add(new string[] {"-b", "--backspace"}, "(backspace)", is_flag: true);
-        parser.Add(new string[] {"-v", "--version"}, "Current AOs version", is_flag: true);
+        parser.Add(["-u", "--username"], "%username%", is_flag: true);
+        parser.Add(["-s", "--space"], "(space)", is_flag: true);
+        parser.Add(["-b", "--backspace"], "(backspace)", is_flag: true);
+        parser.Add(["-v", "--version"], "Current AOs version", is_flag: true);
 
-        parser.Add(new string[] {"-t", "--time"}, "Current time", is_flag: true);
-        parser.Add(new string[] {"-d", "--date"}, "Current date", is_flag: true);
-        parser.Add(new string[] {"-p", "--path"}, "Current path", is_flag: true);
-        parser.Add(new string[] {"-n", "--drive"}, "Current drive", is_flag: true);
+        parser.Add(["-t", "--time"], "Current time", is_flag: true);
+        parser.Add(["-d", "--date"], "Current date", is_flag: true);
+        parser.Add(["-p", "--path"], "Current path", is_flag: true);
+        parser.Add(["-n", "--drive"], "Current drive", is_flag: true);
 
         var parsed_args = parser.Parse(flags);
         string new_prompt = "";
@@ -37,7 +37,7 @@ partial class Obsidian
             else if (arg.Names.Contains("-r"))
             {
                 this.prompt = "$ ";
-                this.prompt_preset = new string[0];
+                this.prompt_preset = [];
                 break;
             }
 
@@ -68,7 +68,7 @@ partial class Obsidian
             else if (arg.Names.Any(name => name.StartsWith("-")))
             {
                 this.prompt = "$ ";
-                this.prompt_preset = new string[0];
+                this.prompt_preset = [];
                 break;
             }
 
@@ -76,6 +76,7 @@ partial class Obsidian
                 new_prompt += arg.Names.First();
         }
 
-        this.prompt = new_prompt;
+        if (parsed_args.Count > 0)
+            this.prompt = new_prompt;
     }
 }

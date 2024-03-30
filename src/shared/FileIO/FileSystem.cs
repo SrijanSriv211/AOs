@@ -26,7 +26,7 @@ partial class FileIO
 
             catch (Exception e)
             {
-                new Error(e.Message);
+                _ = new Error(e.Message, "filesystem i/o error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
         }
@@ -41,7 +41,7 @@ partial class FileIO
 
             catch (Exception e)
             {
-                new Error(e.Message);
+                _ = new Error(e.Message, "filesystem i/o error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
         }
@@ -56,7 +56,7 @@ partial class FileIO
 
             catch (Exception e)
             {
-                new Error(e.Message);
+                _ = new Error(e.Message, "filesystem i/o error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
         }
@@ -72,26 +72,26 @@ partial class FileIO
 
                 catch (Exception e)
                 {
-                    new Error(e.Message);
+                    _ = new Error(e.Message, "filesystem i/o error");
                     EntryPoint.CrashreportLog(e.ToString());
                 }
             }
 
             else
-                new Error($"'{Filepath}' does not exist");
+                _ = new Error($"'{Filepath}' does not exist", "filesystem i/o error");
         }
 
         public static void Move(string Source, string Destination)
         {
             if (!File.Exists(Source))
             {
-                new Error($"'{Source}' does not exist");
+                _ = new Error($"'{Source}' does not exist", "filesystem i/o error");
                 return;
             }
 
             if (Utils.String.IsEmpty(Destination))
             {
-                new Error($"'{Destination}' cannot be null or blank.");
+                _ = new Error($"'{Destination}' cannot be null or blank.", "filesystem i/o error");
                 return;
             }
 
@@ -102,7 +102,7 @@ partial class FileIO
 
             catch (Exception e)
             {
-                new Error(e.Message);
+                _ = new Error(e.Message, "filesystem i/o error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
         }
@@ -111,13 +111,13 @@ partial class FileIO
         {
             if (!File.Exists(Source))
             {
-                new Error($"'{Source}' does not exist");
+                _ = new Error($"'{Source}' does not exist", "filesystem i/o error");
                 return;
             }
 
             if (Utils.String.IsEmpty(Destination))
             {
-                new Error($"'{Destination}' cannot be null or blank.");
+                _ = new Error($"'{Destination}' cannot be null or blank.", "filesystem i/o error");
                 return;
             }
 
@@ -128,7 +128,7 @@ partial class FileIO
 
             catch (Exception e)
             {
-                new Error(e.Message);
+                _ = new Error(e.Message, "filesystem i/o error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
         }

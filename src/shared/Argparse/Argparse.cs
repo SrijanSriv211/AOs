@@ -1,18 +1,10 @@
-partial class Argparse
+partial class Argparse(string name, string description, Action<string> error_func = null)
 {
-    private readonly string name = "";
-    private readonly string desc = "";
+    private readonly string name = name;
+    private readonly string desc = description;
 
-    private readonly List<Argument> arguments = new();
-    private readonly Action<string> error_func;
-
-    public Argparse(string name, string description, Action<string> error_func=null)
-    {
-        this.name = name;
-        this.desc = description;
-
-        this.error_func = error_func;
-    }
+    private readonly List<Argument> arguments = [];
+    private readonly Action<string> error_func = error_func;
 
     public void Add(string[] cmd_names, string help_message, string default_value=null, bool is_flag=false, bool required=false)
     {
@@ -21,8 +13,8 @@ partial class Argparse
 
     public List<ParsedArgument> Parse(string[] args)
     {
-        List<ParsedArgument> parsed_args = new();
-        string[] arg_flags = { "--", "-", "/" };
+        List<ParsedArgument> parsed_args = [];
+        string[] arg_flags = ["--", "-", "/"];
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -35,13 +27,13 @@ partial class Argparse
                 if (arg_flags.Any(lowercase_arg.StartsWith))
                 {
                     error_func(args[i]);
-                    return new List<ParsedArgument>();
+                    return [];
                 }
 
                 else
                 {
                     parsed_args.Add(new ParsedArgument(
-                        names: new string[]{args[i]},
+                        names: [args[i]],
                         value: null,
                         is_flag: true,
                         required: false,
@@ -70,7 +62,7 @@ partial class Argparse
                     if (matching_argument.Default_value == null)
                     {
                         Error.NoArgs(args[i]);
-                        return new List<ParsedArgument>();
+                        return [];
                     }
 
                     else
@@ -99,8 +91,8 @@ partial class Argparse
             if (missing_arg_list.Count > 0)
             {
                 Error.TooFewArgs("");
-                new Error($"Missing required argument(s): {string.Join(", ", missing_arg_list)}");
-                return new List<ParsedArgument>();
+                _ = new Error($"Missing required argument(s): {string.Join(", ", missing_arg_list)}", "runtime error");
+                return [];
             }
         }
 

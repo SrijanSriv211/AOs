@@ -38,7 +38,7 @@ partial class Parser
                 return new ParsedCommand();
             }
 
-            parsed_cmd.Values = new string[]{"true"};
+            parsed_cmd.Values = ["true"];
         }
 
         else

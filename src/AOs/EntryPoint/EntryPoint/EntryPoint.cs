@@ -14,25 +14,27 @@ partial class EntryPoint
 
         this.sys_utils = new();
         this.features = new(this.AOs);
-        this.parser = new(CheckForError);
+        this.parser = new(this.CheckForError);
 
         CheckRootPackages();
-        LoadFeatures();
-        Startup();
+        this.LoadFeatures();
+        this.Startup();
     }
 
-    //TODO: Add comment here explaining what this function does.
-    private void CheckForError(string input_cmd, string[] input_args)
+    // This function is called when the input command is not found in the feature-set of AOs,
+    // it then checks if the user is trying to call a system env variable or app and runs it if it is being called.
+    // Otherwise, it throws an error the the command does not exist.
+    private void CheckForError(string cmd_name, string[] args)
     {
-        input_cmd = SystemUtils.CheckForSysOrEnvApps(input_cmd);
+        cmd_name = SystemUtils.CheckForSysOrEnvApps(cmd_name);
 
-        for (int i = 0; i < input_args.Length; i++)
+        for (int i = 0; i < args.Length; i++)
+            args[i] = SystemUtils.CheckForSysOrEnvApps(args[i]);
+
+        if (!this.sys_utils.RunSysOrEnvApps(cmd_name, args))
         {
-            if (input_args[i].StartsWith("%") && input_args[i].EndsWith("%"))
-                input_args[i] = SystemUtils.CheckForSysOrEnvApps(input_args[i]);
+            string current_line = cmd_name + " " + string.Join("", args);
+            Error.Command(current_line, cmd_name);
         }
-
-        if (!this.sys_utils.RunSysOrEnvApps(input_cmd, input_args))
-            Error.Command(input_cmd);
     }
 }

@@ -33,7 +33,7 @@ partial class ExperimentalFeatures
 
             else
             {
-                new Error($"Invalid App ID: {appid}. App ID must be a number.");
+                new Error($"Invalid App ID: {appid}. App ID must be a number.", "runtime error");
                 TerminalColor.Print("Please try '@switch' to get an App ID", ConsoleColor.White);
             }
         }

@@ -14,6 +14,6 @@ partial class DeveloperFeatures
 
     private void CheckForError(string input_cmd, string[] _)
     {
-        new Error($"'{input_cmd}', Developer command does not exist");
+        new Error($"'{input_cmd}', Developer command does not exist", "runtime error");
     }
 }

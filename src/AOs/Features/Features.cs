@@ -1,4 +1,4 @@
-class Features
+partial class Features
 {
     private readonly Utils.Https https;
     private readonly SystemUtils sys_utils;
@@ -127,7 +127,7 @@ class Features
 
         else
         {
-            new Error("Please run AOs as Administrator to scan the integrity of all protected system files.");
+            _ = new Error("Please run AOs as Administrator to scan the integrity of all protected system files.", "runtime error");
             TerminalColor.Print("Type", ConsoleColor.Gray, false);
             TerminalColor.Print(" 'admin' ", ConsoleColor.White, false);
             TerminalColor.Print("to run AOs in Administrator", ConsoleColor.Gray);
@@ -145,7 +145,7 @@ class Features
 
         else
         {
-            new Error("Cannot find the update utility.");
+            _ = new Error("Cannot find the update utility.", "runtime error");
             TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
             TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
@@ -166,7 +166,7 @@ class Features
             Directory.SetCurrentDirectory(dirname);
 
         else
-            new Error($"Folder with name '{dirname}' does not exist.");
+            _ = new Error($"Folder with name '{dirname}' does not exist.", "runtime error");
     }
 
     public void SwitchElseShell(string shell_name)
@@ -200,7 +200,7 @@ class Features
     {
         static void help_for_color()
         {
-            new Error("`color` value was not defined. Please use a defined color value");
+            _ = new Error("`color` value was not defined. Please use a defined color value", "runtime error");
             string[] list_of_colors = new string[]
             {
                 "Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed",
@@ -326,7 +326,7 @@ class Features
 
     public void ModifyPrompt(string[] prompt)
     {
-        List<string> Flags = new();
+        List<string> Flags = [];
         for (int i = 0; i < prompt.Length; i++)
         {
             if (Utils.String.IsString(prompt[i]))
@@ -386,10 +386,10 @@ class Features
             }
         }
 
-        if (!Argparse.IsAskingForHelp(Flags.ToArray()))
-            AOs.prompt_preset = Flags.ToArray();
+        if (!Argparse.IsAskingForHelp([.. Flags]))
+            AOs.prompt_preset = [.. Flags];
 
-        AOs.SetPrompt(Flags.ToArray());
+        AOs.SetPrompt([.. Flags]);
     }
 
     public void LS(string[] dirname)
@@ -462,7 +462,7 @@ class Features
 
             else
             {
-                new Error($"'{content}' does not exist");
+                _ = new Error($"'{content}' does not exist", "runtime error");
                 return;
             }
         }
@@ -485,7 +485,7 @@ class Features
             FileIO.FileSystem.Move(old_name, new_name);
 
         else
-            new Error($"'{old_name}' does not exist");
+            _ = new Error($"'{old_name}' does not exist", "runtime error");
     }
 
     public void Copy(string[] content_to_rename)
@@ -505,7 +505,7 @@ class Features
             FileIO.FileSystem.Copy(old_name, new_name);
 
         else
-            new Error($"'{old_name}' does not exist");
+            _ = new Error($"'{old_name}' does not exist", "runtime error");
     }
 
     public void Pixelate(string[] websites_to_open)
@@ -517,7 +517,7 @@ class Features
 
         static void err(string website_url)
         {
-            new Error($"Can't open the website '{website_url}': Invalid URL");
+            _ = new Error($"Can't open the website '{website_url}': Invalid URL", "runtime error");
         }
 
         string engine_name = "google", city_name = "muzaffarpur";
@@ -578,7 +578,7 @@ class Features
     {
         static void err(string filename)
         {
-            new Error($"{filename}: No such file or directory");
+            _ = new Error($"{filename}: No such file or directory", "runtime error");
         }
 
         var parser = new Argparse("read", "Displays the contents of a text file.", err);
@@ -593,7 +593,7 @@ class Features
             string[] filename = Utils.Utils.SimplifyString(arg.Names);
             if (filename.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
-                new Error($"{line_to_read}: Invalid line number");
+                _ = new Error($"{line_to_read}: Invalid line number", "runtime error");
                 return;
             }
 
@@ -627,7 +627,7 @@ class Features
     {
         static void err(string argument)
         {
-            new Error($"{argument}: Invalid argument.");
+            _ = new Error($"{argument}: Invalid argument.", "runtime error");
         }
 
         // Initialize the parser.
@@ -644,7 +644,7 @@ class Features
             string[] filenames = Utils.Utils.SimplifyString(arg.Names);
             if (filenames.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
-                new Error($"{line_to_read}: Invalid line number");
+                _ = new Error($"{line_to_read}: Invalid line number", "runtime error");
                 return;
             }
 
@@ -657,7 +657,7 @@ class Features
 
         // Write/Overwrite the files with their respective data.
         if (line_to_read == 0)
-            FileIO.FileSystem.Overwrite(filepath, Content_to_commit.ToArray());
+            FileIO.FileSystem.Overwrite(filepath, [.. Content_to_commit]);
 
         else if (line_to_read < 1)
         {
@@ -760,7 +760,7 @@ class Features
 
         else
         {
-            new Error("Cannot find the Filer.");
+            _ = new Error("Cannot find the Filer.", "runtime error");
             TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
             TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
@@ -787,7 +787,7 @@ class Features
             if (int.TryParse(parsed_args[0].Value, out int level))
             {
                 if (level < -100 || level > 100)
-                    new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100");
+                    _ = new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100", "runtime error");
 
                 else
                     WindowsVolumeControl.AudioManager.StepMasterVolume(level);
@@ -799,7 +799,7 @@ class Features
             if (int.TryParse(parsed_args[0].Names.FirstOrDefault(), out int level))
             {
                 if (level < 0 || level > 100)
-                    new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100");
+                    _ = new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100", "runtime error");
 
                 else
                     WindowsVolumeControl.AudioManager.SetMasterVolume(level);
