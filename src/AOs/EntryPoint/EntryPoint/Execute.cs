@@ -7,8 +7,8 @@ partial class EntryPoint
             if (Utils.String.IsEmpty(i.cmd))
                 continue;
 
-            else if (i.cmd.ToLower() == "help" || Argparse.IsAskingForHelp(i.cmd.ToLower()))
-                this.parser.GetHelp(i.args ?? new string[]{""});
+            else if (i.cmd.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.ToLower()))
+                this.parser.GetHelp(i.args ?? [""]);
 
             else if (i.cmd == "AOs1000")
             {

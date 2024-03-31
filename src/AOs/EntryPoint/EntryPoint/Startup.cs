@@ -25,13 +25,13 @@ partial class EntryPoint
             // Clear the console to give a fresh look.
             this.AOs.ClearConsole();
             // Get all the scripts that are going to run at the start of AOs.
-            Dictionary<string, string[]> startup_apps = ReadAllStartupApps(LoadStartlist());
+            Dictionary<string, string> startup_apps = ReadAllStartupApps(LoadStartlist());
 
             foreach (var contents in startup_apps)
             {
                 TerminalColor.Print($"> ", ConsoleColor.DarkGray, false);
-                TerminalColor.Print($"{contents.Key}", ConsoleColor.White); // contents.Key is the name of that file
-                Execute(contents.Value); // contents.Value contains all the lines that are going to be executed.
+                TerminalColor.Print($"{contents.Key}", ConsoleColor.White); // contents.Key contains the name of that file
+                RunAOsScript(contents.Value); // contents.Value contains the full absolute path of the file.
             }
 
             // After running all the startup apps, run AOs normally.
@@ -77,7 +77,7 @@ partial class EntryPoint
             else if (arg.Names.First().ToLower().EndsWith(".aos"))
             {
                 // Run an AOs script
-                RunAOsScript();
+                RunAOsScript(arg.Names.First());
 
                 // Break, it's useless to continue with rest of the arguments.
                 // All the arguments were already used by the AOs script as command-line args,
@@ -96,11 +96,9 @@ partial class EntryPoint
     }
 
     // Run AOs script
-    private void RunAOsScript()
+    // The the name of the AOs script that is going to be executed.
+    private void RunAOsScript(string filename)
     {
-        // The the name of the AOs script that is going to be executed.
-        string filename = this.args.First();
-
         // Throw error and exit the program as a whole if that file does not exist or cannot be located.
         if (!File.Exists(filename))
         {
@@ -109,9 +107,52 @@ partial class EntryPoint
         }
 
         // Read all lines in that file and execute them one by one.
-        foreach (string line in FileIO.FileSystem.ReadAllLines(filename))
+        string[] lines = FileIO.FileSystem.ReadAllLines(filename);
+
+        // Loop through the entire file line-by-line.
+        for (int i = 0; i < lines.Length; i++)
         {
-            // Tokenize the line
+            // Get the current line.
+            string line = lines[i];
+
+            /*
+            ------------------------------------------------------
+            -------------------- Hot reloading -------------------
+            ------------------------------------------------------
+            */
+
+            // If a line is "." then pause and wait until the file is updated and "." is moved or removed.
+            // AKA hot reload the file when the line is just a fullstop.
+            //* I'm implementing this feature for WINTER (https://github.com/Light-Lens/WINTER)
+            if (line.Trim() == ".")
+            {
+                // Do (i -= 1) [i--] so that when the loop moves to next iter and does (i += 1) [i++],
+                // then it lands on the same line as before which is a fullstop, therefore "." meaning that it's time to pause.
+                i--;
+
+                // Try to hot reload the file every sec.
+                try
+                {
+                    // Pause reading until "." is replaced with another line
+                    Thread.Sleep(1000); // Adjust the duration of the pause as needed
+                    lines = FileIO.FileSystem.ReadAllLines(filename);
+                }
+
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                continue;
+            }
+
+            /*
+            ------------------------------------------------------
+            ------------------- Executing line -------------------
+            ------------------------------------------------------
+            */
+
+            // If a line is not a fullstop, then tokenize the line and execute it one-by-one.
             List<string[]> ListOfToks = new Lexer(line).Tokens;
 
             foreach (string[] Toks in ListOfToks)

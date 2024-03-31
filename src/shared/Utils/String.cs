@@ -13,7 +13,7 @@ namespace Utils
         // Remove extra spaces from a string.
         public static string Reduce(string line)
         {
-            return string.Join(" ", line.Split(new char[0], StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => x.Trim()));
+            return string.Join(" ", line.Split(System.Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => x.Trim()));
         }
 
         // Check whether a string is empty.

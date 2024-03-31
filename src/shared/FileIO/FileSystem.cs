@@ -146,7 +146,7 @@ partial class FileIO
             if (File.Exists(Filepath))
                 return File.ReadAllLines(Filepath);
 
-            return Array.Empty<string>();
+            return [];
         }
     }
 }

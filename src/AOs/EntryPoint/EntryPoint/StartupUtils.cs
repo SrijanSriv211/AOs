@@ -9,11 +9,11 @@ partial class EntryPoint
     }
 
     // Read all the files that are meant to run at startup.
-    private static Dictionary<string, string[]> ReadAllStartupApps(string[] filenames)
+    private static Dictionary<string, string> ReadAllStartupApps(string[] filenames)
     {
-        // Dictionary<string, string[]>:
-        // string -> filename, string[] -> all it's lines that are meant to be executed.
-        Dictionary<string, string[]> StartupAppsContent = new();
+        // Dictionary<string, string>:
+        // string -> filename, string -> absolute path of the file
+        Dictionary<string, string> StartupAppsContent = [];
 
         foreach (string filename in filenames)
         {
@@ -27,13 +27,13 @@ partial class EntryPoint
             else if (filename.EndsWith(".aos"))
             {
                 string startup_file_data = Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup\\", filename);
-                StartupAppsContent.Add(filename, FileIO.FileSystem.ReadAllLines(startup_file_data));
+                StartupAppsContent.Add(filename, startup_file_data);
             }
 
             // If someone is trying to run a Non-AOs script (scripts that does not contain '.aos' suffix) then, throw error that this is not allowed.
             // IDK. Maybe change this in future and allow all kinds of files to run at startup but for now it is what it is.
             else
-                _ = new Error($"Can't open file '{filename}': Non-AOs scripts are not allowed to run at startup.", "filesystem i/o error");
+                _ = new Error($"Can't open file '{filename}': File format not recognized. File must have '.aos' extension.", "filesystem i/o error");
         }
 
         return StartupAppsContent;
