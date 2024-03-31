@@ -13,10 +13,12 @@ x Add a setup system on first startup of AOs [if aos.user file doesn't exist in 
 Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight [Not sure if this is going to be a command or a global feature].
 
 x Use "Python.Runtime" module in C# for better connection between C# and Python code.
-Implement a spell-checker (wagner-ficher) algo in AOs error log.
+. Implement a spell-checker (wagner-ficher) algo in AOs error log.
 Autocomplete filenames when pressed tab.
 
 Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
+
+Refactor the entire AOs.
 
 ........................................................................................................................
 ........................................................Commands........................................................
