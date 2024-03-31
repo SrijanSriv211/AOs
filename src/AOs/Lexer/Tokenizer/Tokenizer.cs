@@ -2,7 +2,7 @@ partial class Lexer
 {
     private string[] Tokenizer()
     {
-        List<string> tokens = new();
+        List<string> tokens = [];
         string tok = "";
 
         for (int i = 0; i < line.Length; i++)
@@ -80,18 +80,18 @@ partial class Lexer
                     if (i >= line.Length)
                     {
                         string error_detail = "missing terminating " + str_char_symbol.ToString() + " character";
-                        Error.Syntax(error_detail);
+                        Error.Syntax(line, tok, error_detail);
                         tok = "";
                     }
 
                     else
                         tok += line[i];
                 }
-                
+
                 else
                 {
                     string error_detail = "unexpected end of tokens after " + str_char_symbol.ToString();
-                    Error.Syntax(error_detail);
+                    Error.Syntax(line, tok, error_detail);
                     tok = "";
                 }
 

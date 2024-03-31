@@ -20,11 +20,11 @@ partial class Lexer
             int colon_index = error_detail.IndexOf(':');
 
             if (colon_index >= 0)
-                error_detail = error_detail.Substring(colon_index + 1).Trim();
+                error_detail = error_detail[(colon_index + 1)..].Trim();
 
-            Error.Syntax(error_detail);
+            Error.Syntax(this.line, expr, error_detail);
             EntryPoint.CrashreportLog(e.ToString());
-            result = "";
+            return "";
         }
 
         return result;

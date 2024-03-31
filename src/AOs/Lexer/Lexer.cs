@@ -1,6 +1,6 @@
 partial class Lexer
 {
-    public List<string[]> Tokens = new();
+    public List<string[]> Tokens = [];
     private readonly string line;
 
     public Lexer(string line)

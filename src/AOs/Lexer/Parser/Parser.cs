@@ -2,7 +2,7 @@ partial class Lexer
 {
     private void Parse(string[] toks)
     {
-        List<string> current_list = new();
+        List<string> current_list = [];
 
         for (int i = 0; i < toks.Length; i++)
         {
@@ -10,8 +10,8 @@ partial class Lexer
 
             if (tok == ";")
             {
-                this.Tokens.Add(current_list.ToArray());
-                current_list = new List<string>();
+                this.Tokens.Add([.. current_list]);
+                current_list = [];
 
                 if (i-1 < toks.Length && Utils.String.IsWhiteSpace(toks[i+1]))
                     i++;
