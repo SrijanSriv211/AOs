@@ -58,33 +58,45 @@ partial class Error
     // Not appropriate number of arguments.
     public static void TooFewArgs(string[] args)
     {
-        _ = new Error($"Too few arguments: {string.Join(", ", Utils.Array.Reduce(args))}", "runtime error");
+        string err_args = string.Join(", ", Utils.Array.Reduce(args));
+
+        Console.WriteLine(err_args);
+        _ = new Error(
+            err_msg: "Too few arguments\n",
+            err_cmd_name: err_args,
+            repeat_err_highlight: err_args.Length
+        );
     }
 
-    public static void TooFewArgs(string args)
+    public static void TooFewArgs(string err_arg)
     {
-        _ = new Error($"Too few arguments: {args}", "runtime error");
+        Console.WriteLine(err_arg);
+        _ = new Error(
+            err_msg: "Too few arguments\n",
+            err_cmd_name: err_arg,
+            repeat_err_highlight: err_arg.Length
+        );
     }
 
     public static void TooManyArgs(string[] args)
     {
-        _ = new Error($"Too many arguments: {string.Join(", ", Utils.Array.Reduce(args))}", "runtime error");
+        string err_args = string.Join(", ", Utils.Array.Reduce(args));
+
+        Console.WriteLine(err_args);
+        _ = new Error(
+            err_msg: "Too few arguments\n",
+            err_cmd_name: err_args,
+            repeat_err_highlight: err_args.Length
+        );
     }
 
-    public static void TooManyArgs(string args)
+    public static void TooManyArgs(string err_arg)
     {
-        _ = new Error($"Too many arguments: {args}", "runtime error");
-    }
-
-    // Invalid syntax.
-    public static void Syntax(string err_msg)
-    {
-        _ = new Error($"SyntaxError: {err_msg}", "runtime error");
-    }
-
-    // Division by 0.
-    public static void ZeroDivision()
-    {
-        _ = new Error("ZeroDivisionError: Division by 0", "runtime error");
+        Console.WriteLine(err_arg);
+        _ = new Error(
+            err_msg: "Too few arguments\n",
+            err_cmd_name: err_arg,
+            repeat_err_highlight: err_arg.Length
+        );
     }
 }
