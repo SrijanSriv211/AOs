@@ -10,7 +10,7 @@ partial class Obsidian
 
     public Obsidian()
     {
-        this.prompt_preset = Array.Empty<string>();
+        this.prompt_preset = [];
         this.current_foreground_color = original_foreground_color;
 
         this.version = $"AOs 2024 [Version {version_no}]";
@@ -21,7 +21,7 @@ partial class Obsidian
 
     public List<(string cmd, string[] args)> TakeInput(string input="")
     {
-        List<(string cmd, string[] args)> output = new();
+        List<(string cmd, string[] args)> output = [];
         string CMD = input.Trim();
 
         Console.ForegroundColor = current_foreground_color;
@@ -33,7 +33,7 @@ partial class Obsidian
             CMD = Console.ReadLine().Trim();
 
             if (Utils.String.IsEmpty(CMD))
-                return new List<(string cmd, string[] args)>(); // (cmd: "", args: new string[0])
+                return []; // (cmd: "", args: new string[0])
         }
 
         if (CMD.First() == '_')
@@ -43,7 +43,7 @@ partial class Obsidian
         History.Set(CMD);
 
         // Some lexer stuff.
-        List<string[]> ListOfToks = new Lexer(CMD).Tokens;
+        List<string[]> ListOfToks = new Lexer.Lexer(CMD).Tokens;
         foreach (string[] Toks in ListOfToks)
         {
             if (Utils.String.IsEmpty(Toks.FirstOrDefault()))

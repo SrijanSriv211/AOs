@@ -153,7 +153,7 @@ partial class EntryPoint
             */
 
             // If a line is not a fullstop, then tokenize the line and execute it one-by-one.
-            List<string[]> ListOfToks = new Lexer(line).Tokens;
+            List<string[]> ListOfToks = new Lexer.Lexer(line).Tokens;
 
             foreach (string[] Toks in ListOfToks)
             {

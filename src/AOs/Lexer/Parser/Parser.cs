@@ -1,46 +1,49 @@
-partial class Lexer
+namespace Lexer
 {
-    private void Parse(string[] toks)
+    partial class Parser
     {
-        List<string> current_list = [];
-
-        for (int i = 0; i < toks.Length; i++)
+        public Parser(string[] toks)
         {
-            string tok = toks[i];
+            // List<string> current_list = [];
 
-            if (tok == ";")
-            {
-                this.Tokens.Add([.. current_list]);
-                current_list = [];
+            // for (int i = 0; i < toks.Length; i++)
+            // {
+            //     string tok = toks[i];
 
-                if (i-1 < toks.Length && Utils.String.IsWhiteSpace(toks[i+1]))
-                    i++;
-            }
+            //     if (tok == ";")
+            //     {
+            //         this.Tokens.Add([.. current_list]);
+            //         current_list = [];
 
-            else if (Is_expr(tok))
-            {
-                string expr = tok;
+            //         if (i-1 < toks.Length && Utils.String.IsWhiteSpace(toks[i+1]))
+            //             i++;
+            //     }
 
-                i++;
-                while (i < toks.Length && (Is_expr(toks[i]) || Utils.String.IsWhiteSpace(toks[i])))
-                {
-                    if (i < toks.Length-1 && Utils.String.IsWhiteSpace(toks[i]) && !Is_expr(toks[i+1]))
-                        break;
+            //     else if (Is_expr(tok))
+            //     {
+            //         string expr = tok;
 
-                    expr += toks[i];
-                    i++;
-                }
+            //         i++;
+            //         while (i < toks.Length && (Is_expr(toks[i]) || Utils.String.IsWhiteSpace(toks[i])))
+            //         {
+            //             if (i < toks.Length-1 && Utils.String.IsWhiteSpace(toks[i]) && !Is_expr(toks[i+1]))
+            //                 break;
 
-                i--;
+            //             expr += toks[i];
+            //             i++;
+            //         }
 
-                current_list.Add(Evaluate(expr));
-            }
+            //         i--;
 
-            else
-                current_list.Add(tok);
+            //         current_list.Add(Evaluate(expr));
+            //     }
+
+            //     else
+            //         current_list.Add(tok);
+            // }
+
+            // // Add the last sublist to the result list
+            // this.Tokens.Add(current_list.ToArray());
         }
-
-        // Add the last sublist to the result list
-        this.Tokens.Add(current_list.ToArray());
     }
 }
