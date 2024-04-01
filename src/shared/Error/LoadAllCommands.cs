@@ -2,7 +2,7 @@ using System.Text.Json;
 
 partial class Error
 {
-    private static readonly List<string> AllCommands = [];
+    public static readonly List<string> AllCommands = [];
 
     public static void GetAllCommands()
     {

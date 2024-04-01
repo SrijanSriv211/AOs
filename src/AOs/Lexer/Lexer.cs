@@ -8,12 +8,7 @@ namespace Lexer
         {
             List<Tokenizer.Token> tokens = new Tokenizer(line).tokens;
 
-            // $1; 123A ;How are you?; 123 + 44; "Hi!" ; 'Hey" $2
-            // $1 How are you?; 123 + 44; "Hi!" ; 'Hey" $2
-            // $1 How are you?; "Hi!" ; 'Hey" $2
-            // $1 How are you? "Hi!" 'Hey" $2
-            // $1 How are you? $2
-            // $1 How are you?
+            Console.WriteLine(line);
             foreach (var i in tokens)
             {
                 Console.Write(i.Name);
@@ -21,7 +16,6 @@ namespace Lexer
                 Console.WriteLine(i.Type);
             }
 
-            // Tokenizer();
             // Parse(Tokenizer());
 
             // foreach (string[] tokens in Tokens)

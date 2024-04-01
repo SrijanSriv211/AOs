@@ -28,7 +28,6 @@ Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
 Improve "AOs.dev"
 x Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
-Save Filer and access it from the powertoys folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
 x Save Wikipedia, play YouTube videos in 'PowerToys' and access them from the folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
 Remove datetime, random, sysinfo, tree, corner, shout
 Fix bug 'start .' doesn't open the current folder and shows a crash error. More in Crashreport.log
@@ -54,5 +53,6 @@ Improve help messages, giving more detail about the command - such as how to use
 Further improve the ';' (run multiple commands in a single line) feature. Make it work like a programming language.
 
 If the input is 'powertoys::<file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
+# Save Filer and access it from the powertoys folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
 x If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
 x If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
