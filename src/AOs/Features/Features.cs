@@ -121,8 +121,8 @@ partial class Features
             sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
             sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
             sys_utils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
-            TerminalColor.Print($"Please check '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
-            TerminalColor.Print($"and '{SystemUtils.CheckForSysOrEnvApps("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
+            TerminalColor.Print($"Please check '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
+            TerminalColor.Print($"and '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
         }
 
         else

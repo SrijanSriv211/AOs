@@ -26,10 +26,10 @@ partial class EntryPoint
     // Otherwise, it throws an error the the command does not exist.
     private void CheckForError(string cmd_name, string[] args)
     {
-        cmd_name = SystemUtils.CheckForSysOrEnvApps(cmd_name);
+        cmd_name = SystemUtils.CheckForEnvVarAndEXEs(cmd_name);
 
         for (int i = 0; i < args.Length; i++)
-            args[i] = SystemUtils.CheckForSysOrEnvApps(args[i]);
+            args[i] = SystemUtils.CheckForEnvVarAndEXEs(args[i]);
 
         if (!this.sys_utils.RunSysOrEnvApps(cmd_name, args))
         {
