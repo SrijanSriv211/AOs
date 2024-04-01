@@ -153,32 +153,30 @@ partial class EntryPoint
             */
 
             // If a line is not a fullstop, then tokenize the line and execute it one-by-one.
-            List<string[]> ListOfToks = new Lexer.Lexer(line).Tokens;
+            List<Lexer.Tokenizer.Token> Tokens = new Lexer.Tokenizer(line).tokens;
+            List<string> NewTokens = [];
 
-            foreach (string[] Toks in ListOfToks)
+            foreach (Lexer.Tokenizer.Token Tok in Tokens)
             {
-                // Loop through all tokens
-                for (int k = 0; k < Toks.Length; k++)
+                // Check if a token has '$' prefix, if yes then replace that '${any_number}' with the argument value
+                // which is on that `any_number` index of all command-line arguments
+                string Name = Tok.Name;
+                if (Name.StartsWith("$") && Tok.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 {
-                    // Check if a token has '$' in it's prefix, if yes then,
-                    // replace that '${any_number}' with the argument value
-                    // which is on that `any_number` index of all command-line arguments
-                    if (Toks[k].StartsWith("$"))
-                    {
-                        Toks[k] = int.TryParse(Toks[k][1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
+                    Name = int.TryParse(Name[1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
 
-                        // If the argument contains a space for example: Toks[k] = "Hello world!",
-                        // then wrap that value around with string literals something like this: Toks[k] = "\"Hello world!\"",
-                        // this is to make sure that when the line will be executed no argument value will be missed.
-                        if (Toks[k].Contains(' '))
-                            Toks[k] = $"\"{Toks[k]}\"";
-                    }
+                    // If the argument contains a space for example: Name = "Hello world!",
+                    // then wrap that value around with string literals something like this: Name = "\"Hello world!\"",
+                    // this is to make sure that when the line will be executed no argument value will be missed.
+                    if (Name.Contains(' '))
+                        Name = $"\"{Name}\"";
                 }
 
-                // Join and execute the new list of tokens that are modified to account for
-                // command-line arguments that were passed for the script.
-                Execute(string.Join(" ", Toks));
+                NewTokens.Add(Name);
             }
+
+            // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
+            Execute(string.Join(" ", NewTokens));
         }
     }
 }
