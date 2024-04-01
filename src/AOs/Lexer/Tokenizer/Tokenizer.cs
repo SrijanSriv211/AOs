@@ -32,7 +32,6 @@ namespace Lexer
 
                 else if (IsIdentifier(tok.FirstOrDefault()) && !IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
                 {
-                    // Advance(TokenType.IDENTIFIER, IsIdentifier);
                     AdvanceChar(IsIdentifier);
                     AppendToken(Error.AllCommands.Contains(tok.ToLower()) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
                 }
@@ -40,6 +39,9 @@ namespace Lexer
                 else if (IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
                 {
                     AdvanceChar(IsExprWithLetter);
+                    // If the token contains any letter then it's an identifier.
+                    // Remove whitespace from token only when it's an expr.
+                    tok = tok.Any(char.IsLetter) ? tok : tok.Replace(" ", "");
                     AppendToken(tok.Any(char.IsLetter) ? TokenType.IDENTIFIER : TokenType.EXPR);
                 }
 

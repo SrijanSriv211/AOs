@@ -3,6 +3,7 @@ namespace Lexer
     partial class Parser(string line)
     {
         private readonly string line = line;
+        private readonly System.Data.DataTable dt = new();
 
         public List<string[]> Parse(List<Tokenizer.Token> tokens)
         {
@@ -13,9 +14,6 @@ namespace Lexer
             {
                 if (tok.Type == Tokenizer.TokenType.EOL)
                 {
-                    if (tok.Name != ";")
-                        break;
-
                     Tokens.Add([.. CurrentTokList]);
                     CurrentTokList = [];
                 }

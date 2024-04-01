@@ -4,9 +4,6 @@ namespace Lexer
     {
         private string Evaluate(string expr)
         {
-            System.Data.DataTable dt = new();
-            expr = expr.Replace(" ", "");
-
             string result;
             try
             {
