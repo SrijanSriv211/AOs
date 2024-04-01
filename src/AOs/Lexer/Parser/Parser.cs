@@ -1,49 +1,36 @@
 namespace Lexer
 {
-    partial class Parser
+    partial class Parser(string line)
     {
-        public Parser(string[] toks)
+        private readonly string line = line;
+
+        public List<string[]> Parse(List<Tokenizer.Token> tokens)
         {
-            // List<string> current_list = [];
+            List<string[]> Tokens = [];
+            List<string> CurrentTokList = [];
 
-            // for (int i = 0; i < toks.Length; i++)
-            // {
-            //     string tok = toks[i];
+            foreach (Tokenizer.Token tok in tokens)
+            {
+                if (tok.Type == Tokenizer.TokenType.EOL)
+                {
+                    if (tok.Name != ";")
+                        break;
 
-            //     if (tok == ";")
-            //     {
-            //         this.Tokens.Add([.. current_list]);
-            //         current_list = [];
+                    Tokens.Add([.. CurrentTokList]);
+                    CurrentTokList = [];
+                }
 
-            //         if (i-1 < toks.Length && Utils.String.IsWhiteSpace(toks[i+1]))
-            //             i++;
-            //     }
+                else if (tok.Type == Tokenizer.TokenType.EXPR)
+                    CurrentTokList.Add(Evaluate(tok.Name));
 
-            //     else if (Is_expr(tok))
-            //     {
-            //         string expr = tok;
+                else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%"))
+                    CurrentTokList.Add(SystemUtils.CheckForEnvVarAndEXEs(tok.Name));
 
-            //         i++;
-            //         while (i < toks.Length && (Is_expr(toks[i]) || Utils.String.IsWhiteSpace(toks[i])))
-            //         {
-            //             if (i < toks.Length-1 && Utils.String.IsWhiteSpace(toks[i]) && !Is_expr(toks[i+1]))
-            //                 break;
+                else
+                    CurrentTokList.Add(tok.Name);
+            }
 
-            //             expr += toks[i];
-            //             i++;
-            //         }
-
-            //         i--;
-
-            //         current_list.Add(Evaluate(expr));
-            //     }
-
-            //     else
-            //         current_list.Add(tok);
-            // }
-
-            // // Add the last sublist to the result list
-            // this.Tokens.Add(current_list.ToArray());
+            return Tokens;
         }
     }
 }

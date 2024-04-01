@@ -37,7 +37,7 @@ partial class Obsidian
         }
 
         if (CMD.First() == '_')
-            CMD = CMD.Substring(1).Trim();
+            CMD = CMD[1..].Trim();
 
         // Set history.
         History.Set(CMD);
