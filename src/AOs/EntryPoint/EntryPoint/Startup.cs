@@ -177,7 +177,7 @@ partial class EntryPoint
 
                 // Join and execute the new list of tokens that are modified to account for
                 // command-line arguments that were passed for the script.
-                Execute(string.Join("", Toks));
+                Execute(string.Join(" ", Toks));
             }
         }
     }
