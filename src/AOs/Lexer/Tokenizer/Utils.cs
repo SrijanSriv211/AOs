@@ -20,15 +20,16 @@ namespace Lexer
 
         private bool MakeString(char string_literal)
         {
-            tok = "";
+            i++;
             if (i >= line.Length)
             {
                 string error_detail = "unexpected end of tokens after " + string_literal;
                 Error.Syntax(line, tok, error_detail);
-                tok = "";
+                ClearToken();
                 return false;
             }
 
+            ClearToken();
             while (i < line.Length && line[i] != string_literal)
             {
                 if (line[i] == '\\')
@@ -56,7 +57,6 @@ namespace Lexer
                 i++; // Move to next char
             }
 
-            i++;
             if (i >= line.Length)
             {
                 string error_detail = "missing terminating " + string_literal + " character";

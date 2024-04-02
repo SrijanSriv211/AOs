@@ -8,7 +8,7 @@ namespace Utils
             for (int i = 0; i < str.Length; i++)
                 temp_args.Add(String.Strings(str[i]));
 
-            return temp_args.ToArray();
+            return [.. temp_args];
         }
     }
 }

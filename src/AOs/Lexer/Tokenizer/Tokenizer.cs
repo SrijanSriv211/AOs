@@ -33,7 +33,7 @@ namespace Lexer
                 else if (IsIdentifier(tok.FirstOrDefault()) && !IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
                 {
                     AdvanceChar(IsIdentifier);
-                    AppendToken(Error.AllCommands.Contains(tok.ToLower()) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
+                    AppendToken(EntryPoint.AllCommands.Contains(tok.ToLower()) ? TokenType.KEYWORD : TokenType.IDENTIFIER);
                 }
 
                 else if (IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
@@ -45,10 +45,15 @@ namespace Lexer
                     AppendToken(tok.Any(char.IsLetter) ? TokenType.IDENTIFIER : TokenType.EXPR);
                 }
 
-                else if ("\"'".Contains(tok) && tok.Length == 1)
+                else if (tok == "\"" || tok == "'")
                 {
-                    if (MakeString(tok.FirstOrDefault()))
-                        AppendToken(TokenType.STRING);
+                    if (!MakeString(tok.FirstOrDefault()))
+                    {
+                        tokens = [];
+                        break;
+                    }
+
+                    AppendToken(TokenType.STRING);
                 }
 
                 else

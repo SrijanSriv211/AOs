@@ -1,17 +1,10 @@
-partial class Features
+partial class Features(Obsidian AOs)
 {
-    private readonly Utils.Https https;
-    private readonly SystemUtils sys_utils;
-    private readonly Obsidian AOs;
+    private readonly Utils.Https https = new();
+    private readonly SystemUtils sys_utils = new();
+    private readonly Obsidian AOs = AOs;
     private readonly DeveloperFeatures developer_features = new();
     private readonly ExperimentalFeatures experimental_features = new();
-
-    public Features(Obsidian AOs)
-    {
-        this.AOs = AOs;
-        this.https = new();
-        this.sys_utils = new();
-    }
 
     public void Exit()
     {

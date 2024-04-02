@@ -52,7 +52,7 @@ partial class DeveloperFeatures
             github_URL = repo_data[0],
             github_branch = repo_data[1],
             build = 0,
-            clean_project_waste = new List<string>()
+            clean_project_waste = []
         };
 
         var options = new JsonSerializerOptions { WriteIndented = true };
@@ -70,7 +70,7 @@ partial class DeveloperFeatures
                         description = "Show the dotnet help message",
                         command = "dotnet help",
                         update_build_number = false,
-                        call_other_tasks = new List<string>()
+                        call_other_tasks = []
                     }
                 }
             }
