@@ -17,14 +17,13 @@ x Use "Python.Runtime" module in C# for better connection between C# and Python 
 Autocomplete filenames when pressed tab.
 
 Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
-
 Refactor the entire AOs.
 
 ........................................................................................................................
 ........................................................Commands........................................................
 ........................................................................................................................
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
-Leave 4 spaces in tab when updating files in AOs.dev using "dev" command.
+x Leave 4 spaces in tab when updating files in AOs.dev using "dev" command. (not possible with current System.Text.Json)
 When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
 Improve "AOs.dev"
 x Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
