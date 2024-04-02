@@ -133,20 +133,36 @@ partial class FileIO
             }
         }
 
-        public static string ReadAllText(string Filepath)
+        public static string ReadAllText(string Filepath, bool FileStream=false)
         {
             if (File.Exists(Filepath))
-                return File.ReadAllText(Filepath);
+            {
+                if (!FileStream)
+                    return File.ReadAllText(Filepath);
 
-            return string.Empty;
+                using var StreamReader = new StreamReader(new FileStream(Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                return StreamReader.ReadToEnd();
+            }
+
+            return "";
         }
 
-        public static string[] ReadAllLines(string Filepath)
+        public static string[] ReadAllLines(string Filepath, bool FileStream=false)
         {
-            if (File.Exists(Filepath))
-                return File.ReadAllLines(Filepath);
+            List<string> Lines = [];
 
-            return [];
+            if (File.Exists(Filepath))
+            {
+                if (!FileStream)
+                    return File.ReadAllLines(Filepath);
+
+                string line;
+                using var StreamReader = new StreamReader(new FileStream(Filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                while ((line = StreamReader.ReadLine()) != null)
+                    Lines.Add(line);
+            }
+
+            return [.. Lines];
         }
     }
 }
