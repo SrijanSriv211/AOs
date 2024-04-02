@@ -1,3 +1,5 @@
+using Utils;
+
 partial class EntryPoint
 {
     // Run AOs app, an AOs script or execute based command-line argument.
@@ -107,77 +109,72 @@ partial class EntryPoint
         }
 
         // Read all lines in that file and execute them one by one.
-        string[] lines = FileIO.FileSystem.ReadAllLines(filename);
+        string[] lines = FileIO.FileSystem.ReadAllLines(filename, FileStream: true);
+        DateTime LastModified = File.GetLastWriteTimeUtc(filename);
+        int pause_idx = ExecuteLines(lines, 0);
 
+        while(pause_idx != -1)
+        {
+            Thread.Sleep(250); // Wait for 250ms before checking for file changes
+            DateTime NewLastModified = File.GetLastWriteTimeUtc(filename);
+
+            if (NewLastModified != LastModified)
+            {
+                LastModified = NewLastModified;
+                lines = FileIO.FileSystem.ReadAllLines(filename, FileStream: true);
+                pause_idx = ExecuteLines(lines, pause_idx);
+            }
+        }
+    }
+
+    private int ExecuteLines(string[] lines, int pause_idx)
+    {
         // Loop through the entire file line-by-line.
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = pause_idx; i < lines.Length; i++)
         {
             // Get the current line.
             string line = lines[i];
 
-            /*
-            ------------------------------------------------------
-            -------------------- Hot reloading -------------------
-            ------------------------------------------------------
-            */
-
-            //TODO: Improve this hot reloading feature and make it faster and more stable.
-            // If a line is "." then pause and wait until the file is updated and "." is moved or removed.
-            // AKA hot reload the file when the line is just a fullstop.
+            // If a line is "." then pause and wait until the file is updated and "." is moved or removed. AKA hot reload the file.
             //* I'm implementing this feature for WINTER (https://github.com/Light-Lens/WINTER)
             if (line.Trim() == ".")
-            {
-                // Do (i -= 1) [i--] so that when the loop moves to next iter and does (i += 1) [i++],
-                // then it lands on the same line as before which is a fullstop, therefore "." meaning that it's time to pause.
-                i--;
+                return i;
 
-                // Try to hot reload the file every sec.
-                try
-                {
-                    // Pause reading until "." is replaced with another line
-                    Thread.Sleep(1000); // Adjust the duration of the pause as needed
-                    lines = FileIO.FileSystem.ReadAllLines(filename);
-                }
-
-                catch (Exception)
-                {
-                    continue;
-                }
-
-                continue;
-            }
-
-            /*
-            ------------------------------------------------------
-            ------------------- Executing line -------------------
-            ------------------------------------------------------
-            */
-
-            // If a line is not a fullstop, then tokenize the line and execute it one-by-one.
-            List<Lexer.Tokenizer.Token> Tokens = new Lexer.Tokenizer(line).tokens;
-            List<string> NewTokens = [];
-
-            foreach (Lexer.Tokenizer.Token Tok in Tokens)
-            {
-                // Check if a token has '$' prefix, if yes then replace that '${any_number}' with the argument value
-                // which is on that `any_number` index of all command-line arguments
-                string Name = Tok.Name;
-                if (Name.StartsWith("$") && Tok.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
-                {
-                    Name = int.TryParse(Name[1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
-
-                    // If the argument contains a space for example: Name = "Hello world!",
-                    // then wrap that value around with string literals something like this: Name = "\"Hello world!\"",
-                    // this is to make sure that when the line will be executed no argument value will be missed.
-                    if (Name.Contains(' '))
-                        Name = $"\"{Name}\"";
-                }
-
-                NewTokens.Add(Name);
-            }
-
-            // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
-            Execute(string.Join(" ", NewTokens));
+            ExecuteLine(line);
         }
+
+        return -1;
+    }
+
+    private void ExecuteLine(string line)
+    {
+        // If a line is not a fullstop, then tokenize the line and execute it one-by-one.
+        List<Lexer.Tokenizer.Token> Tokens = new Lexer.Tokenizer(line).tokens;
+        List<string> NewTokens = [];
+
+        foreach (Lexer.Tokenizer.Token Tok in Tokens)
+        {
+            // Check if a token has '$' prefix, if yes then replace that '${any_number}' with the argument value
+            // which is on that `any_number` index of all command-line arguments
+            string Name = Tok.Name;
+            if (Name.StartsWith("$") && Tok.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            {
+                Name = int.TryParse(Name[1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
+
+                // If the argument contains a space for example: Name = "Hello world!",
+                // then wrap that value around with string literals something like this: Name = "\"Hello world!\"",
+                // this is to make sure that when the line will be executed no argument value will be missed.
+                if (Name.Contains(' '))
+                    Name = $"\"{Name}\"";
+            }
+
+            else if (Tok.Type == Lexer.Tokenizer.TokenType.STRING)
+                Name = $"\"{Name}\"";
+
+            NewTokens.Add(Name);
+        }
+
+        // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
+        Execute(string.Join(" ", NewTokens));
     }
 }
