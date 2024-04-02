@@ -1,37 +1,117 @@
+using System.Text.Json;
+
 class History
 {
     public static void Set(string cmd)
     {
         string CurrentTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-        FileIO.FileSystem.Write($"{Obsidian.root_dir}\\Files.x72\\root\\.history", $"{CurrentTime}\n'{cmd}'\n\n");
+
+        // Read and Deserialize the history json text object from the file.
+        string HistoryFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\history.json");
+        string JsonTextData = FileIO.FileSystem.ReadAllText(HistoryFilepath);
+        HistoryObj history;
+
+        if (Utils.String.IsEmpty(JsonTextData))
+        {
+            history = new()
+            {
+                history = new()
+                {
+                    {
+                        Obsidian.SessionTime, new List<HistoryTemplate>()
+                        {
+                            new()
+                            {
+                                command = cmd,
+                                time = CurrentTime
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        else
+        {
+            history = JsonSerializer.Deserialize<HistoryObj>(JsonTextData);
+
+            if (!history.history.ContainsKey(Obsidian.SessionTime))
+                history.history[Obsidian.SessionTime] = [];
+
+            history.history[Obsidian.SessionTime].Add(new HistoryTemplate
+            {
+                command = cmd,
+                time = CurrentTime
+            });
+        }
+
+        string JsonData = JsonSerializer.Serialize(history, new JsonSerializerOptions { WriteIndented = true });
+        FileIO.FileSystem.Overwrite(HistoryFilepath, JsonData);
     }
 
+    // Load the history and print it.
     public static void Get()
     {
-        string[] history = FileIO.FileSystem.ReadAllLines($"{Obsidian.root_dir}\\Files.x72\\root\\.history");
-        string format = "[dd-MM-yyyy HH:mm:ss]";
-        int count = 1;
+        // Read and Deserialize the history json text object from the file.
+        string HistoryFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\history.json");
+        string JsonData = FileIO.FileSystem.ReadAllText(HistoryFilepath);
+        HistoryObj history = JsonSerializer.Deserialize<HistoryObj>(JsonData);
 
-        for (int i = 0; i < history.Length; i++)
+        string DateTimeFormat = "[dd-MM-yyyy HH:mm:ss]"; // time format
+
+        // Loop through all sessions in the history.
+        foreach (var Details in history.history)
         {
-            if (Utils.String.IsEmpty(history[i]))
-                continue;
+            // Get the session time.
+            string Session = Details.Key;
+            List<HistoryTemplate> HistoryDetails = Details.Value;
 
-            DateTime.TryParseExact(history[i], format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime);
+            // Convert the session string into DateTime format.
+            DateTime.TryParseExact(
+                Session, DateTimeFormat,
+                System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None,
+                out DateTime SessionDateTime
+            );
 
-            int padding = Utils.Maths.CalculatePadding(count, 100);
+            // Print history of every session.
+            TerminalColor.Print($"[{SessionDateTime}]", ConsoleColor.White);
+            for (int i = 0; i < HistoryDetails.Count; i++)
+            {
+                string Command = HistoryDetails[i].command;
+                string Time = HistoryDetails[i].time;
 
-            TerminalColor.Print($"{count}. ", ConsoleColor.DarkGray, false);
-            Console.Write("{0," + -padding + "}", history[i+1]);
-            TerminalColor.Print($"[{datetime}]", ConsoleColor.DarkGray);
+                // Convert the time of that command to DateTime format.
+                DateTime.TryParseExact(
+                    Time, DateTimeFormat,
+                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None,
+                    out DateTime Datetime
+                );
 
-            count++;
-            i++;
+                // Calculate the padding between the command and the it's time.
+                int padding = Utils.Maths.CalculatePadding(i+1, 100);
+
+                // Print history.
+                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Console.Write("{0," + -padding + "}", Command);
+                TerminalColor.Print($"[{Datetime}]", ConsoleColor.DarkGray);
+            }
+            Console.WriteLine();
         }
     }
 
     public static void Clear()
     {
-        FileIO.FileSystem.Delete($"{Obsidian.root_dir}\\Files.x72\\root\\.history");
+        FileIO.FileSystem.Delete($"{Obsidian.root_dir}\\Files.x72\\root\\history.json");
+    }
+
+    private class HistoryObj
+    {
+        public Dictionary<string, List<HistoryTemplate>> history { get; set; }
+    }
+
+    private class HistoryTemplate
+    {
+        public string command { get; set; }
+        public string time { get; set; }
     }
 }
