@@ -121,6 +121,7 @@ partial class EntryPoint
             ------------------------------------------------------
             */
 
+            //TODO: Improve this hot reloading feature and make it faster and more stable.
             // If a line is "." then pause and wait until the file is updated and "." is moved or removed.
             // AKA hot reload the file when the line is just a fullstop.
             //* I'm implementing this feature for WINTER (https://github.com/Light-Lens/WINTER)

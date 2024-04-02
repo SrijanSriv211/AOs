@@ -17,6 +17,7 @@ x Use "Python.Runtime" module in C# for better connection between C# and Python 
 Autocomplete filenames when pressed tab.
 
 Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
+"settings" command will print all the things from setting.json except cmds.
 Refactor the entire AOs.
 
 ........................................................................................................................
