@@ -15,6 +15,7 @@
     	<Authors>Srijan Srivastava</Authors>
     	<Product>AOs</Product>
     	<Copyright>Copyright © 2024</Copyright>
+		<RepositoryUrl>https://github.com/Light-Lens/AOs</RepositoryUrl>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion> <!-- https://github.com/dotnet/runtime/issues/95134 -->
   	</PropertyGroup>
 
