@@ -1,0 +1,33 @@
+{
+    "default_else_shell": "cmd.exe",
+    "username": null,
+    "startlist": [""],
+    "cmds": [
+        {
+            "cmd_names": ["shout", "echo"],
+            "help_message": "",
+            "supported_args": [
+                ["", ""]
+            ],
+            "default_values": [""],
+            "is_flag": false,
+            "min_arg_len": -1,
+            "max_arg_len": -1,
+            "method": "",
+            "location": "internal"
+        },
+        {
+            "cmd_names": ["powertoys"],
+            "help_message": "",
+            "supported_args": [
+                ["", ""]
+            ],
+            "default_values": [""],
+            "is_flag": false,
+            "min_arg_len": -1,
+            "max_arg_len": -1,
+            "method": null,
+            "location": "external"
+        }
+    ]
+}

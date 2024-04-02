@@ -3,15 +3,14 @@ partial class EntryPoint
     private static void CheckRootPackages()
     {
         string[] DirectoryList = [
-            "Files.x72\\etc\\PowerToys",
-            "Files.x72\\etc\\tmp",
-            "Files.x72\\etc\\Startup"
+            "Files.x72\\etc\\Startup",
+            "Files.x72\\root\\log"
         ];
 
         string[] FileList = [
             "Files.x72\\etc\\Startup\\.startlist",
-            "Files.x72\\root\\.history",
-            "Files.x72\\root\\log\\BOOT.log",
+            "Files.x72\\root\\history.json",
+            "Files.x72\\root\\settings.json",
             "Files.x72\\root\\log\\Crashreport.log"
         ];
 
@@ -24,16 +23,16 @@ partial class EntryPoint
         foreach (string path in FileList)
             FileIO.FileSystem.Create(Path.Combine(Obsidian.root_dir, path));
 
-        // If 'cmd.json' file doesn't exist then throw error.
+        // If 'settings.json' file doesn't exist then throw error.
         // This file will contain all the command and it's properties
         // that will be used by AOs to load the features.
-        if (!File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\cmds.json")))
+        if (!File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json")))
         {
-            _ = new Error("cmds.json: File not found", "boot error");
+            _ = new Error("settings.json: File not found", "boot error");
             Environment.Exit(1);
         }
 
-        // Else get all the commands from the 'cmds.json' file.
-        Error.GetAllCommands();
+        // Else get all the commands from the 'settings.json' file.
+        LoadSettings();
     }
 }
