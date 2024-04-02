@@ -8,7 +8,6 @@ partial class EntryPoint
         ];
 
         string[] FileList = [
-            "Files.x72\\etc\\Startup\\.startlist",
             "Files.x72\\root\\history.json",
             "Files.x72\\root\\settings.json",
             "Files.x72\\root\\log\\Crashreport.log"
