@@ -27,7 +27,7 @@ partial class EntryPoint
             // Clear the console to give a fresh look.
             this.AOs.ClearConsole();
             // Get all the scripts that are going to run at the start of AOs.
-            Dictionary<string, string> startup_apps = ReadAllStartupApps(LoadStartlist());
+            Dictionary<string, string> startup_apps = ReadAllStartupApps();
 
             foreach (var contents in startup_apps)
             {
@@ -175,6 +175,6 @@ partial class EntryPoint
         }
 
         // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
-        Execute(string.Join(" ", NewTokens));
+        Execute(string.Join("", NewTokens));
     }
 }

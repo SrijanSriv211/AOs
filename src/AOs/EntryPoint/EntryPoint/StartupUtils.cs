@@ -1,21 +1,13 @@
 partial class EntryPoint
 {
-    // Read the '.startlist' file and get all the files
-    // that are meant to be run at AOs' startup.
-    private static string[] LoadStartlist()
-    {
-        string startlist_path = Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup\\.startlist");
-        return FileIO.FileSystem.ReadAllLines(startlist_path);
-    }
-
     // Read all the files that are meant to run at startup.
-    private static Dictionary<string, string> ReadAllStartupApps(string[] filenames)
+    private static Dictionary<string, string> ReadAllStartupApps()
     {
         // Dictionary<string, string>:
         // string -> filename, string -> absolute path of the file
         Dictionary<string, string> StartupAppsContent = [];
 
-        foreach (string filename in filenames)
+        foreach (string filename in Settings.startlist)
         {
             // If '.' is there in-place of the filename then stop because
             // '.' states that the following startup files are disabled, so don't run them.
