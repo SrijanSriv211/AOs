@@ -5,6 +5,7 @@ namespace Lexer
         public enum TokenType
         {
             EOL = 0,
+            WHITESPACE,
             IDENTIFIER,
             STRING,
             EXPR,
@@ -64,17 +65,8 @@ namespace Lexer
                 return false;
             }
 
+            i++;
             return true;
-        }
-
-        private static bool IsExpr(char ch)
-        {
-            return " ()[]{}+-*/%._=".Contains(ch) || char.IsDigit(ch);
-        }
-
-        private static bool IsExprWithLetter(char ch)
-        {
-            return IsExpr(ch) || char.IsLetter(ch);
         }
 
         private static bool IsValidCharForFilenameInWindows(char ch)
