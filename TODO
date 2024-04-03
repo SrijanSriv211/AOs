@@ -16,7 +16,12 @@ x Use "Python.Runtime" module in C# for better connection between C# and Python 
 . Implement a spell-checker (wagner-ficher) algo in AOs error log.
 Autocomplete filenames when pressed tab.
 
-Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
+There are some bugs in AOs.Parser, fix them. For eg, ">" doesn't work but ">." works. Basically if no argument is passed then ">" won't even be called. Fix it and make it work more better with the new Lexer.
+Make AOs' 'ls' command look exactly like bash's 'ls' command doesn.
+
+. For input 'shout "%username%"' this is the output 'SrijanSrivastava'. This is a bug in lexer. Fix it.
+
+. Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
 "settings" command will print all the things from setting.json except cmds.
 Refactor the entire AOs.
 
@@ -29,9 +34,9 @@ When using "dev new" command and the github repo link is asked then clone the re
 Improve "AOs.dev"
 x Integrate Wikipedia, Play videos on youtube, Cpix and Pixstore in AOs.
 x Save Wikipedia, play YouTube videos in 'PowerToys' and access them from the folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
-Remove datetime, random, sysinfo, tree, corner, shout
+. Remove datetime, random, sysinfo, tree
 Fix bug 'start .' doesn't open the current folder and shows a crash error. More in Crashreport.log
-In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
+. In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
 Make the 'help <command-name>' page more useful and informational about the command.
 
 olor - Changes your PC's theme from Dark mode to Light mode.
