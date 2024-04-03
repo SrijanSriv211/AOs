@@ -15,7 +15,7 @@ namespace Lexer
             // Loop through all chars in the line.
             for (i = 0; i < line.Length; i++)
             {
-                int tok_state = CheckForToken(tok);
+                int tok_state = CheckForToken();
                 if (tok_state == -1)
                     break;
 
@@ -24,7 +24,7 @@ namespace Lexer
             }
 
             if (!Utils.String.IsEmpty(tok))
-                CheckForToken(tok);
+                CheckForToken();
 
             tok = "";
             AppendToken(TokenType.EOL);
@@ -36,10 +36,11 @@ namespace Lexer
             tok = "";
         }
 
-        private void AppendToken(TokenType type)
+        private int AppendToken(TokenType type)
         {
-            tokens.Add(new Token(tok.Trim(), type));
+            tokens.Add(new Token(tok, type));
             ClearToken();
+            return 1;
         }
 
         private void AdvanceChar(Func<char, bool> func)
@@ -51,53 +52,40 @@ namespace Lexer
             }
         }
 
-        private void Advance(TokenType type, Func<char, bool> func)
+        private int Advance(TokenType type, Func<char, bool> func)
         {
             AdvanceChar(func);
-            AppendToken(type);
+            return AppendToken(type);
         }
 
-        private int CheckForToken(string tok)
+        private int CheckForToken()
         {
             // '#' means that the following text is a comment.
             if (tok == "#")
                 return -1;
 
             else if (Utils.String.IsWhiteSpace(tok))
-            {
-                ClearToken(); // Remove whitespaces from the line.
-                return 1;
-            }
+                return Advance(TokenType.WHITESPACE, char.IsWhiteSpace);
 
-            // ';' will be used to separate two different commands.
-            // Useful for multiple commands in single line.
+            // ';' will be used to separate two different commands. Useful for multiple commands in single line.
             else if (tok == ";")
-            {
-                AppendToken(TokenType.EOL);
-                return 1;
-            }
+                return AppendToken(TokenType.EOL);
 
             else if (">@!".Contains(tok.FirstOrDefault()))
-            {
-                AppendToken(TokenType.SYMBOL);
-                return 1;
-            }
+                return AppendToken(TokenType.SYMBOL);
 
-            else if (IsIdentifier(tok.FirstOrDefault()) && !IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
+            else if (IsIdentifier(tok.FirstOrDefault()) && tok.Length == 1)
             {
                 AdvanceChar(IsIdentifier);
-                AppendToken(TokenType.IDENTIFIER);
-                return 1;
-            }
 
-            else if (IsExpr(tok.FirstOrDefault()) && tok.Length == 1)
-            {
-                AdvanceChar(IsExprWithLetter);
-                // If the token contains any letter then it's an identifier.
+                // Remove all the common chars from the Expr string and tok to calculate if the tok is an expr or identifier.
+                string UncommonChars = string.Concat(tok.Where(ch => !" ()[]{}+-*/%._=0123456789".Contains(ch)));
+
                 // Remove whitespace from token only when it's an expr.
-                tok = tok.Any(char.IsLetter) ? tok : tok.Replace(" ", "");
-                AppendToken(tok.Any(char.IsLetter) ? TokenType.IDENTIFIER : TokenType.EXPR);
-                return 1;
+                tok = !Utils.String.IsEmpty(UncommonChars) ? tok : tok.Replace(" ", "");
+
+                // If the token contains any letter then it's an identifier.
+                return AppendToken(!Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR);
             }
 
             else if (tok == "\"" || tok == "'")
@@ -108,8 +96,7 @@ namespace Lexer
                     return -1;
                 }
 
-                AppendToken(TokenType.STRING);
-                return 1;
+                return AppendToken(TokenType.STRING);
             }
 
             return 0;
