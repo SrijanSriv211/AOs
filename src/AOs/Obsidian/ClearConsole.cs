@@ -4,7 +4,7 @@ partial class Obsidian
     {
         sys_utils.CommandPrompt("cls");
         TerminalColor.Print(version, ConsoleColor.Yellow, false);
-        TerminalColor.Print($"  ({Environment.GetEnvironmentVariable("username")})", ConsoleColor.White);
+        TerminalColor.Print($"  ({username})", ConsoleColor.White);
 
         // https://stackoverflow.com/a/72575526/18121288
         // Check if AOs is running in Windows Terminal or using using the environment variable %WT_SESSION%

@@ -3,10 +3,11 @@ using System.Security.Principal;
 
 partial class Obsidian
 {
-    public static string default_else_shell = "cmd.exe";
+    public static string default_else_shell = EntryPoint.Settings.default_else_shell;
 
+    public readonly static string username = EntryPoint.Settings.username == null ? Environment.GetEnvironmentVariable("username") : EntryPoint.Settings.username;
     public readonly static string SessionTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
-    public readonly static string about_AOs = "A Developer Command-line Tool Built for Developers by a Developer.";
+    public readonly static string about_AOs = "A command-line tool built to control your OS directly through the command-line";
     public readonly static string AOs_repo_link = "https://github.com/Light-Lens/AOs";
 
     public readonly static string root_dir = AppDomain.CurrentDomain.BaseDirectory;
