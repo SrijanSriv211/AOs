@@ -2,7 +2,6 @@ using System.Text.Json;
 
 partial class EntryPoint
 {
-    public static readonly List<string> AllCommands = [];
     public static Settings SettingsObj;
 
     public static void LoadSettings()
@@ -11,7 +10,6 @@ partial class EntryPoint
         string JsonData = FileIO.FileSystem.ReadAllText(SettingsFilepath);
 
         SettingsObj = JsonSerializer.Deserialize<Settings>(JsonData);
-        AllCommands.AddRange(SettingsObj.cmds.SelectMany(cmd => cmd.cmd_names));
     }
 
     public class Settings
@@ -26,12 +24,20 @@ partial class EntryPoint
     {
         public string[] cmd_names { get; set; }
         public string help_message { get; set; }
-        public List<string[]> supported_args { get; set; }
+        public string[] usage { get; set; }
+        public List<SupportedArgsTemplate> supported_args { get; set; }
         public string[] default_values { get; set; }
         public bool is_flag { get; set; }
         public int min_arg_len { get; set; }
         public int max_arg_len { get; set; }
         public string method { get; set; }
         public string location { get; set; }
+        public bool index_cmd { get; set; }
+    }
+
+    public class SupportedArgsTemplate
+    {
+        public string[] args { get; set; }
+        public string help_message { get; set; }
     }
 }
