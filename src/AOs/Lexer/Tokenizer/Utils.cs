@@ -6,7 +6,6 @@ namespace Lexer
         {
             EOL = 0,
             IDENTIFIER,
-            KEYWORD,
             STRING,
             EXPR,
             SYMBOL,
