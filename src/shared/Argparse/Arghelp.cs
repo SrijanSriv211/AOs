@@ -79,13 +79,13 @@ partial class Argparse
 
     public static bool IsAskingForHelp(string arg)
     {
-        string[] help_flags = { "/?", "-h", "--help", "??" };
+        string[] help_flags = ["/?", "-h", "--help", "??"];
         return help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase);
     }
 
     public static bool IsAskingForHelp(string[] args)
     {
-        string[] help_flags = { "/?", "-h", "--help", "??" };
+        string[] help_flags = ["/?", "-h", "--help", "??"];
         foreach (string arg in args)
         {
             if (help_flags.Contains(arg, StringComparer.OrdinalIgnoreCase))

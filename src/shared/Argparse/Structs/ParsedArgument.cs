@@ -10,7 +10,7 @@ partial class Argparse
 
         public ParsedArgument(string[] names, string value, bool is_flag, bool required, string known_type="Known")
         {
-            this.Names = names ?? new string[0];
+            this.Names = names ?? [];
             this.Value = value;
             this.Is_flag = is_flag;
             this.Required = required;

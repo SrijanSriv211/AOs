@@ -1,3 +1,5 @@
+using Lexer;
+
 namespace Utils
 {
     public class Array
@@ -47,19 +49,22 @@ namespace Utils
             return arr.ToArray().Reverse().Skip(Count).Reverse().ToArray();
         }
 
+        // https://stackoverflow.com/a/70991343/18121288
         // Trim the leading and trailing part of an array.
         public static string[] Trim(string[] arr)
         {
             // No need to search through nothing
-            if (arr == null || arr.Length == 0) return System.Array.Empty<string>();
+            if (arr == null || arr.Length == 0)
+                return [];
 
             // Define predicate to test for non-empty strings
-            Predicate<string> IsNotEmpty = s => !String.IsEmpty(s);
+            static bool IsNotEmpty(string s) => !String.IsEmpty(s);
 
             var FirstIndex = System.Array.FindIndex(arr, IsNotEmpty);
 
             // Nothing to return if it's all whitespace anyway
-            if (FirstIndex < 0) return System.Array.Empty<string>();
+            if (FirstIndex < 0)
+                return [];
 
             var LastIndex = System.Array.FindLastIndex(arr, IsNotEmpty);
 

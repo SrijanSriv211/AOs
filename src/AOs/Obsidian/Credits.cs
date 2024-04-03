@@ -2,7 +2,7 @@ partial class Obsidian
 {
     public static void Credits()
     {
-        string[] CreditCenter = {
+        string[] CreditCenter = [
              "_________ Team AOS ________",
              "Author     -> Srijan Srivastava",
              "Github     -> https://github.com/Light-Lens/AOs",
@@ -20,7 +20,7 @@ partial class Obsidian
              "|| and may lead to instability.",
              "",
              "Type 'help' to get information about all supported command."
-        };
+        ];
 
         TerminalColor.Print(string.Join("\n", CreditCenter), ConsoleColor.White);
     }

@@ -59,7 +59,7 @@ partial class DeveloperFeatures
 
                 // Execute other tasks
                 foreach (string other_task in task.Value.call_other_tasks)
-                    ExecTask(new string[] {other_task}, tasks);
+                    ExecTask([other_task], tasks);
             }
         }
     }

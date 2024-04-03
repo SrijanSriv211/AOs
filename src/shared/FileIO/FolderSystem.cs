@@ -107,7 +107,7 @@ partial class FileIO
         public static string[] Read(string Directoryname)
         {
             if (!Directory.Exists(Directoryname))
-                return new string[0];
+                return [];
 
             return Directory.GetFileSystemEntries(Directoryname, "*");
         }
