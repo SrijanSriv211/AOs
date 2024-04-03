@@ -2,17 +2,15 @@ using System.Text.Json;
 
 partial class EntryPoint
 {
-    public static Settings SettingsObj;
-
     public static void LoadSettings()
     {
         string SettingsFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json");
         string JsonData = FileIO.FileSystem.ReadAllText(SettingsFilepath);
 
-        SettingsObj = JsonSerializer.Deserialize<Settings>(JsonData);
+        Settings = JsonSerializer.Deserialize<SettingsTemplate>(JsonData);
     }
 
-    public class Settings
+    public class SettingsTemplate
     {
         public string default_else_shell { get; set; }
         public string username { get; set; }

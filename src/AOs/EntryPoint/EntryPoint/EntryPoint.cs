@@ -2,6 +2,7 @@ partial class EntryPoint
 {
     public readonly Parser parser;
     public readonly Features features;
+    public static SettingsTemplate Settings;
 
     private readonly Obsidian AOs;
     private readonly string[] args;
