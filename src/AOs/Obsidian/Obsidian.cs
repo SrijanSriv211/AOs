@@ -19,9 +19,8 @@ partial class Obsidian
         this.prompt = "$ ";
     }
 
-    public List<(string cmd, string[] args)> TakeInput(string input="")
+    public List<(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] args)> TakeInput(string input="")
     {
-        List<(string cmd, string[] args)> output = [];
         string CMD = input.Trim();
 
         Console.ForegroundColor = current_foreground_color;
@@ -43,20 +42,6 @@ partial class Obsidian
         History.Set(CMD);
 
         // Some lexer stuff.
-        List<string[]> ListOfToks = new Lexer.Lexer(CMD).Tokens;
-        foreach (string[] Toks in ListOfToks)
-        {
-            if (Utils.String.IsEmpty(Toks.FirstOrDefault()))
-                continue;
-
-            // Split the Toks into a cmd and Args variable and array respectively.
-            string input_cmd = Utils.String.Strings(Toks.FirstOrDefault());
-            string[] input_args = Utils.Array.Trim(Toks.Skip(1).ToArray());
-
-            // Add input_cmd & input_args to output.
-            output.Add((input_cmd, input_args));
-        }
-
-        return output;
+        return new Lexer.Parser(CMD, new Lexer.Tokenizer(CMD).tokens).output;
     }
 }
