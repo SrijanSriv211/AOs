@@ -21,7 +21,7 @@ namespace Lexer
                 else if (tok.Type == Tokenizer.TokenType.EXPR)
                     CurrentTokList.Add(Evaluate(tok.Name));
 
-                else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%"))
+                else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%") && tok.Type == Tokenizer.TokenType.IDENTIFIER)
                     CurrentTokList.Add(SystemUtils.CheckForEnvVarAndEXEs(tok.Name));
 
                 else
