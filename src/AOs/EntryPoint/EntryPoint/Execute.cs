@@ -14,7 +14,7 @@ partial class EntryPoint
             {
                 TerminalColor.Print("AOs1000!", ConsoleColor.White);
                 TerminalColor.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
-                TerminalColor.Print("It was the first program to ever reach these many LINES OF CODE!", ConsoleColor.White);
+                TerminalColor.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
             else
