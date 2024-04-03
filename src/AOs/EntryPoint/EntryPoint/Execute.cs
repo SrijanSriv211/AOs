@@ -1,16 +1,16 @@
 partial class EntryPoint
 {
-    private void Main(List<(string cmd, string[] args)> input)
+    private void Main(List<(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] args)> input)
     {
         foreach (var i in input)
         {
-            if (Utils.String.IsEmpty(i.cmd))
+            if (Utils.String.IsEmpty(i.cmd.Name) && i.cmd.Type == Lexer.Tokenizer.TokenType.EOL)
                 continue;
 
-            else if (i.cmd.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.ToLower()))
-                this.parser.GetHelp(i.args ?? [""]);
+            else if ((i.cmd.Name.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.Name.ToLower())) && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                parser.GetHelp(i.args.Select(x => x.Name).ToArray() ?? [""]);
 
-            else if (i.cmd == "AOs1000")
+            else if (i.cmd.Name == "AOs1000" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
                 TerminalColor.Print("AOs1000!", ConsoleColor.White);
                 TerminalColor.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
@@ -18,7 +18,7 @@ partial class EntryPoint
             }
 
             else
-                this.parser.Execute(this.parser.Parse(i.cmd, i.args));
+                this.parser.Execute(this.parser.Parse(i.cmd.Name, i.args.Select(x => x.Name).ToArray()));
         }
     }
 
@@ -28,7 +28,7 @@ partial class EntryPoint
         {
             try
             {
-                this.Main(AOs.TakeInput());
+                Main(AOs.TakeInput());
             }
 
             catch (Exception e)
@@ -43,7 +43,7 @@ partial class EntryPoint
         try
         {
             if (!Utils.String.IsEmpty(input))
-                this.Main(AOs.TakeInput(input));
+                Main(AOs.TakeInput(input));
         }
 
         catch (Exception e)
@@ -59,7 +59,7 @@ partial class EntryPoint
             try
             {
                 if (!Utils.String.IsEmpty(input))
-                    this.Main(AOs.TakeInput(input));
+                    Main(AOs.TakeInput(input));
             }
 
             catch (Exception e)
