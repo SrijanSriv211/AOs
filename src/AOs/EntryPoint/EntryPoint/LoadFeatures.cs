@@ -41,10 +41,6 @@ partial class EntryPoint
         this.parser.Add(["credits"], "Credit for AOs", method: Obsidian.Credits);
         this.parser.Add(["time", "clock"], "Display current time", method: this.features.GetTime);
         this.parser.Add(["date", "calendar"], "Display today's date", method: this.features.GetDate);
-        this.parser.Add(["datetime"], "Display today's time and date", method: this.features.GetDateTime);
-        this.parser.Add(["ran", "random", "generate"], "Generate a random number between 0 and 1", method: this.features.GenRandomNum);
-        this.parser.Add(["sysinfo", "systeminfo", "osinfo"], "Display operating system configuration information", method: this.features.SysInfo);
-        this.parser.Add(["tree"], "Graphically display the directory structure of a drive or path", method: this.features.Tree);
         this.parser.Add(["diagxt"], "Display AOs specific properties and configuration", method: this.features.Diagxt);
         this.parser.Add(["scan", "deepscan"], "Scan the integrity of all protected system files", method: this.features.Scan);
         this.parser.Add(["update"], "Check for AOs updates", method: this.features.CheckForAOsUpdates);
@@ -59,7 +55,7 @@ partial class EntryPoint
             },
             default_values: [""], max_args_length: 1, method: this.features.GetSetHistory
         );
-        this.parser.Add([">", "console", "terminal", "cmd", "call"], "Call a specified program or command, given the full or sysenv path in terminal", default_values: [], method: this.features.RunInTerminal);
+        this.parser.Add([">", "console", "terminal", "cmd", "call"], "Call a specified program or command, given the full or sysenv path in terminal", default_values: ["start", "."], method: this.features.RunInTerminal);
         this.parser.Add(["open", "run", "start"], "Start a specified program or command, given the full or sysenv path", default_values: [], method: this.features.RunApp);
         this.parser.Add(["title"], "Change the title for AOs window", default_values: [], method: this.features.ChangeTitle);
         this.parser.Add(["color"], "Change the default AOs foreground colors", default_values: [""], max_args_length: 1, method: this.features.ChangeColor);
