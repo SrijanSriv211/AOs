@@ -83,7 +83,7 @@ partial class Features(Obsidian AOs)
 
     public void Diagxt()
     {
-        string[] details = {
+        string[] details = [
             $"NAME        : AOs {Obsidian.version_no}",
             $"BUILD       : Release Build {Obsidian.build_no}",
             $"VERSION     : {AOs.version}",
@@ -101,7 +101,7 @@ partial class Features(Obsidian AOs)
              "",
             $"GITHUB REPO     : {Obsidian.AOs_repo_link}",
              "SYSTEM LANGUAGE : en-in; English (India)"
-        };
+        ];
 
         TerminalColor.Print(string.Join("\n", details), ConsoleColor.White);
     }
@@ -194,12 +194,12 @@ partial class Features(Obsidian AOs)
         static void help_for_color()
         {
             _ = new Error("`color` value was not defined. Please use a defined color value", "runtime error");
-            string[] list_of_colors = new string[]
-            {
+            string[] list_of_colors =
+            [
                 "Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed",
                 "DarkMagenta", "DarkYellow", "Gray", "DarkGray", "Blue",
                 "Green", "Cyan", "Red", "Magenta", "Yellow", "White"
-            };
+            ];
 
             for (int i = 0; i < list_of_colors.Length; i++)
             {
@@ -276,7 +276,7 @@ partial class Features(Obsidian AOs)
             sys_utils.StartApp(Obsidian.default_else_shell);
 
         else
-            sys_utils.CommandPrompt(string.Join("", args));
+            sys_utils.CommandPrompt(string.Join(" ", args));
     }
 
     public void RunApp(string[] args)
@@ -287,7 +287,7 @@ partial class Features(Obsidian AOs)
         else
         {
             string appname = args.First();
-            string app_args = args.Length > 1 ? string.Join("", Utils.Array.Trim(args.Skip(1).ToArray())) : null;
+            string app_args = args.Length > 1 ? string.Join(" ", Utils.Array.Trim(args.Skip(1).ToArray())) : null;
             sys_utils.StartApp(appname, app_args);
         }
     }
@@ -515,9 +515,9 @@ partial class Features(Obsidian AOs)
 
         string engine_name = "google", city_name = "muzaffarpur";
         var parser = new Argparse("pixelate", "Start a website in a web browser", err);
-        parser.Add(new string[]{"-e", "--engine"}, "Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)", default_value: engine_name);
-        parser.Add(new string[]{"-w", "--weather"}, "Display today's weather in a city", default_value: city_name);
-        parser.Add(new string[]{"-t", "--temp", "--temperature"}, "Display today's temperature in a city", default_value: city_name);
+        parser.Add(["-e", "--engine"], "Search for a query on a specific search engine (google, bing, duckduckgo, youtube, wikipedia)", default_value: engine_name);
+        parser.Add(["-w", "--weather"], "Display today's weather in a city", default_value: city_name);
+        parser.Add(["-t", "--temp", "--temperature"], "Display today's temperature in a city", default_value: city_name);
         var parsed_args = parser.Parse(Utils.Array.Reduce(Utils.Array.Filter(websites_to_open)));
 
         List<string> queries = new();
@@ -575,7 +575,7 @@ partial class Features(Obsidian AOs)
         }
 
         var parser = new Argparse("read", "Displays the contents of a text file.", err);
-        parser.Add(new string[]{"-l", "--line"}, "Shows information about a specific line", default_value: "-1");
+        parser.Add(["-l", "--line"], "Shows information about a specific line", default_value: "-1");
         var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
         // Get all the files to read from.
@@ -625,7 +625,7 @@ partial class Features(Obsidian AOs)
 
         // Initialize the parser.
         var parser = new Argparse("commit", "Edit the contents of a text file", err);
-        parser.Add(new string[]{"-l", "--line"}, "Edit specific line in a text file", default_value: "-1");
+        parser.Add(["-l", "--line"], "Edit specific line in a text file", default_value: "-1");
         var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
         // Get all the filenames and the data to commit to.
@@ -674,7 +674,7 @@ partial class Features(Obsidian AOs)
     public void WinRAR(string[] args)
     {
         var parser = new Argparse("zip", "Compress or Decompress files or folders", Error.UnrecognizedArgs);
-        parser.Add(new string[]{"-u", "--uncompress", "--decompress"}, "Decompress zip files", is_flag: true);
+        parser.Add(["-u", "--uncompress", "--decompress"], "Decompress zip files", is_flag: true);
         var parsed_args = parser.Parse(Utils.Array.Reduce(args));
 
         // Get all the filenames and the data to commit to.
@@ -720,7 +720,7 @@ partial class Features(Obsidian AOs)
 
         else
         {
-            System.Diagnostics.Process[] all_process = {};
+            System.Diagnostics.Process[] all_process = [];
             foreach (string appname in appnames)
             {
                 string name = Utils.String.Strings(appname);
@@ -729,7 +729,7 @@ partial class Features(Obsidian AOs)
                 {
                     IntPtr handle = WindowManager.GetForegroundWindow();
                     WindowManager.GetWindowThreadProcessId(handle, out uint process_id);
-                    all_process = new[]{System.Diagnostics.Process.GetProcessById((int)process_id)};
+                    all_process = [System.Diagnostics.Process.GetProcessById((int)process_id)];
                 }
 
                 else
@@ -768,8 +768,8 @@ partial class Features(Obsidian AOs)
         }
 
         var parser = new Argparse("vol", "Control the host operating system volume", Error.UnrecognizedArgs);
-        parser.Add(new string[]{"-m"}, "Mute/Unmute host operating system volume", is_flag: true);
-        parser.Add(new string[]{"-i"}, "Increase/Decrease the volume by then given value", is_flag: false);
+        parser.Add(["-m"], "Mute/Unmute host operating system volume", is_flag: true);
+        parser.Add(["-i"], "Increase/Decrease the volume by then given value", is_flag: false);
         var parsed_args = parser.Parse(Utils.Array.Reduce(vol_level));
 
         if (parsed_args[0].Names.Contains("-m"))
@@ -811,7 +811,7 @@ partial class Features(Obsidian AOs)
             return;
 
         else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
-            this.developer_features.parser.GetHelp(input_args ?? new string[]{""});
+            this.developer_features.parser.GetHelp(input_args ?? [""]);
 
         else
             this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));
@@ -828,7 +828,7 @@ partial class Features(Obsidian AOs)
             return;
 
         else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
-            this.experimental_features.parser.GetHelp(input_args ?? new string[]{""});
+            this.experimental_features.parser.GetHelp(input_args ?? [""]);
 
         else
             this.experimental_features.parser.Execute(this.experimental_features.parser.Parse(input_cmd, input_args));
