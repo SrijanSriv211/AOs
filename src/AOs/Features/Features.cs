@@ -42,6 +42,35 @@ partial class Features(Obsidian AOs)
         Console.WriteLine(AOs.version);
     }
 
+    public void PrintAOsSettings()
+    {
+        TerminalColor.Print("Default-Else-Shell: ", ConsoleColor.White);
+        TerminalColor.Print(EntryPoint.Settings.default_else_shell, ConsoleColor.Gray);
+        Console.WriteLine();
+
+        TerminalColor.Print("Username: ", ConsoleColor.White);
+        TerminalColor.Print(EntryPoint.Settings.username ?? "None", ConsoleColor.Gray);
+        Console.WriteLine();
+
+        TerminalColor.Print("Startup Apps (", ConsoleColor.White, false);
+        TerminalColor.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup"), ConsoleColor.DarkGray, false);
+        TerminalColor.Print("):", ConsoleColor.White);
+        if (!Utils.Array.IsEmpty(EntryPoint.Settings.startlist))
+        {
+            for (int i = 0; i < EntryPoint.Settings.startlist.Length; i++)
+            {
+                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Console.WriteLine("{0," + -Utils.Maths.CalculatePadding(i+1, 10) + "}", EntryPoint.Settings.startlist[i]);
+            }
+        }
+
+        else
+            Console.WriteLine("None");
+
+        Console.WriteLine();
+        TerminalColor.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json"), ConsoleColor.DarkGray);
+    }
+
     public void About()
     {
         TerminalColor.Print(Obsidian.about_AOs, ConsoleColor.White);
@@ -391,24 +420,34 @@ partial class Features(Obsidian AOs)
 
         static void ShowDirs(string dir)
         {
-            TerminalColor.Print(dir, ConsoleColor.White);
+            TerminalColor.Print($"{dir}\n", ConsoleColor.White);
             string[] entries = FileIO.FolderSystem.Read(dir);
 
             for (int i = 0; i < entries.Length; i++)
             {
-                int padding = Utils.Maths.CalculatePadding(i+1, 100);
+                int padding = Utils.Maths.CalculatePadding(i+1, 50);
+
+                if (i == 0)
+                {
+                    TerminalColor.Print(string.Format("{0," + -padding + "}", "Name") + "   Type\t", ConsoleColor.White, false);
+                    TerminalColor.Print("    Creation Time\t", ConsoleColor.White, false);
+                    Console.Write("       ");
+                    TerminalColor.Print("Last Write Time", ConsoleColor.White);
+                }
 
                 TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", entries[i]);
 
                 if (File.Exists(entries[i]))
-                    TerminalColor.Print("FILE", ConsoleColor.DarkGray);
+                    TerminalColor.Print("file\t", ConsoleColor.DarkGray, false);
 
                 else if (Directory.Exists(entries[i]))
-                    TerminalColor.Print("FOLDER", ConsoleColor.DarkGray);
-            }
+                    TerminalColor.Print("dir\t", ConsoleColor.DarkGray, false);
 
-            Console.WriteLine();
+                TerminalColor.Print(File.GetCreationTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray, false);
+                Console.Write("       ");
+                TerminalColor.Print(File.GetLastWriteTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray);
+            }
         }
 
         if (Utils.Array.IsEmpty(dirname))

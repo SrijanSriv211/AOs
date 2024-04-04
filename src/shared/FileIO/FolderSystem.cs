@@ -109,7 +109,15 @@ partial class FileIO
             if (!Directory.Exists(Directoryname))
                 return [];
 
-            return Directory.GetFileSystemEntries(Directoryname, "*");
+            // Get file and folder names without full paths
+            string[] FileSystemEntries = Directory.GetFileSystemEntries(Directoryname, "*");
+
+            // Separate directories and files
+            string[] Directories = FileSystemEntries.Where(Directory.Exists).ToArray();
+            string[] Files = FileSystemEntries.Where(File.Exists).ToArray();
+
+            // Concatenate directories and files in the desired order
+            return Directories.Concat(Files).Select(Path.GetFileName).ToArray();
         }
 
         public static void Compress(string Source_dirname, string zip_path)
