@@ -17,8 +17,12 @@ partial class EntryPoint
                 TerminalColor.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
+            else if (i.cmd.Type == Lexer.Tokenizer.TokenType.EXPR)
+                Console.WriteLine(i.cmd.Name);
+
             else
                 this.parser.Execute(this.parser.Parse(i.cmd.Name, i.args.Select(x => x.Name).ToArray()));
+            Console.WriteLine();
         }
     }
 
