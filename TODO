@@ -16,8 +16,10 @@ x Use "Python.Runtime" module in C# for better connection between C# and Python 
 . Implement a spell-checker (wagner-ficher) algo in AOs error log.
 Autocomplete filenames when pressed tab.
 
-There are some bugs in AOs.Parser, fix them. For eg, ">" doesn't work but ">." works. Basically if no argument is passed then ">" won't even be called. Fix it and make it work more better with the new Lexer.
+. There are some bugs in AOs.Parser, fix them. For eg, ">" doesn't work but ">." works. Basically if no argument is passed then ">" won't even be called. Fix it and make it work more better with the new Lexer.
 Make AOs' 'ls' command look exactly like bash's 'ls' command doesn.
+
+Python's virtual env doesn't work with AOs. Fix it.
 
 . For input 'shout "%username%"' this is the output 'SrijanSrivastava'. This is a bug in lexer. Fix it.
 . Lexer fails to work with prompt system. Fix it.
