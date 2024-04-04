@@ -289,12 +289,12 @@ partial class Features(Obsidian AOs)
 
     public void Shout(string[] args)
     {
-        Console.WriteLine(string.Join("", Utils.Utils.SimplifyString(args)));
+        Console.WriteLine(string.Join("", args));
     }
 
     public void Pause(string[] args)
     {
-        Console.Write(string.Join("", Utils.Utils.SimplifyString(args)));
+        Console.Write(string.Join("", args));
         Console.ReadKey();
         Console.WriteLine();
     }
@@ -839,6 +839,45 @@ partial class Features(Obsidian AOs)
         }
     }
 
+    public void ItsMagic()
+    {
+        // Rickroll!!
+        // https://youtu.be/dQw4w9WgXcQ
+
+        sys_utils.StartApp("https://youtu.be/dQw4w9WgXcQ");
+    }
+
+    public void SwitchApp(string appid)
+    {
+        if (Utils.String.IsEmpty(appid))
+        {
+            System.Diagnostics.Process[] all_process = System.Diagnostics.Process.GetProcesses();
+            foreach (System.Diagnostics.Process p in all_process)
+            {
+                if (!Utils.String.IsEmpty(p.MainWindowTitle))
+                {
+                    Console.Write("{0," + -Utils.Maths.CalculatePadding(100, 100) + "}", p.MainWindowTitle);
+                    TerminalColor.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
+                }
+            }
+        }
+
+        else
+        {
+            if (int.TryParse(appid, out int int_appid))
+            {
+                System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById(int_appid);
+                WindowManager.SetForegroundWindow(process.MainWindowHandle);
+            }
+
+            else
+            {
+                _ = new Error($"Invalid App ID: {appid}. App ID must be a number.", "runtime error");
+                TerminalColor.Print("Please try 'switch' to get an App ID", ConsoleColor.White);
+            }
+        }
+    }
+
     public void DevCMD(string[] args)
     {
         // Split the Toks into a cmd and Args variable and array respectively.
@@ -856,20 +895,20 @@ partial class Features(Obsidian AOs)
             this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));
     }
 
-    public void ExperimentCMD(string[] args)
-    {
-        // Split the Toks into a cmd and Args variable and array respectively.
-        string input_cmd = Utils.String.Strings(args.FirstOrDefault());
-        string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
+    // public void ExperimentCMD(string[] args)
+    // {
+    //     // Split the Toks into a cmd and Args variable and array respectively.
+    //     string input_cmd = Utils.String.Strings(args.FirstOrDefault());
+    //     string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
 
-        // Execute the developer commands.
-        if (Utils.String.IsEmpty(input_cmd))
-            return;
+    //     // Execute the developer commands.
+    //     if (Utils.String.IsEmpty(input_cmd))
+    //         return;
 
-        else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
-            this.experimental_features.parser.GetHelp(input_args ?? [""]);
+    //     else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
+    //         this.experimental_features.parser.GetHelp(input_args ?? [""]);
 
-        else
-            this.experimental_features.parser.Execute(this.experimental_features.parser.Parse(input_cmd, input_args));
-    }
+    //     else
+    //         this.experimental_features.parser.Execute(this.experimental_features.parser.Parse(input_cmd, input_args));
+    // }
 }
