@@ -8,6 +8,7 @@ namespace WindowsVolumeControl
     /// from: http://stackoverflow.com/questions/14306048/controling-volume-mixer
     /// and: http://netcoreaudio.codeplex.com/
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
     public static class AudioManager
     {
         #region Master Volume Manipulation
@@ -25,8 +26,7 @@ namespace WindowsVolumeControl
                 if (masterVol == null)
                     return -1;
 
-                float volumeLevel;
-                masterVol.GetMasterVolumeLevelScalar(out volumeLevel);
+                masterVol.GetMasterVolumeLevelScalar(out float volumeLevel);
                 return volumeLevel*100;
             }
             finally
