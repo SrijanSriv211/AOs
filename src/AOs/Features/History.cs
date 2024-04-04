@@ -95,7 +95,6 @@ class History
                 Console.Write("{0," + -padding + "}", Command);
                 TerminalColor.Print($"[{Datetime}]", ConsoleColor.DarkGray);
             }
-            Console.WriteLine();
         }
     }
 
