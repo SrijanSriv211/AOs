@@ -50,6 +50,7 @@ partial class EntryPoint
         );
 
         // Flagged commands
+        parser.Add(["settings"], "Displays the AOs settings", method: features.PrintAOsSettings);
         parser.Add(["version", "ver", "-v"], "Displays the AOs version", method: features.PrintVersion);
         parser.Add(["about", "info"], "About AOs", method: features.About);
         parser.Add(["reload", "refresh"], "Restart AOs", method: features.Refresh);
@@ -111,6 +112,10 @@ partial class EntryPoint
                     method: internal_methods[cmd.method]
                     // index_cmd: cmd.index_cmd
                 );
+            }
+
+            else if (cmd.location == "default-else-shell")
+            {
             }
 
             else if (cmd.location == "external")
