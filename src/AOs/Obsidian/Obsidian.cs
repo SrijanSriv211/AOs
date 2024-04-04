@@ -4,12 +4,16 @@ partial class Obsidian
     public ConsoleColor current_foreground_color;
 
     public readonly string version;
+    public readonly string username;
 
     private readonly SystemUtils sys_utils;
     private string prompt;
 
     public Obsidian()
     {
+        default_else_shell = EntryPoint.Settings.default_else_shell ?? "cmd.exe";
+        this.username = EntryPoint.Settings.username ?? Environment.GetEnvironmentVariable("username");
+
         this.prompt_preset = [];
         this.current_foreground_color = original_foreground_color;
 
