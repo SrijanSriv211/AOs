@@ -134,6 +134,19 @@
             "index_cmd": true
         },
         {
+            "cmd_names": ["itsmagic"],
+            "help_message": "It's magic, it's magic.",
+            "usage": null,
+            "supported_args": null,
+            "default_values": null,
+            "is_flag": true,
+            "min_arg_len": 0,
+            "max_arg_len": 0,
+            "method": "ItsMagic",
+            "location": "internal",
+            "index_cmd": true
+        },
+        {
             "cmd_names": ["shout", "cout", "print", "printf", "echo"],
             "help_message": "Display messages",
             "usage": [
@@ -717,6 +730,24 @@
             "min_arg_len": 0,
             "max_arg_len": 2,
             "method": "ControlVolume",
+            "location": "internal",
+            "index_cmd": true
+        },
+        {
+            "cmd_names": ["switch", "chapp"],
+            "help_message": "Switch between applications using the App IDs",
+            "usage": [
+                "switch [process_ID (INT)]",
+                "Example usage:",
+                "switch                 # List all currently running apps",
+                "switch <process-ID>    # Switch to an App with the process ID"
+            ],
+            "supported_args": null,
+            "default_values": [""],
+            "is_flag": false,
+            "min_arg_len": 0,
+            "max_arg_len": 1,
+            "method": "SwitchApp",
             "location": "internal",
             "index_cmd": true
         }
