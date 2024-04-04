@@ -1,7 +1,7 @@
 {
     "default_else_shell": "cmd.exe",
     "username": null,
-    "startlist": [""],
+    "startlist": [],
     "cmds": [
         {
             "cmd_names": ["admin"],
