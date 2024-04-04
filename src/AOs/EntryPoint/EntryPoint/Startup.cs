@@ -1,5 +1,3 @@
-using Utils;
-
 partial class EntryPoint
 {
     // Run AOs app, an AOs script or execute based command-line argument.

@@ -10,16 +10,17 @@ partial class EntryPoint
 
     public EntryPoint(string[] args)
     {
-        this.args = args;
-        this.AOs = new Obsidian();
-
-        this.sys_utils = new();
-        this.features = new(this.AOs);
-        this.parser = new(this.CheckForError);
-
         CheckRootPackages();
-        this.LoadFeatures();
-        this.Startup();
+
+        this.args = args;
+        AOs = new Obsidian();
+
+        sys_utils = new();
+        features = new(AOs);
+        parser = new(CheckForError);
+
+        LoadFeatures();
+        Startup();
     }
 
     // This function is called when the input command is not found in the feature-set of AOs,
@@ -32,7 +33,7 @@ partial class EntryPoint
         for (int i = 0; i < args.Length; i++)
             args[i] = SystemUtils.CheckForEnvVarAndEXEs(args[i]);
 
-        if (!this.sys_utils.RunSysOrEnvApps(cmd_name, args))
+        if (!sys_utils.RunSysOrEnvApps(cmd_name, args))
         {
             string current_line = cmd_name + " " + string.Join("", args);
             Error.Command(current_line, cmd_name);

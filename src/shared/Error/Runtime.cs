@@ -17,7 +17,7 @@ partial class Error
         );
 
         // Suggest some possible corrections if there is a spelling mistake.
-        TerminalColor.Print($"Did you mean: {string.Join(", ", suggested_spell_checks)}?\n", ConsoleColor.DarkGray);
+        TerminalColor.Print($"Did you mean: {string.Join(", ", suggested_spell_checks)}?", ConsoleColor.DarkGray);
     }
 
     // Throw error when no arguments are passed for a command.
@@ -26,7 +26,7 @@ partial class Error
         Console.WriteLine(err_cmd_name);
 
         _ = new Error(
-            err_msg: "No arguments were passed\n",
+            err_msg: "No arguments were passed",
             err_cmd_name: err_cmd_name,
             space_before_highlight: err_cmd_name.Length+1
         );
@@ -39,7 +39,7 @@ partial class Error
 
         Console.WriteLine(err_args);
         _ = new Error(
-            err_msg: "Unrecognized arguments\n",
+            err_msg: "Unrecognized arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
         );
@@ -49,7 +49,7 @@ partial class Error
     {
         Console.WriteLine(err_arg);
         _ = new Error(
-            err_msg: "Unrecognized arguments\n",
+            err_msg: "Unrecognized arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length
         );
@@ -62,7 +62,7 @@ partial class Error
 
         Console.WriteLine(err_args);
         _ = new Error(
-            err_msg: "Too few arguments\n",
+            err_msg: "Too few arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
         );
@@ -72,7 +72,7 @@ partial class Error
     {
         Console.WriteLine(err_arg);
         _ = new Error(
-            err_msg: "Too few arguments\n",
+            err_msg: "Too few arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length
         );
@@ -84,7 +84,7 @@ partial class Error
 
         Console.WriteLine(err_args);
         _ = new Error(
-            err_msg: "Too few arguments\n",
+            err_msg: "Too few arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
         );
@@ -94,7 +94,7 @@ partial class Error
     {
         Console.WriteLine(err_arg);
         _ = new Error(
-            err_msg: "Too few arguments\n",
+            err_msg: "Too few arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length
         );

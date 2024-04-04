@@ -1,6 +1,6 @@
 partial class EntryPoint
 {
-    private static void CheckRootPackages()
+    private void CheckRootPackages()
     {
         string[] DirectoryList = [
             "Files.x72\\etc\\PowerToys",
@@ -10,7 +10,6 @@ partial class EntryPoint
 
         string[] FileList = [
             "Files.x72\\root\\history.json",
-            "Files.x72\\root\\settings.json",
             "Files.x72\\root\\log\\Crashreport.log"
         ];
 
