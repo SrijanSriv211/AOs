@@ -2,7 +2,7 @@ partial class Obsidian
 {
     public void ClearConsole()
     {
-        sys_utils.CommandPrompt("cls");
+        SystemUtils.CommandPrompt("cls");
         TerminalColor.Print(version, ConsoleColor.Yellow, false);
         TerminalColor.Print($"  ({username})", ConsoleColor.White);
 

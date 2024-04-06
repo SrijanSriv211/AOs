@@ -4,7 +4,7 @@ partial class EntryPoint
     private void Startup()
     {
         // Change the title of the window to AOs.
-        this.features.ChangeTitle(["AOs"]);
+        Features.ChangeTitle(["AOs"]);
 
         // Init argument parser
         var parser = new Argparse("AOs", Obsidian.about_AOs, Error.UnrecognizedArgs);
@@ -55,7 +55,7 @@ partial class EntryPoint
             {
                 // Run AOs as administrator. Useful for some cases such as 'sfc /scannow' and more..
                 string AOsBinaryFilepath = Obsidian.AOs_binary_path;
-                this.sys_utils.StartApp(AOsBinaryFilepath, is_admin: true);
+                SystemUtils.StartApp(AOsBinaryFilepath, is_admin: true);
                 break;
             }
 

@@ -2,23 +2,25 @@ using System.Diagnostics;
 
 partial class SystemUtils
 {
-    public Process process = new();
+    public static Process process = new();
 
-    public void ListInstalledApps()
+    public static void Init__() => process = new();
+
+    public static void ListInstalledApps()
     {
-        this.process.StartInfo.FileName = "powershell.exe";
-        this.process.StartInfo.Arguments = $"\"Get-StartApps | Select-Object -ExpandProperty Name\"";
+        process.StartInfo.FileName = "powershell.exe";
+        process.StartInfo.Arguments = $"\"Get-StartApps | Select-Object -ExpandProperty Name\"";
 
-        this.process.StartInfo.UseShellExecute = false;
-        this.process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
 
         try
         {
-            this.process.Start();
+            process.Start();
 
             string[] AppNames = Utils.Array.Trim(process.StandardOutput.ReadToEnd().Split("\n"));
 
-            this.process.WaitForExit();
+            process.WaitForExit();
 
             for (int i = 0; i < AppNames.Length; i++)
             {
@@ -34,19 +36,19 @@ partial class SystemUtils
         }
     }
 
-    public void FindAndRunInstalledApps(string appname)
+    public static void FindAndRunInstalledApps(string appname)
     {
-        this.process.StartInfo.FileName = "powershell.exe";
-        this.process.StartInfo.Arguments = $"\"Get-StartApps {appname} | Select-Object -ExpandProperty AppID\"";
+        process.StartInfo.FileName = "powershell.exe";
+        process.StartInfo.Arguments = $"\"Get-StartApps {appname} | Select-Object -ExpandProperty AppID\"";
 
-        this.process.StartInfo.UseShellExecute = false;
-        this.process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
 
         try
         {
-            this.process.Start();
+            process.Start();
             string AppID = process.StandardOutput.ReadToEnd();
-            this.process.WaitForExit();
+            process.WaitForExit();
 
             if (!Utils.String.IsEmpty(AppID))
                 CommandPrompt($"start explorer {Path.Combine("shell:appsfolder", AppID)}");

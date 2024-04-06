@@ -6,7 +6,6 @@ partial class Obsidian
     public readonly string version;
     public readonly string username;
 
-    private readonly SystemUtils sys_utils;
     private string prompt;
 
     public Obsidian()
@@ -18,8 +17,6 @@ partial class Obsidian
         this.current_foreground_color = original_foreground_color;
 
         this.version = $"AOs 2024 [Version {version_no}]";
-        this.sys_utils = new();
-
         this.prompt = "$ ";
     }
 

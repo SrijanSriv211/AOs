@@ -1,45 +1,44 @@
-partial class Features(Obsidian AOs)
+partial class Features()
 {
-    private readonly SystemUtils sys_utils = new();
-    private readonly Obsidian AOs = AOs;
+    public static Obsidian AOs;
 
-    public void Exit()
+    public static void Exit()
     {
         Environment.Exit(0);
     }
 
-    public void Restart()
+    public static void Restart()
     {
-        sys_utils.CommandPrompt("shutdown /r /t0");
+        SystemUtils.CommandPrompt("shutdown /r /t0");
     }
 
-    public void Shutdown()
+    public static void Shutdown()
     {
-        sys_utils.CommandPrompt("shutdown /s /t0");
+        SystemUtils.CommandPrompt("shutdown /s /t0");
     }
 
-    public void Lock()
+    public static void Lock()
     {
-        sys_utils.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
+        SystemUtils.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
     }
 
-    public void Refresh()
+    public static void Refresh()
     {
-        sys_utils.StartApp(Obsidian.AOs_binary_path);
+        SystemUtils.StartApp(Obsidian.AOs_binary_path);
         Exit();
     }
 
-    public void Admin()
+    public static void Admin()
     {
-        sys_utils.StartApp(Obsidian.AOs_binary_path, is_admin: true);
+        SystemUtils.StartApp(Obsidian.AOs_binary_path, is_admin: true);
     }
 
-    public void PrintVersion()
+    public static void PrintVersion()
     {
         Console.WriteLine(AOs.version);
     }
 
-    public void PrintAOsSettings()
+    public static void PrintAOsSettings()
     {
         TerminalColor.Print("Default-Else-Shell: ", ConsoleColor.White);
         TerminalColor.Print(EntryPoint.Settings.default_else_shell, ConsoleColor.Gray);
@@ -68,46 +67,46 @@ partial class Features(Obsidian AOs)
         TerminalColor.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json"), ConsoleColor.DarkGray);
     }
 
-    public void About()
+    public static void About()
     {
         TerminalColor.Print(Obsidian.about_AOs, ConsoleColor.White);
         TerminalColor.Print("For more information go to ", ConsoleColor.DarkGray, false);
         TerminalColor.Print(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
     }
 
-    public void GetTime()
+    public static void GetTime()
     {
         Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
     }
 
-    public void GetDate()
+    public static void GetDate()
     {
         Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
     }
 
-    public void GetDateTime()
+    public static void GetDateTime()
     {
         Console.WriteLine(DateTime.Now.ToString("h:mm:ss tt"));
         Console.WriteLine(DateTime.Now.ToString("dddd, dd MMMM yyyy"));
     }
 
-    public void GenRandomNum()
+    public static void GenRandomNum()
     {
         Random random = new();
         Console.WriteLine(random.NextDouble());
     }
 
-    public void SysInfo()
+    public static void SysInfo()
     {
-        sys_utils.CommandPrompt("systeminfo");
+        SystemUtils.CommandPrompt("systeminfo");
     }
 
-    public void Tree()
+    public static void Tree()
     {
-        sys_utils.CommandPrompt("tree");
+        SystemUtils.CommandPrompt("tree");
     }
 
-    public void Diagxt()
+    public static void Diagxt()
     {
         string[] details = [
             $"NAME        : AOs {Obsidian.version_no}",
@@ -115,16 +114,16 @@ partial class Features(Obsidian AOs)
             $"VERSION     : {AOs.version}",
             $"PROCESS     : {Obsidian.AOs_binary_path}",
              "SYSTEM TYPE : x72",
-             "",
+            "",
              "AUTHOR           : Light-Lens (Srijan Srivastava)",
             $"REGISTERED OWNER : {Environment.GetEnvironmentVariable("username")}",
-             "",
+            "",
             $"ROOT DIRECTORY     : {Obsidian.root_dir}",
             $"USER DIRECTORY     : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc")}",
             $"SYSTEM DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\root")}",
             $"STARTUP DIRECTORY  : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup")}",
-            $"POWERTOYS DIRECTORY   : {Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys")}",
-             "",
+            $"SETTINGS FILE      : {Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json")}",
+            "",
             $"GITHUB REPO     : {Obsidian.AOs_repo_link}",
              "SYSTEM LANGUAGE : en-in; English (India)"
         ];
@@ -132,14 +131,14 @@ partial class Features(Obsidian AOs)
         TerminalColor.Print(string.Join("\n", details), ConsoleColor.White);
     }
 
-    public void Scan()
+    public static void Scan()
     {
         if (Obsidian.is_admin)
         {
-            sys_utils.CommandPrompt("sfc /scannow");
-            sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
-            sys_utils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
-            sys_utils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
+            SystemUtils.CommandPrompt("sfc /scannow");
+            SystemUtils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
+            SystemUtils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
+            SystemUtils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
             TerminalColor.Print($"Please check '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
             TerminalColor.Print($"and '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
         }
@@ -153,12 +152,12 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void ChangeToPrevDir()
+    public static void ChangeToPrevDir()
     {
         Directory.SetCurrentDirectory("..");
     }
 
-    public void ChangeCurrentDir(string dirname)
+    public static void ChangeCurrentDir(string dirname)
     {
         dirname = Utils.String.Strings(dirname);
         if (Utils.String.IsEmpty(dirname))
@@ -171,7 +170,7 @@ partial class Features(Obsidian AOs)
             _ = new Error($"Folder with name '{dirname}' does not exist.", "runtime error");
     }
 
-    public void SwitchElseShell(string shell_name)
+    public static void SwitchElseShell(string shell_name)
     {
         if (Utils.String.IsEmpty(shell_name))
             Console.WriteLine(Obsidian.default_else_shell);
@@ -186,7 +185,7 @@ partial class Features(Obsidian AOs)
             Error.UnrecognizedArgs(shell_name);
     }
 
-    public void GetSetHistory(string arg)
+    public static void GetSetHistory(string arg)
     {
         if (Utils.String.IsEmpty(arg))
             History.Get();
@@ -198,9 +197,9 @@ partial class Features(Obsidian AOs)
             Error.UnrecognizedArgs(arg);
     }
 
-    public void ChangeColor(string color_name)
+    public static void ChangeColor(string color_name)
     {
-        static void help_for_color()
+        void help_for_color()
         {
             _ = new Error("`color` value was not defined. Please use a defined color value", "runtime error");
             string[] list_of_colors =
@@ -249,7 +248,7 @@ partial class Features(Obsidian AOs)
         Console.ForegroundColor = AOs.current_foreground_color;
     }
 
-    public void Wait(string timespan)
+    public static void Wait(string timespan)
     {
         int sec;
         if (Utils.String.IsEmpty(timespan))
@@ -267,41 +266,41 @@ partial class Features(Obsidian AOs)
         SystemUtils.Track(total_seconds: sec);
     }
 
-    public void Shout(string[] args)
+    public static void Shout(string[] args)
     {
         Console.WriteLine(string.Join("", args));
     }
 
-    public void Pause(string[] args)
+    public static void Pause(string[] args)
     {
         Console.Write(string.Join("", args));
         Console.ReadKey();
         Console.WriteLine();
     }
 
-    public void RunInTerminal(string[] args)
+    public static void RunInTerminal(string[] args)
     {
         if (Utils.Array.IsEmpty(args))
-            sys_utils.StartApp(Obsidian.default_else_shell);
+            SystemUtils.StartApp(Obsidian.default_else_shell);
 
         else
-            sys_utils.CommandPrompt(string.Join(" ", args));
+            SystemUtils.CommandPrompt(string.Join(" ", args));
     }
 
-    public void RunApp(string[] args)
+    public static void RunApp(string[] args)
     {
         if (Utils.Array.IsEmpty(args))
-            sys_utils.StartApp(Obsidian.default_else_shell);
+            SystemUtils.StartApp(Obsidian.default_else_shell);
 
         else
         {
             string appname = args.First();
             string app_args = args.Length > 1 ? string.Join(" ", Utils.Array.Trim(args.Skip(1).ToArray())) : null;
-            sys_utils.StartApp(appname, app_args);
+            SystemUtils.StartApp(appname, app_args);
         }
     }
 
-    public void ChangeTitle(string[] args)
+    public static void ChangeTitle(string[] args)
     {
         if (Utils.Array.IsEmpty(args))
             Console.Title = Obsidian.is_admin ? "AOs (Administrator)" : "AOs";
@@ -313,20 +312,20 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Cat(string[] app_names)
+    public static void Cat(string[] app_names)
     {
         if (Utils.Array.IsEmpty(app_names))
-            sys_utils.ListInstalledApps();
+            SystemUtils.ListInstalledApps();
 
         else
         {
             app_names = Utils.Array.Reduce(Utils.Array.Filter(app_names));
             foreach (string appname in app_names)
-                sys_utils.FindAndRunInstalledApps(appname);
+                SystemUtils.FindAndRunInstalledApps(appname);
         }
     }
 
-    public void ModifyPrompt(string[] prompt)
+    public static void ModifyPrompt(string[] prompt)
     {
         List<string> Flags = [];
         for (int i = 0; i < prompt.Length; i++)
@@ -394,11 +393,11 @@ partial class Features(Obsidian AOs)
         AOs.SetPrompt([.. Flags]);
     }
 
-    public void LS(string[] dirname)
+    public static void LS(string[] dirname)
     {
         dirname = Utils.Utils.SimplifyString(Utils.Array.Reduce(dirname));
 
-        static void ShowDirs(string dir)
+        void ShowDirs(string dir)
         {
             TerminalColor.Print($"{dir}\n", ConsoleColor.White);
             string[] entries = FileIO.FolderSystem.Read(dir);
@@ -440,7 +439,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Touch(string[] content_to_create)
+    public static void Touch(string[] content_to_create)
     {
         content_to_create = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_create));
 
@@ -457,7 +456,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Delete(string[] content_to_delete)
+    public static void Delete(string[] content_to_delete)
     {
         content_to_delete = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_delete));
 
@@ -480,7 +479,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Move(string[] content_to_rename)
+    public static void Move(string[] content_to_rename)
     {
         content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
 
@@ -500,7 +499,7 @@ partial class Features(Obsidian AOs)
             _ = new Error($"'{old_name}' does not exist", "runtime error");
     }
 
-    public void Copy(string[] content_to_rename)
+    public static void Copy(string[] content_to_rename)
     {
         content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
 
@@ -520,14 +519,9 @@ partial class Features(Obsidian AOs)
             _ = new Error($"'{old_name}' does not exist", "runtime error");
     }
 
-    public void Pixelate(string[] websites_to_open)
+    public static void Pixelate(string[] websites_to_open)
     {
-        static bool ValidateUrlWithUri(string url)
-        {
-            return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-        }
-
-        static void err(string website_url)
+        void err(string website_url)
         {
             _ = new Error($"Can't open the website '{website_url}': Invalid URL", "runtime error");
         }
@@ -539,7 +533,7 @@ partial class Features(Obsidian AOs)
         parser.Add(["-t", "--temp", "--temperature"], "Display today's temperature in a city", default_value: city_name);
         var parsed_args = parser.Parse(Utils.Array.Reduce(Utils.Array.Filter(websites_to_open)));
 
-        List<string> queries = new();
+        List<string> queries = [];
         foreach (var arg in parsed_args)
         {
             string[] websites = Utils.Utils.SimplifyString(arg.Names);
@@ -578,17 +572,17 @@ partial class Features(Obsidian AOs)
 
         foreach (string query in queries)
         {
-            if (ValidateUrlWithUri(query))
-                sys_utils.StartApp(query);
+            if (Utils.Https.ValidateUrlWithUri(query))
+                SystemUtils.StartApp(query);
 
             else
-                sys_utils.StartApp(engines[engine_name] + query);
+                SystemUtils.StartApp(engines[engine_name] + query);
         }
     }
 
-    public void Read(string[] args)
+    public static void Read(string[] args)
     {
-        static void err(string filename)
+        void err(string filename)
         {
             _ = new Error($"{filename}: No such file or directory", "runtime error");
         }
@@ -635,9 +629,9 @@ partial class Features(Obsidian AOs)
     }
 
 
-    public void Commit(string[] args)
+    public static void Commit(string[] args)
     {
-        static void err(string argument)
+        void err(string argument)
         {
             _ = new Error($"{argument}: Invalid argument.", "runtime error");
         }
@@ -690,7 +684,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void WinRAR(string[] args)
+    public static void WinRAR(string[] args)
     {
         var parser = new Argparse("zip", "Compress or Decompress files or folders", Error.UnrecognizedArgs);
         parser.Add(["-u", "--uncompress", "--decompress"], "Decompress zip files", is_flag: true);
@@ -723,7 +717,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Terminate(string[] appnames)
+    public static void Terminate(string[] appnames)
     {
         appnames = Utils.Array.Reduce(Utils.Array.Filter(appnames));
 
@@ -764,7 +758,7 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void ControlVolume(string[] vol_level)
+    public static void ControlVolume(string[] vol_level)
     {
         if (Utils.Array.IsEmpty(vol_level))
         {
@@ -805,15 +799,15 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void ItsMagic()
+    public static void ItsMagic()
     {
         // Rickroll!!
         // https://youtu.be/dQw4w9WgXcQ
 
-        sys_utils.StartApp("https://youtu.be/dQw4w9WgXcQ");
+        SystemUtils.StartApp("https://youtu.be/dQw4w9WgXcQ");
     }
 
-    public void SwitchApp(string appid)
+    public static void SwitchApp(string appid)
     {
         if (Utils.String.IsEmpty(appid))
         {

@@ -1,6 +1,6 @@
 partial class SystemUtils
 {
-    public int CommandPrompt(string cmd_args, bool supress_error_msg=false)
+    public static int CommandPrompt(string cmd_args, bool supress_error_msg=false)
     {
         process.StartInfo.FileName = Obsidian.default_else_shell;
         process.StartInfo.Arguments = $"/C {cmd_args}";
@@ -30,7 +30,7 @@ partial class SystemUtils
         return process.ExitCode;
     }
 
-    public int CommandPrompt(string cmd_name, string[] cmd_args)
+    public static int CommandPrompt(string cmd_name, string[] cmd_args)
     {
         process.StartInfo.FileName = cmd_name;
         process.StartInfo.UseShellExecute = false;
@@ -59,7 +59,7 @@ partial class SystemUtils
         return process.ExitCode;
     }
 
-    public void StartApp(string appname, string appargs=null, bool is_admin=false)
+    public static void StartApp(string appname, string appargs=null, bool is_admin=false)
     {
         process.StartInfo.FileName = appname;
         process.StartInfo.UseShellExecute = true;

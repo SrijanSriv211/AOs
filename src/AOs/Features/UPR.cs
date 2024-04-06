@@ -2,7 +2,7 @@ using System.Text.Json;
 
 partial class Features
 {
-    public void CheckForAOsUpdates()
+    public static void CheckForAOsUpdates()
     {
         Console.WriteLine("Checking for Updates");
 
@@ -39,7 +39,7 @@ partial class Features
         }
     }
 
-    private bool IsDigit(string str)
+    private static bool IsDigit(string str)
     {
         foreach (char c in str)
         {

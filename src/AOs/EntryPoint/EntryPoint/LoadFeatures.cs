@@ -4,50 +4,49 @@ partial class EntryPoint
     private Dictionary<string, Delegate> InternalMethods()
     {
         return new Dictionary<string, Delegate>() {
-            { "RunAOsAsAdmin", features.Admin },
+            { "RunAOsAsAdmin", Features.Admin },
             { "ClearConsole", AOs.ClearConsole },
-            { "ShutdownHost", features.Shutdown },
-            { "RestartHost", features.Restart },
-            { "LockHost", features.Lock },
-            { "GetCurrentTime", features.GetTime },
-            { "GetTodayDate", features.GetDate },
-            { "Diagxt", features.Diagxt },
-            { "Scannow", features.Scan },
-            { "CheckForAOsUpdates", features.CheckForAOsUpdates },
-            { "Shout", features.Shout },
-            { "GetSetHistory", features.GetSetHistory },
-            { "RunInTerminal", features.RunInTerminal },
-            { "RunApp", features.RunApp },
-            { "ChangeTerminalTitle", features.ChangeTitle },
-            { "ChangeTerminalColor", features.ChangeColor },
-            { "ThreadSleep", features.Wait },
-            { "PauseTerminal", features.Pause },
-            { "Cat", features.Cat },
-            { "ChangeTerminalPrompt", features.ModifyPrompt },
-            { "LS", features.LS },
-            { "ChangeCurrentDir", features.ChangeCurrentDir },
-            { "ChangeToPrevDir", features.ChangeToPrevDir },
-            { "Touch", features.Touch },
-            { "Delete", features.Delete },
-            { "Move", features.Move },
-            { "Copy", features.Copy },
-            { "Pixelate", features.Pixelate },
-            { "ReadFile", features.Read },
-            { "CommitFile", features.Commit },
-            { "WinRAR", features.WinRAR },
-            { "TerminateRunningProcess", features.Terminate },
-            { "ControlVolume", features.ControlVolume },
-            { "ItsMagic", features.ItsMagic },
-            { "SwitchApp", features.SwitchApp },
+            { "ShutdownHost", Features.Shutdown },
+            { "RestartHost", Features.Restart },
+            { "LockHost", Features.Lock },
+            { "GetCurrentTime", Features.GetTime },
+            { "GetTodayDate", Features.GetDate },
+            { "Diagxt", Features.Diagxt },
+            { "Scannow", Features.Scan },
+            { "CheckForAOsUpdates", Features.CheckForAOsUpdates },
+            { "Shout", Features.Shout },
+            { "GetSetHistory", Features.GetSetHistory },
+            { "RunInTerminal", Features.RunInTerminal },
+            { "RunApp", Features.RunApp },
+            { "ChangeTerminalTitle", Features.ChangeTitle },
+            { "ChangeTerminalColor", Features.ChangeColor },
+            { "ThreadSleep", Features.Wait },
+            { "PauseTerminal", Features.Pause },
+            { "Cat", Features.Cat },
+            { "ChangeTerminalPrompt", Features.ModifyPrompt },
+            { "LS", Features.LS },
+            { "ChangeCurrentDir", Features.ChangeCurrentDir },
+            { "ChangeToPrevDir", Features.ChangeToPrevDir },
+            { "Touch", Features.Touch },
+            { "Delete", Features.Delete },
+            { "Move", Features.Move },
+            { "Copy", Features.Copy },
+            { "Pixelate", Features.Pixelate },
+            { "ReadFile", Features.Read },
+            { "CommitFile", Features.Commit },
+            { "WinRAR", Features.WinRAR },
+            { "TerminateRunningProcess", Features.Terminate },
+            { "ControlVolume", Features.ControlVolume },
+            { "ItsMagic", Features.ItsMagic },
+            { "SwitchApp", Features.SwitchApp }
         };
     }
 
     private void LoadFeatures()
     {
         /*
-        * The following features which are not available in settings.json are immutable, meaning they can't be changed in anyway unless the code is modified.
-          These features are immutable because they are in some sense the USP of AOs meaning these features are what makes AOs different from other Terminals.
-          Some features are fundamental for AOs though such as the quit, version, about or credits.
+        * The following features which are not available in settings.json and are immutable, meaning they can't be changed in anyway unless the source code of AOs is modified.
+          These features are immutable because some features are fundamental to AOs though such as the quit, version, about or credits.
           The rest of the features will be mutable and can be changed at any time.
         * NOTE: After modifying settings.json AOs needs to be reloaded to apply those changes.
         */
@@ -60,16 +59,16 @@ partial class EntryPoint
                 {["cmd"], "Switch the default-else shell to cmd.exe"},
                 {["ps", "powershell"], "Switch the default-else shell to powershell.exe"}
             },
-            default_values: [""], max_args_length: 1, method: features.SwitchElseShell
+            default_values: [""], max_args_length: 1, method: Features.SwitchElseShell
         );
 
         // Flagged commands
-        parser.Add(["settings"], "Displays the AOs settings", method: features.PrintAOsSettings);
-        parser.Add(["version", "ver", "-v"], "Displays the AOs version", method: features.PrintVersion);
-        parser.Add(["about", "info"], "About AOs", method: features.About);
-        parser.Add(["reload", "refresh"], "Restart AOs", method: features.Refresh);
+        parser.Add(["settings"], "Displays the AOs settings", method: Features.PrintAOsSettings);
+        parser.Add(["version", "ver", "-v"], "Displays the AOs version", method: Features.PrintVersion);
+        parser.Add(["about", "info"], "About AOs", method: Features.About);
+        parser.Add(["reload", "refresh"], "Restart AOs", method: Features.Refresh);
         parser.Add(["credits"], "Credit for AOs", method: Obsidian.Credits);
-        parser.Add(["quit", "exit"], "Exit AOs", method: features.Exit);
+        parser.Add(["quit", "exit"], "Exit AOs", method: Features.Exit);
 
         // Load all the features from settings.json
         foreach (var cmd in Settings.cmds)
@@ -79,23 +78,47 @@ partial class EntryPoint
                 parser.Add(
                     cmd_names: cmd.cmd_names,
                     help_message: cmd.help_message,
-                    // usage: cmd.usage,
+                    usage: cmd.usage,
                     supported_args: cmd.supported_args?.ToDictionary(arg => arg.args, arg => arg.help_message),
                     default_values: cmd.default_values,
                     is_flag: cmd.is_flag,
                     min_args_length: cmd.min_arg_len,
                     max_args_length: cmd.max_arg_len,
-                    method: InternalMethods()[cmd.method]
-                    // index_cmd: cmd.index_cmd
+                    method: InternalMethods()[cmd.method],
+                    do_index: cmd.do_index
                 );
             }
 
             else if (cmd.location == "external")
             {
-            }
+                if (!File.Exists(cmd.method))
+                {
+                    new Error($"Cannot find external app: '{cmd.method}', for command: '{string.Join(", ", cmd.cmd_names)}'", "boot error");
+                    TerminalColor.Print("Please type 'diagxt' command to find the location of 'settings.json' and fix the mistake", ConsoleColor.DarkGray);
+                    Environment.Exit(1);
+                }
 
-            else if (cmd.location == "powertoys")
-            {
+                if (cmd.method.ToLower().EndsWith(".aos"))
+                {
+                    // void external_method(string[] args) => SystemUtils.CommandPrompt(Obsidian.AOs_binary_path, new List<string>() [cmd.method, .. args.]);
+
+                    // parser.Add(
+                    //     cmd_names: cmd.cmd_names,
+                    //     help_message: cmd.help_message,
+                    //     // usage: cmd.usage,
+                    //     supported_args: cmd.supported_args?.ToDictionary(arg => arg.args, arg => arg.help_message),
+                    //     default_values: cmd.default_values,
+                    //     is_flag: cmd.is_flag,
+                    //     min_args_length: cmd.min_arg_len,
+                    //     max_args_length: cmd.max_arg_len,
+                    //     method: external_method
+                    //     // index_cmd: cmd.index_cmd
+                    // );
+                }
+
+                else
+                {
+                }
             }
         }
     }

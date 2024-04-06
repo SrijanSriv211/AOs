@@ -1,6 +1,6 @@
 partial class SystemUtils
 {
-    public bool RunSysOrEnvApps(string input_cmd, string[] input_args)
+    public static bool RunSysOrEnvApps(string input_cmd, string[] input_args)
     {
         if (!File.Exists(input_cmd))
             return false;
@@ -13,7 +13,7 @@ partial class SystemUtils
 
         if (input_cmd.EndsWith(".aos"))
         {
-            CommandPrompt(Obsidian.AOs_binary_path, args_to_be_passed.ToArray());
+            CommandPrompt(Obsidian.AOs_binary_path, [.. args_to_be_passed]);
             return true;
         }
 
@@ -52,10 +52,7 @@ partial class SystemUtils
 
     private static string FindExecutablePath(string Filename)
     {
-        List<string> app_dir_paths = [
-            Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\PowerToys"),
-            .. Environment.GetEnvironmentVariable("path")?.Split(';').ToList(),
-        ];
+        List<string> app_dir_paths = Environment.GetEnvironmentVariable("path")?.Split(';').ToList();
 
         foreach (string folder in app_dir_paths)
         {
