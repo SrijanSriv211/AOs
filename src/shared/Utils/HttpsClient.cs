@@ -1,28 +1,68 @@
+using System.Diagnostics;
+using System.Text;
+
 namespace Utils
 {
     public class Https
     {
-        private readonly HttpClient client = new();
+        private static HttpClient Http_Client = new();
+        private static Process process = new();
 
-        public string HttpsClient(string url)
+        public static string HttpsClient(string url)
         {
             try
             {
-                HttpResponseMessage response = client.GetAsync(url).Result;
-                if (response.IsSuccessStatusCode)
-                    return response.Content.ReadAsStringAsync().Result;
-
-                else
+                HttpResponseMessage Response = Http_Client.GetAsync(url).Result;
+                if (!Response.IsSuccessStatusCode)
+                {
+                    new Error($"response success status code: {Response}", "HTTPS response error");
                     return "";
+                }
+
+                return Response.Content.ReadAsStringAsync().Result;
             }
 
             catch (Exception e)
             {
-                _ = new Error(e.Message, "HTTPS response error");
+                new Error(e.Message, "HTTPS response error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
 
             return "";
+        }
+
+        public static string CurlHttpsClient(string url)
+        {
+            process.StartInfo.FileName = "curl.exe";
+            process.StartInfo.Arguments = url;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
+
+            try
+            {
+                process.Start();
+
+                StringBuilder str = new();
+                while (!process.HasExited)
+                    str.Append(process.StandardOutput.ReadToEnd());
+
+                process.WaitForExit();
+                return str.ToString();
+            }
+
+            catch (Exception e)
+            {
+                _ = new Error(e.Message, "runtime error");
+                EntryPoint.CrashreportLog(e.ToString());
+            }
+
+            return "";
+        }
+
+        public static void Reset__()
+        {
+            Http_Client = new();
         }
     }
 }
