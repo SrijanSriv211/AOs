@@ -1,10 +1,7 @@
 partial class Features(Obsidian AOs)
 {
-    private readonly Utils.Https https = new();
     private readonly SystemUtils sys_utils = new();
     private readonly Obsidian AOs = AOs;
-    private readonly DeveloperFeatures developer_features = new();
-    private readonly ExperimentalFeatures experimental_features = new();
 
     public void Exit()
     {
@@ -153,23 +150,6 @@ partial class Features(Obsidian AOs)
             TerminalColor.Print("Type", ConsoleColor.Gray, false);
             TerminalColor.Print(" 'admin' ", ConsoleColor.White, false);
             TerminalColor.Print("to run AOs in Administrator", ConsoleColor.Gray);
-        }
-    }
-
-    public void CheckForAOsUpdates()
-    {
-        string update_utility_path = Path.Combine(Obsidian.root_dir, "UPR.exe");
-        if (File.Exists(update_utility_path))
-        {
-            Console.WriteLine("Checking for Updates");
-            sys_utils.CommandPrompt($"\"{update_utility_path}\" {Obsidian.build_no}");
-        }
-
-        else
-        {
-            _ = new Error("Cannot find the update utility.", "runtime error");
-            TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
-            TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
         }
     }
 
@@ -569,14 +549,14 @@ partial class Features(Obsidian AOs)
             else if (websites.Contains("-w"))
             {
                 TerminalColor.Print($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
-                string weather = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
+                string weather = Utils.Https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
                 Console.WriteLine(weather);
             }
 
             else if (websites.Contains("-t"))
             {
                 TerminalColor.Print($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
-                string temp = https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
+                string temp = Utils.Https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
                 Console.WriteLine((temp[0] == '+') ? temp.Substring(1) : temp);
             }
 
@@ -784,20 +764,6 @@ partial class Features(Obsidian AOs)
         }
     }
 
-    public void Filer(string[] args)
-    {
-        string filer_path = Path.Combine(Obsidian.root_dir, "filer_cli.exe");
-        if (File.Exists(filer_path))
-            sys_utils.CommandPrompt($"\"{filer_path}\" {string.Join("", args)}");
-
-        else
-        {
-            _ = new Error("Cannot find the Filer.", "runtime error");
-            TerminalColor.Print("If the issue persists, please reinstall AOs. ", ConsoleColor.Gray, false);
-            TerminalColor.Print("https://github.com/Light-Lens/AOs/releases/latest", ConsoleColor.White);
-        }
-    }
-
     public void ControlVolume(string[] vol_level)
     {
         if (Utils.Array.IsEmpty(vol_level))
@@ -877,38 +843,4 @@ partial class Features(Obsidian AOs)
             }
         }
     }
-
-    public void DevCMD(string[] args)
-    {
-        // Split the Toks into a cmd and Args variable and array respectively.
-        string input_cmd = Utils.String.Strings(args.FirstOrDefault());
-        string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
-
-        // Execute the developer commands.
-        if (Utils.String.IsEmpty(input_cmd))
-            return;
-
-        else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
-            this.developer_features.parser.GetHelp(input_args ?? [""]);
-
-        else
-            this.developer_features.parser.Execute(this.developer_features.parser.Parse(input_cmd, input_args));
-    }
-
-    // public void ExperimentCMD(string[] args)
-    // {
-    //     // Split the Toks into a cmd and Args variable and array respectively.
-    //     string input_cmd = Utils.String.Strings(args.FirstOrDefault());
-    //     string[] input_args = Utils.Array.Trim(args.Skip(1).ToArray());
-
-    //     // Execute the developer commands.
-    //     if (Utils.String.IsEmpty(input_cmd))
-    //         return;
-
-    //     else if (input_cmd.ToLower() == "help" || Argparse.IsAskingForHelp(input_cmd.ToLower()))
-    //         this.experimental_features.parser.GetHelp(input_args ?? [""]);
-
-    //     else
-    //         this.experimental_features.parser.Execute(this.experimental_features.parser.Parse(input_cmd, input_args));
-    // }
 }
