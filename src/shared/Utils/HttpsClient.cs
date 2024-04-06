@@ -8,6 +8,17 @@ namespace Utils
         private static HttpClient Http_Client = new();
         private static Process process = new();
 
+        public static void Init__()
+        {
+            Http_Client = new();
+            process = new();
+        }
+
+        public static bool ValidateUrlWithUri(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
         public static string HttpsClient(string url)
         {
             try
@@ -53,16 +64,11 @@ namespace Utils
 
             catch (Exception e)
             {
-                _ = new Error(e.Message, "runtime error");
+                _ = new Error(e.Message, "HTTPS response error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
 
             return "";
-        }
-
-        public static void Reset__()
-        {
-            Http_Client = new();
         }
     }
 }
