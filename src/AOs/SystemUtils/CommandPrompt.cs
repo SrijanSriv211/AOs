@@ -12,6 +12,9 @@ partial class SystemUtils
         if (Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
 
+        else
+            process.StartInfo.Verb = "";
+
         try
         {
             process.Start();
@@ -37,6 +40,9 @@ partial class SystemUtils
 
         if (Obsidian.is_admin)
             process.StartInfo.Verb = "runas";
+
+        else
+            process.StartInfo.Verb = "";
 
         try
         {

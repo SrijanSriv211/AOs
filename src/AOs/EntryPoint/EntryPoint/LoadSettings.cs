@@ -2,7 +2,7 @@ using System.Text.Json;
 
 partial class EntryPoint
 {
-    public static void LoadSettings()
+    public void LoadSettings()
     {
         string SettingsFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json");
         string JsonData = FileIO.FileSystem.ReadAllText(SettingsFilepath);

@@ -7,7 +7,7 @@ partial class EntryPoint
             if (Utils.String.IsEmpty(i.cmd.Name) && i.cmd.Type == Lexer.Tokenizer.TokenType.EOL)
                 continue;
 
-            else if ((i.cmd.Name.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.Name.ToLower())) && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.Name.ToLower()))
                 parser.GetHelp(i.args.Select(x => x.Name).ToArray() ?? [""]);
 
             else if (i.cmd.Name == "AOs1000" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
@@ -22,7 +22,6 @@ partial class EntryPoint
 
             else
                 this.parser.Execute(this.parser.Parse(i.cmd.Name, i.args.Select(x => x.Name).ToArray()));
-            Console.WriteLine();
         }
     }
 
@@ -53,23 +52,6 @@ partial class EntryPoint
         catch (Exception e)
         {
             CrashreportLog(e.ToString());
-        }
-    }
-
-    private void Execute(string[] inputs)
-    {
-        foreach (string input in inputs)
-        {
-            try
-            {
-                if (!Utils.String.IsEmpty(input))
-                    Main(AOs.TakeInput(input));
-            }
-
-            catch (Exception e)
-            {
-                CrashreportLog(e.ToString());
-            }
         }
     }
 }
