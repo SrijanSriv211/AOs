@@ -2,4 +2,3 @@
 /.venv/
 bin/
 obj/
-build.bat
