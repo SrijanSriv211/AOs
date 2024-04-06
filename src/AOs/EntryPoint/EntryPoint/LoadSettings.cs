@@ -30,7 +30,7 @@ partial class EntryPoint
         public int max_arg_len { get; set; }
         public string method { get; set; }
         public string location { get; set; }
-        public bool index_cmd { get; set; }
+        public bool do_index { get; set; }
     }
 
     public class SupportedArgsTemplate

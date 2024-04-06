@@ -14,7 +14,7 @@
             "max_arg_len": 0,
             "method": "RunAOsAsAdmin",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["cls"],
@@ -27,7 +27,7 @@
             "max_arg_len": 0,
             "method": "ClearConsole",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["shutdown"],
@@ -40,7 +40,7 @@
             "max_arg_len": 0,
             "method": "ShutdownHost",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["restart"],
@@ -53,7 +53,7 @@
             "max_arg_len": 0,
             "method": "RestartHost",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["lock", "syslck", "deeplock", "sleepc"],
@@ -66,7 +66,7 @@
             "max_arg_len": 0,
             "method": "LockHost",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["time", "clock", "watch"],
@@ -79,7 +79,7 @@
             "max_arg_len": 0,
             "method": "GetCurrentTime",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["data", "calendar"],
@@ -92,7 +92,7 @@
             "max_arg_len": 0,
             "method": "GetTodayDate",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["diagxt", "aoscnfg"],
@@ -105,7 +105,7 @@
             "max_arg_len": 0,
             "method": "Diagxt",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["scan", "deepscan", "scannow", "syscn"],
@@ -118,7 +118,7 @@
             "max_arg_len": 0,
             "method": "Scannow",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["update", "upd", "newaos"],
@@ -131,7 +131,7 @@
             "max_arg_len": 0,
             "method": "CheckForAOsUpdates",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["itsmagic"],
@@ -144,7 +144,7 @@
             "max_arg_len": 0,
             "method": "ItsMagic",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["shout", "cout", "print", "printf", "echo"],
@@ -164,7 +164,7 @@
             "max_arg_len": 0,
             "method": "Shout",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["history"],
@@ -182,7 +182,7 @@
             "max_arg_len": 1,
             "method": "GetSetHistory",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": [">", "console", "terminal", "cmd", "call"],
@@ -201,7 +201,7 @@
             "max_arg_len": 0,
             "method": "RunInTerminal",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["open", "run", "start"],
@@ -219,7 +219,7 @@
             "max_arg_len": 0,
             "method": "RunApp",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["title"],
@@ -238,7 +238,7 @@
             "max_arg_len": 0,
             "method": "ChangeTerminalTitle",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["color"],
@@ -257,7 +257,7 @@
             "max_arg_len": 1,
             "method": "ChangeTerminalColor",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["wait", "timeout"],
@@ -275,7 +275,7 @@
             "max_arg_len": 1,
             "method": "ThreadSleep",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["pause", "freeze"],
@@ -294,7 +294,7 @@
             "max_arg_len": 0,
             "method": "PauseTerminal",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["cat", "allinstapps", "installedapps", "allinstalledapps"],
@@ -313,7 +313,7 @@
             "max_arg_len": 0,
             "method": "Cat",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["prompt"],
@@ -375,7 +375,7 @@
             "max_arg_len": 0,
             "method": "ChangeTerminalPrompt",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["ls", "dir"],
@@ -395,7 +395,7 @@
             "max_arg_len": 0,
             "method": "LS",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["cd"],
@@ -415,7 +415,7 @@
             "max_arg_len": 1,
             "method": "ChangeCurrentDir",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["cd.."],
@@ -428,7 +428,7 @@
             "max_arg_len": 0,
             "method": "ChangeToPrevDir",
             "location": "internal",
-            "index_cmd": false
+            "do_index": false
         },
         {
             "cmd_names": ["touch", "create"],
@@ -447,7 +447,7 @@
             "max_arg_len": 0,
             "method": "Touch",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["del", "delete", "rm", "rmdir"],
@@ -466,7 +466,7 @@
             "max_arg_len": 0,
             "method": "Delete",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["ren", "rename", "rn"],
@@ -485,7 +485,7 @@
             "max_arg_len": 2,
             "method": "Move",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["mv", "move"],
@@ -504,7 +504,7 @@
             "max_arg_len": 2,
             "method": "Move",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["cp", "copy"],
@@ -523,10 +523,10 @@
             "max_arg_len": 2,
             "method": "Copy",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
-            "cmd_names": ["pixelate", "leaf", "corner"],
+            "cmd_names": ["?", "pixelate", "leaf", "corner"],
             "help_message": "Start a website in a web browser",
             "usage": [
                 "pixelate [OPTIONS] [STRING]",
@@ -558,7 +558,7 @@
             "max_arg_len": 0,
             "method": "Pixelate",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["read", "type"],
@@ -582,7 +582,7 @@
             "max_arg_len": 3,
             "method": "ReadFile",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["commit", "write"],
@@ -606,7 +606,7 @@
             "max_arg_len": 0,
             "method": "CommitFile",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["zip", "rar", "winrar"],
@@ -631,7 +631,7 @@
             "max_arg_len": 0,
             "method": "WinRAR",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["terminate", "taskkill", "tasklist", "kill", "close"],
@@ -650,7 +650,7 @@
             "max_arg_len": 0,
             "method": "TerminateRunningProcess",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["vol", "volume"],
@@ -680,7 +680,7 @@
             "max_arg_len": 2,
             "method": "ControlVolume",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         },
         {
             "cmd_names": ["switch", "chapp"],
@@ -698,7 +698,7 @@
             "max_arg_len": 1,
             "method": "SwitchApp",
             "location": "internal",
-            "index_cmd": true
+            "do_index": true
         }
     ]
 }
