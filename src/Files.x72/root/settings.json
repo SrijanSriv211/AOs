@@ -653,57 +653,6 @@
             "index_cmd": true
         },
         {
-            "cmd_names": ["filer"],
-            "help_message": "A powerful text encryption and decryption program",
-            "usage": [
-                "filer [OPTIONS] [filepath STRING]",
-                "Note: AOs follows the same string handling conventions as in C#.\n",
-                "Example usage:",
-                "filer -p 123 -e -f Text.txt -o out.txt"
-            ],
-            "supported_args": [
-                {
-                    "args": ["-h", "--help"],
-                    "help_message": "Show help message"
-                },
-                {
-                    "args": ["-p"],
-                    "help_message": "Strong password for better security"
-                },
-                {
-                    "args": ["-o"],
-                    "help_message": "Place the output into <file>"
-                },
-                {
-                    "args": ["-m"],
-                    "help_message": "The maximum length of a string in each chunk (optional) (default: 4)"
-                },
-                {
-                    "args": ["-e"],
-                    "help_message": "Encrypt (is_flag: true)"
-                },
-                {
-                    "args": ["-d"],
-                    "help_message": "Decrypt (is_flag: true)"
-                },
-                {
-                    "args": ["-t"],
-                    "help_message": "Text input from the command line"
-                },
-                {
-                    "args": ["-f"],
-                    "help_message": "Takes a text file as an input"
-                }
-            ],
-            "default_values": null,
-            "is_flag": false,
-            "min_arg_len": 1,
-            "max_arg_len": 0,
-            "method": "Filer",
-            "location": "internal",
-            "index_cmd": true
-        },
-        {
             "cmd_names": ["vol", "volume"],
             "help_message": "Control the host operating system volume",
             "usage": [
