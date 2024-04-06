@@ -19,4 +19,12 @@
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion> <!-- https://github.com/dotnet/runtime/issues/95134 -->
   	</PropertyGroup>
 
+	<!-- https://stackoverflow.com/a/59447080/18121288 -->
+	<ItemGroup>
+		<ContentWithTargetPath Include="src\Files.x72\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>Filex.x72\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+
 </Project>
