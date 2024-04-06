@@ -26,7 +26,7 @@ def build_AOs():
     if os.path.exists("AOs") == False:
         os.mkdir("AOs")
 
-    os.system(f"dotnet publish --self-contained -p:FileVersion=2.6.{update_build_no()} -c Release -o ./AOs")
+    os.system(f"dotnet publish -p:FileVersion=2.6.{update_build_no()} -c Release -o ./AOs")
     rmdirs(["bin", "obj"])
 
 if len(sys.argv) > 1:
