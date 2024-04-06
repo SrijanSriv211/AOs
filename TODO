@@ -24,8 +24,6 @@ displaysettings - Change your display settings directly from the command line
 srz - Summarize any text or text file using a simple summarization algorithm.
 updos - Update your operating system directly from command line.
 scrn - Take Screenshot
-settings - print everything from setting.json except cmds.
-powertoys - run a file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 
 
                                                             ##################################################
@@ -33,6 +31,7 @@ powertoys - run a file from the 'PowerToys' folder without checking for similar 
                                                             ##################################################
 
 
+. settings - print everything from setting.json except cmds.
 . Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 . Refactor the entire AOs.
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
@@ -55,6 +54,7 @@ powertoys - run a file from the 'PowerToys' folder without checking for similar 
                                                             ##################################################
 
 
+x powertoy - run a file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 x Make AOs launch with windows terminal using from a batch file. (ask the use to change default terminal application from windows console host to windows terminal if windows terminal is installed).
 x Use "Python.Runtime" module in C# for better connection between C# and Python code.
 x Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
