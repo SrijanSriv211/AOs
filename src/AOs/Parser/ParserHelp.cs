@@ -39,6 +39,13 @@ partial class Parser
 
                 Console.WriteLine();
             }
+
+            if (details.Usage != null)
+            {
+                TerminalColor.Print("Usage:", ConsoleColor.Green);
+                Console.WriteLine(string.Join("\n", details.Usage));
+                Console.WriteLine();
+            }
         }
     }
 
