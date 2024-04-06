@@ -8,13 +8,7 @@ A simple tool built to control UI based tasks directly through the command-line,
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/Light-Lens/AOs/releases) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
-3. To see a list of all supported commands, type `help` in the AOs window:
-```console
-AOs 2024 [Version 2.6]  (User)
-$ help
-```
-
-4. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
+3. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
 
 :heavy_check_mark: Correct way:
 ```console
@@ -30,6 +24,12 @@ $ "path\to\dir"
 ```
 
 AOs follows the same string handling conventions as in C#.
+
+4. To see a list of all supported commands, type `help` in the AOs window:
+```console
+AOs 2024 [Version 2.6]  (User)
+$ help
+```
 
 ***
 
@@ -49,53 +49,17 @@ Start by cloning the repository with `git clone --recursive https://github.com/L
 
 If the repository was cloned non-recursively previously, use `git submodule update --init --recursive` to clone the necessary submodules.
 
-<ins>**2. Configuring the dependencies:**</ins>
+<ins>**2. Running and Compiling AOs:**</ins>
 
-1. Create a virtual environment and activate it (e.g. conda or venv):
+1. To run the program use:
 ```console
-$ python -m venv .venv
-$ .venv\Scripts\activate
-```
-2. Install python dependencies:
-```console
-$ pip install -r requirements.txt
+python scripts\build.py run
 ```
 
-<ins>**3. Running and Compiling AOs:**</ins>
-
-1. Download the latest version of [AOs](https://github.com/Light-Lens/AOs#gear-getting-aos) and then run it on the cloned directory.
-2. All AOs compilation tasks:
+2. To compile the program don't use dotnet build, instead run:
 ```console
-AOs 2024 [Version 2.6]  (User)
-$ dev
-Type `help <command-name>` for more information on a specific command
-1. new                                                         Create a new project
-2. -t, tasks                                                   List or run custom task in the developer environment
-3. clean                                                       Delete temporary/unnecessary files created in the project
-4. -v, ver, version                                            Show the current build number of the project
-$ dev -t
-1. run                                                         Run AOs
-2. srun                                                        Silent run AOs
-3. compile                                                     Compile AOs
-4. execute                                                     Execute AOs
+python scripts\build.py
 ```
-3. To run the program use:
-```console
-AOs 2024 [Version 2.6]  (User)
-$ dev -t run
-```
-4. To compile the program don't use `dotnet build`, instead run:
-```console
-AOs 2024 [Version 2.6]  (User)
-$ dev -t compile
-```
-This will create an executable in the `AOs` folder with all required files to run.
-5. To execute the compiled program use:
-```console
-AOs 2024 [Version 2.6]  (User)
-$ dev -t execute
-```
-This is will first build AOs if it already isn't and it will execute the `AOs\AOs.exe` executable.
 
 ***
 
