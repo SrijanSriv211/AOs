@@ -1,32 +1,30 @@
-partial class Parser
+partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> error_function)
 {
-    private readonly List<Command> command_details = new();
-    private readonly Action<string, string[]> error_function;
+    private readonly List<Command> command_details = [];
+    private readonly Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> error_function = error_function;
 
-    public Parser(Action<string, string[]> error_function)
-    {
-        this.error_function = error_function;
-    }
-
-    public void Add(string[] cmd_names, string help_message, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null)
+    public void Add(string[] cmd_names, string help_message, string[] usage=null, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null, bool do_index=true)
     {
         if (supported_args != null || default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
-        command_details.Add(new Command(cmd_names, help_message, supported_args, default_values, is_flag, min_args_length, max_args_length, method));
+        command_details.Add(new Command(cmd_names, help_message, usage, supported_args, default_values, is_flag, min_args_length, max_args_length, method));
     }
 
-    public ParsedCommand Parse(string cmd_name, string[] args)
+    public ParsedCommand Parse(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] argv)
     {
-        string lowercase_cmd = cmd_name.ToLower();
-
         ParsedCommand parsed_cmd = new();
+
+        string cmd_name = cmd.Name;
+        string[] args = argv.Select(x => x.Name).ToArray();
+
+        string lowercase_cmd = cmd_name.ToLower();
         Command matching_cmd = FindMatchingCommand(lowercase_cmd);
 
         // Return if no matching command was found.
         if (matching_cmd.Cmd_names == null)
         {
-            error_function(cmd_name, args);
+            error_function(cmd, argv);
             return new ParsedCommand();
         }
 

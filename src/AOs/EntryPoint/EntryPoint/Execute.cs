@@ -20,8 +20,11 @@ partial class EntryPoint
             else if (i.cmd.Type == Lexer.Tokenizer.TokenType.EXPR)
                 Console.WriteLine(i.cmd.Name);
 
+            else if (Utils.Https.ValidateUrlWithUri(i.cmd.Name))
+                SystemUtils.StartApp(i.cmd.Name);
+
             else
-                this.parser.Execute(this.parser.Parse(i.cmd.Name, i.args.Select(x => x.Name).ToArray()));
+                this.parser.Execute(this.parser.Parse(i.cmd, i.args));
         }
     }
 

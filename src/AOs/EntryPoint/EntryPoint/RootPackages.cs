@@ -3,7 +3,6 @@ partial class EntryPoint
     private void CheckRootPackages()
     {
         string[] DirectoryList = [
-            "Files.x72\\etc\\PowerToys",
             "Files.x72\\etc\\Startup",
             "Files.x72\\root\\log"
         ];

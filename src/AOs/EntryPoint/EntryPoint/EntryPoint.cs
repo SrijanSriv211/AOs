@@ -1,12 +1,10 @@
 partial class EntryPoint
 {
     public readonly Parser parser;
-    public readonly Features features;
     public static SettingsTemplate Settings;
 
     private readonly Obsidian AOs;
     private readonly string[] args;
-    private readonly SystemUtils sys_utils;
 
     public EntryPoint(string[] args)
     {
@@ -14,9 +12,8 @@ partial class EntryPoint
 
         this.args = args;
         AOs = new Obsidian();
+        Features.AOs = AOs;
 
-        sys_utils = new();
-        features = new(AOs);
         parser = new(CheckForError);
 
         LoadFeatures();
@@ -26,17 +23,17 @@ partial class EntryPoint
     // This function is called when the input command is not found in the feature-set of AOs,
     // it then checks if the user is trying to call a system env variable or app and runs it if it is being called.
     // Otherwise, it throws an error the the command does not exist.
-    private void CheckForError(string cmd_name, string[] args)
+    private void CheckForError(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] args)
     {
-        cmd_name = SystemUtils.CheckForEnvVarAndEXEs(cmd_name);
+        cmd.Name = SystemUtils.CheckForEnvVarAndEXEs(cmd.Name);
 
         for (int i = 0; i < args.Length; i++)
-            args[i] = SystemUtils.CheckForEnvVarAndEXEs(args[i]);
+            args[i].Name = SystemUtils.CheckForEnvVarAndEXEs(args[i].Name);
 
-        if (!sys_utils.RunSysOrEnvApps(cmd_name, args))
+        if (!SystemUtils.RunSysOrEnvApps(cmd.Name, args.Select(x => x.Name).ToArray()))
         {
-            string current_line = cmd_name + " " + string.Join("", args);
-            Error.Command(current_line, cmd_name);
+            string current_line = cmd.Name + " " + string.Join("", args.Select(x => x.Name));
+            Error.Command(current_line, cmd.Name);
         }
     }
 }
