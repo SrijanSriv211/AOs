@@ -3,7 +3,7 @@
 'x' means NOT TO BE DONE (REMOVED FEATURE)
 '\\\' means Continue the current line in a newline
 
-                                                    _______________            |OOOOOOOOOO
+                                                    ===============            |OOOOOOOOOO
                                                            |        OOOOOOOOOO |         O OOOOOOOOOO
                                                            |        O        O |         O O        O
                                                            |        O        O |         O O        O
@@ -12,23 +12,20 @@
                                                 ____________________________________________________________
 
 
-Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight [Not sure if this is going to be a command or a global feature].
 Autocomplete filenames when pressed tab.
 Python's virtual env doesn't work with AOs. Fix it.
-Refactor the entire AOs.
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
-When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
-Improve "AOs.dev"
 olor - Changes your PC's theme from Dark mode to Light mode.
 wlpr, wallpaper - Changes your PC's wallpaper.
 msoffice - Automate creation and management via any of MS Office tool. (Not sure if I want to implement it or not)
 autokey - Automate keyboard or mouse keys to perform any task requiring interaction keyboard or mouse. (Not sure if I want to implement it or not)
 displaysettings - Change your display settings directly from the command line
-If the input is 'powertoys <file-name>', run the file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 srz - Summarize any text or text file using a simple summarization algorithm.
 updos - Update your operating system directly from command line.
 scrn - Take Screenshot
+settings - print everything from setting.json except cmds.
+powertoys - run a file from the 'PowerToys' folder without checking for similar executable files in the current folder.
 
 
                                                             ##################################################
@@ -36,15 +33,15 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+. Re-work 'build.py' and leave all the stuff to 'AOs.dev'
+. Refactor the entire AOs.
 . Upgrade dotnet from donet 7 to 8 for AOs 2.6
-. Make AOs launch with windows terminal using from a batch file. (ask the use to change default terminal application from windows console host to windows terminal if windows terminal is installed).
 . Implement a spell-checker (wagner-ficher) algo in AOs error log.
 . There are some bugs in AOs.Parser, fix them. For eg, ">" doesn't work but ">." works. Basically if no argument is passed then ">" won't even be called. Fix it and make it work more better with the new Lexer.
 . Remove Experimental features.
 . For input 'shout "%username%"' this is the output 'SrijanSrivastava'. This is a bug in lexer. Fix it.
 . Lexer fails to work with prompt system. Fix it.
 . Move all features, history and other things to a json file and read that json file to make implementation and extention of all of these easier.
-. "settings" command will print all the things from setting.json except cmds.
 . Remove datetime, random, sysinfo, tree
 . Fix bug 'start .' doesn't open the current folder and shows a crash error. More in Crashreport.log
 . In the 'history' command also show in which session the command was passed just like Instagram's message page where the messeages are seperated by sessions of time and date
@@ -58,6 +55,7 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+x Make AOs launch with windows terminal using from a batch file. (ask the use to change default terminal application from windows console host to windows terminal if windows terminal is installed).
 x Use "Python.Runtime" module in C# for better connection between C# and Python code.
 x Add a setup system on first startup of AOs [if aos.user file doesn't exist in 'Files.x72\\root' folder then only open the setup page, also don't ask for password].
 x Make AOs' 'ls' command look exactly like bash's 'ls' command does. (made it like powershell)
@@ -70,3 +68,5 @@ x @regedit - Modify Windows Registry settings. (Not sure if I want to implement 
 x Save Filer and access it from the powertoys folder using the file_name as command by setting the file to execute description etc in "<command-name>.powertoy" right next to the file you wanna run.
 x If the input is 'startup::.startlist', run the '.startlist' from the 'Startup' folder.
 x If the input is 'startup::<file-name>', run the file from the 'Startup' folder without checking for similar executable files in the current folder.
+x When using "dev new" command and the github repo link is asked then clone the repo recursively instead of directly plain cloning.
+x Improve "AOs.dev"
