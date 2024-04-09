@@ -1,6 +1,6 @@
 partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> error_function)
 {
-    private readonly List<Command> command_details = [];
+    private readonly List<Command> commands = [];
     private readonly Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> error_function = error_function;
 
     public void Add(string[] cmd_names, string help_message, string[] usage=null, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null, bool do_index=true)
@@ -8,7 +8,7 @@ partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> erro
         if (supported_args != null || default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
-        command_details.Add(new Command(cmd_names, help_message, usage, supported_args, default_values, is_flag, min_args_length, max_args_length, method));
+        commands.Add(new Command(cmd_names, help_message, usage, supported_args, default_values, is_flag, min_args_length, max_args_length, method, do_index));
     }
 
     public ParsedCommand Parse(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] argv)

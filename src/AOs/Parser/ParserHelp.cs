@@ -57,16 +57,22 @@ partial class Parser
         {
             Console.WriteLine("Type `help <command-name>` for more information on a specific command");
 
-            for (int i = 0; i < command_details.Count; i++)
+            int count = 1;
+            for (int i = 0; i < commands.Count; i++)
             {
-                var detail = command_details[i];
+                var detail = commands[i];
 
-                string command_names = string.Join(", ", detail.Cmd_names);
-                string description = detail.Help_message;
+                if (detail.Do_index)
+                {
+                    string command_names = string.Join(", ", detail.Cmd_names);
+                    string description = detail.Help_message;
 
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
-                TerminalColor.Print(string.Format("{0," + -Utils.Maths.CalculatePadding(i+1) + "}", command_names), ConsoleColor.Gray, false);
-                TerminalColor.Print(description, ConsoleColor.DarkGray);
+                    TerminalColor.Print($"{count}. ", ConsoleColor.DarkGray, false);
+                    TerminalColor.Print(string.Format("{0," + -Utils.Maths.CalculatePadding(count) + "}", command_names), ConsoleColor.Gray, false);
+                    TerminalColor.Print(description, ConsoleColor.DarkGray);
+
+                    count++;
+                }
             }
         }
 
@@ -74,7 +80,7 @@ partial class Parser
         {
             foreach (string name in cmd_names)
             {
-                Command matching_cmd = FindMatchingCommand(name);
+                Command matching_cmd = FindMatchingCommand(name, only_indexed: true);
                 if (matching_cmd.Cmd_names == null)
                 {
                     new Error($"No information for command '{name}'", "parser error");
