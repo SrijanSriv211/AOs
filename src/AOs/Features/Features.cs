@@ -145,7 +145,7 @@ partial class Features()
 
         else
         {
-            _ = new Error("Please run AOs as Administrator to scan the integrity of all protected system files.", "runtime error");
+            new Error("Please run AOs as Administrator to scan the integrity of all protected system files.", "runtime error");
             TerminalColor.Print("Type", ConsoleColor.Gray, false);
             TerminalColor.Print(" 'admin' ", ConsoleColor.White, false);
             TerminalColor.Print("to run AOs in Administrator", ConsoleColor.Gray);
@@ -167,7 +167,7 @@ partial class Features()
             Directory.SetCurrentDirectory(dirname);
 
         else
-            _ = new Error($"Folder with name '{dirname}' does not exist.", "runtime error");
+            new Error($"Folder with name '{dirname}' does not exist.", "runtime error");
     }
 
     public static void SwitchElseShell(string shell_name)
@@ -201,7 +201,7 @@ partial class Features()
     {
         void help_for_color()
         {
-            _ = new Error("`color` value was not defined. Please use a defined color value", "runtime error");
+            new Error("`color` value was not defined. Please use a defined color value", "runtime error");
             string[] list_of_colors =
             [
                 "Black", "DarkBlue", "DarkGreen", "DarkCyan", "DarkRed",
@@ -473,7 +473,7 @@ partial class Features()
 
             else
             {
-                _ = new Error($"'{content}' does not exist", "runtime error");
+                new Error($"'{content}' does not exist", "runtime error");
                 return;
             }
         }
@@ -496,7 +496,7 @@ partial class Features()
             FileIO.FileSystem.Move(old_name, new_name);
 
         else
-            _ = new Error($"'{old_name}' does not exist", "runtime error");
+            new Error($"'{old_name}' does not exist", "runtime error");
     }
 
     public static void Copy(string[] content_to_rename)
@@ -516,14 +516,14 @@ partial class Features()
             FileIO.FileSystem.Copy(old_name, new_name);
 
         else
-            _ = new Error($"'{old_name}' does not exist", "runtime error");
+            new Error($"'{old_name}' does not exist", "runtime error");
     }
 
     public static void Pixelate(string[] websites_to_open)
     {
         void err(string website_url)
         {
-            _ = new Error($"Can't open the website '{website_url}': Invalid URL", "runtime error");
+            new Error($"Can't open the website '{website_url}': Invalid URL", "runtime error");
         }
 
         string engine_name = "google", city_name = "muzaffarpur";
@@ -584,7 +584,7 @@ partial class Features()
     {
         void err(string filename)
         {
-            _ = new Error($"{filename}: No such file or directory", "runtime error");
+            new Error($"{filename}: No such file or directory", "runtime error");
         }
 
         var parser = new Argparse("read", "Displays the contents of a text file.", err);
@@ -599,7 +599,7 @@ partial class Features()
             string[] filename = Utils.Utils.SimplifyString(arg.Names);
             if (filename.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
-                _ = new Error($"{line_to_read}: Invalid line number", "runtime error");
+                new Error($"{line_to_read}: Invalid line number", "runtime error");
                 return;
             }
 
@@ -633,7 +633,7 @@ partial class Features()
     {
         void err(string argument)
         {
-            _ = new Error($"{argument}: Invalid argument.", "runtime error");
+            new Error($"{argument}: Invalid argument.", "runtime error");
         }
 
         // Initialize the parser.
@@ -650,7 +650,7 @@ partial class Features()
             string[] filenames = Utils.Utils.SimplifyString(arg.Names);
             if (filenames.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
-                _ = new Error($"{line_to_read}: Invalid line number", "runtime error");
+                new Error($"{line_to_read}: Invalid line number", "runtime error");
                 return;
             }
 
@@ -779,7 +779,7 @@ partial class Features()
             if (int.TryParse(parsed_args[0].Value, out int level))
             {
                 if (level < -100 || level > 100)
-                    _ = new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100", "runtime error");
+                    new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100", "runtime error");
 
                 else
                     WindowsVolumeControl.AudioManager.StepMasterVolume(level);
@@ -791,7 +791,7 @@ partial class Features()
             if (int.TryParse(parsed_args[0].Names.FirstOrDefault(), out int level))
             {
                 if (level < 0 || level > 100)
-                    _ = new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100", "runtime error");
+                    new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100", "runtime error");
 
                 else
                     WindowsVolumeControl.AudioManager.SetMasterVolume(level);
@@ -832,7 +832,7 @@ partial class Features()
 
             else
             {
-                _ = new Error($"Invalid App ID: {appid}. App ID must be a number.", "runtime error");
+                new Error($"Invalid App ID: {appid}. App ID must be a number.", "runtime error");
                 TerminalColor.Print("Please try 'switch' to get an App ID", ConsoleColor.White);
             }
         }

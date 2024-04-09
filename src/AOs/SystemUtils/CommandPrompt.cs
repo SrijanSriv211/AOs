@@ -23,7 +23,7 @@ partial class SystemUtils
 
         catch (Exception e)
         {
-            _ = new Error(e.Message, "runtime error");
+            new Error(e.Message, "runtime error");
             EntryPoint.CrashreportLog(e.ToString());
         }
 
@@ -52,7 +52,7 @@ partial class SystemUtils
 
         catch (Exception e)
         {
-            _ = new Error(e.Message, "runtime error");
+            new Error(e.Message, "runtime error");
             EntryPoint.CrashreportLog(e.ToString());
         }
 
@@ -81,7 +81,7 @@ partial class SystemUtils
 
         catch (Exception e)
         {
-            _ = new Error($"Error: Cannot open the app.\n{e.Message}", "runtime error");
+            new Error($"Error: Cannot open the app.\n{e.Message}", "runtime error");
             EntryPoint.CrashreportLog(e.ToString());
         }
     }

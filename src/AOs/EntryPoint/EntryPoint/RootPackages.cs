@@ -26,7 +26,7 @@ partial class EntryPoint
         // that will be used by AOs to load the features.
         if (!File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json")))
         {
-            _ = new Error("settings.json: File not found", "boot error");
+            new Error("settings.json: File not found", "boot error");
             Environment.Exit(1);
         }
 

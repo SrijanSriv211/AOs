@@ -5,7 +5,7 @@ partial class Error
     {
         Console.WriteLine(err_line);
 
-        _ = new Error(
+        new Error(
             err_msg: err_msg,
             err_cmd_name: err_tok,
             err_name: "syntax error",
@@ -19,7 +19,7 @@ partial class Error
     {
         Console.WriteLine(err_line);
 
-        _ = new Error(
+        new Error(
             err_msg: err_msg,
             err_cmd_name: err_tok,
             err_name: "syntax error",

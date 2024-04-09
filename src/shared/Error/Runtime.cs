@@ -10,7 +10,7 @@ partial class Error
 
         // Highlight the command which is not found.
         Console.WriteLine(err_line);
-        _ = new Error(
+        new Error(
             err_msg: err_msg,
             err_cmd_name: err_cmd_name,
             repeat_err_highlight: err_cmd_name.Length
@@ -25,7 +25,7 @@ partial class Error
     {
         Console.WriteLine(err_cmd_name);
 
-        _ = new Error(
+        new Error(
             err_msg: "No arguments were passed",
             err_cmd_name: err_cmd_name,
             space_before_highlight: err_cmd_name.Length+1
@@ -38,7 +38,7 @@ partial class Error
         string err_args = string.Join(", ", Utils.Array.Reduce(args));
 
         Console.WriteLine(err_args);
-        _ = new Error(
+        new Error(
             err_msg: "Unrecognized arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
@@ -48,7 +48,7 @@ partial class Error
     public static void UnrecognizedArgs(string err_arg)
     {
         Console.WriteLine(err_arg);
-        _ = new Error(
+        new Error(
             err_msg: "Unrecognized arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length
@@ -61,7 +61,7 @@ partial class Error
         string err_args = string.Join(", ", Utils.Array.Reduce(args));
 
         Console.WriteLine(err_args);
-        _ = new Error(
+        new Error(
             err_msg: "Too few arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
@@ -71,7 +71,7 @@ partial class Error
     public static void TooFewArgs(string err_arg)
     {
         Console.WriteLine(err_arg);
-        _ = new Error(
+        new Error(
             err_msg: "Too few arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length
@@ -83,7 +83,7 @@ partial class Error
         string err_args = string.Join(", ", Utils.Array.Reduce(args));
 
         Console.WriteLine(err_args);
-        _ = new Error(
+        new Error(
             err_msg: "Too few arguments",
             err_cmd_name: err_args,
             repeat_err_highlight: err_args.Length
@@ -93,7 +93,7 @@ partial class Error
     public static void TooManyArgs(string err_arg)
     {
         Console.WriteLine(err_arg);
-        _ = new Error(
+        new Error(
             err_msg: "Too few arguments",
             err_cmd_name: err_arg,
             repeat_err_highlight: err_arg.Length

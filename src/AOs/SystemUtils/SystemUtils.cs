@@ -31,7 +31,7 @@ partial class SystemUtils
 
         catch (Exception e)
         {
-            _ = new Error(e.Message, "runtime error");
+            new Error(e.Message, "runtime error");
             EntryPoint.CrashreportLog(e.ToString());
         }
     }
@@ -54,12 +54,12 @@ partial class SystemUtils
                 CommandPrompt($"start explorer {Path.Combine("shell:appsfolder", AppID)}");
 
             else
-                _ = new Error($"Cannot find the app '{appname}'", "runtime error");
+                new Error($"Cannot find the app '{appname}'", "runtime error");
         }
 
         catch (Exception e)
         {
-            _ = new Error(e.Message, "runtime error");
+            new Error(e.Message, "runtime error");
             EntryPoint.CrashreportLog(e.ToString());
         }
     }

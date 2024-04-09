@@ -25,7 +25,7 @@ partial class EntryPoint
             // If someone is trying to run a Non-AOs script (scripts that does not contain '.aos' suffix) then, throw error that this is not allowed.
             // IDK. Maybe change this in future and allow all kinds of files to run at startup but for now it is what it is.
             else
-                _ = new Error($"Can't open file '{filename}': File format not recognized. File must have '.aos' extension.", "filesystem i/o error");
+                new Error($"Can't open file '{filename}': File format not recognized. File must have '.aos' extension.", "filesystem i/o error");
         }
 
         return StartupAppsContent;

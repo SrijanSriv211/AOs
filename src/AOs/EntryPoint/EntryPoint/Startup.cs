@@ -66,7 +66,7 @@ partial class EntryPoint
                 // suggesting that an argument is expected for this particular flag to work.
                 if (arg.Value == null || Utils.String.IsEmpty(arg.Value))
                 {
-                    _ = new Error($"Argument expected for the {string.Join(", ", arg.Names)} option.", "boot error");
+                    new Error($"Argument expected for the {string.Join(", ", arg.Names)} option.", "boot error");
                     Environment.Exit(1);
                 }
 
@@ -89,7 +89,7 @@ partial class EntryPoint
             else
             {
                 // Throw error if a file with another extention is passed.
-                _ = new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension", "filesystem i/o error");
+                new Error($"{arg.Names.First()}: File format not recognized. File must have '.aos' extension", "filesystem i/o error");
                 Environment.Exit(1);
             }
         }
@@ -102,7 +102,7 @@ partial class EntryPoint
         // Throw error and exit the program as a whole if that file does not exist or cannot be located.
         if (!File.Exists(filename))
         {
-            _ = new Error($"Can't open file '{filename}': No such file or directory", "filesystem i/o error");
+            new Error($"Can't open file '{filename}': No such file or directory", "filesystem i/o error");
             Environment.Exit(1);
         }
 

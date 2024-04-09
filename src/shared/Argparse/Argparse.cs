@@ -91,7 +91,7 @@ partial class Argparse(string name, string description, Action<string> error_fun
             if (missing_arg_list.Count > 0)
             {
                 Error.TooFewArgs("");
-                _ = new Error($"Missing required argument(s): {string.Join(", ", missing_arg_list)}", "runtime error");
+                new Error($"Missing required argument(s): {string.Join(", ", missing_arg_list)}", "runtime error");
                 return [];
             }
         }

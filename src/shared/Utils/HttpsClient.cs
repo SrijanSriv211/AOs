@@ -64,7 +64,7 @@ namespace Utils
 
             catch (Exception e)
             {
-                _ = new Error(e.Message, "HTTPS response error");
+                new Error(e.Message, "HTTPS response error");
                 EntryPoint.CrashreportLog(e.ToString());
             }
 
