@@ -28,9 +28,10 @@ partial class Obsidian
         if (Utils.String.IsEmpty(CMD))
         {
             SetPrompt(this.prompt_preset);
-            TerminalColor.Print(this.prompt, ConsoleColor.White, false);
+            Terminal.Print(this.prompt, ConsoleColor.White, false);
 
-            CMD = Console.ReadLine().Trim();
+            // CMD = Console.ReadLine().Trim();
+            CMD = Terminal.TakeInput(cursor_start_pos: this.prompt.Length).Trim();
 
             if (Utils.String.IsEmpty(CMD))
                 return []; // (cmd: "", args: new string[0])
