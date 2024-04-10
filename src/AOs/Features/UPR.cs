@@ -31,11 +31,11 @@ partial class Features
         {
             Console.WriteLine("Updates are available.");
             Console.Write("Your version: ");
-            TerminalColor.Print(current_version.ToString(), ConsoleColor.White);
+            Terminal.Print(current_version.ToString(), ConsoleColor.White);
             Console.Write("Latest version: ");
-            TerminalColor.Print(latest_version.ToString(), ConsoleColor.White);
+            Terminal.Print(latest_version.ToString(), ConsoleColor.White);
             Console.Write("Get the Latest version here: ");
-            TerminalColor.Print(download_link, ConsoleColor.Cyan);
+            Terminal.Print(download_link, ConsoleColor.Cyan);
         }
     }
 

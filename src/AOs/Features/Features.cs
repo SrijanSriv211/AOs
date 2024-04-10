@@ -40,22 +40,22 @@ partial class Features()
 
     public static void PrintAOsSettings()
     {
-        TerminalColor.Print("Default-Else-Shell: ", ConsoleColor.White);
-        TerminalColor.Print(EntryPoint.Settings.default_else_shell, ConsoleColor.Gray);
+        Terminal.Print("Default-Else-Shell: ", ConsoleColor.White);
+        Terminal.Print(EntryPoint.Settings.default_else_shell);
         Console.WriteLine();
 
-        TerminalColor.Print("Username: ", ConsoleColor.White);
-        TerminalColor.Print(EntryPoint.Settings.username ?? "None", ConsoleColor.Gray);
+        Terminal.Print("Username: ", ConsoleColor.White);
+        Terminal.Print(EntryPoint.Settings.username ?? "None");
         Console.WriteLine();
 
-        TerminalColor.Print("Startup Apps (", ConsoleColor.White, false);
-        TerminalColor.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup"), ConsoleColor.DarkGray, false);
-        TerminalColor.Print("):", ConsoleColor.White);
+        Terminal.Print("Startup Apps (", ConsoleColor.White, false);
+        Terminal.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\etc\\Startup"), ConsoleColor.DarkGray, false);
+        Terminal.Print("):", ConsoleColor.White);
         if (!Utils.Array.IsEmpty(EntryPoint.Settings.startlist))
         {
             for (int i = 0; i < EntryPoint.Settings.startlist.Length; i++)
             {
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine("{0," + -Utils.Maths.CalculatePadding(i+1, 10) + "}", EntryPoint.Settings.startlist[i]);
             }
         }
@@ -64,14 +64,14 @@ partial class Features()
             Console.WriteLine("None");
 
         Console.WriteLine();
-        TerminalColor.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json"), ConsoleColor.DarkGray);
+        Terminal.Print(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json"), ConsoleColor.DarkGray);
     }
 
     public static void About()
     {
-        TerminalColor.Print(Obsidian.about_AOs, ConsoleColor.White);
-        TerminalColor.Print("For more information go to ", ConsoleColor.DarkGray, false);
-        TerminalColor.Print(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
+        Terminal.Print(Obsidian.about_AOs, ConsoleColor.White);
+        Terminal.Print("For more information go to ", ConsoleColor.DarkGray, false);
+        Terminal.Print(Obsidian.AOs_repo_link, ConsoleColor.Cyan);
     }
 
     public static void GetTime()
@@ -128,7 +128,7 @@ partial class Features()
              "SYSTEM LANGUAGE : en-in; English (India)"
         ];
 
-        TerminalColor.Print(string.Join("\n", details), ConsoleColor.White);
+        Terminal.Print(string.Join("\n", details), ConsoleColor.White);
     }
 
     public static void Scan()
@@ -139,16 +139,16 @@ partial class Features()
             SystemUtils.CommandPrompt("DISM /Online /Cleanup-Image /CheckHealth");
             SystemUtils.CommandPrompt("DISM /Online /Cleanup-Image /ScanHealth");
             SystemUtils.CommandPrompt("DISM /Online /Cleanup-image /Restorehealth");
-            TerminalColor.Print($"Please check '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
-            TerminalColor.Print($"and '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
+            Terminal.Print($"Please check '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\CBS\\CBS.log' ", ConsoleColor.White, false);
+            Terminal.Print($"and '{SystemUtils.CheckForEnvVarAndEXEs("%windir%")}\\Logs\\DISM\\dism.log' for more details.", ConsoleColor.White);
         }
 
         else
         {
             new Error("Please run AOs as Administrator to scan the integrity of all protected system files.", "runtime error");
-            TerminalColor.Print("Type", ConsoleColor.Gray, false);
-            TerminalColor.Print(" 'admin' ", ConsoleColor.White, false);
-            TerminalColor.Print("to run AOs in Administrator", ConsoleColor.Gray);
+            Terminal.Print("Type", is_newline: false);
+            Terminal.Print(" 'admin' ", ConsoleColor.White, false);
+            Terminal.Print("to run AOs in Administrator");
         }
     }
 
@@ -161,7 +161,7 @@ partial class Features()
     {
         dirname = Utils.String.Strings(dirname);
         if (Utils.String.IsEmpty(dirname))
-            TerminalColor.Print(Directory.GetCurrentDirectory(), ConsoleColor.White);
+            Terminal.Print(Directory.GetCurrentDirectory(), ConsoleColor.White);
 
         else if (Directory.Exists(dirname))
             Directory.SetCurrentDirectory(dirname);
@@ -217,13 +217,13 @@ partial class Features()
                     var default_color = Console.BackgroundColor;
                     Console.BackgroundColor = ConsoleColor.White;
 
-                    TerminalColor.Print(list_of_colors[i], (ConsoleColor)i);
+                    Terminal.Print(list_of_colors[i], (ConsoleColor)i);
 
                     Console.BackgroundColor = default_color;
                 }
 
                 else
-                    TerminalColor.Print(list_of_colors[i], (ConsoleColor)i);
+                    Terminal.Print(list_of_colors[i], (ConsoleColor)i);
             }
         }
 
@@ -399,7 +399,7 @@ partial class Features()
 
         void ShowDirs(string dir)
         {
-            TerminalColor.Print($"{dir}\n", ConsoleColor.White);
+            Terminal.Print($"{dir}\n", ConsoleColor.White);
             string[] entries = FileIO.FolderSystem.Read(dir);
 
             for (int i = 0; i < entries.Length; i++)
@@ -408,24 +408,24 @@ partial class Features()
 
                 if (i == 0)
                 {
-                    TerminalColor.Print(string.Format("{0," + -padding + "}", "Name") + "   Type\t", ConsoleColor.White, false);
-                    TerminalColor.Print("    Creation Time\t", ConsoleColor.White, false);
+                    Terminal.Print(string.Format("{0," + -padding + "}", "Name") + "   Type\t", ConsoleColor.White, false);
+                    Terminal.Print("    Creation Time\t", ConsoleColor.White, false);
                     Console.Write("       ");
-                    TerminalColor.Print("Last Write Time", ConsoleColor.White);
+                    Terminal.Print("Last Write Time", ConsoleColor.White);
                 }
 
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", entries[i]);
 
                 if (File.Exists(entries[i]))
-                    TerminalColor.Print("file\t", ConsoleColor.DarkGray, false);
+                    Terminal.Print("file\t", ConsoleColor.DarkGray, false);
 
                 else if (Directory.Exists(entries[i]))
-                    TerminalColor.Print("dir\t", ConsoleColor.DarkGray, false);
+                    Terminal.Print("dir\t", ConsoleColor.DarkGray, false);
 
-                TerminalColor.Print(File.GetCreationTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray, false);
+                Terminal.Print(File.GetCreationTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray, false);
                 Console.Write("       ");
-                TerminalColor.Print(File.GetLastWriteTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray);
+                Terminal.Print(File.GetLastWriteTime(entries[i]).ToString("dd-MM-yyyy   HH:mm:ss"), ConsoleColor.DarkGray);
             }
         }
 
@@ -446,7 +446,7 @@ partial class Features()
         foreach (string content in content_to_create)
         {
             if (content.ToLower() == "con")
-                TerminalColor.Print("Hello CON!", ConsoleColor.White);
+                Terminal.Print("Hello CON!", ConsoleColor.White);
 
             else if (content.EndsWith("\\") || content.EndsWith("/"))
                 FileIO.FolderSystem.Create(content);
@@ -463,7 +463,7 @@ partial class Features()
         foreach (string content in content_to_delete)
         {
             if (content.ToLower() == "con")
-                TerminalColor.Print("Don't Delete CON!", ConsoleColor.Cyan);
+                Terminal.Print("Don't Delete CON!", ConsoleColor.Cyan);
 
             else if (Directory.Exists(content))
                 FileIO.FolderSystem.Delete(content);
@@ -487,7 +487,7 @@ partial class Features()
         string new_name = content_to_rename[1];
 
         if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
-            TerminalColor.Print("Hello CON!", ConsoleColor.White);
+            Terminal.Print("Hello CON!", ConsoleColor.White);
 
         else if (Directory.Exists(old_name))
             FileIO.FolderSystem.Move(old_name, new_name);
@@ -507,7 +507,7 @@ partial class Features()
         string new_name = content_to_rename[1];
 
         if (old_name.ToLower() == "con" || new_name.ToLower() == "con")
-            TerminalColor.Print("Hello CON!", ConsoleColor.White);
+            Terminal.Print("Hello CON!", ConsoleColor.White);
 
         else if (Directory.Exists(old_name))
             FileIO.FolderSystem.Copy(old_name, new_name);
@@ -542,14 +542,14 @@ partial class Features()
 
             else if (websites.Contains("-w"))
             {
-                TerminalColor.Print($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
+                Terminal.Print($"Fetching today's weather report for {arg.Value}", ConsoleColor.White);
                 string weather = Utils.Https.HttpsClient($"https://wttr.in/{arg.Value}?format=%C");
                 Console.WriteLine(weather);
             }
 
             else if (websites.Contains("-t"))
             {
-                TerminalColor.Print($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
+                Terminal.Print($"Fetching today's temperature report for {arg.Value}", ConsoleColor.White);
                 string temp = Utils.Https.HttpsClient($"https://wttr.in/{arg.Value}?format=%t");
                 Console.WriteLine((temp[0] == '+') ? temp.Substring(1) : temp);
             }
@@ -613,7 +613,7 @@ partial class Features()
         {
             for (int i = 0; i < lines.Length; i++)
             {
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine(lines[i]);
             }
         }
@@ -622,7 +622,7 @@ partial class Features()
         {
             if (line_to_read-1 < lines.Length)
             {
-                TerminalColor.Print($"{line_to_read}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{line_to_read}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine(lines[line_to_read-1]);
             }
         }
@@ -727,7 +727,7 @@ partial class Features()
             foreach (System.Diagnostics.Process p in all_process)
             {
                 Console.Write("{0," + -Utils.Maths.CalculatePadding(100, 100) + "}", p.ProcessName);
-                TerminalColor.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
+                Terminal.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
             }
         }
 
@@ -817,7 +817,7 @@ partial class Features()
                 if (!Utils.String.IsEmpty(p.MainWindowTitle))
                 {
                     Console.Write("{0," + -Utils.Maths.CalculatePadding(100, 100) + "}", p.MainWindowTitle);
-                    TerminalColor.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
+                    Terminal.Print($"Process ID: {p.Id}", ConsoleColor.DarkGray);
                 }
             }
         }
@@ -833,7 +833,7 @@ partial class Features()
             else
             {
                 new Error($"Invalid App ID: {appid}. App ID must be a number.", "runtime error");
-                TerminalColor.Print("Please try 'switch' to get an App ID", ConsoleColor.White);
+                Terminal.Print("Please try 'switch' to get an App ID", ConsoleColor.White);
             }
         }
     }

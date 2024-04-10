@@ -12,9 +12,9 @@ partial class EntryPoint
 
             else if (i.cmd.Name == "AOs1000" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
-                TerminalColor.Print("AOs1000!", ConsoleColor.White);
-                TerminalColor.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
-                TerminalColor.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
+                Terminal.Print("AOs1000!", ConsoleColor.White);
+                Terminal.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
+                Terminal.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
             else if (i.cmd.Type == Lexer.Tokenizer.TokenType.EXPR)

@@ -24,7 +24,7 @@ partial class SystemUtils
 
             for (int i = 0; i < AppNames.Length; i++)
             {
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.WriteLine(AppNames[i]);
             }
         }
@@ -70,7 +70,7 @@ partial class SystemUtils
 
         for (int time_elapsed = 1; time_elapsed <= total_seconds; time_elapsed++)
         {
-            TerminalColor.Print($"\r{time_elapsed}", ConsoleColor.White, false);
+            Terminal.Print($"\r{time_elapsed}", ConsoleColor.White, false);
             Thread.Sleep(time_to_pause_in_milliseconds);
         }
 

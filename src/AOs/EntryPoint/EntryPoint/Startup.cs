@@ -29,8 +29,8 @@ partial class EntryPoint
 
             foreach (var contents in startup_apps)
             {
-                TerminalColor.Print($"> ", ConsoleColor.DarkGray, false);
-                TerminalColor.Print($"{contents.Key}", ConsoleColor.White); // contents.Key contains the name of that file
+                Terminal.Print($"> ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{contents.Key}", ConsoleColor.White); // contents.Key contains the name of that file
                 RunAOsScript(contents.Value); // contents.Value contains the full absolute path of the file.
             }
 

@@ -3,7 +3,7 @@ partial class Error
     public Error(string err_msg, string err_name="runtime error")
     {
         // Print the error_name and print the error message.
-        TerminalColor.Print(err_name, ConsoleColor.Red, is_newline: false);
+        Terminal.Print(err_name, ConsoleColor.Red, is_newline: false);
         Console.WriteLine($": {err_msg}");
     }
 
@@ -17,14 +17,14 @@ partial class Error
 
         // Print the error and highlight it.
         Console.Write(err_highlight_space);
-        TerminalColor.Print(err_highlight_repeat, ConsoleColor.Red);
+        Terminal.Print(err_highlight_repeat, ConsoleColor.Red);
         Console.WriteLine();
 
-        TerminalColor.Print(err_cmd_name, ConsoleColor.White, is_newline: false);
+        Terminal.Print(err_cmd_name, ConsoleColor.White, is_newline: false);
         Console.Write(": ");
 
         // Print the error_name and print the error message.
-        TerminalColor.Print(err_name, ConsoleColor.Red, is_newline: false);
+        Terminal.Print(err_name, ConsoleColor.Red, is_newline: false);
         Console.WriteLine($": {err_msg}");
     }
 }

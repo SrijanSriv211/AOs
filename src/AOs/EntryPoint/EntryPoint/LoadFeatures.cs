@@ -94,30 +94,8 @@ partial class EntryPoint
                 if (!File.Exists(cmd.method))
                 {
                     new Error($"Cannot find external app: '{cmd.method}', for command: '{string.Join(", ", cmd.cmd_names)}'", "boot error");
-                    TerminalColor.Print("Please type 'diagxt' command to find the location of 'settings.json' and fix the mistake", ConsoleColor.DarkGray);
+                    Terminal.Print("Please type 'diagxt' command to find the location of 'settings.json' and fix the mistake", ConsoleColor.DarkGray);
                     Environment.Exit(1);
-                }
-
-                if (cmd.method.ToLower().EndsWith(".aos"))
-                {
-                    // void external_method(string[] args) => SystemUtils.CommandPrompt(Obsidian.AOs_binary_path, new List<string>() [cmd.method, .. args.]);
-
-                    // parser.Add(
-                    //     cmd_names: cmd.cmd_names,
-                    //     help_message: cmd.help_message,
-                    //     // usage: cmd.usage,
-                    //     supported_args: cmd.supported_args?.ToDictionary(arg => arg.args, arg => arg.help_message),
-                    //     default_values: cmd.default_values,
-                    //     is_flag: cmd.is_flag,
-                    //     min_args_length: cmd.min_arg_len,
-                    //     max_args_length: cmd.max_arg_len,
-                    //     method: external_method
-                    //     // index_cmd: cmd.index_cmd
-                    // );
-                }
-
-                else
-                {
                 }
             }
         }

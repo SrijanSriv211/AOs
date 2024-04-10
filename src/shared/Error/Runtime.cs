@@ -17,7 +17,7 @@ partial class Error
         );
 
         // Suggest some possible corrections if there is a spelling mistake.
-        TerminalColor.Print($"Did you mean: {string.Join(", ", suggested_spell_checks)}?", ConsoleColor.DarkGray);
+        Terminal.Print($"Did you mean: {string.Join(", ", suggested_spell_checks)}?", ConsoleColor.DarkGray);
     }
 
     // Throw error when no arguments are passed for a command.

@@ -2,13 +2,13 @@ partial class Argparse
 {
     public void PrintHelp()
     {
-        TerminalColor.Print("Name:", ConsoleColor.Yellow);
+        Terminal.Print("Name:", ConsoleColor.Yellow);
         Console.WriteLine($"{this.name}\n");
-        TerminalColor.Print("Description:", ConsoleColor.Cyan);
+        Terminal.Print("Description:", ConsoleColor.Cyan);
         Console.WriteLine($"{this.desc}\n");
-        TerminalColor.Print("Usage:", ConsoleColor.Blue);
+        Terminal.Print("Usage:", ConsoleColor.Blue);
         Console.WriteLine($"{this.name} [OPTIONS]\n");
-        TerminalColor.Print("Options:", ConsoleColor.Magenta);
+        Terminal.Print("Options:", ConsoleColor.Magenta);
 
         foreach (var argument in arguments)
         {
@@ -31,11 +31,11 @@ partial class Argparse
         string is_flag = details.Is_flag == true ? $" (is flag: true)" : "";
         string is_required = details.Required != false ? $" (required: true)" : "";
 
-        TerminalColor.Print("Name:", ConsoleColor.Cyan);
+        Terminal.Print("Name:", ConsoleColor.Cyan);
         Console.Write("{0," + -Utils.Maths.CalculatePadding(1) + "}", names);
-        TerminalColor.Print(desc + "\n", ConsoleColor.DarkGray);
+        Terminal.Print(desc + "\n", ConsoleColor.DarkGray);
 
-        TerminalColor.Print("Details:", ConsoleColor.Blue);
+        Terminal.Print("Details:", ConsoleColor.Blue);
         Console.WriteLine($"{names} [OPTIONS] {default_value}{is_flag}{is_required}");
     }
 
@@ -55,9 +55,9 @@ partial class Argparse
                 string description = detail.Help;
                 int padding = Utils.Maths.CalculatePadding(i+1);
 
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", string.Join(", ", command_names));
-                TerminalColor.Print(description, ConsoleColor.DarkGray);
+                Terminal.Print(description, ConsoleColor.DarkGray);
             }
         }
 

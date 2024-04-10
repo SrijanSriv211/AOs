@@ -74,7 +74,7 @@ class History
             );
 
             // Print history of every session.
-            TerminalColor.Print($"[{SessionDateTime}]", ConsoleColor.White);
+            Terminal.Print($"[{SessionDateTime}]", ConsoleColor.White);
             for (int i = 0; i < HistoryDetails.Count; i++)
             {
                 string Command = HistoryDetails[i].command;
@@ -91,9 +91,9 @@ class History
                 int padding = Utils.Maths.CalculatePadding(i+1, 100);
 
                 // Print history.
-                TerminalColor.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
+                Terminal.Print($"{i+1}. ", ConsoleColor.DarkGray, false);
                 Console.Write("{0," + -padding + "}", Command);
-                TerminalColor.Print($"[{Datetime}]", ConsoleColor.DarkGray);
+                Terminal.Print($"[{Datetime}]", ConsoleColor.DarkGray);
             }
         }
     }
