@@ -4,9 +4,11 @@ partial class EntryPoint
 {
     public void LoadSettings()
     {
+        // Read 'settings.json'
         string SettingsFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\settings.json");
         string JsonData = FileIO.FileSystem.ReadAllText(SettingsFilepath);
 
+        // Deserialize all the json data from 'settings.json' into a usable object
         Settings = JsonSerializer.Deserialize<SettingsTemplate>(JsonData);
     }
 

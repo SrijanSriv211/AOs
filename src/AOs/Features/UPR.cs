@@ -6,14 +6,20 @@ partial class Features
     {
         Console.WriteLine("Checking for Updates");
 
+        // Send a request using curl and wait for the response containing a json text.
         string response = Utils.Https.CurlHttpsClient($"https://api.github.com/repos/Light-Lens/AOs/releases/latest");
+        // Deserialize the response into a usable json object with the help of 'GitHubAPIJsonTemplate' class
         GitHubAPIJsonTemplate response_data = JsonSerializer.Deserialize<GitHubAPIJsonTemplate>(response);
-
+        // Load details for all assests from the json object
         List<AssetsJsonTemplate> assets = response_data.assets;
 
         int current_version = Obsidian.build_no;
         int latest_version = -1;
         string download_link = "";
+
+        // Loop through each assest and check whether the filename of any assest is a number or not.
+        // If yes, then it means that file is the build number of that AOs version,
+        // pull the build version in 'latest_version' var and download link of that AOs version.
         foreach (AssetsJsonTemplate asset in assets)
         {
             if (IsDigit(asset.name))
@@ -39,6 +45,7 @@ partial class Features
         }
     }
 
+    // Loop through each letter in a string and check whether the string is a number or not.
     private static bool IsDigit(string str)
     {
         foreach (char c in str)

@@ -27,15 +27,22 @@ partial class Obsidian
         Console.ForegroundColor = current_foreground_color;
         if (Utils.String.IsEmpty(CMD))
         {
+            // Set and print the prompt
             SetPrompt(this.prompt_preset);
-            Terminal.Print(this.prompt, ConsoleColor.White, false);
 
-            CMD = Terminal.TakeInput().Trim();
+            // Take input
+            CMD = Terminal.TakeInput(this.prompt, ConsoleColor.White).Trim();
 
+            // Return an empty list if the input is empty
             if (Utils.String.IsEmpty(CMD))
                 return []; // (cmd: "", args: new string[0])
         }
 
+        //* This is an optional feature.
+        // Basically, you can type any command with or without prefix '_' for eg,
+        // 'diagxt' and '_diagxt' will do the same thing. This is here because
+        // in the Python version of AOs (AOs 1.3) '_' as prefix was compulsory.
+        // So this is basically just a simple easter egg or some hidden feature.
         if (CMD.First() == '_')
             CMD = CMD[1..].Trim();
 

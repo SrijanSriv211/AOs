@@ -11,6 +11,7 @@ class History
         string JsonTextData = FileIO.FileSystem.ReadAllText(HistoryFilepath);
         HistoryObj history;
 
+        // If the 'history.json' file is empty then save a new file.
         if (Utils.String.IsEmpty(JsonTextData))
         {
             history = new()
@@ -31,6 +32,7 @@ class History
             };
         }
 
+        // Save the command into history inside the current session of AOs
         else
         {
             history = JsonSerializer.Deserialize<HistoryObj>(JsonTextData);
