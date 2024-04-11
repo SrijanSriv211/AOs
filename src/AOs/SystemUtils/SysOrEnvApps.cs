@@ -30,11 +30,13 @@ partial class SystemUtils
     public static string CheckForEnvVarAndEXEs(string input)
     {
         // If the input is an environment variable then get it.
-        // Remove the first and last char - which is '%' - from input string to get the actual value,
-        // which we will be use to get the env var.
-        string env_var = Environment.GetEnvironmentVariable(input[1..^1].ToLower());
-        if (input.StartsWith("%") && input.EndsWith("%") && input.Length > 1 && !Utils.String.IsEmpty(env_var))
-            return env_var;
+        // Remove the first and last char - which is '%' - from input string to get the actual value, which we will be use to get the env var.
+        if (input.StartsWith("%") && input.EndsWith("%") && input.Length > 1)
+        {
+            string env_var = Environment.GetEnvironmentVariable(input[1..^1].ToLower());
+            if (!Utils.String.IsEmpty(env_var))
+                return env_var;
+        }
 
         // If the input is not an env var, then check if it is an executable or not.
         // "" empty string at the start of this array means that an extention as already passed.
