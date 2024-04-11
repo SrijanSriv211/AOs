@@ -6,10 +6,18 @@ namespace Lexer
 
         private readonly string line;
         private readonly System.Data.DataTable dt = new();
+        private readonly List<Tokenizer.Token> tokens;
 
         public Parser(string line, List<Tokenizer.Token> tokens)
         {
             this.line = line;
+            this.tokens = tokens;
+
+            Parse();
+        }
+
+        public void Parse()
+        {
             List<Tokenizer.Token> CurrentTokens = [];
 
             foreach (Tokenizer.Token tok in tokens)
@@ -25,6 +33,9 @@ namespace Lexer
 
                 else if (tok.Type == Tokenizer.TokenType.EXPR)
                     CurrentTokens.Add(new Tokenizer.Token(Evaluate(tok.Name), tok.Type));
+
+                else if (tok.Type == Tokenizer.TokenType.STRING)
+                    CurrentTokens.Add(new Tokenizer.Token(Utils.String.Strings(tok.Name), tok.Type));
 
                 else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%") && tok.Type == Tokenizer.TokenType.IDENTIFIER)
                     CurrentTokens.Add(new Tokenizer.Token(SystemUtils.CheckForEnvVarAndEXEs(tok.Name), tok.Type));

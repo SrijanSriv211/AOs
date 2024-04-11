@@ -20,16 +20,20 @@ namespace Lexer
 
         private bool MakeString(char string_literal)
         {
-            i++;
-            if (!disable_error && i >= line.Length)
+            if (!disable_error)
             {
-                string error_detail = "unexpected end of tokens after " + string_literal;
-                Error.Syntax(line, tok, error_detail);
+                i++;
+                if (i >= line.Length)
+                {
+                    string error_detail = "unexpected end of tokens after " + string_literal;
+                    Error.Syntax(line, tok, error_detail);
+                    ClearToken();
+                    return false;
+                }
+
                 ClearToken();
-                return false;
             }
 
-            ClearToken();
             while (i < line.Length && line[i] != string_literal)
             {
                 if (line[i] == '\\')
@@ -64,6 +68,9 @@ namespace Lexer
                 tok = "";
                 return false;
             }
+
+            else if (disable_error && i < line.Length)
+                tok += line[i];
 
             i++;
             return true;
