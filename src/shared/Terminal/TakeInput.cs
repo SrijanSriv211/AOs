@@ -6,10 +6,7 @@ partial class Terminal
 
         // Change the foreground color to what the user wants.
         Console.ForegroundColor = Color;
-        // string output = new ReadLine().Readf();
-        string output = "";
-
-        // output = ReadLine.ConsoleReadLine.ReadLine();
+        string output = new ReadLine().Readf();
 
         // Reset the foreground color to the default color and return the output.
         Console.ForegroundColor = default_color;
