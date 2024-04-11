@@ -21,7 +21,7 @@ namespace Lexer
         private bool MakeString(char string_literal)
         {
             i++;
-            if (i >= line.Length)
+            if (!disable_error && i >= line.Length)
             {
                 string error_detail = "unexpected end of tokens after " + string_literal;
                 Error.Syntax(line, tok, error_detail);
@@ -57,7 +57,7 @@ namespace Lexer
                 i++; // Move to next char
             }
 
-            if (i >= line.Length)
+            if (!disable_error && i >= line.Length)
             {
                 string error_detail = "missing terminating " + string_literal + " character";
                 Error.Syntax(line, tok, error_detail);

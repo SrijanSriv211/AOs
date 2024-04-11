@@ -3,15 +3,20 @@ namespace Lexer
     partial class Tokenizer
     {
         public List<Token> tokens = [];
+        public string line;
+        public bool disable_error = false;
 
-        private string line;
         private string tok = "";
         private int i;
 
         public Tokenizer(string line)
         {
             this.line = line;
+            Tokenize();
+        }
 
+        public void Tokenize()
+        {
             // Loop through all chars in the line.
             for (i = 0; i < line.Length; i++)
             {
@@ -71,7 +76,7 @@ namespace Lexer
             else if (tok == ";")
                 return AppendToken(TokenType.EOL);
 
-            else if (">@!".Contains(tok.FirstOrDefault()))
+            else if (">@!?:".Contains(tok.FirstOrDefault()))
                 return AppendToken(TokenType.SYMBOL);
 
             else if (IsIdentifier(tok.FirstOrDefault()) && tok.Length == 1)
