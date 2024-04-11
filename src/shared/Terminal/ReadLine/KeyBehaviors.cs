@@ -15,8 +15,8 @@ partial class Terminal
                 CursorPos--;
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
 
-                Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                Console.Write(Text + " ");
+                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+                // Console.Write(Text + " ");
             }
         }
 
@@ -33,8 +33,8 @@ partial class Terminal
                 CursorPos -= length;
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
 
-                Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                Console.Write(Text + new string (' ', length));
+                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+                // Console.Write(Text + new string (' ', length));
             }
         }
 
@@ -44,8 +44,8 @@ partial class Terminal
             {
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
 
-                Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                Console.Write(Text + " ");
+                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+                // Console.Write(Text + " ");
             }
         }
 
@@ -61,8 +61,8 @@ partial class Terminal
 
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
 
-                Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                Console.Write(Text + new string (' ', length));
+                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+                // Console.Write(Text + new string (' ', length));
             }
         }
 
@@ -110,7 +110,7 @@ partial class Terminal
                     CursorPos++;
 
                 int NextWordIdx = Text.IndexOf(' ', CursorPos - CursorStartPos);
-                int length = CursorPos - CursorStartPos + NextWordIdx;
+                int length = NextWordIdx == -1 ? Text.Length - (CursorPos - CursorStartPos) : NextWordIdx - (CursorPos - CursorStartPos);
 
                 CursorPos += length;
             }
