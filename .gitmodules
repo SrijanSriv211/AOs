@@ -1,3 +1,0 @@
-[submodule "src/shared/Terminal/ReadLine"]
-	path = src/shared/Terminal/ReadLine
-	url = https://github.com/Light-Lens/ReadLine.git
