@@ -15,11 +15,21 @@ partial class Terminal
             CursorPos = CursorStartPos;
 
             KeyBindings[(ConsoleKey.Enter, ConsoleModifiers.None)] = HandleEnter;
+
+            KeyBindings[(ConsoleKey.Home, ConsoleModifiers.None)] = HandleHome;
+            KeyBindings[(ConsoleKey.End, ConsoleModifiers.None)] = HandleEnd;
+
+            KeyBindings[(ConsoleKey.Delete, ConsoleModifiers.None)] = HandleDelete;
+            KeyBindings[(ConsoleKey.Delete, ConsoleModifiers.Control)] = HandleCtrlDelete;
+
             KeyBindings[(ConsoleKey.Backspace, ConsoleModifiers.None)] = HandleBackspace;
             KeyBindings[(ConsoleKey.Backspace, ConsoleModifiers.Control)] = HandleCtrlBackspace;
-            KeyBindings[(ConsoleKey.LeftArrow, ConsoleModifiers.Control)] = HandleCtrlLeftArrow;
+
             KeyBindings[(ConsoleKey.LeftArrow, ConsoleModifiers.None)] = HandleLeftArrow;
+            KeyBindings[(ConsoleKey.LeftArrow, ConsoleModifiers.Control)] = HandleCtrlLeftArrow;
+
             KeyBindings[(ConsoleKey.RightArrow, ConsoleModifiers.None)] = HandleRightArrow;
+            KeyBindings[(ConsoleKey.RightArrow, ConsoleModifiers.Control)] = HandleCtrlRightArrow;
         }
 
         public string Readf()
