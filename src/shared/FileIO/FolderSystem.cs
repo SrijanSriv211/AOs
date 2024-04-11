@@ -1,6 +1,6 @@
 using System.IO.Compression;
 
-partial class FileIO
+namespace FileIO
 {
     public class FolderSystem
     {

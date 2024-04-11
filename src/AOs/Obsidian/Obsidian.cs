@@ -30,8 +30,7 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
             Terminal.Print(this.prompt, ConsoleColor.White, false);
 
-            // CMD = Console.ReadLine().Trim();
-            CMD = Terminal.TakeInput(cursor_start_pos: this.prompt.Length).Trim();
+            CMD = Terminal.TakeInput().Trim();
 
             if (Utils.String.IsEmpty(CMD))
                 return []; // (cmd: "", args: new string[0])

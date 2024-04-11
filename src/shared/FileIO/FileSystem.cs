@@ -1,4 +1,4 @@
-partial class FileIO
+namespace FileIO
 {
     public class FileSystem
     {
