@@ -5,8 +5,8 @@ partial class Terminal
         private string Text = "";
         private bool Loop = true;
         private int CursorPos;
+        private Lexer.Tokenizer tokenizer;
 
-        private readonly Lexer.Tokenizer tokenizer;
         private readonly int CursorStartPos;
         private readonly Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings = [];
         private readonly Dictionary<Lexer.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
@@ -15,7 +15,6 @@ partial class Terminal
         {
             CursorStartPos = Console.CursorLeft;
             CursorPos = CursorStartPos;
-            tokenizer = new("") { disable_error = true };
 
             InitKeyBindings();
             InitSyntaxHighlightCodes();
@@ -39,39 +38,45 @@ partial class Terminal
 
                     // Insert the character at the cursor position
                     Text = Text.Insert(CursorPos - CursorStartPos, KeyInfo.KeyChar.ToString());
+                    UpdateTextBuffer(Text);
                     CursorPos++;
                 }
 
+                // Update the cursor pos only if the loop is not broken, meainng the Enter key is not pressed.
                 if (Loop)
-                {
-                    // Tokenize the updated input text
-                    tokenizer.line = Text;
-                    tokenizer.Tokenize();
-
-                    // Clear current text buffer and re-render the updated input
-                    // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                    // Console.Write(new string(' ', Text.Length));
-                    Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-
-                    // Loop through each token and check if the token is to be highlighted or not.
-                    // If yes, highlight, otherwise update text after cursor normally.
-                    foreach (Lexer.Tokenizer.Token token in tokenizer.tokens)
-                    {
-                        if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
-                            Print(
-                                token.Type == Lexer.Tokenizer.TokenType.STRING ? $"\"{token.Name}\"" : token.Name,
-                                color, false
-                            );
-
-                        else if (token.Type != Lexer.Tokenizer.TokenType.EOL)
-                            Console.Write(token.Name);
-                    }
-
                     Console.SetCursorPosition(CursorPos, Console.CursorTop);
-                }
             }
 
             return Text;
+        }
+
+        // Clear current text buffer and re-render the updated input with syntax highlighting.
+        private void UpdateTextBuffer(string text)
+        {
+            // Tokenize the updated input text
+            tokenizer = new("")
+            {
+                disable_error = true,
+                line = text.Trim()
+            };
+
+            tokenizer.Tokenize();
+
+            // Clear current text buffer and re-render the updated input
+            Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+            Console.Write(new string(' ', text.Length));
+            Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
+
+            // Loop through each token and check if the token is to be highlighted or not.
+            // If yes, highlight, otherwise update text after cursor normally.
+            foreach (Lexer.Tokenizer.Token token in tokenizer.tokens)
+            {
+                if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
+                    Print(token.Name, color, false);
+
+                else
+                    Console.Write(token.Name);
+            }
         }
 
         private void InitKeyBindings()

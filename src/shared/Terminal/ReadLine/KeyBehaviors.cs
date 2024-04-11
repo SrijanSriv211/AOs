@@ -14,9 +14,7 @@ partial class Terminal
             {
                 CursorPos--;
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-
-                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                // Console.Write(Text + " ");
+                UpdateTextBuffer(Text + " ");
             }
         }
 
@@ -32,9 +30,7 @@ partial class Terminal
 
                 CursorPos -= length;
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-
-                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                // Console.Write(Text + new string (' ', length));
+                UpdateTextBuffer(Text + new string (' ', length));
             }
         }
 
@@ -43,9 +39,7 @@ partial class Terminal
             if (CursorPos - CursorStartPos < Text.Length)
             {
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-
-                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                // Console.Write(Text + " ");
+                UpdateTextBuffer(Text + " ");
             }
         }
 
@@ -60,9 +54,7 @@ partial class Terminal
                 int length = NextWordIdx == -1 ? Text.Length - (CursorPos - CursorStartPos) : NextWordIdx - (CursorPos - CursorStartPos);
 
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-
-                // Console.SetCursorPosition(CursorStartPos, Console.CursorTop);
-                // Console.Write(Text + new string (' ', length));
+                UpdateTextBuffer(Text + new string (' ', length));
             }
         }
 

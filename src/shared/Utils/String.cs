@@ -37,7 +37,7 @@ namespace Utils
         // Remove string quotes.
         public static string Strings(string line)
         {
-            return IsString(line) ? line.Substring(1, line.Length - 2) : line;
+            return IsString(line) ? line[1..^1] : line;
         }
     }
 }
