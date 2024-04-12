@@ -8,13 +8,17 @@ partial class Terminal
             Loop = false;
         }
 
+        private void HandleTab()
+        {
+        }
+
         private void HandleBackspace()
         {
             if (CursorPos > CursorStartPos)
             {
                 CursorPos--;
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-                UpdateTextBuffer(Text + " ");
+                UpdateTextBuffer(Text.Length + 1);
             }
         }
 
@@ -30,7 +34,7 @@ partial class Terminal
 
                 CursorPos -= length;
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-                UpdateTextBuffer(Text + new string (' ', length));
+                UpdateTextBuffer(Text.Length + length);
             }
         }
 
@@ -39,7 +43,7 @@ partial class Terminal
             if (CursorPos - CursorStartPos < Text.Length)
             {
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-                UpdateTextBuffer(Text + " ");
+                UpdateTextBuffer(Text.Length + 1);
             }
         }
 
@@ -54,7 +58,7 @@ partial class Terminal
                 int length = NextWordIdx == -1 ? Text.Length - (CursorPos - CursorStartPos) : NextWordIdx - (CursorPos - CursorStartPos);
 
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-                UpdateTextBuffer(Text + new string (' ', length));
+                UpdateTextBuffer(Text.Length + length);
             }
         }
 

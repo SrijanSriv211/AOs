@@ -67,7 +67,11 @@ namespace Lexer
         {
             // '#' means that the following text is a comment.
             if (tok == "#")
+            {
+                bool MakeComment(char _) => true;
+                Advance(TokenType.COMMENT, MakeComment);
                 return -1;
+            }
 
             else if (Utils.String.IsWhiteSpace(tok))
                 return Advance(TokenType.WHITESPACE, char.IsWhiteSpace);

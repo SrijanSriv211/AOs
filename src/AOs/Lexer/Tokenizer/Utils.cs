@@ -5,6 +5,7 @@ namespace Lexer
         public enum TokenType
         {
             EOL = 0,
+            COMMENT = 0,
             WHITESPACE,
             IDENTIFIER,
             STRING,

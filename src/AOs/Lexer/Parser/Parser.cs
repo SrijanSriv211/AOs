@@ -40,7 +40,7 @@ namespace Lexer
                 else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%") && tok.Type == Tokenizer.TokenType.IDENTIFIER)
                     CurrentTokens.Add(new Tokenizer.Token(SystemUtils.CheckForEnvVarAndEXEs(tok.Name), tok.Type));
 
-                else
+                else if (tok.Type != Tokenizer.TokenType.COMMENT)
                     CurrentTokens.Add(tok);
             }
         }
