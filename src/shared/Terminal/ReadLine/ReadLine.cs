@@ -26,11 +26,10 @@ partial class Terminal
             */
 
             KeyBindings[(ConsoleKey.Enter, ConsoleModifiers.None)] = HandleEnter;
-
-            KeyBindings[(ConsoleKey.Spacebar, ConsoleModifiers.Control)] = HandleCtrlSpacebar;
+            KeyBindings[(ConsoleKey.Enter, ConsoleModifiers.Control)] = HandleCtrlEnter;
 
             KeyBindings[(ConsoleKey.Tab, ConsoleModifiers.None)] = HandleTab;
-            KeyBindings[(ConsoleKey.Tab, ConsoleModifiers.Shift)] = HandleShiftTab;
+            KeyBindings[(ConsoleKey.Spacebar, ConsoleModifiers.Control)] = HandleCtrlSpacebar;
 
             KeyBindings[(ConsoleKey.Escape, ConsoleModifiers.None)] = HandleEscape;
             KeyBindings[(ConsoleKey.Escape, ConsoleModifiers.Shift)] = HandleShiftEscape;
@@ -58,7 +57,7 @@ partial class Terminal
 
             SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.STRING] = ConsoleColor.Yellow;
             SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.EXPR] = ConsoleColor.Cyan;
-            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.SYMBOL] = ConsoleColor.Blue;
+            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.SYMBOL] = ConsoleColor.White;
             SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.COMMENT] = ConsoleColor.DarkGray;
         }
 

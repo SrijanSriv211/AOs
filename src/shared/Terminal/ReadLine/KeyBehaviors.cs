@@ -8,6 +8,15 @@ partial class Terminal
             Loop = false;
         }
 
+        // Set the current suggesion in the text.
+        private void HandleCtrlEnter()
+        {
+            Text += Suggestion;
+            CursorPos += Suggestion.Length;
+            SuggestionIdx = 0;
+            UpdateTextBuffer(false);
+        }
+
         // Render the next suggestion
         private void HandleTab()
         {
@@ -19,15 +28,6 @@ partial class Terminal
                 SuggestionIdx = 0;
 
             UpdateTextBuffer();
-        }
-
-        // Set the current suggesion in the text.
-        private void HandleShiftTab()
-        {
-            Text += Suggestion;
-            CursorPos += Suggestion.Length;
-            SuggestionIdx = 0;
-            UpdateTextBuffer(false);
         }
 
         // Render the suggestions without typing anything
