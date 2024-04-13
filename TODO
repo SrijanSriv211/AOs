@@ -13,7 +13,6 @@
 
 
 Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight [Not sure if this is going to be a command or a global feature].
-Autocomplete filenames when pressed tab.
 Python's virtual env doesn't work with AOs. Fix it.
 The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 olor - Changes your PC's theme from Dark mode to Light mode.
@@ -31,6 +30,7 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+. Autocomplete filenames when pressed tab.
 . settings - print everything from setting.json except cmds.
 . Re-work 'build.py' and leave all the stuff to 'AOs.dev'
 . Refactor the entire AOs.

@@ -8,8 +8,46 @@ partial class Terminal
             Loop = false;
         }
 
+        // Render the next suggestion
         private void HandleTab()
         {
+            if (Utils.Array.IsEmpty([.. Suggestions]))
+                return;
+
+            SuggestionIdx = (SuggestionIdx + 1) % Suggestions.Count;
+            if (SuggestionIdx < 0 || SuggestionIdx > Suggestions.Count)
+                SuggestionIdx = 0;
+
+            UpdateTextBuffer();
+        }
+
+        // Set the current suggesion in the text.
+        private void HandleShiftTab()
+        {
+            Text += Suggestion;
+            CursorPos += Suggestion.Length;
+            SuggestionIdx = 0;
+            UpdateTextBuffer(false);
+        }
+
+        // Render the suggestions without typing anything
+        private void HandleCtrlSpacebar()
+        {
+            UpdateTextBuffer();
+        }
+
+        // Clear all the suggestions
+        private void HandleEscape()
+        {
+            UpdateTextBuffer(false);
+        }
+
+        // Clear all the text
+        private void HandleShiftEscape()
+        {
+            Text = "";
+            CursorPos = CursorStartPos;
+            UpdateTextBuffer(false);
         }
 
         private void HandleBackspace()
@@ -18,7 +56,7 @@ partial class Terminal
             {
                 CursorPos--;
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-                UpdateTextBuffer(Text.Length + 1);
+                UpdateTextBuffer();
             }
         }
 
@@ -34,7 +72,7 @@ partial class Terminal
 
                 CursorPos -= length;
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-                UpdateTextBuffer(Text.Length + length);
+                UpdateTextBuffer();
             }
         }
 
@@ -43,7 +81,7 @@ partial class Terminal
             if (CursorPos - CursorStartPos < Text.Length)
             {
                 Text = Text.Remove(CursorPos - CursorStartPos, 1);
-                UpdateTextBuffer(Text.Length + 1);
+                UpdateTextBuffer();
             }
         }
 
@@ -58,7 +96,7 @@ partial class Terminal
                 int length = NextWordIdx == -1 ? Text.Length - (CursorPos - CursorStartPos) : NextWordIdx - (CursorPos - CursorStartPos);
 
                 Text = Text.Remove(CursorPos - CursorStartPos, length);
-                UpdateTextBuffer(Text.Length + length);
+                UpdateTextBuffer();
             }
         }
 
