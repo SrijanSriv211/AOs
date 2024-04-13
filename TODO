@@ -14,7 +14,6 @@
 
 Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight [Not sure if this is going to be a command or a global feature].
 Python's virtual env doesn't work with AOs. Fix it.
-The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 olor - Changes your PC's theme from Dark mode to Light mode.
 wlpr, wallpaper - Changes your PC's wallpaper.
 msoffice - Automate creation and management via any of MS Office tool. (Not sure if I want to implement it or not)
@@ -30,6 +29,7 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+. The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 . Autocomplete filenames when pressed tab.
 . settings - print everything from setting.json except cmds.
 . Re-work 'build.py' and leave all the stuff to 'AOs.dev'

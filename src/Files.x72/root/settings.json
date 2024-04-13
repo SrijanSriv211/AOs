@@ -56,7 +56,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["lock", "syslck", "deeplock", "sleepc"],
+            "cmd_names": ["lock", "syslck", "deeplock"],
             "help_message": "Lock the host machine",
             "usage": null,
             "supported_args": null,
@@ -65,6 +65,19 @@
             "min_arg_len": 0,
             "max_arg_len": 0,
             "method": "LockHost",
+            "location": "internal",
+            "do_index": true
+        },
+        {
+            "cmd_names": ["sleep", "sleepc", "deepsleep", "syslp"],
+            "help_message": "Put the host machine to sleep mode",
+            "usage": null,
+            "supported_args": null,
+            "default_values": null,
+            "is_flag": true,
+            "min_arg_len": 0,
+            "max_arg_len": 0,
+            "method": "SleepHost",
             "location": "internal",
             "do_index": true
         },

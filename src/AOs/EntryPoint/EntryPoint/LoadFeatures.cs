@@ -9,6 +9,7 @@ partial class EntryPoint
             { "ShutdownHost", Features.Shutdown },
             { "RestartHost", Features.Restart },
             { "LockHost", Features.Lock },
+            { "SleepHost", Features.Sleep },
             { "GetCurrentTime", Features.GetTime },
             { "GetTodayDate", Features.GetDate },
             { "Diagxt", Features.Diagxt },

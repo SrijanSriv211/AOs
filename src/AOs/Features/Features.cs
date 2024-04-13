@@ -9,17 +9,25 @@ partial class Features()
 
     public static void Restart()
     {
-        SystemUtils.CommandPrompt("shutdown /r /t0");
+        SystemUtils.CommandPrompt("shutdown /r /t 0");
+        Environment.Exit(0);
     }
 
     public static void Shutdown()
     {
-        SystemUtils.CommandPrompt("shutdown /s /t0");
+        SystemUtils.CommandPrompt("shutdown /s /t 0");
+        Environment.Exit(0);
     }
 
     public static void Lock()
     {
-        SystemUtils.StartApp(@"C:\WINDOWS\system32\rundll32.exe", "user32.dll,LockWorkStation");
+        WindowsControl.SystemManager.LockWorkStation();
+    }
+
+    public static void Sleep()
+    {
+        // https://www.codeproject.com/Tips/480049/Shut-Down-Restart-Log-off-Lock-Hibernate-or-Sleep
+        WindowsControl.SystemManager.SetSuspendState(false, true, true);
     }
 
     public static void Refresh()
@@ -740,8 +748,8 @@ partial class Features()
 
                 if (Utils.String.IsEmpty(name))
                 {
-                    IntPtr handle = WindowManager.GetForegroundWindow();
-                    WindowManager.GetWindowThreadProcessId(handle, out uint process_id);
+                    IntPtr handle = WindowsControl.WindowManager.GetForegroundWindow();
+                    WindowsControl.WindowManager.GetWindowThreadProcessId(handle, out uint process_id);
                     all_process = [System.Diagnostics.Process.GetProcessById((int)process_id)];
                 }
 
@@ -762,7 +770,7 @@ partial class Features()
     {
         if (Utils.Array.IsEmpty(vol_level))
         {
-            Console.WriteLine(WindowsVolumeControl.AudioManager.GetMasterVolume());
+            Console.WriteLine(WindowsControl.SystemVolume.AudioManager.GetMasterVolume());
             return;
         }
 
@@ -772,7 +780,7 @@ partial class Features()
         var parsed_args = parser.Parse(Utils.Array.Reduce(vol_level));
 
         if (parsed_args[0].Names.Contains("-m"))
-            WindowsVolumeControl.AudioManager.ToggleMasterVolumeMute();
+            WindowsControl.SystemVolume.AudioManager.ToggleMasterVolumeMute();
 
         else if (parsed_args[0].Names.Contains("-i"))
         {
@@ -782,7 +790,7 @@ partial class Features()
                     new Error($"'{level}': Invalid volume level. The volume level must be between -100 and 100", "runtime error");
 
                 else
-                    WindowsVolumeControl.AudioManager.StepMasterVolume(level);
+                    WindowsControl.SystemVolume.AudioManager.StepMasterVolume(level);
             }
         }
 
@@ -794,7 +802,7 @@ partial class Features()
                     new Error($"'{level}': Invalid volume level. The volume level must be between 0 and 100", "runtime error");
 
                 else
-                    WindowsVolumeControl.AudioManager.SetMasterVolume(level);
+                    WindowsControl.SystemVolume.AudioManager.SetMasterVolume(level);
             }
         }
     }
@@ -827,7 +835,7 @@ partial class Features()
             if (int.TryParse(appid, out int int_appid))
             {
                 System.Diagnostics.Process process = System.Diagnostics.Process.GetProcessById(int_appid);
-                WindowManager.SetForegroundWindow(process.MainWindowHandle);
+                WindowsControl.WindowManager.SetForegroundWindow(process.MainWindowHandle);
             }
 
             else
