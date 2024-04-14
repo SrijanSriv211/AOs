@@ -117,7 +117,7 @@ namespace FileIO
             string[] Files = FileSystemEntries.Where(File.Exists).ToArray();
 
             // Concatenate directories and files in the desired order
-            return Directories.Concat(Files).Select(Path.GetFileName).ToArray();
+            return Directories.Concat(Files).ToArray();
         }
 
         public static void Compress(string Source_dirname, string zip_path)

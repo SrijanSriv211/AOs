@@ -19,21 +19,18 @@ namespace Lexer
             public TokenType Type = Type;
         }
 
-        private bool MakeString(char string_literal)
+        protected bool MakeString(char string_literal)
         {
-            if (!disable_error)
+            i++;
+            if (i >= line.Length)
             {
-                i++;
-                if (i >= line.Length)
-                {
-                    string error_detail = "unexpected end of tokens after " + string_literal;
-                    Error.Syntax(line, tok, error_detail);
-                    ClearToken();
-                    return false;
-                }
-
+                string error_detail = "unexpected end of tokens after " + string_literal;
+                Error.Syntax(line, tok, error_detail);
                 ClearToken();
+                return false;
             }
+
+            ClearToken();
 
             while (i < line.Length && line[i] != string_literal)
             {
@@ -52,7 +49,7 @@ namespace Lexer
                         'b' => "\b",
                         'a' => "\a",
                         'f' => "\f",
-                        _ => "\\" + line[i].ToString(),
+                        _ => "\\" + line[i].ToString()
                     };
                 }
 
@@ -62,7 +59,7 @@ namespace Lexer
                 i++; // Move to next char
             }
 
-            if (!disable_error && i >= line.Length)
+            if (i >= line.Length)
             {
                 string error_detail = "missing terminating " + string_literal + " character";
                 Error.Syntax(line, tok, error_detail);
@@ -70,19 +67,16 @@ namespace Lexer
                 return false;
             }
 
-            else if (disable_error && i < line.Length)
-                tok += line[i];
-
             i++;
             return true;
         }
 
-        private static bool IsValidCharForFilenameInWindows(char ch)
+        protected static bool IsValidCharForFilenameInWindows(char ch)
         {
             return "`~!@$^&?()=+-*/%_.[],{}|:<>\\".Contains(ch);
         }
 
-        private bool IsIdentifier(char ch)
+        protected bool IsIdentifier(char ch)
         {
             // Check if a char is empty or not, if not then check if the char is a letter or a digit or a symbol.
             // If no in any of these cases then return false, otherwise true.

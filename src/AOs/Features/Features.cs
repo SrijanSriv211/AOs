@@ -46,6 +46,18 @@ partial class Features()
         Console.WriteLine(AOs.version);
     }
 
+    // A search engine which can search for any file, folder or app in your PC like Ueli or PowerToys Run
+    public static void Rij(string[] query)
+    {
+        if (Utils.Array.IsEmpty(query))
+            EntryPoint.SearchIndex();
+
+        else
+        {
+            // code here the search engine logic.
+        }
+    }
+
     public static void PrintAOsSettings()
     {
         Terminal.Print("Default-Else-Shell: ", ConsoleColor.White);
@@ -408,7 +420,7 @@ partial class Features()
         void ShowDirs(string dir)
         {
             Terminal.Print($"{dir}\n", ConsoleColor.White);
-            string[] entries = FileIO.FolderSystem.Read(dir);
+            string[] entries = FileIO.FolderSystem.Read(dir).Select(Path.GetFileName).ToArray();
 
             for (int i = 0; i < entries.Length; i++)
             {

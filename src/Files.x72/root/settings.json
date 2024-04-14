@@ -4,6 +4,19 @@
     "startlist": [],
     "cmds": [
         {
+            "cmd_names": [":", "rij"],
+            "help_message": "Quick launcher for power users that contains additional features",
+            "usage": null,
+            "supported_args": null,
+            "default_values": null,
+            "is_flag": false,
+            "min_arg_len": 0,
+            "max_arg_len": 0,
+            "method": "Rij",
+            "location": "internal",
+            "do_index": true
+        },
+        {
             "cmd_names": ["admin"],
             "help_message": "Launch an AOs instance as administrator",
             "usage": null,

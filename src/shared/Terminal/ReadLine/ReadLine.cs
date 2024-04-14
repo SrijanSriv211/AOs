@@ -3,21 +3,20 @@ partial class Terminal
     private partial class ReadLine
     {
         private int SuggestionIdx = 0;
-        private string Suggestion = "";
-        private List<string> Suggestions = [];
-
         private string Text = "";
         private bool Loop = true;
-        private int CursorPos;
+        private int LeftCursorPos;
+        private int TopCursorPos;
 
-        private readonly int CursorStartPos;
+        private readonly int LeftCursorStartPos;
         private readonly Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings = [];
         private readonly Dictionary<Lexer.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
 
         public ReadLine()
         {
-            CursorStartPos = Console.CursorLeft;
-            CursorPos = CursorStartPos;
+            LeftCursorStartPos = Console.CursorLeft;
+            LeftCursorPos = LeftCursorStartPos;
+            TopCursorPos = Console.CursorTop;
 
             /*
             -------------------------------------------------
@@ -78,18 +77,18 @@ partial class Terminal
                         continue;
 
                     // Insert the character at the cursor position
-                    Text = Text.Insert(CursorPos - CursorStartPos, KeyInfo.KeyChar.ToString());
+                    Text = Text.Insert(LeftCursorPos - LeftCursorStartPos, KeyInfo.KeyChar.ToString());
 
                     // Set the SuggestionIdx to 0
                     SuggestionIdx = 0;
 
                     // Update the text buffer
-                    UpdateTextBuffer();
-                    CursorPos++;
+                    UpdateBuffer();
+                    LeftCursorPos++;
                 }
 
                 // Set the cursor pos to where it should be
-                if (Loop) Console.SetCursorPosition(CursorPos, Console.CursorTop);
+                if (Loop) Console.SetCursorPosition(LeftCursorPos, TopCursorPos);
             }
 
             return Text;

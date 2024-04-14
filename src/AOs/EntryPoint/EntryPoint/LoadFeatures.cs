@@ -4,6 +4,7 @@ partial class EntryPoint
     private Dictionary<string, Delegate> InternalMethods()
     {
         return new Dictionary<string, Delegate>() {
+            { "Rij", Features.Rij },
             { "RunAOsAsAdmin", Features.Admin },
             { "ClearConsole", AOs.ClearConsole },
             { "ShutdownHost", Features.Shutdown },
