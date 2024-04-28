@@ -10,6 +10,7 @@ partial class Terminal
         private string Suggestion = "";
         private List<string> Suggestions = [];
         private ReadLine.Tokenizer tokenizer;
+        private (int, int) diff_token_idx = (0, 0);
 
         private void UpdateBuffer(bool render_suggestions=true)
         {
@@ -22,9 +23,10 @@ partial class Terminal
         // Clear changed text buffer
         private void ClearTextBuffer()
         {
-            int diff_start = GetTextDiff(Text, RenderedText);
-            Console.WriteLine(diff_start);
+            diff_token_idx = GetTokenDiff(Text, RenderedText);
             RenderedText = Text;
+
+            int diff_start = string.Join("", tokenizer.tokens[..diff_token_idx.Item1].SelectMany(x => x.Name)).Length + diff_token_idx.Item2;
 
             Console.SetCursorPosition(LeftCursorStartPos + diff_start, TopCursorPos);
             Console.Write(new string(' ', Console.WindowWidth - LeftCursorStartPos - diff_start));
@@ -34,17 +36,23 @@ partial class Terminal
         // Clear current text buffer and re-render the updated input with syntax highlighting.
         private void RenderTextBuffer()
         {
-            // Loop through each token and check if the token is to be highlighted or not.
-            // If yes, highlight, otherwise update text after cursor normally.
-            Console.Write(Text[RenderedText.Length..]);
-            // foreach (ReadLine.Tokenizer.Token token in tokenizer.tokens)
-            // {
-            //     if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
-            //         Print(token.Name, color, false);
+            void RenderText(int token_idx, int char_idx)
+            {
+                ReadLine.Tokenizer.Token token = tokenizer.tokens[token_idx];
 
-            //     else
-            //         Console.Write(token.Name);
-            // }
+                // Check if the token is to be highlighted or not. If yes, then highlight.
+                if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
+                    Print(token.Name[char_idx..], color, false);
+
+                // Otherwise update text after cursor normally.
+                else if (token.Type != Lexer.Tokenizer.TokenType.EOL)
+                    Console.Write(token.Name[char_idx..]);
+            }
+
+            // Loop through each token starting from first different token
+            RenderText(diff_token_idx.Item1, diff_token_idx.Item2);
+            for (int i = diff_token_idx.Item1 + 1; i < tokenizer.tokens.Count; i++)
+                RenderText(i, 0);
         }
 
         private void ClearSuggestionBuffer()

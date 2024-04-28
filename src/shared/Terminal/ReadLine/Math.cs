@@ -2,27 +2,27 @@ partial class Terminal
 {
     partial class ReadLine
     {
-        // (token_idx, char_idx)
-        private (int, int) GetDiff()
+        private (int, int) GetTokenDiff(string text, string text2)
         {
             // Tokenize the updated input text
-            tokenizer = new("") { line = Text };
+            tokenizer = new("") { line = text };
             tokenizer.Tokenize();
 
             // Tokenize the updated rendered input text
-            ReadLine.Tokenizer _tokenizer = new("") { line = RenderedText };
+            ReadLine.Tokenizer _tokenizer = new("") { line = text2 };
             _tokenizer.Tokenize();
 
             for (int token_idx = 0; token_idx < Math.Min(tokenizer.tokens.Count, _tokenizer.tokens.Count); token_idx++)
             {
-                string text = tokenizer.tokens[token_idx].Name;
-                string rendered_text = _tokenizer.tokens[token_idx].Name;
+                string text_token = tokenizer.tokens[token_idx].Name;
+                string rendered_text_token = _tokenizer.tokens[token_idx].Name;
 
-                if (text != rendered_text)
-                    return (token_idx, GetTextDiff(text, rendered_text));
+                if (text_token != rendered_text_token)
+                    return (token_idx, GetTextDiff(text_token, rendered_text_token));
             }
 
-            return (-1, -1);
+            // (token_idx, char_idx)
+            return (0, 0);
         }
 
         private int GetTextDiff(string text, string text2)
@@ -33,7 +33,10 @@ partial class Terminal
                     return char_idx;
             }
 
-            return -1;
+            if (text.Length != text2.Length)
+                return Math.Min(text.Length, text2.Length);
+
+            return 0;
         }
     }
 }
