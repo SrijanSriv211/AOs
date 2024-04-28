@@ -31,7 +31,10 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
 
             // Take input
-            CMD = Terminal.TakeInput(this.prompt, ConsoleColor.White).Trim();
+            CMD = Terminal.TakeInput(
+                this.prompt, ConsoleColor.White,
+                rich_input_stream: EntryPoint.Settings.readline.auto_complete_suggestions || EntryPoint.Settings.readline.color_coding
+            ).Trim();
 
             // Return an empty list if the input is empty
             if (Utils.String.IsEmpty(CMD))

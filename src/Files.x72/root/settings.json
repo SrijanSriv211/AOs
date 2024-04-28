@@ -2,6 +2,10 @@
     "default_else_shell": "cmd.exe",
     "username": null,
     "startlist": [],
+    "readline": {
+        "color_coding": true,
+        "auto_complete_suggestions": true
+    },
     "cmds": [
         {
             "cmd_names": [":", "rij"],
