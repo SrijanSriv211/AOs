@@ -12,11 +12,8 @@
                                                 ____________________________________________________________
 
 
-Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight
-Python's virtual env doesn't work with AOs. Fix it.
 olor - Changes your PC's theme from Dark mode to Light mode.
 wlpr, wallpaper - Changes your PC's wallpaper.
-displaysettings - Change your display settings directly from the command line
 updos - Update your operating system directly from command line.
 scrn - Take Screenshot
 
@@ -26,6 +23,7 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+. Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight
 . Copy paste of text doesn't work bug in custom ReadLine function.
 . The "shutdown" command won't shutdown the host machine. Also check if the "restart" commands has the same problem or not.
 . Autocomplete filenames when pressed tab.
@@ -52,6 +50,8 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+x Python's virtual env doesn't work with AOs. Fix it.
+x displaysettings - Change your display settings directly from the command line
 x msoffice - Automate creation and management via any of MS Office tool. (Not sure if I want to implement it or not)
 x autokey - Automate keyboard or mouse keys to perform any task requiring interaction keyboard or mouse. (Not sure if I want to implement it or not)
 x srz - Summarize any text or text file using a simple summarization algorithm.
