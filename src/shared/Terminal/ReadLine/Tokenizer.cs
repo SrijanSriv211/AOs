@@ -4,6 +4,26 @@ partial class Terminal
     {
         private class Tokenizer(string line) : Lexer.Tokenizer(line)
         {
+            public new void Tokenize()
+            {
+                // Loop through all chars in the line.
+                for (i = 0; i < line.Length; i++)
+                {
+                    int tok_state = CheckForToken();
+                    if (tok_state == -1)
+                        break;
+
+                    else if (tok_state == 0)
+                        tok += line[i];
+                }
+
+                if (!Utils.String.IsEmpty(tok))
+                    CheckForToken();
+
+                tok = "";
+                AppendToken(TokenType.EOL);
+            }
+
             private new int CheckForToken()
             {
                 // '#' means that the following text is a comment.
@@ -35,7 +55,15 @@ partial class Terminal
                     tok = !Utils.String.IsEmpty(UncommonChars) ? tok : tok.Replace(" ", "");
 
                     // If the token contains any letter then it's an identifier.
-                    return AppendToken(!Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR);
+                    TokenType type;
+
+                    if (!Utils.String.IsEmpty(UncommonChars))
+                        type = (tok == "true" || tok == "false") ? TokenType.BOOL : TokenType.IDENTIFIER;
+
+                    else
+                        type = TokenType.EXPR;
+
+                    return AppendToken(type);
                 }
 
                 else if (tok == "\"" || tok == "'")
@@ -51,9 +79,10 @@ partial class Terminal
             {
                 while (i < line.Length && line[i] != string_literal)
                 {
+                    tok += line[i];
+
                     if (line[i] == '\\')
                     {
-                        tok += line[i];
                         i++;
                         tok += line[i] switch
                         {
@@ -71,11 +100,11 @@ partial class Terminal
                         };
                     }
 
-                    else
-                        tok += line[i];
-
                     i++; // Move to next char
                 }
+
+                if (i < line.Length)
+                    tok += line[i];
 
                 i++;
             }

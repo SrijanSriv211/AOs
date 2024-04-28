@@ -10,7 +10,7 @@ partial class Terminal
 
         private readonly int LeftCursorStartPos;
         private readonly Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings = [];
-        private readonly Dictionary<Lexer.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
+        private readonly Dictionary<ReadLine.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
 
         public ReadLine()
         {
@@ -54,10 +54,11 @@ partial class Terminal
             ------------------------------------------------------------
             */
 
-            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.STRING] = ConsoleColor.Yellow;
-            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.EXPR] = ConsoleColor.Cyan;
-            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.SYMBOL] = ConsoleColor.White;
-            SyntaxHighlightCodes[Lexer.Tokenizer.TokenType.COMMENT] = ConsoleColor.DarkGray;
+            SyntaxHighlightCodes[ReadLine.Tokenizer.TokenType.STRING] = ConsoleColor.Yellow;
+            SyntaxHighlightCodes[ReadLine.Tokenizer.TokenType.EXPR] = ConsoleColor.Cyan;
+            SyntaxHighlightCodes[ReadLine.Tokenizer.TokenType.BOOL] = ConsoleColor.Magenta;
+            SyntaxHighlightCodes[ReadLine.Tokenizer.TokenType.SYMBOL] = ConsoleColor.White;
+            SyntaxHighlightCodes[ReadLine.Tokenizer.TokenType.COMMENT] = ConsoleColor.DarkGray;
         }
 
         public string Readf()

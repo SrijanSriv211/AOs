@@ -9,6 +9,7 @@ namespace Lexer
             WHITESPACE,
             IDENTIFIER,
             STRING,
+            BOOL,
             EXPR,
             SYMBOL,
         }
