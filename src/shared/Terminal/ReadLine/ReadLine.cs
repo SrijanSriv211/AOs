@@ -2,6 +2,9 @@ partial class Terminal
 {
     private partial class ReadLine
     {
+        public bool toggle_autocomplate = true;
+        public bool toggle_color_coding = true;
+
         private int SuggestionIdx = 0;
         private string Text = "";
         private bool Loop = true;
@@ -12,8 +15,11 @@ partial class Terminal
         private readonly Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings = [];
         private readonly Dictionary<ReadLine.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
 
-        public ReadLine()
+        public ReadLine(bool toggle_color_coding, bool toggle_autocomplate)
         {
+            this.toggle_color_coding = toggle_color_coding;
+            this.toggle_autocomplate = toggle_autocomplate;
+
             LeftCursorStartPos = Console.CursorLeft;
             LeftCursorPos = LeftCursorStartPos;
             TopCursorPos = Console.CursorTop;

@@ -1,11 +1,8 @@
 partial class Terminal
 {
-    //TODO: Continue on working and improving the ReadBuffer code.
     partial class ReadLine
     {
         private string RenderedText = "";
-        private List<string> RenderedSuggestions = [];
-        private int RenderedSuggestionIdx = -1;
 
         private string Suggestion = "";
         private List<string> Suggestions = [];
@@ -16,8 +13,12 @@ partial class Terminal
         {
             ClearTextBuffer();
             RenderTextBuffer();
-            // ClearSuggestionBuffer();
-            // RenderSuggestionBuffer(render_suggestions);
+
+            if (toggle_autocomplate)
+            {
+                ClearSuggestionBuffer();
+                RenderSuggestionBuffer(render_suggestions);
+            }
         }
 
         // Clear changed text buffer
@@ -42,7 +43,13 @@ partial class Terminal
 
                 // Check if the token is to be highlighted or not. If yes, then highlight.
                 if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
-                    Print(token.Name[char_idx..], color, false);
+                {
+                    if (toggle_color_coding)
+                        Print(token.Name[char_idx..], color, false);
+
+                    else
+                        Console.Write(token.Name[char_idx..]);
+                }
 
                 // Otherwise update text after cursor normally.
                 else if (token.Type != Lexer.Tokenizer.TokenType.EOL)
@@ -57,12 +64,18 @@ partial class Terminal
 
         private void ClearSuggestionBuffer()
         {
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            Console.Write(new string(' ', string.Join("    ", Suggestions).Length));
+            Console.SetCursorPosition(LeftCursorPos, TopCursorPos);
         }
 
         private void RenderSuggestionBuffer(bool render_suggestions)
         {
-            // Get all suggestions and render them
-            GetAutocompleteSuggestions(Text);
+            // Remove the last token from the tokenizer which is 'EOL', then get the last token's name
+            string buffer = tokenizer.tokens.SkipLast(1).LastOrDefault().Name;
+
+            // Get all suggestions
+            GetAutocompleteSuggestions(buffer);
 
             // Don't render the suggestions because the user doesn't want to
             if (!render_suggestions || Utils.Array.IsEmpty(Suggestions.ToArray()))
@@ -77,14 +90,10 @@ partial class Terminal
             // If suggestion is not empty then render it
             if (!Utils.String.IsEmpty(Suggestion))
             {
-                // Remove the last token from the tokenizer which is 'EOL', then get the last token's name
-                string buffer = tokenizer.tokens.SkipLast(1).LastOrDefault().Name;
-
                 // Render the suggestion
-                // Print(Suggestion, ConsoleColor.DarkGray, false);
                 Console.WriteLine();
-                for (int i = 0; i < Suggestions.Count; i++)
-                    Print(Suggestions[i] + "    ", Suggestions[i] == Suggestion ? ConsoleColor.Blue : ConsoleColor.DarkGray, false);
+                foreach (string suggestion in Suggestions)
+                    Print(suggestion + "    ", suggestion == Suggestion ? ConsoleColor.Blue : ConsoleColor.DarkGray, false);
 
                 // Get only the uncommon part of suggestion
                 Suggestion = Suggestion[buffer.Length..];

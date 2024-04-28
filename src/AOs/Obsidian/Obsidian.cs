@@ -33,7 +33,8 @@ partial class Obsidian
             // Take input
             CMD = Terminal.TakeInput(
                 this.prompt, ConsoleColor.White,
-                rich_input_stream: EntryPoint.Settings.readline.auto_complete_suggestions || EntryPoint.Settings.readline.color_coding
+                color_coding: EntryPoint.Settings.readline.color_coding,
+                autocomplete: EntryPoint.Settings.readline.auto_complete_suggestions
             ).Trim();
 
             // Return an empty list if the input is empty
