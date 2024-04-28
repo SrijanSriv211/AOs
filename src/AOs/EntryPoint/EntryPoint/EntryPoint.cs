@@ -17,7 +17,6 @@ partial class EntryPoint
         parser = new(CheckForError);
 
         LoadFeatures();
-        SearchIndex();
         Startup();
     }
 

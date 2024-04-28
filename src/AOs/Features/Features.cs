@@ -47,14 +47,37 @@ partial class Features()
     }
 
     // A search engine which can search for any file, folder or app in your PC like Ueli or PowerToys Run
-    public static void Rij(string[] query)
+    public static void Rij(string query)
     {
-        if (Utils.Array.IsEmpty(query))
+        if (Utils.String.IsEmpty(query) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
             EntryPoint.SearchIndex();
 
         else
         {
-            // code here the search engine logic.
+            string[] search_indexes = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
+
+            List<string[]> index = [];
+            for (int i = 0; i < search_indexes.Length; i++)
+            {
+                foreach (string root_path in EntryPoint.Settings.search_index.search_paths)
+                {
+                    if (search_indexes[i].StartsWith(root_path))
+                        search_indexes[i] = search_indexes[i].Replace($"{root_path}\\", "");
+
+                    index.Add(search_indexes[i].Split("\\"));
+                }
+            }
+
+            List<(string, int, int)> output = [];
+            for (int i = 0; i < index.Count; i++)
+            {
+                Utils.SpellCheck checker = new(index[i].ToList());
+                (string, int) check =  checker.Check(query, 1).FirstOrDefault();
+                output.Add((check.Item1, check.Item2, i));
+            }
+
+            output.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+            Console.WriteLine(search_indexes[output.First().Item3]);
         }
     }
 

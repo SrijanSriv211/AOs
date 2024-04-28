@@ -25,8 +25,6 @@ partial class EntryPoint
 
             else
                 this.parser.Execute(this.parser.Parse(i.cmd, i.args));
-
-            Console.WriteLine();
         }
     }
 

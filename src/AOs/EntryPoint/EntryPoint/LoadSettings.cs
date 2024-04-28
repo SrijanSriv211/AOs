@@ -18,7 +18,15 @@ partial class EntryPoint
         public string username { get; set; }
         public string[] startlist { get; set; }
         public ReadLineTemplate readline { get; set; }
-        public List<CmdsTemplate> cmds { get; set; }
+        public SearchIndexTemplate search_index { get; set; }
+        public List<CmdsTemplate> cmd_schema { get; set; }
+    }
+
+    public class SearchIndexTemplate
+    {
+        public string[] extensions { get; set; }
+        public string[] search_paths { get; set; }
+        public string[] excluded_items { get; set; }
     }
 
     public class ReadLineTemplate

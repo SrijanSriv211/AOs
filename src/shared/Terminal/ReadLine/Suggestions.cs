@@ -14,7 +14,7 @@ partial class Terminal
 
             // Find all the matching files, folders and commands if they start with 'str'
             List<string> entries = FileIO.FolderSystem.Read(path).Where(dir => dir.StartsWith(str)).Select(Path.GetFileName).ToList();
-            List<string> matching_commands = EntryPoint.Settings.cmds.Where(cmd => cmd.do_index).SelectMany(cmd => cmd.cmd_names).Where(cmd => cmd.StartsWith(str)).ToList();
+            List<string> matching_commands = EntryPoint.Settings.cmd_schema.Where(cmd => cmd.do_index).SelectMany(cmd => cmd.cmd_names).Where(cmd => cmd.StartsWith(str)).ToList();
 
             // Add all of them to suggestions list
             Suggestions = [];

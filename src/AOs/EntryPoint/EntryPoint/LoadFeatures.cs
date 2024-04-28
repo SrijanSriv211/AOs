@@ -73,7 +73,7 @@ partial class EntryPoint
         parser.Add(["quit", "exit"], "Exit AOs", method: Features.Exit);
 
         // Load all the features from settings.json
-        foreach (var cmd in Settings.cmds)
+        foreach (var cmd in Settings.cmd_schema)
         {
             if (cmd.location == "internal")
             {

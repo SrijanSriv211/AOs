@@ -4,7 +4,7 @@ partial class Error
     public static void Command(string err_line, string err_cmd_name, string err_msg = "Command not found")
     {
         // Check for spelling mistakes in the command which maybe done by the user.
-        Utils.SpellCheck checker = new(EntryPoint.Settings.cmds.SelectMany(cmd => cmd.cmd_names).ToList());
+        Utils.SpellCheck checker = new(EntryPoint.Settings.cmd_schema.SelectMany(cmd => cmd.cmd_names).ToList());
         var suggestions = checker.Check(err_cmd_name, suggestions_len: 3);
         string[] suggested_spell_checks = suggestions.Select(pair => pair.Item1).ToArray();
 

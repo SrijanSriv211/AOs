@@ -6,7 +6,20 @@
         "color_coding": true,
         "auto_complete_suggestions": true
     },
-    "cmds": [
+    "search_index": {
+        "extensions": [
+            ".exe", ".msi"
+        ],
+        "search_paths": [
+            "C:\\Program Files",
+            "C:\\Program Files (x86)",
+            "C:\\Users\\%username%\\Desktop",
+            "C:\\Users\\%username%\\Downloads",
+            "C:\\Users\\%username%\\AppData"
+        ],
+        "excluded_items": [""]
+    },
+    "cmd_schema": [
         {
             "cmd_names": [":", "rij"],
             "help_message": "Quick launcher for power users that contains additional features",
@@ -15,7 +28,7 @@
             "default_values": null,
             "is_flag": false,
             "min_arg_len": 0,
-            "max_arg_len": 0,
+            "max_arg_len": 1,
             "method": "Rij",
             "location": "internal",
             "do_index": true
