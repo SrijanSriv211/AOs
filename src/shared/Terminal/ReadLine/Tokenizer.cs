@@ -77,34 +77,23 @@ partial class Terminal
 
             private new void MakeString(char string_literal)
             {
-                while (i < line.Length && line[i] != string_literal)
+                bool is_escape_char = false;
+
+                while (i < line.Length)
                 {
                     tok += line[i];
 
+                    if (line[i] == string_literal && is_escape_char)
+                        is_escape_char = false;
+
+                    else if (line[i] == string_literal)
+                        break;
+
                     if (line[i] == '\\')
-                    {
-                        i++;
-                        tok += line[i] switch
-                        {
-                            '\\' => "\\",
-                            '"' => "\"",
-                            '\'' => "'",
-                            'n' => "\n",
-                            '0' => "\0",
-                            't' => "\t",
-                            'r' => "\r",
-                            'b' => "\b",
-                            'a' => "\a",
-                            'f' => "\f",
-                            _ => line[i].ToString()
-                        };
-                    }
+                        is_escape_char = true;
 
                     i++; // Move to next char
                 }
-
-                if (i < line.Length)
-                    tok += line[i];
 
                 i++;
             }

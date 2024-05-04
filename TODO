@@ -12,11 +12,6 @@
                                                 ____________________________________________________________
 
 
-olor - Changes your PC's theme from Dark mode to Light mode.
-wlpr, wallpaper - Changes your PC's wallpaper.
-updos - Update your operating system directly from command line.
-scrn - Take Screenshot
-
 
                                                             ##################################################
                                                             ###################### DONE ######################
@@ -50,6 +45,10 @@ scrn - Take Screenshot
                                                             ##################################################
 
 
+x olor - Changes your PC's theme from Dark mode to Light mode.
+x wlpr, wallpaper - Changes your PC's wallpaper.
+x updos - Update your operating system directly from command line.
+x scrn - Take Screenshot
 x Python's virtual env doesn't work with AOs. Fix it.
 x displaysettings - Change your display settings directly from the command line
 x msoffice - Automate creation and management via any of MS Office tool. (Not sure if I want to implement it or not)

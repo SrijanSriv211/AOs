@@ -4,6 +4,7 @@ partial class Terminal
     {
         private string RenderedText = "";
 
+        private string RenderedSuggestions = "";
         private string Suggestion = "";
         private List<string> Suggestions = [];
         private ReadLine.Tokenizer tokenizer;
@@ -65,8 +66,9 @@ partial class Terminal
         private void ClearSuggestionBuffer()
         {
             Console.SetCursorPosition(0, Console.CursorTop + 1);
-            Console.Write(new string(' ', string.Join("    ", Suggestions).Length));
+            Console.Write(new string(' ', RenderedSuggestions.Length));
             Console.SetCursorPosition(LeftCursorPos, TopCursorPos);
+            RenderedSuggestions = "";
         }
 
         private void RenderSuggestionBuffer(bool render_suggestions)
@@ -90,10 +92,28 @@ partial class Terminal
             // If suggestion is not empty then render it
             if (!Utils.String.IsEmpty(Suggestion))
             {
-                // Render the suggestion
+                // Move to new line to render suggestions
                 Console.WriteLine();
-                foreach (string suggestion in Suggestions)
+
+                // Render the suggestions
+                string str_suggestions = "";
+                for (int i = 0; i < Suggestions.Count; i++)
+                {
+                    string suggestion = Suggestions[i];
+                    str_suggestions += suggestion + "    ";
+                    RenderedSuggestions += suggestion + "    ";
+
                     Print(suggestion + "    ", suggestion == Suggestion ? ConsoleColor.Blue : ConsoleColor.DarkGray, false);
+
+                    if ((i+1) % 12 == 0)
+                    {
+                        string whitespaces = new(' ', Console.WindowWidth - str_suggestions.Length);
+                        Console.Write(whitespaces);
+
+                        RenderedSuggestions += whitespaces;
+                        str_suggestions = "";
+                    }
+                }
 
                 // Get only the uncommon part of suggestion
                 Suggestion = Suggestion[buffer.Length..];
