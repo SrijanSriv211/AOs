@@ -28,7 +28,7 @@
             "default_values": null,
             "is_flag": false,
             "min_arg_len": 0,
-            "max_arg_len": 1,
+            "max_arg_len": 0,
             "method": "Rij",
             "location": "internal",
             "do_index": true
