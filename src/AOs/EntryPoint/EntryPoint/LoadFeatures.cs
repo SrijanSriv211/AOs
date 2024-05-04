@@ -40,8 +40,43 @@ partial class EntryPoint
             { "TerminateRunningProcess", Features.Terminate },
             { "ControlVolume", Features.ControlVolume },
             { "ItsMagic", Features.ItsMagic },
-            { "SwitchApp", Features.SwitchApp }
+            { "SwitchApp", Features.SwitchApp },
+            { "SwitchElseShell", Features.SwitchElseShell },
+            { "AO(s)ettings", Features.PrintAOsSettings },
+            { "GetAOsVersion", Features.PrintVersion },
+            { "AboutAOs", Features.About },
+            { "RefreshAOs", Features.Refresh },
+            { "ExitAOs", Features.Exit },
+            { "AOsCredits", Obsidian.Credits }
         };
+    }
+
+    private void IndexPrivateFeatures(string[] _cmd_names, string _help_message, string[] _usage=null, Dictionary<string[], string> _supported_args=null, string[] _default_values=null, bool _is_flag=true, int _min_args_length=0, int _max_args_length=0, string _method="internal", bool _do_index=true)
+    {
+        List<SupportedArgsTemplate> supportedArgs = [];
+
+        if (_supported_args != null)
+        {
+            foreach (var item in _supported_args)
+                supportedArgs.Add(new SupportedArgsTemplate {args = item.Key, help_message = item.Value});
+        }
+
+        else
+            supportedArgs = null;
+
+        Settings.cmd_schema.Add(new CmdsTemplate {
+            cmd_names = _cmd_names,
+            help_message = _help_message,
+            usage = _usage,
+            supported_args = supportedArgs,
+            default_values = _default_values,
+            is_flag = _is_flag,
+            min_arg_len = _min_args_length,
+            max_arg_len = _max_args_length,
+            method = _method,
+            location = "internal",
+            do_index = _do_index
+        });
     }
 
     private void LoadFeatures()
@@ -54,23 +89,25 @@ partial class EntryPoint
         */
 
         // Default-else shell command
-        parser.Add(
-            ["!"], "Switch the default-else shell",
-            supported_args: new Dictionary<string[], string>
+        IndexPrivateFeatures(
+            _cmd_names: ["!"],
+            _help_message: "Switch the default-else shell",
+            _usage: null,
+            _supported_args: new Dictionary<string[], string>
             {
                 {["cmd"], "Switch the default-else shell to cmd.exe"},
                 {["ps", "powershell"], "Switch the default-else shell to powershell.exe"}
             },
-            default_values: [""], max_args_length: 1, method: Features.SwitchElseShell
+            _default_values: [""], _min_args_length: 0, _max_args_length: 1, _is_flag: false, _method: "SwitchElseShell"
         );
 
-        // Flagged commands
-        parser.Add(["settings"], "Displays the AOs settings", method: Features.PrintAOsSettings);
-        parser.Add(["version", "ver", "-v"], "Displays the AOs version", method: Features.PrintVersion);
-        parser.Add(["about", "info"], "About AOs", method: Features.About);
-        parser.Add(["reload", "refresh"], "Restart AOs", method: Features.Refresh);
-        parser.Add(["credits"], "Credit for AOs", method: Obsidian.Credits);
-        parser.Add(["quit", "exit"], "Exit AOs", method: Features.Exit);
+        // Private commands
+        IndexPrivateFeatures(["settings"], "Displays the AOs settings", _method: "AO(s)ettings");
+        IndexPrivateFeatures(["version", "ver", "-v"], "Displays the AOs version", _method: "GetAOsVersion");
+        IndexPrivateFeatures(["about", "info"], "About AOs", _method: "AboutAOs");
+        IndexPrivateFeatures(["reload", "refresh"], "Restart AOs", _method: "RefreshAOs");
+        IndexPrivateFeatures(["credits"], "Credit for AOs", _method: "AOsCredits");
+        IndexPrivateFeatures(["quit", "exit"], "Exit AOs", _method: "ExitAOs");
 
         // Load all the features from settings.json
         foreach (var cmd in Settings.cmd_schema)
@@ -101,5 +138,6 @@ partial class EntryPoint
                 }
             }
         }
+        Console.ReadKey();
     }
 }
