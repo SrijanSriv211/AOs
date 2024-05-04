@@ -34,7 +34,7 @@ $ help
 ***
 
 ## :toolbox: Getting Started for Developers
-AOs is officially untested on other development environments whilst we focus on a Windows build, but you can modify it to work cross-platform. Visual Studio Code is recommended for development.
+AOs is officially untested on other development environments whilst I focus on a Windows build, but you can modify it to work cross-platform. Visual Studio Code is recommended for development.
 
 ### :bangbang: Prerequisites
 You need to install the following on your machine.
