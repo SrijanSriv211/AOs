@@ -35,7 +35,7 @@ namespace Lexer
                     CurrentTokens.Add(new Tokenizer.Token(Evaluate(tok.Name), tok.Type));
 
                 else if (tok.Type == Tokenizer.TokenType.STRING)
-                    CurrentTokens.Add(new Tokenizer.Token(Utils.String.Strings(tok.Name), tok.Type));
+                    CurrentTokens.Add(new Tokenizer.Token(tok.Name, tok.Type));
 
                 else if (tok.Name.StartsWith("%") && tok.Name.EndsWith("%") && tok.Type == Tokenizer.TokenType.IDENTIFIER)
                     CurrentTokens.Add(new Tokenizer.Token(SystemUtils.CheckForEnvVarAndEXEs(tok.Name), tok.Type));

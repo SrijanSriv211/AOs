@@ -47,8 +47,10 @@ partial class Features()
     }
 
     // A search engine which can search for any file, folder or app in your PC like Ueli or PowerToys Run
-    public static void Rij(string query)
+    public static void Rij(string[] input)
     {
+        string query = string.Join("", input);
+
         if (Utils.String.IsEmpty(query) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
             EntryPoint.SearchIndex();
 
@@ -350,7 +352,7 @@ partial class Features()
 
         else
         {
-            string title = string.Join("", Utils.Utils.SimplifyString(args));
+            string title = string.Join("", args);
             Console.Title = Obsidian.is_admin ? $"{title} (Administrator)" : $"{title}";
         }
     }
@@ -438,7 +440,7 @@ partial class Features()
 
     public static void LS(string[] dirname)
     {
-        dirname = Utils.Utils.SimplifyString(Utils.Array.Reduce(dirname));
+        dirname = Utils.Array.Reduce(dirname);
 
         void ShowDirs(string dir)
         {
@@ -484,7 +486,7 @@ partial class Features()
 
     public static void Touch(string[] content_to_create)
     {
-        content_to_create = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_create));
+        content_to_create = Utils.Array.Reduce(content_to_create);
 
         foreach (string content in content_to_create)
         {
@@ -501,7 +503,7 @@ partial class Features()
 
     public static void Delete(string[] content_to_delete)
     {
-        content_to_delete = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_delete));
+        content_to_delete = Utils.Array.Reduce(content_to_delete);
 
         foreach (string content in content_to_delete)
         {
@@ -524,7 +526,7 @@ partial class Features()
 
     public static void Move(string[] content_to_rename)
     {
-        content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
+        content_to_rename = Utils.Array.Reduce(content_to_rename);
 
         string old_name = content_to_rename[0];
         string new_name = content_to_rename[1];
@@ -544,7 +546,7 @@ partial class Features()
 
     public static void Copy(string[] content_to_rename)
     {
-        content_to_rename = Utils.Utils.SimplifyString(Utils.Array.Reduce(content_to_rename));
+        content_to_rename = Utils.Array.Reduce(content_to_rename);
 
         string old_name = content_to_rename[0];
         string new_name = content_to_rename[1];
@@ -579,7 +581,7 @@ partial class Features()
         List<string> queries = [];
         foreach (var arg in parsed_args)
         {
-            string[] websites = Utils.Utils.SimplifyString(arg.Names);
+            string[] websites = arg.Names;
             if (websites.Contains("-e"))
                 engine_name = arg.Value;
 
@@ -639,7 +641,7 @@ partial class Features()
         int line_to_read = -1;
         foreach (var arg in parsed_args)
         {
-            string[] filename = Utils.Utils.SimplifyString(arg.Names);
+            string[] filename = arg.Names;
             if (filename.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
                 new Error($"{line_to_read}: Invalid line number", "runtime error");
@@ -690,7 +692,7 @@ partial class Features()
         List<string> Content_to_commit = new();
         foreach (var arg in parsed_args)
         {
-            string[] filenames = Utils.Utils.SimplifyString(arg.Names);
+            string[] filenames = arg.Names;
             if (filenames.Contains("-l") && arg.KnownType == "Known" && !int.TryParse(arg.Value, out line_to_read))
             {
                 new Error($"{line_to_read}: Invalid line number", "runtime error");
@@ -738,7 +740,7 @@ partial class Features()
         List<string> Content_to_zip = new();
         foreach (var arg in parsed_args)
         {
-            string[] filenames = Utils.Utils.SimplifyString(arg.Names);
+            string[] filenames = arg.Names;
             if (filenames.Contains("-u"))
                 unzip = true;
 
