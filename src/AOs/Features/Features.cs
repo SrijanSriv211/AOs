@@ -54,6 +54,7 @@ partial class Features()
         if (Utils.String.IsEmpty(query) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
             EntryPoint.SearchIndex();
 
+        //TODO: Improve the search algorithm and make it more accurate.
         if (!Utils.String.IsEmpty(query))
         {
             string[] search_indexes = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
