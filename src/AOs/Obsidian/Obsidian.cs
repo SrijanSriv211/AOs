@@ -31,11 +31,21 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
 
             // Take input
-            CMD = Terminal.TakeInput(
-                this.prompt, ConsoleColor.White,
-                color_coding: EntryPoint.Settings.readline.color_coding,
-                autocomplete: EntryPoint.Settings.readline.auto_complete_suggestions
-            ).Trim();
+            ReadLineConfig Config = new() {
+                Toggle_color_coding = EntryPoint.Settings.readline.color_coding,
+                Toggle_autocomplete = EntryPoint.Settings.readline.auto_complete_suggestions,
+                LeftCursorStartPos = Console.CursorLeft,
+                TopCursorStartPos = Console.CursorTop,
+                SyntaxHighlightCodes = {
+                    {ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow},
+                    {ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow},
+                    {ReadLine.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan},
+                    {ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta},
+                    {ReadLine.Tokenizer.TokenType.SYMBOL, ConsoleColor.White},
+                    {ReadLine.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray}
+                }
+            };
+            CMD = Terminal.TakeInput(this.prompt, ConsoleColor.White, Config: Config).Trim();
 
             // Return an empty list if the input is empty
             if (Utils.String.IsEmpty(CMD))

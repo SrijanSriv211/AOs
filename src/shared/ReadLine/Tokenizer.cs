@@ -1,6 +1,6 @@
 partial class ReadLine
 {
-    private class Tokenizer(string line) : Lexer.Tokenizer(line)
+    public class Tokenizer(string line) : Lexer.Tokenizer(line)
     {
         public new void Tokenize()
         {
