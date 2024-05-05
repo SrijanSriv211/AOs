@@ -136,8 +136,17 @@ partial class EntryPoint
                     Terminal.Print("Please type 'diagxt' command to find the location of 'settings.json' and fix the mistake", ConsoleColor.DarkGray);
                     Environment.Exit(1);
                 }
+
+                //TODO: Code here.
             }
         }
-        Console.ReadKey();
+
+        // Index help command but don't add it in parser since it already exists in 'src\AOs\EntryPoint\EntryPoint\Execute.cs'.
+        //! Do not change it.
+        IndexPrivateFeatures(
+            _cmd_names: ["help", "/?", "-h", "--help", "??"],
+            _help_message: "Gets information for a specific command or commands",
+            _default_values: [""], _is_flag: false, _method: "HelpAOs"
+        );
     }
 }
