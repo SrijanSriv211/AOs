@@ -1,5 +1,6 @@
 class ReadLineConfig
 {
+    public List<string> Suggestions { get; set; } = [];
     public bool Toggle_autocomplete { get; set; }
     public bool Toggle_color_coding { get; set; }
     public int LeftCursorStartPos { get; set; }
@@ -9,8 +10,10 @@ class ReadLineConfig
 
 partial class ReadLine(ReadLineConfig Config)
 {
-    private string Text = "";
+    private string TextBuffer = "";
     private bool Loop = true;
+    private int LeftCursorPos = Config.LeftCursorStartPos;
+    private int CurrentSuggestionIdx = 0;
 
     private readonly ReadLineConfig Config = Config;
     private readonly Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings;
@@ -62,10 +65,24 @@ partial class ReadLine(ReadLineConfig Config)
                 // Ignore control characters other than the handled keybindings
                 if (char.IsControl(KeyInfo.KeyChar))
                     continue;
+
+                // Insert the character at the cursor position
+                TextBuffer = TextBuffer.Insert(LeftCursorPos - Config.LeftCursorStartPos, KeyInfo.KeyChar.ToString());
+
+                // Set current suggestion index to 0
+                CurrentSuggestionIdx = 0;
+
+                // Update the text buffer
+                UpdateBuffer();
+                LeftCursorPos++;
             }
+
+            // Set the cursor pos to where it should be
+            if (Loop)
+                Console.SetCursorPosition(LeftCursorPos, Console.CursorTop);
         }
 
-        return Text;
+        return TextBuffer;
     }
 }
 

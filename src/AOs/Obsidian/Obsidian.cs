@@ -43,7 +43,8 @@ partial class Obsidian
                     {ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta},
                     {ReadLine.Tokenizer.TokenType.SYMBOL, ConsoleColor.White},
                     {ReadLine.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray}
-                }
+                },
+                Suggestions = GetAllSuggestions()
             };
             CMD = Terminal.TakeInput(this.prompt, ConsoleColor.White, Config: Config).Trim();
 

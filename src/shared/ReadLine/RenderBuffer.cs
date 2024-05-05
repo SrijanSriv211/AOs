@@ -1,5 +1,5 @@
-// partial class ReadLine
-// {
+partial class ReadLine
+{
 //     private string RenderedText = "";
 
 //     private string RenderedSuggestions = "";
@@ -8,9 +8,9 @@
 //     private ReadLine.Tokenizer tokenizer;
 //     private (int, int) Diff_token_idx = (0, 0);
 
-//     private void UpdateBuffer(bool Render_suggestions=true)
-//     {
-//         ClearTextBuffer();
+    private void UpdateBuffer(bool Render_suggestions=true)
+    {
+        ClearTextBuffer();
 //         RenderTextBuffer();
 
 //         if (Toggle_autocomplate)
@@ -20,11 +20,11 @@
 //             if (Render_suggestions)
 //                 RenderSuggestionBuffer();
 //         }
-//     }
+    }
 
-//     // Clear changed text buffer
-//     private void ClearTextBuffer()
-//     {
+    // Clear changed text buffer
+    private void ClearTextBuffer()
+    {
 //         Diff_token_idx = GetTokenDiff(Text, RenderedText);
 //         RenderedText = Text;
 
@@ -33,7 +33,7 @@
 //         Console.SetCursorPosition(LeftCursorStartPos + diff_start, TopCursorPos);
 //         Console.Write(new string(' ', Console.WindowWidth - LeftCursorStartPos - diff_start));
 //         Console.SetCursorPosition(LeftCursorStartPos + diff_start, TopCursorPos);
-//     }
+    }
 
 //     // Clear current text buffer and re-render the updated input with syntax highlighting.
 //     private void RenderTextBuffer()
@@ -119,4 +119,4 @@
 //         Suggestion = Text.Length <= Suggestion.Length ? Suggestion[Text.Length..] : "";
 //         RenderedSuggestions = Suggestions_buffer;
 //     }
-// }
+}
