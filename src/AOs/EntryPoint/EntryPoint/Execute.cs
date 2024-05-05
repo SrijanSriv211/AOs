@@ -10,12 +10,17 @@ partial class EntryPoint
             else if (i.cmd.Name.Equals("help", StringComparison.CurrentCultureIgnoreCase) || Argparse.IsAskingForHelp(i.cmd.Name.ToLower()))
                 parser.GetHelp(i.args.Select(x => x.Name).ToArray() ?? [""]);
 
+            // Easter eggs
+            //TODO: Add more easter eggs
             else if (i.cmd.Name == "AOs1000" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
                 Terminal.Print("AOs1000!", ConsoleColor.White);
                 Terminal.Print("CONGRATULATIONS! For hitting 1000 LINES OF CODE in AOs 1.3!", ConsoleColor.White);
                 Terminal.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
+
+            else if (i.cmd.Type == Lexer.Tokenizer.TokenType.STRING)
+                Features.Rij([i.cmd.Name]);
 
             else if (i.cmd.Type == Lexer.Tokenizer.TokenType.EXPR)
                 Console.WriteLine(i.cmd.Name);
