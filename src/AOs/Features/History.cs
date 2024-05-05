@@ -105,12 +105,12 @@ class History
         FileIO.FileSystem.Delete($"{Obsidian.root_dir}\\Files.x72\\root\\history.json");
     }
 
-    private class HistoryObj
+    public class HistoryObj
     {
         public Dictionary<string, List<HistoryTemplate>> history { get; set; }
     }
 
-    private class HistoryTemplate
+    public class HistoryTemplate
     {
         public string command { get; set; }
         public string time { get; set; }
