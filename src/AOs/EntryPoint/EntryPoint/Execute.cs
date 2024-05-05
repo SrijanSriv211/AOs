@@ -11,7 +11,6 @@ partial class EntryPoint
                 parser.GetHelp(i.args.Select(x => x.Name).ToArray() ?? [""]);
 
             // Easter eggs
-            //TODO: Add more easter eggs
             else if (i.cmd.Name == "AOs1000" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
                 Terminal.Print("AOs1000!", ConsoleColor.White);
@@ -19,6 +18,27 @@ partial class EntryPoint
                 Terminal.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
+            else if (i.cmd.Name == "tommyViceCity" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            {
+                SystemUtils.CommandPrompt("cls");
+                Terminal.Print("Lucia...", ConsoleColor.Magenta, false);
+                Terminal.Print("  (Do you know why you're here?)", ConsoleColor.White);
+                Features.ModifyPrompt(["Bad luck, I guess. "]);
+            }
+
+            else if (i.cmd.Name == "R*6" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Features.Pixelate(["https://youtu.be/QdBZY2fkU-0"]);
+
+            else if (i.cmd.Name == "itanimulli" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Terminal.Print("it's illuminati", ConsoleColor.White);
+
+            else if (i.cmd.Name == "illuminati" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Features.Pixelate(["carryminati ye kya hai meme"]);
+
+            else if (i.cmd.Name == "withgreatpowercomesgreatresponsibility" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Terminal.Print("True", Console.BackgroundColor);
+
+            // Some other hidden featuers
             else if (i.cmd.Type == Lexer.Tokenizer.TokenType.STRING)
                 Features.Rij([i.cmd.Name]);
 

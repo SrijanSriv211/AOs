@@ -34,6 +34,7 @@ partial class EntryPoint
                 FileSystemEntries.AddRange(Entries.Where(x => x.Split("\\").ToList().IndexOf(excluded_item) < 0));
         }
 
+        FileSystemEntries = Utils.Array.Filter(FileSystemEntries.ToArray()).ToList();
         FileIO.FileSystem.Overwrite(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"), string.Join("\n", FileSystemEntries));
     }
 }
