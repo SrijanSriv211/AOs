@@ -49,12 +49,11 @@ partial class Features()
     // A search engine which can search for any file, folder or app in your PC like Ueli or PowerToys Run
     public static void Rij(string[] input)
     {
-        string query = string.Join("", input);
-
-        if (Utils.String.IsEmpty(query) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
+        if (Utils.Array.IsEmpty(input) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
             EntryPoint.SearchIndex();
 
         //TODO: Improve the search algorithm and make it more accurate.
+        string query = string.Join("", input);
         if (!Utils.String.IsEmpty(query))
         {
             string[] search_indexes = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
@@ -75,12 +74,14 @@ partial class Features()
             for (int i = 0; i < index.Count; i++)
             {
                 Utils.SpellCheck checker = new(index[i].ToList());
-                (string, int) check = checker.Check(query, 1).FirstOrDefault();
-                output.Add((check.Item1, check.Item2, i));
+                List<(string, int)> check = checker.Check(query, 1);
+                foreach ((string, int) item in check)
+                    output.Add((item.Item1, item.Item2, i));
             }
 
             output.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-            Console.WriteLine(string.Join("\\", index[output.First().Item3]));
+            foreach (int i in output[..10].Select(x => x.Item3))
+                Console.WriteLine(string.Join("\\", index[i]));
         }
     }
 

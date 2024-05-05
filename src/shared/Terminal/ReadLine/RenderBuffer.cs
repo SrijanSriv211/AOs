@@ -67,9 +67,13 @@ partial class Terminal
 
         private void ClearSuggestionBuffer()
         {
-            Console.SetCursorPosition(0, Console.CursorTop + 1);
+            if (Utils.String.IsEmpty(RenderedSuggestions))
+                return;
+
+            Console.SetCursorPosition(0, TopCursorPos + 1);
             Console.Write(new string(' ', RenderedSuggestions.Length));
             Console.SetCursorPosition(LeftCursorPos, TopCursorPos);
+
             RenderedSuggestions = "";
         }
 

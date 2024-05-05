@@ -7,7 +7,7 @@ partial class Terminal
             if (Toggle_autocomplate)
                 ClearSuggestionBuffer();
 
-            TopCursorPos += 1;
+            TopCursorPos++;
             Console.WriteLine();
             Loop = false;
         }
@@ -43,9 +43,11 @@ partial class Terminal
         // Clear all the suggestions
         private void HandleEscape()
         {
+            if (Utils.String.IsEmpty(RenderedSuggestions))
+                return;
+
             SuggestionIdx = 0;
-            if (Toggle_autocomplate)
-                ClearSuggestionBuffer();
+            ClearSuggestionBuffer();
         }
 
         // Clear all the text

@@ -11,11 +11,8 @@
             ".exe", ".msi"
         ],
         "search_paths": [
-            "C:\\Program Files",
-            "C:\\Program Files (x86)",
             "C:\\Users\\%username%\\Desktop",
-            "C:\\Users\\%username%\\Downloads",
-            "C:\\Users\\%username%\\AppData"
+            "D:\\"
         ],
         "excluded_items": [""]
     },
@@ -25,7 +22,7 @@
             "help_message": "Quick launcher for power users that contains additional features",
             "usage": null,
             "supported_args": null,
-            "default_values": null,
+            "default_values": [""],
             "is_flag": false,
             "min_arg_len": 0,
             "max_arg_len": 0,
