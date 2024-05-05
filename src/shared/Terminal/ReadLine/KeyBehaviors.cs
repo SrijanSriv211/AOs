@@ -4,6 +4,9 @@ partial class Terminal
     {
         private void HandleEnter()
         {
+            if (Toggle_autocomplate)
+                ClearSuggestionBuffer();
+
             TopCursorPos += 1;
             Console.WriteLine();
             Loop = false;
@@ -40,7 +43,9 @@ partial class Terminal
         // Clear all the suggestions
         private void HandleEscape()
         {
-            UpdateBuffer(false);
+            SuggestionIdx = 0;
+            if (Toggle_autocomplate)
+                ClearSuggestionBuffer();
         }
 
         // Clear all the text

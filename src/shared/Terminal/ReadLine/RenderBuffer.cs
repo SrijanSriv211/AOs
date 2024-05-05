@@ -8,27 +8,29 @@ partial class Terminal
         private string Suggestion = "";
         private List<string> Suggestions = [];
         private ReadLine.Tokenizer tokenizer;
-        private (int, int) diff_token_idx = (0, 0);
+        private (int, int) Diff_token_idx = (0, 0);
 
-        private void UpdateBuffer(bool render_suggestions=true)
+        private void UpdateBuffer(bool Render_suggestions=true)
         {
             ClearTextBuffer();
             RenderTextBuffer();
 
-            if (toggle_autocomplate)
+            if (Toggle_autocomplate)
             {
                 ClearSuggestionBuffer();
-                RenderSuggestionBuffer(render_suggestions);
+
+                if (Render_suggestions)
+                    RenderSuggestionBuffer();
             }
         }
 
         // Clear changed text buffer
         private void ClearTextBuffer()
         {
-            diff_token_idx = GetTokenDiff(Text, RenderedText);
+            Diff_token_idx = GetTokenDiff(Text, RenderedText);
             RenderedText = Text;
 
-            int diff_start = string.Join("", tokenizer.tokens[..diff_token_idx.Item1].SelectMany(x => x.Name)).Length + diff_token_idx.Item2;
+            int diff_start = string.Join("", tokenizer.tokens[..Diff_token_idx.Item1].SelectMany(x => x.Name)).Length + Diff_token_idx.Item2;
 
             Console.SetCursorPosition(LeftCursorStartPos + diff_start, TopCursorPos);
             Console.Write(new string(' ', Console.WindowWidth - LeftCursorStartPos - diff_start));
@@ -45,7 +47,7 @@ partial class Terminal
                 // Check if the token is to be highlighted or not. If yes, then highlight.
                 if (SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
                 {
-                    if (toggle_color_coding)
+                    if (Toggle_color_coding)
                         Print(token.Name[char_idx..], color, false);
 
                     else
@@ -58,8 +60,8 @@ partial class Terminal
             }
 
             // Loop through each token starting from first different token
-            RenderText(diff_token_idx.Item1, diff_token_idx.Item2);
-            for (int i = diff_token_idx.Item1 + 1; i < tokenizer.tokens.Count; i++)
+            RenderText(Diff_token_idx.Item1, Diff_token_idx.Item2);
+            for (int i = Diff_token_idx.Item1 + 1; i < tokenizer.tokens.Count; i++)
                 RenderText(i, 0);
         }
 
@@ -71,53 +73,49 @@ partial class Terminal
             RenderedSuggestions = "";
         }
 
-        private void RenderSuggestionBuffer(bool render_suggestions)
+        private void RenderSuggestionBuffer()
         {
-            // Remove the last token from the tokenizer which is 'EOL', then get the last token's name
-            string buffer = tokenizer.tokens.SkipLast(1).LastOrDefault().Name;
-
             // Get all suggestions
-            GetAutocompleteSuggestions(buffer);
+            List<List<string>> Suggested_commands = [SuggestCommands(Text), SuggestHistoricalCommands(Text)];
+            foreach (List<string> item in Suggested_commands)
+            {
+                if (!Utils.Array.IsEmpty(item.ToArray()))
+                {
+                    Suggestions = item;
+                    break;
+                }
+            }
 
-            // Don't render the suggestions because the user doesn't want to
-            if (!render_suggestions || Utils.Array.IsEmpty(Suggestions.ToArray()))
+            if (Utils.Array.IsEmpty(Suggestions.ToArray()))
                 return;
 
-            if (SuggestionIdx < 0 || SuggestionIdx > Suggestions.Count-1)
+            else if (SuggestionIdx < 0 || SuggestionIdx > Suggestions.Count-1)
                 SuggestionIdx = 0;
 
             // Get the current suggestion
             Suggestion = Suggestions[SuggestionIdx];
 
-            // If suggestion is not empty then render it
-            if (!Utils.String.IsEmpty(Suggestion))
+            // Move to new line to render suggestions
+            Console.WriteLine();
+
+            // Render the suggestions
+            string Suggestions_buffer = "";
+            for (int i = 0; i < Suggestions.Count; i++)
             {
-                // Move to new line to render suggestions
-                Console.WriteLine();
+                Suggestions_buffer += Suggestions[i] + "    ";
+                Print(Suggestions[i] + "    ", Suggestion == Suggestions[i] ? ConsoleColor.Blue : ConsoleColor.DarkGray, false);
 
-                // Render the suggestions
-                string str_suggestions = "";
-                for (int i = 0; i < Suggestions.Count; i++)
+                if ((i+1) % 12 == 0)
                 {
-                    string suggestion = Suggestions[i];
-                    str_suggestions += suggestion + "    ";
-                    RenderedSuggestions += suggestion + "    ";
-
-                    Print(suggestion + "    ", suggestion == Suggestion ? ConsoleColor.Blue : ConsoleColor.DarkGray, false);
-
-                    if ((i+1) % 12 == 0)
-                    {
-                        string whitespaces = new(' ', Console.WindowWidth - str_suggestions.Length);
-                        Console.Write(whitespaces);
-
-                        RenderedSuggestions += whitespaces;
-                        str_suggestions = "";
-                    }
+                    string whitespace = new(' ', Console.WindowWidth - (Suggestions_buffer.Length % Console.WindowWidth));
+                    Suggestions_buffer += whitespace;
+                    Console.Write(whitespace);
                 }
-
-                // Get only the uncommon part of suggestion
-                Suggestion = Suggestion[buffer.Length..];
             }
+
+            // Get only the uncommon part of suggestion
+            Suggestion = Text.Length <= Suggestion.Length ? Suggestion[Text.Length..] : "";
+            RenderedSuggestions = Suggestions_buffer;
         }
     }
 }
