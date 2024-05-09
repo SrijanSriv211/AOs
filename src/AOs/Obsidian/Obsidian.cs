@@ -31,22 +31,23 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
 
             // Take input
-            ReadLineConfig Config = new() {
-                Toggle_color_coding = EntryPoint.Settings.readline.color_coding,
-                Toggle_autocomplete = EntryPoint.Settings.readline.auto_complete_suggestions,
-                LeftCursorStartPos = Console.CursorLeft,
-                TopCursorStartPos = Console.CursorTop,
-                SyntaxHighlightCodes = {
-                    {ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow},
-                    {ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow},
-                    {ReadLine.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan},
-                    {ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta},
-                    {ReadLine.Tokenizer.TokenType.SYMBOL, ConsoleColor.White},
-                    {ReadLine.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray}
-                },
-                Suggestions = GetAllSuggestions()
-            };
-            CMD = Terminal.TakeInput(this.prompt, ConsoleColor.White, Config: Config).Trim();
+            Dictionary<Lexer.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
+            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow);
+            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan);
+            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta);
+            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.SYMBOL, ConsoleColor.White);
+            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray);
+
+            ReadLineConfig config = new(
+                LeftCursorStartPos: prompt.Length,
+                TopCursorStartPos: Console.CursorTop,
+                Toggle_color_coding: EntryPoint.Settings.readline.color_coding,
+                Toggle_autocomplete: EntryPoint.Settings.readline.auto_complete_suggestions,
+                Suggestions: GetAllSuggestions(),
+                SyntaxHighlightCodes: SyntaxHighlightCodes
+            );
+
+            CMD = Terminal.TakeInput(Config: config, this.prompt, ConsoleColor.White).Trim();
 
             // Return an empty list if the input is empty
             if (Utils.String.IsEmpty(CMD))

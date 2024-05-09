@@ -18,6 +18,7 @@
                                                             ##################################################
 
 A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
+If the string is too long that a new line is being created then it fails to do that and crashes. Fix it.
 
 . Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight
 . Copy paste of text doesn't work bug in custom ReadLine function.
