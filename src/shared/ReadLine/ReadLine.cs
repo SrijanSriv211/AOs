@@ -69,14 +69,24 @@ partial class ReadLine(ReadLineConfig Config)
                     continue;
 
                 // Insert the character at the cursor position
-                TextBuffer = TextBuffer.Insert(LeftCursorPos - Config.LeftCursorStartPos, KeyInfo.KeyChar.ToString());
+                TextBuffer = TextBuffer.Insert((LeftCursorPos - Config.LeftCursorStartPos) % Console.WindowWidth, KeyInfo.KeyChar.ToString());
 
                 // Set current suggestion index to 0
                 CurrentSuggestionIdx = 0;
 
                 // Update the text buffer
-                UpdateBuffer();
                 LeftCursorPos++;
+
+                //! Temp solution to the 'If the string is too long that a new line is being created then it fails to do that and crashes' problem.
+                //* NOTE: It doesn't work either.
+                //TODO: Need to re-work how text insertion, deletion, manipulation and rendering works in this custom ReadLine func.
+                if (LeftCursorPos >= Console.WindowWidth)
+                {
+                    LeftCursorPos = Config.LeftCursorStartPos;
+                    TopCursorPos++;
+                }
+
+                UpdateBuffer();
             }
 
             // Set the cursor pos to where it should be
