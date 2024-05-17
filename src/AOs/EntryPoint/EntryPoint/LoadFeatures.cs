@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 partial class EntryPoint
 {
     // A dictionary containng all the the method names from settings.json alongwith their respective functions.
@@ -123,6 +125,7 @@ partial class EntryPoint
                     is_flag: cmd.is_flag,
                     min_args_length: cmd.min_arg_len,
                     max_args_length: cmd.max_arg_len,
+                    location: cmd.location,
                     method: InternalMethods()[cmd.method],
                     do_index: cmd.do_index
                 );
@@ -137,7 +140,19 @@ partial class EntryPoint
                     Environment.Exit(1);
                 }
 
-                //TODO: Code here.
+                parser.Add(
+                    cmd_names: cmd.cmd_names,
+                    help_message: cmd.help_message,
+                    usage: cmd.usage,
+                    supported_args: cmd.supported_args?.ToDictionary(arg => arg.args, arg => arg.help_message),
+                    default_values: cmd.default_values,
+                    is_flag: cmd.is_flag,
+                    min_args_length: cmd.min_arg_len,
+                    max_args_length: cmd.max_arg_len,
+                    location: cmd.method,
+                    method: null,
+                    do_index: cmd.do_index
+                );
             }
         }
 

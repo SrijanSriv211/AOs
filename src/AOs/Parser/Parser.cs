@@ -3,12 +3,12 @@ partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> erro
     private readonly List<Command> commands = [];
     private readonly Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> error_function = error_function;
 
-    public void Add(string[] cmd_names, string help_message, string[] usage=null, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, Delegate method=null, bool do_index=true)
+    public void Add(string[] cmd_names, string help_message, string[] usage=null, Dictionary<string[], string> supported_args=null, string[] default_values=null, bool is_flag=true, int min_args_length=0, int max_args_length=0, string location="internal", Delegate method=null, bool do_index=true)
     {
         if (supported_args != null || default_values != null || max_args_length > 0 || min_args_length > 0)
             is_flag = false;
 
-        commands.Add(new Command(cmd_names, help_message, usage, supported_args, default_values, is_flag, min_args_length, max_args_length, method, do_index));
+        commands.Add(new Command(cmd_names, help_message, usage, supported_args, default_values, is_flag, min_args_length, max_args_length, location, method, do_index));
     }
 
     public ParsedCommand Parse(Lexer.Tokenizer.Token cmd, Lexer.Tokenizer.Token[] argv)
@@ -74,6 +74,7 @@ partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> erro
         parsed_cmd.Min_args_length = matching_cmd.Min_args_length;
         parsed_cmd.Max_args_length = matching_cmd.Max_args_length;
         parsed_cmd.Method = matching_cmd.Method;
+        parsed_cmd.Location = matching_cmd.Location;
 
         return parsed_cmd;
     }

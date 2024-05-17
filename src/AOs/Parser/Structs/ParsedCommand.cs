@@ -8,8 +8,9 @@ partial class Parser
         public int Max_args_length { get; set; }
         public int Min_args_length { get; set; }
         public Delegate Method { get; set; }
+        public string Location { get; set; }
 
-        public ParsedCommand(string cmd_name, string[] values, bool is_flag, int min_args_length, int max_args_length, Delegate method)
+        public ParsedCommand(string cmd_name, string[] values, bool is_flag, int min_args_length, int max_args_length, string location, Delegate method)
         {
             this.Cmd_name = cmd_name;
             this.Values = values;
@@ -17,6 +18,7 @@ partial class Parser
             this.Max_args_length = max_args_length;
             this.Min_args_length = min_args_length;
             this.Method = method;
+            this.Location = location;
         }
     }
 }
