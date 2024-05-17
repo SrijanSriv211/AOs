@@ -20,7 +20,7 @@ namespace Lexer
             public TokenType Type = Type;
         }
 
-        protected bool MakeString(char string_literal)
+        private bool MakeString(char string_literal)
         {
             i++;
             if (i >= line.Length)
@@ -72,12 +72,12 @@ namespace Lexer
             return true;
         }
 
-        protected static bool IsValidCharForFilenameInWindows(char ch)
+        private static bool IsValidCharForFilenameInWindows(char ch)
         {
             return "`~!@$^&?()=+-*/%_.[],{}|:<>\\".Contains(ch);
         }
 
-        protected bool IsIdentifier(char ch)
+        private bool IsIdentifier(char ch)
         {
             // Check if a char is empty or not, if not then check if the char is a letter or a digit or a symbol.
             // If no in any of these cases then return false, otherwise true.

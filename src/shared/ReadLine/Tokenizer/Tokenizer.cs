@@ -1,8 +1,20 @@
 partial class ReadLine
 {
-    public class Tokenizer(string line) : Lexer.Tokenizer(line)
+    public partial class Tokenizer
     {
-        public new void Tokenize()
+        public List<Token> tokens = [];
+        public string line;
+
+        private string tok = "";
+        private int i;
+
+        public Tokenizer(string line)
+        {
+            this.line = line;
+            Tokenize();
+        }
+
+        public void Tokenize()
         {
             // Loop through all chars in the line.
             for (i = 0; i < line.Length; i++)
@@ -22,7 +34,7 @@ partial class ReadLine
             AppendToken(TokenType.EOL);
         }
 
-        private new int CheckForToken()
+        private int CheckForToken()
         {
             // '#' means that the following text is a comment.
             if (tok == "#")
@@ -73,27 +85,32 @@ partial class ReadLine
             return 0;
         }
 
-        private new void MakeString(char string_literal)
+        private void ClearToken()
         {
-            bool is_escape_char = false;
+            i--; // Move to previous char
+            tok = "";
+        }
 
-            while (i < line.Length)
+        private int AppendToken(TokenType type)
+        {
+            tokens.Add(new Token(tok, type));
+            ClearToken();
+            return 1;
+        }
+
+        private void AdvanceChar(Func<char, bool> func)
+        {
+            while (i < line.Length && func(line[i]))
             {
                 tok += line[i];
-
-                if (line[i] == string_literal && is_escape_char)
-                    is_escape_char = false;
-
-                else if (line[i] == string_literal)
-                    break;
-
-                if (line[i] == '\\')
-                    is_escape_char = true;
-
                 i++; // Move to next char
             }
+        }
 
-            i++;
+        private int Advance(TokenType type, Func<char, bool> func)
+        {
+            AdvanceChar(func);
+            return AppendToken(type);
         }
     }
 }

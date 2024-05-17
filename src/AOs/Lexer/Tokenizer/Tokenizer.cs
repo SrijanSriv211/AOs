@@ -5,8 +5,8 @@ namespace Lexer
         public List<Token> tokens = [];
         public string line;
 
-        protected string tok = "";
-        protected int i;
+        private string tok = "";
+        private int i;
 
         public Tokenizer(string line)
         {
@@ -34,20 +34,20 @@ namespace Lexer
             AppendToken(TokenType.EOL);
         }
 
-        protected void ClearToken()
+        private void ClearToken()
         {
             i--; // Move to previous char
             tok = "";
         }
 
-        protected int AppendToken(TokenType type)
+        private int AppendToken(TokenType type)
         {
             tokens.Add(new Token(tok, type));
             ClearToken();
             return 1;
         }
 
-        protected void AdvanceChar(Func<char, bool> func)
+        private void AdvanceChar(Func<char, bool> func)
         {
             while (i < line.Length && func(line[i]))
             {
@@ -56,13 +56,13 @@ namespace Lexer
             }
         }
 
-        protected int Advance(TokenType type, Func<char, bool> func)
+        private int Advance(TokenType type, Func<char, bool> func)
         {
             AdvanceChar(func);
             return AppendToken(type);
         }
 
-        protected int CheckForToken()
+        private int CheckForToken()
         {
             // '#' means that the following text is a comment.
             if (tok == "#")

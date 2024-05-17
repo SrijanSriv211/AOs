@@ -31,7 +31,7 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
 
             // Take input
-            Dictionary<Lexer.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
+            Dictionary<ReadLine.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
             SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow);
             SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan);
             SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta);
