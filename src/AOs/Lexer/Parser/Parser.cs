@@ -24,6 +24,7 @@ namespace Lexer
             {
                 if (tok.Type == Tokenizer.TokenType.EOL)
                 {
+                    CurrentTokens = Trim(CurrentTokens.ToArray()).ToList();
                     Tokenizer.Token cmd = CurrentTokens.FirstOrDefault();
                     Tokenizer.Token[] args = Trim(CurrentTokens.Skip(1).ToArray());
 
