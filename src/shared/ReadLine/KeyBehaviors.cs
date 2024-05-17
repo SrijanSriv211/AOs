@@ -2,8 +2,8 @@ partial class ReadLine
 {
     private void HandleEnter()
     {
-        if (Config.Toggle_autocomplete)
-            ClearSuggestionBuffer();
+        // if (Config.Toggle_autocomplete)
+        //     ClearSuggestionBuffer();
 
         Console.WriteLine();
         Loop = false;
@@ -12,146 +12,200 @@ partial class ReadLine
     // Set the current suggesion in the text.
     private void HandleCtrlEnter()
     {
-        TextBuffer += Suggestion;
-        LeftCursorPos += Suggestion.Length;
-        CurrentSuggestionIdx = 0;
-        UpdateBuffer(false);
+        // TextBuffer += Suggestion;
+        // LeftCursorPos += Suggestion.Length;
+        // CurrentSuggestionIdx = 0;
+        // UpdateBuffer(false);
     }
 
     // Render the next suggestion
     private void HandleTab()
     {
-        if (Utils.Array.IsEmpty([.. Suggestions]))
-            return;
+        // if (Utils.Array.IsEmpty([.. Suggestions]))
+        //     return;
 
-        CurrentSuggestionIdx = (CurrentSuggestionIdx + 1) % Suggestions.Count;
-        if (CurrentSuggestionIdx < 0 || CurrentSuggestionIdx > Suggestions.Count)
-            CurrentSuggestionIdx = 0;
+        // CurrentSuggestionIdx = (CurrentSuggestionIdx + 1) % Suggestions.Count;
+        // if (CurrentSuggestionIdx < 0 || CurrentSuggestionIdx > Suggestions.Count)
+        //     CurrentSuggestionIdx = 0;
 
-        UpdateBuffer();
+        // UpdateBuffer();
     }
 
     // Render the suggestions without typing anything
     private void HandleCtrlSpacebar()
     {
-        UpdateBuffer();
+        // UpdateBuffer();
     }
 
     // Clear all the suggestions
     private void HandleEscape()
     {
-        if (!Config.Toggle_autocomplete)
-            return;
+        // if (!Config.Toggle_autocomplete)
+        //     return;
 
-        CurrentSuggestionIdx = 0;
-        ClearSuggestionBuffer();
+        // CurrentSuggestionIdx = 0;
+        // ClearSuggestionBuffer();
     }
 
     // Clear all the text
     private void HandleShiftEscape()
     {
         TextBuffer = "";
-        LeftCursorPos = Config.LeftCursorStartPos;
+        CursorVec3.X = Config.LeftCursorStartPos;
+        CursorVec3.Y = Config.TopCursorStartPos;
+        CursorVec3.I = 0;
+
         UpdateBuffer(false);
     }
 
     private void HandleBackspace()
     {
-        if (LeftCursorPos > Config.LeftCursorStartPos)
+        if (CursorVec3.I > 0)
         {
-            LeftCursorPos--;
-            TextBuffer = TextBuffer.Remove(LeftCursorPos - Config.LeftCursorStartPos, 1);
+            CursorVec3.I--;
+            CursorVec3.X--;
+            TextBuffer = TextBuffer.Remove(CursorVec3.I, 1);
+
+            if (CursorVec3.X < 0)
+            {
+                CursorVec3.X--;
+                CursorVec3.X += Console.WindowWidth;
+                CursorVec3.Y--;
+            }
+
             UpdateBuffer();
         }
     }
 
     private void HandleCtrlBackspace()
     {
-        if (LeftCursorPos > Config.LeftCursorStartPos)
+        if (CursorVec3.I > 0)
         {
-            if (TextBuffer.LastIndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos - 1) == LeftCursorPos - Config.LeftCursorStartPos - 1)
+            if (TextBuffer.LastIndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos - 1) == CursorVec3.X - Config.LeftCursorStartPos - 1)
                 HandleBackspace();
 
-            int PreviousWordIdx = TextBuffer.LastIndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos - 1);
-            int length = LeftCursorPos - Config.LeftCursorStartPos - PreviousWordIdx - 1;
+            int PreviousWordIdx = TextBuffer.LastIndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos - 1);
+            int length = CursorVec3.X - Config.LeftCursorStartPos - PreviousWordIdx - 1;
 
-            LeftCursorPos -= length;
-            TextBuffer = TextBuffer.Remove(LeftCursorPos - Config.LeftCursorStartPos, length);
+            CursorVec3.X -= length;
+            CursorVec3.I -= length;
+
+            TextBuffer = TextBuffer.Remove(CursorVec3.X - Config.LeftCursorStartPos, length);
             UpdateBuffer();
         }
     }
 
     private void HandleDelete()
     {
-        if (LeftCursorPos - Config.LeftCursorStartPos < TextBuffer.Length)
+        if (CursorVec3.I < TextBuffer.Length)
         {
-            TextBuffer = TextBuffer.Remove(LeftCursorPos - Config.LeftCursorStartPos, 1);
+            TextBuffer = TextBuffer.Remove(CursorVec3.X - Config.LeftCursorStartPos, 1);
             UpdateBuffer();
         }
     }
 
     private void HandleCtrlDelete()
     {
-        if (LeftCursorPos - Config.LeftCursorStartPos < TextBuffer.Length)
+        if (CursorVec3.I < TextBuffer.Length)
         {
-            if (TextBuffer.IndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos) == LeftCursorPos - Config.LeftCursorStartPos)
+            if (TextBuffer.IndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos) == CursorVec3.X - Config.LeftCursorStartPos)
                 HandleDelete();
 
-            int NextWordIdx = TextBuffer.IndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos);
-            int length = NextWordIdx == -1 ? TextBuffer.Length - (LeftCursorPos - Config.LeftCursorStartPos) : NextWordIdx - (LeftCursorPos - Config.LeftCursorStartPos);
+            int NextWordIdx = TextBuffer.IndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos);
+            int length = NextWordIdx == -1 ? TextBuffer.Length - (CursorVec3.X - Config.LeftCursorStartPos) : NextWordIdx - (CursorVec3.X - Config.LeftCursorStartPos);
 
-            TextBuffer = TextBuffer.Remove(LeftCursorPos - Config.LeftCursorStartPos, length);
+            TextBuffer = TextBuffer.Remove(CursorVec3.X - Config.LeftCursorStartPos, length);
             UpdateBuffer();
         }
     }
 
     private void HandleHome()
     {
-        LeftCursorPos = Config.LeftCursorStartPos;
+        CursorVec3.X = Config.LeftCursorStartPos;
+        CursorVec3.Y = Config.TopCursorStartPos;
+        CursorVec3.I = 0;
     }
 
     private void HandleEnd()
     {
-        LeftCursorPos = TextBuffer.Length;
+        // CursorVec3.X = Config.LeftCursorStartPos + TextBuffer.Length;
+        // CursorVec3.I = TextBuffer.Length;
     }
 
     private void HandleLeftArrow()
     {
-        if (LeftCursorPos > Config.LeftCursorStartPos)
-            LeftCursorPos--;
+        if (CursorVec3.I > 0)
+        {
+            CursorVec3.I--;
+            CursorVec3.X--;
+
+            if (CursorVec3.X < 0)
+            {
+                CursorVec3.X--;
+                CursorVec3.X += Console.WindowWidth;
+                CursorVec3.Y--;
+                Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+            }
+        }
     }
 
     private void HandleCtrlLeftArrow()
     {
-        if (LeftCursorPos > Config.LeftCursorStartPos)
+        if (CursorVec3.I > 0)
         {
-            if (TextBuffer.LastIndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos - 1) == LeftCursorPos - Config.LeftCursorStartPos - 1)
-                LeftCursorPos--;
+            if (TextBuffer.LastIndexOf(' ', CursorVec3.I - 1) == CursorVec3.I - 1)
+            {
+                CursorVec3.X--;
+                CursorVec3.I--;
+            }
 
-            int PreviousWordIdx = TextBuffer.LastIndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos - 1);
-            int length = LeftCursorPos - Config.LeftCursorStartPos - PreviousWordIdx - 1;
+            int PreviousWordIdx = TextBuffer.LastIndexOf(' ', CursorVec3.I - 1);
+            int length = CursorVec3.I - PreviousWordIdx - 1;
 
-            LeftCursorPos -= length;
+            CursorVec3.X -= length;
+            CursorVec3.I -= length;
+
+            if (CursorVec3.X < 0)
+            {
+                CursorVec3.X--;
+                CursorVec3.X += Console.WindowWidth;
+                CursorVec3.Y--;
+                Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+            }
         }
     }
 
     private void HandleRightArrow()
     {
-        if (LeftCursorPos - Config.LeftCursorStartPos < TextBuffer.Length)
-            LeftCursorPos++;
+        if (CursorVec3.I < TextBuffer.Length)
+        {
+            CursorVec3.I++;
+            CursorVec3.X++;
+
+            if (CursorVec3.X >= Console.WindowWidth)
+            {
+                CursorVec3.X = 1;
+                CursorVec3.Y++;
+                Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+            }
+        }
     }
 
     private void HandleCtrlRightArrow()
     {
-        if (LeftCursorPos - Config.LeftCursorStartPos < TextBuffer.Length)
+        if (CursorVec3.I < TextBuffer.Length)
         {
-            if (TextBuffer.IndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos) == LeftCursorPos - Config.LeftCursorStartPos)
-                LeftCursorPos++;
+            if (TextBuffer.IndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos) == CursorVec3.X - Config.LeftCursorStartPos)
+            {
+                CursorVec3.X++;
+                CursorVec3.I++;
+            }
 
-            int NextWordIdx = TextBuffer.IndexOf(' ', LeftCursorPos - Config.LeftCursorStartPos);
-            int length = NextWordIdx == -1 ? TextBuffer.Length - (LeftCursorPos - Config.LeftCursorStartPos) : NextWordIdx - (LeftCursorPos - Config.LeftCursorStartPos);
+            int NextWordIdx = TextBuffer.IndexOf(' ', CursorVec3.X - Config.LeftCursorStartPos);
+            int length = NextWordIdx == -1 ? TextBuffer.Length - (CursorVec3.X - Config.LeftCursorStartPos) : NextWordIdx - (CursorVec3.X - Config.LeftCursorStartPos);
 
-            LeftCursorPos += length;
+            CursorVec3.X += length;
+            CursorVec3.I += length;
         }
     }
 }

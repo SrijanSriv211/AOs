@@ -8,17 +8,69 @@ struct ReadLineConfig(int LeftCursorStartPos, int TopCursorStartPos, Dictionary<
     public Dictionary<ReadLine.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes { get; set; } = SyntaxHighlightCodes;
 }
 
-partial class ReadLine(ReadLineConfig Config)
+partial class ReadLine
 {
     public bool Loop = true;
     public Dictionary<(ConsoleKey, ConsoleModifiers), Action> KeyBindings = [];
 
     private string TextBuffer = "";
-    private int LeftCursorPos = Config.LeftCursorStartPos;
-    private int TopCursorPos = Config.TopCursorStartPos;
-    private int CurrentSuggestionIdx = 0;
+    private readonly ReadLineConfig Config;
 
-    private readonly ReadLineConfig Config = Config;
+    private class CursorVec3
+    {
+        public static int X { get; set; } = 0; // Cursor left
+        public static int Y { get; set; } = 0; // Cursor top
+        public static int I { get; set; } = 0; // Cursor pos on text buffer
+
+        public static void Reset()
+        {
+            X = 0; Y = 0; I = 0;
+        }
+    }
+
+    public ReadLine(ReadLineConfig Config)
+    {
+        this.Config = Config;
+        CursorVec3.X = this.Config.LeftCursorStartPos;
+        CursorVec3.Y = this.Config.TopCursorStartPos;
+    }
+
+    public string Readf()
+    {
+        while (Loop)
+        {
+            ConsoleKeyInfo KeyInfo = Console.ReadKey(true);
+            (ConsoleKey, ConsoleModifiers) Key = (KeyInfo.Key, KeyInfo.Modifiers);
+
+            if (KeyBindings.TryGetValue(Key, out Action func))
+                func();
+
+            else
+            {
+                // Ignore control characters other than the handled keybindings
+                if (char.IsControl(KeyInfo.KeyChar))
+                    continue;
+
+                // Insert the character at the cursor position
+                TextBuffer = TextBuffer.Insert(CursorVec3.I, KeyInfo.KeyChar.ToString());
+                CursorVec3.I++;
+
+                // Set current suggestion index to 0
+                CurrentSuggestionIdx = 0;
+
+                // Update the text buffer
+                CursorVec3.X++;
+                UpdateBuffer();
+            }
+
+            // Set the cursor pos to where it should be
+            if (Loop)
+                Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+        }
+
+        CursorVec3.Reset();
+        return TextBuffer;
+    }
 
     public void AddKeyBindings(ConsoleKey key, ConsoleModifiers modifier, Action action)
     {
@@ -50,50 +102,5 @@ partial class ReadLine(ReadLineConfig Config)
 
         AddKeyBindings(ConsoleKey.RightArrow, ConsoleModifiers.None, HandleRightArrow);
         AddKeyBindings(ConsoleKey.RightArrow, ConsoleModifiers.Control, HandleCtrlRightArrow);
-    }
-
-    public string Readf()
-    {
-        while (Loop)
-        {
-            ConsoleKeyInfo KeyInfo = Console.ReadKey(true);
-            (ConsoleKey, ConsoleModifiers) Key = (KeyInfo.Key, KeyInfo.Modifiers);
-
-            if (KeyBindings.TryGetValue(Key, out Action func))
-                func();
-
-            else
-            {
-                // Ignore control characters other than the handled keybindings
-                if (char.IsControl(KeyInfo.KeyChar))
-                    continue;
-
-                // Insert the character at the cursor position
-                TextBuffer = TextBuffer.Insert((LeftCursorPos - Config.LeftCursorStartPos) % Console.WindowWidth, KeyInfo.KeyChar.ToString());
-
-                // Set current suggestion index to 0
-                CurrentSuggestionIdx = 0;
-
-                // Update the text buffer
-                LeftCursorPos++;
-
-                //! Temp solution to the 'If the string is too long that a new line is being created then it fails to do that and crashes' problem.
-                //* NOTE: It doesn't work either.
-                //TODO: Need to re-work how text insertion, deletion, manipulation and rendering works in this custom ReadLine func.
-                if (LeftCursorPos >= Console.WindowWidth)
-                {
-                    LeftCursorPos = Config.LeftCursorStartPos;
-                    TopCursorPos++;
-                }
-
-                UpdateBuffer();
-            }
-
-            // Set the cursor pos to where it should be
-            if (Loop)
-                Console.SetCursorPosition(LeftCursorPos, TopCursorPos);
-        }
-
-        return TextBuffer;
     }
 }
