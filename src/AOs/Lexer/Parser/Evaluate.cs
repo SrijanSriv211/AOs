@@ -9,7 +9,7 @@ namespace Lexer
             // Try to evaluate the expr
             try
             {
-                result = dt.Compute(expr, "").ToString();
+                result = dt.Compute(expr.Replace(" ", ""), "").ToString();
                 // Division be zero error if the answer is infinity
                 if (result == "∞")
                     Error.ZeroDivision();
