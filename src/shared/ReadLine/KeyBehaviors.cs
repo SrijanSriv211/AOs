@@ -5,7 +5,15 @@ partial class ReadLine
         // if (Config.Toggle_autocomplete)
         //     ClearSuggestionBuffer();
 
+        int TotalDist = Config.LeftCursorStartPos + TextBuffer.Length;
+        int y = TotalDist / Console.WindowWidth;
+
+        CursorVec3.Y++;
+        y += CursorVec3.Y;
+
+        // Move the cursor to the end of the text then write a new line to output the text.
         Console.WriteLine();
+        Console.SetCursorPosition(0, y);
         Loop = false;
     }
 

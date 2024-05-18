@@ -2,7 +2,7 @@ partial class ReadLine
 {
     private string RenderedTextBuffer = "";
     private Tokenizer tokenizer;
-    private (int, int) DiffTokenIdx = (0, 0);
+    // private (int, int) DiffTokenIdx = (0, 0);
 
     private void UpdateBuffer(bool RenderSuggestions=true)
     {
@@ -14,7 +14,7 @@ partial class ReadLine
     private void RenderTextBuffer()
     {
         // Get difference between TextBuffer and RenderedTextBuffer
-        DiffTokenIdx = GetTokenDiff(TextBuffer, RenderedTextBuffer);
+        (int, int) DiffTokenIdx = GetTokenDiff(TextBuffer, RenderedTextBuffer);
 
         // Loop through each token starting from first different token
         RenderToken(DiffTokenIdx.Item1, DiffTokenIdx.Item2);
@@ -31,14 +31,29 @@ partial class ReadLine
     // Clear changed text buffer
     private void ClearTextBuffer()
     {
-        Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
-        Console.Write(new string(' ', Console.WindowWidth - RenderedTextBuffer.Length));
-        Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+        // Find the position where text buffer and rendered text buffer differ at.
+        int DiffStart = GetTextDiff(TextBuffer, RenderedTextBuffer);
+        int TotalDist = Config.LeftCursorStartPos + DiffStart;
+
+        int y = TotalDist / Console.WindowWidth;
+        int x = TotalDist - (y * Console.WindowWidth);
+        y += CursorVec3.Y;
+
+        Console.SetCursorPosition(x, y);
+        Console.Write(new string(' ', RenderedTextBuffer[DiffStart..].Length));
+        Console.SetCursorPosition(x, y);
     }
 
     private void RenderToken(int token_idx, int char_idx)
     {
+        ReadLine.Tokenizer.Token token = tokenizer.tokens[token_idx];
+
+        // EOL is useless so don't render it.
+        if (token.Type == Tokenizer.TokenType.EOL)
+            return;
+
         // Do text wrapping across the terminal window if the text is too long.
+        bool DidWrap = false;
         if (CursorVec3.X == Console.WindowWidth)
         {
             Console.WriteLine();
@@ -46,17 +61,20 @@ partial class ReadLine
             CursorVec3.X = 0;
             CursorVec3.Y++;
             Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
-            CursorVec3.X++;
+
+            DidWrap = true;
         }
 
-        ReadLine.Tokenizer.Token token = tokenizer.tokens[token_idx];
-
         // Check if the token is to be highlighted or not. If yes, then highlight.
-        if (Config.SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color) && Config.Toggle_color_coding)
-            Terminal.Print(token.Name[char_idx..], color, false);
+        string Token = token.Name[char_idx..];
+        if (Config.Toggle_color_coding && Config.SyntaxHighlightCodes.TryGetValue(token.Type, out ConsoleColor color))
+            Terminal.Print(Token, color, false);
 
         // Otherwise update text after cursor normally.
         else
-            Console.Write(token.Name[char_idx..]);
+            Console.Write(Token);
+
+        if (DidWrap)
+            CursorVec3.X += Token.Length;
     }
 }
