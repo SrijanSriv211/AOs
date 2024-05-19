@@ -7,8 +7,8 @@ partial class ReadLine
 
     private void ClearSuggestionBuffer()
     {
-//         if (Utils.String.IsEmpty(RenderedSuggestions))
-//             return;
+        if (Utils.String.IsEmpty(RenderedSuggestionsBuffer))
+            return;
 
         // Console.SetCursorPosition(0, TopCursorPos + 1);
         // Console.Write(new string(' ', RenderedSuggestions.Length));

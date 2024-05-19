@@ -45,31 +45,41 @@ partial class ReadLine
             if (KeyBindings.TryGetValue(Key, out Action func))
                 func();
 
+            // Ignore control characters other than the handled keybindings
+            else if (char.IsControl(KeyInfo.KeyChar))
+                continue;
+
             else
             {
-                // Ignore control characters other than the handled keybindings
-                if (char.IsControl(KeyInfo.KeyChar))
-                    continue;
-
                 // Insert the character at the cursor position
                 TextBuffer = TextBuffer.Insert(CursorVec3.I, KeyInfo.KeyChar.ToString());
-                CursorVec3.I++;
 
-                // Set current suggestion index to 0
-                CurrentSuggestionIdx = 0;
+                // Update the positions
+                CursorVec3.I++;
+                CursorVec3.X++;
 
                 // Update the text buffer
-                CursorVec3.X++;
                 UpdateBuffer();
             }
 
             // Set the cursor pos to where it should be
-            if (Loop)
-                Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
+            Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
         }
 
         CursorVec3.Reset();
         return TextBuffer;
+    }
+
+    private void UpdateBuffer(bool RenderSuggestions=true)
+    {
+        ClearTextBuffer();
+        RenderTextBuffer();
+
+        if (!RenderSuggestions)
+            return;
+
+        ClearSuggestionBuffer();
+        RenderSuggestionBuffer();
     }
 
     public void AddKeyBindings(ConsoleKey key, ConsoleModifiers modifier, Action action)

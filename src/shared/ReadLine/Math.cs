@@ -1,38 +1,40 @@
 partial class ReadLine
 {
-    private (int, int) GetTokenDiff(string text, string text2)
+    private (int, int) GetTokenDiff(string Text, string Text2)
     {
         // Tokenize the updated input text
-        tokenizer = new("") { line = text };
+        tokenizer = new("") { tokens = [], line = Text };
         tokenizer.Tokenize();
 
         // Tokenize the updated rendered input text
-        ReadLine.Tokenizer _tokenizer = new("") { line = text2 };
+        ReadLine.Tokenizer _tokenizer = new("") { tokens = [], line = Text2 };
         _tokenizer.Tokenize();
 
-        for (int token_idx = 0; token_idx < Math.Min(tokenizer.tokens.Count, _tokenizer.tokens.Count); token_idx++)
-        {
-            string text_token = tokenizer.tokens[token_idx].Name;
-            string rendered_text_token = _tokenizer.tokens[token_idx].Name;
+        int SmallestTokenListLen = Math.Min(tokenizer.tokens.Count, _tokenizer.tokens.Count);
 
-            if (text_token != rendered_text_token)
-                return (token_idx, GetTextDiff(text_token, rendered_text_token));
+        for (int TokenIdx = 0; TokenIdx < SmallestTokenListLen; TokenIdx++)
+        {
+            string TextToken = tokenizer.tokens[TokenIdx].Name;
+            string Text2Token = _tokenizer.tokens[TokenIdx].Name;
+
+            if (TextToken != Text2Token)
+                return (TokenIdx, GetTextDiff(TextToken, Text2Token));
         }
 
         // (token_idx, char_idx)
-        return (0, 0);
+        return (SmallestTokenListLen - 1, 0);
     }
 
-    private int GetTextDiff(string text, string text2)
+    private int GetTextDiff(string Text, string Text2)
     {
-        for (int char_idx = 0; char_idx < Math.Min(text.Length, text2.Length); char_idx++)
+        for (int CharIdx = 0; CharIdx < Math.Min(Text.Length, Text2.Length); CharIdx++)
         {
-            if (text[char_idx] != text2[char_idx])
-                return char_idx;
+            if (Text[CharIdx] != Text2[CharIdx])
+                return CharIdx;
         }
 
-        if (text.Length != text2.Length)
-            return Math.Min(text.Length, text2.Length);
+        if (Text.Length != Text2.Length)
+            return Math.Min(Text.Length, Text2.Length);
 
         return 0;
     }

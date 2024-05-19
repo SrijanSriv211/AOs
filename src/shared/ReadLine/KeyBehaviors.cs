@@ -7,13 +7,14 @@ partial class ReadLine
 
         int TotalDist = Config.LeftCursorStartPos + TextBuffer.Length;
         int y = TotalDist / Console.WindowWidth;
-
-        CursorVec3.Y++;
         y += CursorVec3.Y;
 
-        // Move the cursor to the end of the text then write a new line to output the text.
+        // Move the cursor to the end of the text
+        CursorVec3.X = 0;
+        CursorVec3.Y = y + 1;
+
+        // Write a new line to output the text.
         Console.WriteLine();
-        Console.SetCursorPosition(0, y);
         Loop = false;
     }
 
