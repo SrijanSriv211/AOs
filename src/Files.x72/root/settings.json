@@ -8,7 +8,7 @@
     },
     "search_index": {
         "extensions": [
-            ".exe", ".msi"
+            ".exe", ".msi", ".lnk"
         ],
         "search_paths": [
             "C:\\Users\\%username%\\Desktop",
