@@ -5,6 +5,7 @@ partial class ReadLine
         public List<Token> tokens = [];
         public string line;
 
+        private bool loop = true;
         private string tok = "";
         private int i;
 
@@ -19,12 +20,11 @@ partial class ReadLine
             // Loop through all chars in the line.
             for (i = 0; i < line.Length; i++)
             {
-                int tok_state = CheckForToken();
-                if (tok_state == -1)
-                    break;
+                tok += line[i];
+                CheckForToken();
 
-                else if (tok_state == 0)
-                    tok += line[i];
+                if (!loop)
+                    break;
             }
 
             if (!Utils.String.IsEmpty(tok))
@@ -34,25 +34,25 @@ partial class ReadLine
             AppendToken(TokenType.EOL);
         }
 
-        private int CheckForToken()
+        private void CheckForToken()
         {
             // '#' means that the following text is a comment.
             if (tok == "#")
             {
                 bool MakeComment(char _) => true;
                 Advance(TokenType.COMMENT, MakeComment);
-                return -1;
+                loop = false;
             }
 
-            else if (Utils.String.IsWhiteSpace(tok))
-                return Advance(TokenType.WHITESPACE, char.IsWhiteSpace);
+            else if (tok == " ")
+                Advance(TokenType.WHITESPACE, char.IsWhiteSpace);
 
             // ';' will be used to separate two different commands. Useful for multiple commands in single line.
             else if (tok == ";")
-                return AppendToken(TokenType.EOL);
+                AppendToken(TokenType.EOL);
 
             else if (">@!?:".Contains(tok.FirstOrDefault()))
-                return AppendToken(TokenType.SYMBOL);
+                AppendToken(TokenType.SYMBOL);
 
             else if (IsIdentifier(tok.FirstOrDefault()) && tok.Length == 1)
             {
@@ -73,16 +73,14 @@ partial class ReadLine
                 else
                     type = TokenType.EXPR;
 
-                return AppendToken(type);
+                AppendToken(type);
             }
 
             else if (tok == "\"" || tok == "'")
             {
                 MakeString(tok.FirstOrDefault());
-                return AppendToken(TokenType.STRING);
+                AppendToken(TokenType.STRING);
             }
-
-            return 0;
         }
 
         private void ClearToken()
@@ -91,15 +89,15 @@ partial class ReadLine
             tok = "";
         }
 
-        private int AppendToken(TokenType type)
+        private void AppendToken(TokenType type)
         {
             tokens.Add(new Token(tok, type));
             ClearToken();
-            return 1;
         }
 
         private void AdvanceChar(Func<char, bool> func)
         {
+            i++;
             while (i < line.Length && func(line[i]))
             {
                 tok += line[i];
@@ -107,10 +105,10 @@ partial class ReadLine
             }
         }
 
-        private int Advance(TokenType type, Func<char, bool> func)
+        private void Advance(TokenType type, Func<char, bool> func)
         {
             AdvanceChar(func);
-            return AppendToken(type);
+            AppendToken(type);
         }
     }
 }

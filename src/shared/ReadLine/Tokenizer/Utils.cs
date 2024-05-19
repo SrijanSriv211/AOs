@@ -5,7 +5,7 @@ partial class ReadLine
         public enum TokenType
         {
             EOL = 0,
-            COMMENT = 0,
+            COMMENT,
             WHITESPACE,
             IDENTIFIER,
             STRING,
@@ -20,22 +20,23 @@ partial class ReadLine
             public TokenType Type = Type;
         }
 
-        private void MakeString(char string_literal)
+        private void MakeString(char StringLiteral)
         {
-            bool is_escape_char = false;
+            bool IsEscapeChar = false;
 
+            i++;
             while (i < line.Length)
             {
                 tok += line[i];
 
-                if (line[i] == string_literal && is_escape_char)
-                    is_escape_char = false;
+                if (line[i] == StringLiteral && IsEscapeChar)
+                    IsEscapeChar = false;
 
-                else if (line[i] == string_literal)
+                else if (line[i] == StringLiteral)
                     break;
 
                 if (line[i] == '\\')
-                    is_escape_char = true;
+                    IsEscapeChar = true;
 
                 i++; // Move to next char
             }
