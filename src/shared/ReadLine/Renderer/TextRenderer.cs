@@ -2,13 +2,8 @@ partial class ReadLine
 {
     private string RenderedTextBuffer = "";
     private Tokenizer tokenizer;
-    // private (int, int) DiffTokenIdx = (0, 0);
 
-    private void UpdateBuffer(bool RenderSuggestions=true)
-    {
-        ClearTextBuffer();
-        RenderTextBuffer();
-    }
+    //TODO: Fix the word wrap thing. It's broken. Fix it.
 
     // Render the updated input with syntax highlighting
     private void RenderTextBuffer()
@@ -18,12 +13,8 @@ partial class ReadLine
 
         // Loop through each token starting from first different token
         RenderToken(DiffTokenIdx.Item1, DiffTokenIdx.Item2);
-
-        if (CursorVec3.I < TextBuffer.Length)
-        {
-            for (int i = DiffTokenIdx.Item1 + 1; i < tokenizer.tokens.Count; i++)
-                RenderToken(i, 0);
-        }
+        for (int i = DiffTokenIdx.Item1 + 1; i < tokenizer.tokens.Count; i++)
+            RenderToken(i, 0);
 
         RenderedTextBuffer = TextBuffer;
     }
@@ -35,10 +26,12 @@ partial class ReadLine
         int DiffStart = GetTextDiff(TextBuffer, RenderedTextBuffer);
         int TotalDist = Config.LeftCursorStartPos + DiffStart;
 
+        // Calculate the exact x and y positions to put the cursor at.
         int y = TotalDist / Console.WindowWidth;
         int x = TotalDist - (y * Console.WindowWidth);
         y += CursorVec3.Y;
 
+        // Clear the screen.
         Console.SetCursorPosition(x, y);
         Console.Write(new string(' ', RenderedTextBuffer[DiffStart..].Length));
         Console.SetCursorPosition(x, y);
@@ -53,16 +46,14 @@ partial class ReadLine
             return;
 
         // Do text wrapping across the terminal window if the text is too long.
-        bool DidWrap = false;
-        if (CursorVec3.X == Console.WindowWidth)
+        if (CursorVec3.X >= Console.WindowWidth)
         {
             Console.WriteLine();
 
             CursorVec3.X = 0;
             CursorVec3.Y++;
             Console.SetCursorPosition(CursorVec3.X, CursorVec3.Y);
-
-            DidWrap = true;
+            CursorVec3.X = 1;
         }
 
         // Check if the token is to be highlighted or not. If yes, then highlight.
@@ -73,8 +64,5 @@ partial class ReadLine
         // Otherwise update text after cursor normally.
         else
             Console.Write(Token);
-
-        if (DidWrap)
-            CursorVec3.X += Token.Length;
     }
 }
