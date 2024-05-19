@@ -12,7 +12,7 @@
         ],
         "search_paths": [
             "C:\\Users\\%username%\\Desktop",
-            "D:\\"
+            "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"
         ],
         "excluded_items": [""]
     },

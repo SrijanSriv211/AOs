@@ -4,7 +4,10 @@ partial class Obsidian
     private List<string> GetAllSuggestions()
     {
         // Read and deserialize history.json
-        string HistoryFilepath = Path.Combine(Obsidian.root_dir, "Files.x72\\root\\history.json");
+        string HistoryFilepath = Path.Combine(root_dir, "Files.x72\\root\\history.json");
+        if (!File.Exists(HistoryFilepath) || Utils.String.IsEmpty(FileIO.FileSystem.ReadAllText(HistoryFilepath)))
+            return [];
+
         string JsonData = FileIO.FileSystem.ReadAllText(HistoryFilepath);
         History.HistoryObj history = System.Text.Json.JsonSerializer.Deserialize<History.HistoryObj>(JsonData);
 
