@@ -48,7 +48,7 @@ A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
                                                             ######## NOT TO BE DONE (REMOVED FEATURE) ########
                                                             ##################################################
 
-
+x Make a feature to enable of disable word wrap from settings.
 x olor - Changes your PC's theme from Dark mode to Light mode.
 x wlpr, wallpaper - Changes your PC's wallpaper.
 x updos - Update your operating system directly from command line.
