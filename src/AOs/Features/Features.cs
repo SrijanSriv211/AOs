@@ -53,35 +53,11 @@ partial class Features()
             EntryPoint.SearchIndex();
 
         //TODO: Improve the search algorithm and make it more accurate.
+        //TODO: Implement a faster and better search algo
         string query = string.Join("", input);
         if (!Utils.String.IsEmpty(query))
         {
-            string[] search_indexes = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
-
-            List<string[]> index = [];
-            for (int i = 0; i < search_indexes.Length; i++)
-            {
-                foreach (string root_path in EntryPoint.Settings.search_index.search_paths)
-                {
-                    if (search_indexes[i].StartsWith(root_path))
-                        search_indexes[i] = search_indexes[i].Replace($"{root_path}\\", "");
-
-                    index.Add(search_indexes[i].Split("\\"));
-                }
-            }
-
-            List<(string, int, int)> output = [];
-            for (int i = 0; i < index.Count; i++)
-            {
-                Utils.SpellCheck checker = new(index[i].ToList());
-                List<(string, int)> check = checker.Check(query, 1);
-                foreach ((string, int) item in check)
-                    output.Add((item.Item1, item.Item2, i));
-            }
-
-            output.Sort((x, y) => x.Item2.CompareTo(y.Item2));
-            foreach (int i in output[..10].Select(x => x.Item3))
-                Console.WriteLine(string.Join("\\", index[i]));
+            string[] index = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
         }
     }
 

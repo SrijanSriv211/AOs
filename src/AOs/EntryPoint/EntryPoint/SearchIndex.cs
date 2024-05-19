@@ -3,9 +3,9 @@ partial class EntryPoint
     public static void SearchIndex()
     {
         // https://gist.github.com/ppisarczyk/43962d06686722d26d176fad46879d41
-        List<string> extensions = EntryPoint.Settings.search_index.extensions.ToList();
-        string[] search_paths = EntryPoint.Settings.search_index.search_paths;
-        string[] excluded_items = EntryPoint.Settings.search_index.search_paths;
+        List<string> extensions = Settings.search_index.extensions.ToList();
+        string[] search_paths = Settings.search_index.search_paths;
+        string[] excluded_items = Settings.search_index.search_paths;
 
         // https://stackoverflow.com/a/9830116/18121288
         List<string> FileSystemEntries = [];
