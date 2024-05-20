@@ -17,12 +17,12 @@
                                                             ###################### DONE ######################
                                                             ##################################################
 
-Lexer is also broken, fix it. Quick.
 Implement a faster and better search algo
 Rewrite README with more details about AOs and how to use it documentation.
 A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
-Another bug in ReadLine, when the scroll wheel appears after a long text being printed, then the ReadLine function fails to work.
 
+. Another bug in ReadLine, when the scroll wheel appears after a long text being printed, then the ReadLine function fails to work.
+. Lexer is also broken, fix it. Quick.
 . If the string is too long that a new line is being created then it fails to do that and crashes. Fix it.
 . Delete history.json from 'Files.x72\root' folder from source.
 . Build a search engine which can search for any file, folder or app in your PC like Ueli, Windows search or Apple Spotlight
