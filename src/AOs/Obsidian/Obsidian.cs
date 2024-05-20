@@ -31,18 +31,18 @@ partial class Obsidian
             SetPrompt(this.prompt_preset);
 
             // Take input
-            Dictionary<ReadLine.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
-            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.STRING, ConsoleColor.Yellow);
-            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan);
-            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta);
-            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.SYMBOL, ConsoleColor.White);
-            SyntaxHighlightCodes.Add(ReadLine.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray);
+            Dictionary<Creadf.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.STRING, ConsoleColor.Yellow);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.SYMBOL, ConsoleColor.White);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray);
 
-            ReadLineConfig config = new(
+            CreadfConfig config = new(
                 LeftCursorStartPos: prompt.Length,
                 TopCursorStartPos: Console.CursorTop,
-                Toggle_color_coding: EntryPoint.Settings.readline.color_coding,
-                Toggle_autocomplete: EntryPoint.Settings.readline.auto_complete_suggestions,
+                ToggleColorCoding: EntryPoint.Settings.readline.color_coding,
+                ToggleAutoComplete: EntryPoint.Settings.readline.auto_complete_suggestions,
                 Suggestions: GetAllSuggestions(),
                 SyntaxHighlightCodes: SyntaxHighlightCodes
             );
