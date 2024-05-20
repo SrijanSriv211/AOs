@@ -1,4 +1,4 @@
-# <img title="AOs" src="https://github.com/Light-Lens/AOs/blob/master/img/AOs.ico?raw=true" width="32" height="32"> AOs
+# <img title="AOs" src="https://github.com/SrijanSriv211/AOs/blob/master/img/AOs.ico?raw=true" width="32" height="32"> AOs
 
 A simple tool built to control UI based tasks directly through the command-line, for example changeing system wallpaper, enabling/disabling dark mode, opening any app or website from the command-line just like you do with the UI of some application launcher such as [Ueli](https://github.com/oliverschwendener/ueli), doing basic math calculations on the command-line, and etc.
 
@@ -6,7 +6,7 @@ A simple tool built to control UI based tasks directly through the command-line,
 
 ## :gear: Getting AOs
 ### :eyes: Usage
-1. Download the latest version of [AOs](https://github.com/Light-Lens/AOs/releases) by clicking on the releases link.
+1. Download the latest version of [AOs](https://github.com/SrijanSriv211/AOs/releases) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
 3. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
 
@@ -45,7 +45,7 @@ You need to install the following on your machine.
 ### :pencil: Getting Started
 <ins>**1. Downloading the repository:**</ins>
 
-Start by cloning the repository with `git clone --recursive https://github.com/Light-Lens/AOs`.
+Start by cloning the repository with `git clone --recursive https://github.com/SrijanSriv211/AOs`.
 
 If the repository was cloned non-recursively previously, use `git submodule update --init --recursive` to clone the necessary submodules.
 
@@ -64,7 +64,7 @@ python scripts\build.py
 ***
 
 ## :notebook_with_decorative_cover: The Plan
-I'm building AOs because I'm working on virtual assistant called [WINTER](https://github.com/Light-Lens/WINTER) for which I want such a tool which can help me automate tasks that require GUI to be involved.
+I'm building AOs because I'm working on virtual assistant called [WINTER](https://github.com/SrijanSriv211/WINTER) for which I want such a tool which can help me automate tasks that require GUI to be involved.
 
 The goal of AOs is to let the user do simple things such as changing the wallpaper, switching to dark/light mode, launching an app or website like [Ueli](https://github.com/oliverschwendener/ueli) does, do some basic math calculations directly from the command-line.
 

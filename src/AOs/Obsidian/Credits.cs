@@ -5,7 +5,7 @@ partial class Obsidian
         string[] CreditCenter = [
              "_________ Team AOS ________",
              "Author     -> Srijan Srivastava",
-             "Github     -> https://github.com/Light-Lens/AOs",
+             "Github     -> https://github.com/SrijanSriv211/AOs",
              "Contact    -> QCoreNest@gmail.com",
              "",
              "____________________ Note (For Developers) ____________________",

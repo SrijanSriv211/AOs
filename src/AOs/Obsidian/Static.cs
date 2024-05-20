@@ -7,7 +7,7 @@ partial class Obsidian
 
     public readonly static string SessionTime = DateTime.Now.ToString("[dd-MM-yyyy HH:mm:ss]");
     public readonly static string about_AOs = "A command-line tool built to control your OS directly through the command-line";
-    public readonly static string AOs_repo_link = "https://github.com/Light-Lens/AOs";
+    public readonly static string AOs_repo_link = "https://github.com/SrijanSriv211/AOs";
 
     public readonly static string root_dir = AppDomain.CurrentDomain.BaseDirectory;
 

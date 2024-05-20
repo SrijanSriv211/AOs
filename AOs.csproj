@@ -15,11 +15,11 @@
     	<ApplicationIcon>img/AOs.ico</ApplicationIcon>
     	<Description>A Developer Command-line Tool Built for Developers by a Developer.</Description>
     	<FileVersion>2.6.0</FileVersion>
-    	<Company>Light-Lens</Company>
+    	<Company>SrijanSriv211</Company>
     	<Authors>Srijan Srivastava</Authors>
     	<Product>AOs</Product>
     	<Copyright>Copyright © 2024</Copyright>
-		<RepositoryUrl>https://github.com/Light-Lens/AOs</RepositoryUrl>
+		<RepositoryUrl>https://github.com/SrijanSriv211/AOs</RepositoryUrl>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion> <!-- https://github.com/dotnet/runtime/issues/95134 -->
   	</PropertyGroup>
 

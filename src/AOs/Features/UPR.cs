@@ -7,7 +7,7 @@ partial class Features
         Console.WriteLine("Checking for Updates");
 
         // Send a request using curl and wait for the response containing a json text.
-        string response = Utils.Https.CurlHttpsClient($"https://api.github.com/repos/Light-Lens/AOs/releases/latest");
+        string response = Utils.Https.CurlHttpsClient($"https://api.github.com/repos/SrijanSriv211/AOs/releases/latest");
         // Deserialize the response into a usable json object with the help of 'GitHubAPIJsonTemplate' class
         GitHubAPIJsonTemplate response_data = JsonSerializer.Deserialize<GitHubAPIJsonTemplate>(response);
         // Load details for all assests from the json object

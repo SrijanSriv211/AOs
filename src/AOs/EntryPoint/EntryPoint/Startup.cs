@@ -134,7 +134,7 @@ partial class EntryPoint
             string line = lines[i];
 
             // If a line is "." then pause and wait until the file is updated and "." is moved or removed. AKA hot reload the file.
-            //* I'm implementing this feature for WINTER (https://github.com/Light-Lens/WINTER)
+            //* I'm implementing this feature for WINTER (https://github.com/SrijanSriv211/WINTER)
             if (line.Trim() == ".")
                 return i;
 

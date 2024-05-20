@@ -138,7 +138,7 @@ partial class Features()
             $"PROCESS     : {Obsidian.AOs_binary_path}",
              "SYSTEM TYPE : x72",
             "",
-             "AUTHOR           : Light-Lens (Srijan Srivastava)",
+             "AUTHOR           : SrijanSriv211 (Srijan Srivastava)",
             $"REGISTERED OWNER : {Environment.GetEnvironmentVariable("username")}",
             "",
             $"ROOT DIRECTORY     : {Obsidian.root_dir}",
