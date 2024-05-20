@@ -31,7 +31,7 @@ namespace Lexer
                 return false;
             }
 
-            ClearToken();
+            tok = "";
 
             while (i < line.Length && line[i] != string_literal)
             {

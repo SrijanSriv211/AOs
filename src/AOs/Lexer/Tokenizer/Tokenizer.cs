@@ -5,6 +5,7 @@ namespace Lexer
         public List<Token> tokens = [];
         public string line;
 
+        private bool loop = true;
         private string tok = "";
         private int i;
 
@@ -19,12 +20,11 @@ namespace Lexer
             // Loop through all chars in the line.
             for (i = 0; i < line.Length; i++)
             {
-                int tok_state = CheckForToken();
-                if (tok_state == -1)
-                    break;
+                tok += line[i];
+                CheckForToken();
 
-                else if (tok_state == 0)
-                    tok += line[i];
+                if (!loop)
+                    break;
             }
 
             if (!Utils.String.IsEmpty(tok))
@@ -34,53 +34,24 @@ namespace Lexer
             AppendToken(TokenType.EOL);
         }
 
-        private void ClearToken()
-        {
-            i--; // Move to previous char
-            tok = "";
-        }
-
-        private int AppendToken(TokenType type)
-        {
-            tokens.Add(new Token(tok, type));
-            ClearToken();
-            return 1;
-        }
-
-        private void AdvanceChar(Func<char, bool> func)
-        {
-            while (i < line.Length && func(line[i]))
-            {
-                tok += line[i];
-                i++; // Move to next char
-            }
-        }
-
-        private int Advance(TokenType type, Func<char, bool> func)
-        {
-            AdvanceChar(func);
-            return AppendToken(type);
-        }
-
-        private int CheckForToken()
+        private void CheckForToken()
         {
             // '#' means that the following text is a comment.
             if (tok == "#")
             {
                 bool MakeComment(char _) => true;
                 Advance(TokenType.COMMENT, MakeComment);
-                return -1;
             }
 
             else if (Utils.String.IsWhiteSpace(tok))
-                return Advance(TokenType.WHITESPACE, char.IsWhiteSpace);
+                Advance(TokenType.WHITESPACE, char.IsWhiteSpace);
 
             // ';' will be used to separate two different commands. Useful for multiple commands in single line.
             else if (tok == ";")
-                return AppendToken(TokenType.EOL);
+                AppendToken(TokenType.EOL);
 
             else if (">@!?:".Contains(tok.FirstOrDefault()))
-                return AppendToken(TokenType.SYMBOL);
+                AppendToken(TokenType.SYMBOL);
 
             else if (IsIdentifier(tok.FirstOrDefault()) && tok.Length == 1)
             {
@@ -93,7 +64,7 @@ namespace Lexer
                 tok = !Utils.String.IsEmpty(UncommonChars) ? tok : tok.Replace(" ", "");
 
                 // If the token contains any letter then it's an identifier.
-                return AppendToken(!Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR);
+                AppendToken(!Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR);
             }
 
             else if (tok == "\"" || tok == "'")
@@ -101,13 +72,39 @@ namespace Lexer
                 if (!MakeString(tok.FirstOrDefault()))
                 {
                     tokens = [];
-                    return -1;
+                    loop = false;
                 }
 
-                return AppendToken(TokenType.STRING);
+                AppendToken(TokenType.STRING);
             }
+        }
 
-            return 0;
+        private void ClearToken()
+        {
+            i--; // Move to previous char
+            tok = "";
+        }
+
+        private void AppendToken(TokenType type)
+        {
+            tokens.Add(new Token(tok, type));
+            ClearToken();
+        }
+
+        private void AdvanceChar(Func<char, bool> func)
+        {
+            i++;
+            while (i < line.Length && func(line[i]))
+            {
+                tok += line[i];
+                i++; // Move to next char
+            }
+        }
+
+        private void Advance(TokenType type, Func<char, bool> func)
+        {
+            AdvanceChar(func);
+            AppendToken(type);
         }
     }
 }
