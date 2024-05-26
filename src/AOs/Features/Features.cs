@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 partial class Features()
 {
     public static Obsidian AOs;
@@ -52,13 +54,33 @@ partial class Features()
         if (Utils.Array.IsEmpty(input) || !File.Exists(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index")))
             EntryPoint.SearchIndex();
 
-        //TODO: Improve the search algorithm and make it more accurate.
-        //TODO: Implement a faster and better search algo
-        string query = string.Join("", input);
-        if (!Utils.String.IsEmpty(query))
+        string query = string.Join("", input).Replace("\\", " ").Replace("//", " ").Replace(".", " ").Replace(",", " ");
+        if (Utils.String.IsEmpty(query))
+            return;
+
+        string[] index = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
+
+        // Create an index
+        Dictionary<string, int> matching_paths = [];
+        foreach (string filepath in index)
         {
-            string[] index = FileIO.FileSystem.ReadAllLines(Path.Combine(Obsidian.root_dir, "Files.x72\\root\\search_index"));
+            string[] keywords = Utils.Array.Filter(filepath.Replace("\\", " ").Replace("//", " ").Replace(".", " ").Split());
+            string[] matching_keywords = keywords.Where(x => query.Split().Contains(x)).ToArray();
+
+            if (matching_keywords.Length <= 0)
+                continue;
+
+            if (matching_paths.ContainsKey(filepath))
+                matching_paths[filepath] += matching_keywords.Length;
+
+            else
+                matching_paths.Add(filepath, matching_keywords.Length);
         }
+
+        // https://www.c-sharpcorner.com/article/how-to-sort-a-dictionary-with-c-sharp/
+        matching_paths = matching_paths.OrderByDescending(x => x.Value).Take(10).ToDictionary(x => x.Key, x => x.Value);
+        Console.WriteLine(string.Join("\n", matching_paths.Select(x => x.Key)));
+        Console.WriteLine();
     }
 
     public static void PrintAOsSettings()

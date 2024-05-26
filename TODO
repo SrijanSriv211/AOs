@@ -17,10 +17,10 @@
                                                             ###################### DONE ######################
                                                             ##################################################
 
-Implement a faster and better search algo
 Rewrite README with more details about AOs and how to use it documentation.
 A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
 
+. Implement a faster and better search algo
 . Another bug in ReadLine, when the scroll wheel appears after a long text being printed, then the ReadLine function fails to work.
 . Lexer is also broken, fix it. Quick.
 . If the string is too long that a new line is being created then it fails to do that and crashes. Fix it.
