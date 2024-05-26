@@ -18,8 +18,8 @@
                                                             ##################################################
 
 Rewrite README with more details about AOs and how to use it documentation.
-A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
 
+. A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
 . Implement a faster and better search algo
 . Another bug in ReadLine, when the scroll wheel appears after a long text being printed, then the ReadLine function fails to work.
 . Lexer is also broken, fix it. Quick.
