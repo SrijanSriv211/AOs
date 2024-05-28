@@ -48,10 +48,16 @@ namespace Lexer
 
             // ';' will be used to separate two different commands. Useful for multiple commands in single line.
             else if (tok == ";")
+            {
+                i++;
                 AppendToken(TokenType.EOL);
+            }
 
             else if (">@!?:".Contains(tok.FirstOrDefault()))
+            {
+                i++;
                 AppendToken(TokenType.SYMBOL);
+            }
 
             else if (IsIdentifier(tok.FirstOrDefault()) && tok.Length == 1)
             {
