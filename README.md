@@ -14,7 +14,7 @@ AOs 2024 [Version 2.6]  (User)
 $ help
 ```
 
-- To edit the supported commands view [`settings.json`](src\Files.x72\root\settings.json)
+- To edit the supported commands view [`settings.json`](src/Files.x72/root/settings.json)
 
 4. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
 
