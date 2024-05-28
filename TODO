@@ -17,8 +17,7 @@
                                                             ###################### DONE ######################
                                                             ##################################################
 
-Rewrite README with more details about AOs and how to use it documentation.
-
+. Rewrite README with more details about AOs and how to use it documentation.
 . Custom ReadLine doesn't take input when it's at the bottom of the command line. Fix it.
 . A lot of bugs in custom ReadLine's autocomplete suggestion. Fix them all.
 . Implement a faster and better search algo

@@ -19,7 +19,7 @@
     "cmd_schema": [
         {
             "cmd_names": [":", "rij"],
-            "help_message": "Quick launcher for power users that contains additional features",
+            "help_message": "A quick search engine for files on your machines",
             "usage": null,
             "supported_args": null,
             "default_values": [""],
