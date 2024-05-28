@@ -8,7 +8,15 @@ A simple tool built to control UI based tasks directly through the command-line,
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/SrijanSriv211/AOs/releases) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
-3. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
+3. To see a list of all supported commands, type `help` in the AOs window:
+```console
+AOs 2024 [Version 2.6]  (User)
+$ help
+```
+
+- To edit the supported commands view [`settings.json`](src\Files.x72\root\settings.json)
+
+4. To use the backslash character inside double or single quotes in AOs, use double backslashes or single forward slash:
 
 :heavy_check_mark: Correct way:
 ```console
@@ -24,12 +32,6 @@ $ "path\to\dir"
 ```
 
 AOs follows the same string handling conventions as in C#.
-
-4. To see a list of all supported commands, type `help` in the AOs window:
-```console
-AOs 2024 [Version 2.6]  (User)
-$ help
-```
 
 ***
 

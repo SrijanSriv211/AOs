@@ -17,7 +17,6 @@
                                                             ###################### DONE ######################
                                                             ##################################################
 
-Use warner-ficher algo in autocomplete suggestion for better completion.
 Rewrite README with more details about AOs and how to use it documentation.
 
 . Custom ReadLine doesn't take input when it's at the bottom of the command line. Fix it.
@@ -53,6 +52,7 @@ Rewrite README with more details about AOs and how to use it documentation.
                                                             ######## NOT TO BE DONE (REMOVED FEATURE) ########
                                                             ##################################################
 
+x Use warner-ficher algo in autocomplete suggestion for better completion.
 x Make a feature to enable of disable word wrap from settings.
 x olor - Changes your PC's theme from Dark mode to Light mode.
 x wlpr, wallpaper - Changes your PC's wallpaper.
