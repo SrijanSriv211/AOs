@@ -190,6 +190,8 @@ Rij
 > $ "path\to\dir"
 > ```
 
+<br>
+
 4. List of some internal methods (in-built features) of AOs:
 
 - Control host system volume:
