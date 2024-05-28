@@ -48,7 +48,7 @@ $ help
 
 - To edit the supported commands view [`settings.json`](src/Files.x72/root/settings.json)
 
-```json
+```jsonc
 {
     // You can change it to powershell by 'ps.exe'.
     "default_else_shell": "cmd.exe",
