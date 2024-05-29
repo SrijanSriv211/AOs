@@ -178,7 +178,6 @@ $ help
 <br>
 
 - Currently the following are all the supported internal methods:
-Rij
 ```
 1. RunAOsAsAdmin                13. GetSetHistory                   25. Touch
 2. ClearConsole                 14. RunInTerminal                   26. Delete
@@ -192,6 +191,8 @@ Rij
 10. Scannow                     22. LS                              34. ControlVolume
 11. CheckForAOsUpdates          23. ChangeCurrentDir                35. ItsMagic
 12. Shout                       24. ChangeToPrevDir                 36. SwitchApp
+
+37. Rij
 ```
 
 <br>
