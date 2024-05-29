@@ -39,7 +39,29 @@ python scripts\build.py
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/SrijanSriv211/AOs/releases) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
-3. To see a list of all supported commands, type `help` in the AOs window:
+3. All the supported shortcut keys are the following:
+
+| Shortcut              | Comment                         |
+| --------------------- | --------------------------------|
+| `End`                 | Send end of line                |
+| `Tab`                 | Change autocomplete suggestions |
+| `Home`                | Send start of line              |
+| `Escape`              | Clear suggestions               |
+| `Delete`              | Delete succeeding character     |
+| `Backspace`           | Delete previous character       |
+| `LeftArrow`           | Backward one character          |
+| `RightArrow`          | Forward one character           |
+| `Shift`+`Escape`      | Clear input and suggestions     |
+| `Ctrl`+`Enter`        | Accept current suggestion       |
+| `Ctrl`+`Spacebar`     | Show current suggestions        |
+| `Ctrl`+`Delete`       | Delete succeeding token         |
+| `Ctrl`+`Backspace`    | Delete previous token           |
+| `Ctrl`+`LeftArrow`    | Backward one token              |
+| `Ctrl`+`RightArrow`   | Forward one token               |
+
+For more details visit [Creadf's](https://github.com/SrijanSriv211/Creadf.git) github repo.
+
+4. To see a list of all supported commands, type `help` in the AOs window:
 ```console
 AOs 2024 [Version 2.6]  (User)
 $ help
@@ -192,7 +214,7 @@ Rij
 
 <br>
 
-4. List of some internal methods (in-built features) of AOs:
+5. List of some internal methods (in-built features) of AOs:
 
 - Control host system volume:
 This command is used to control the volume of the host operating system volume through the command-line of AOs. It gives you the ability to mute/unmute your operating system volume, as well as, it allows you to dynamically control the volume of your system by increasing or decreasing the volume by the given levels. Also it allows you to set the volume to a specific level.
