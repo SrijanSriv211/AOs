@@ -66,7 +66,8 @@ partial class Obsidian
 
         // Set history.
         History.Set(CMD);
-        CreadfHistory.Add(CMD);
+        if (!CreadfHistory.Contains(CMD))
+            CreadfHistory.Add(CMD);
 
         // Some lexer stuff.
         return new Lexer.Parser(CMD, new Lexer.Tokenizer(CMD).tokens).output;
