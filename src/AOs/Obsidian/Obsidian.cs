@@ -45,7 +45,8 @@ partial class Obsidian
                 ToggleColorCoding: EntryPoint.Settings.readline.color_coding,
                 ToggleAutoComplete: EntryPoint.Settings.readline.auto_complete_suggestions,
                 Suggestions: GetAllSuggestions(),
-                SyntaxHighlightCodes: SyntaxHighlightCodes
+                SyntaxHighlightCodes: SyntaxHighlightCodes,
+                CreadfHistory: CreadfHistory
             );
 
             CMD = Terminal.TakeInput(Config: config, this.prompt, ConsoleColor.White).Trim();
@@ -65,6 +66,7 @@ partial class Obsidian
 
         // Set history.
         History.Set(CMD);
+        CreadfHistory.Add(CMD);
 
         // Some lexer stuff.
         return new Lexer.Parser(CMD, new Lexer.Tokenizer(CMD).tokens).output;
