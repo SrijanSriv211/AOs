@@ -34,7 +34,7 @@ partial class Features()
 
     public static void Refresh()
     {
-        SystemUtils.CommandPrompt($"start \"{Obsidian.AOs_binary_path}\"");
+        SystemUtils.CommandPrompt($"call \"{Obsidian.AOs_binary_path}\"");
         Exit();
     }
 
