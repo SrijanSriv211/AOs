@@ -39,6 +39,12 @@ python scripts\build.py
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/SrijanSriv211/AOs/releases) by clicking on the releases link.
 2. Extract `AOs.zip` file and run `AOs.exe` file.
+
+> [!NOTE]
+> You can further extend AOs features by installing [AOs-PowerToys](https://github.com/SrijanSriv211/AOs-PowerToys) into AOs as well.
+
+<br>
+
 3. All the supported shortcut keys are the following:
 
 | Shortcut              | Comment                         |
