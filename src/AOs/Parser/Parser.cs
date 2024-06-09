@@ -18,7 +18,10 @@ partial class Parser(Action<Lexer.Tokenizer.Token, Lexer.Tokenizer.Token[]> erro
         string cmd_name = cmd.Name;
         string[] args = argv.Select(x => x.Name).ToArray();
 
-        string lowercase_cmd = cmd_name.ToLower();
+        //* From now on AOs commands will be case-sensitive, do not change it.
+        // I've made AOs case-sensitive because this will allow for a lot more flexibility over command names.
+        // string lowercase_cmd = cmd_name.ToLower();
+        string lowercase_cmd = cmd_name;
         Command matching_cmd = FindMatchingCommand(lowercase_cmd);
 
         // Return if no matching command was found.
