@@ -38,6 +38,7 @@ partial class Obsidian
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.SYMBOL, ConsoleColor.White);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.SEMICOLON, ConsoleColor.DarkGray);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.HIDDEN, ConsoleColor.DarkGreen);
 
             CreadfConfig config = new(
                 LeftCursorStartPos: prompt.Length,
