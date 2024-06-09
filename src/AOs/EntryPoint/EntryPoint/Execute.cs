@@ -18,6 +18,9 @@ partial class EntryPoint
                 Terminal.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
+            else if (i.cmd.Name == "_Setup2.0__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Setup();
+
             else if (i.cmd.Name == "_BadApple__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 Features.Pixelate(["https://youtu.be/2Ni13dnAbSA"]);
 
