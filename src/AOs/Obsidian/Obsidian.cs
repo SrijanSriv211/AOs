@@ -34,8 +34,7 @@ partial class Obsidian
             Dictionary<Creadf.Tokenizer.TokenType, ConsoleColor> SyntaxHighlightCodes = [];
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.STRING, ConsoleColor.Yellow);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.EXPR, ConsoleColor.Cyan);
-            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.BOOL, ConsoleColor.Magenta);
-            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.SYMBOL, ConsoleColor.White);
+            SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.BOOL, ConsoleColor.DarkCyan);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.COMMENT, ConsoleColor.DarkGray);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.SEMICOLON, ConsoleColor.DarkGray);
             SyntaxHighlightCodes.Add(Creadf.Tokenizer.TokenType.HIDDEN, ConsoleColor.DarkGreen);
