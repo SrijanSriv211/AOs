@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 partial class EntryPoint
 {
     // A dictionary containng all the the method names from settings.json alongwith their respective functions.

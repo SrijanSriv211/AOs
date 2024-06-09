@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-partial class Features()
+partial class Features
 {
     public static Obsidian AOs;
 
@@ -329,7 +329,7 @@ partial class Features()
             SystemUtils.StartApp(Obsidian.default_else_shell);
 
         else
-            SystemUtils.CommandPrompt(string.Join(" ", args));
+            SystemUtils.CommandPrompt(string.Join(" ", args.Where(x => Utils.String.IsWhiteSpace(x))));
     }
 
     public static void RunApp(string[] args)

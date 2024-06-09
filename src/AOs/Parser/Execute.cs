@@ -5,7 +5,7 @@ partial class Parser
         if (parsed_cmd.Cmd_name == null)
             return;
 
-        if (parsed_cmd.Method == null && !Utils.String.IsEmpty(parsed_cmd.Location))
+        else if (parsed_cmd.Method == null && !Utils.String.IsEmpty(parsed_cmd.Location))
         {
             ExecuteExternal(parsed_cmd);
             return;

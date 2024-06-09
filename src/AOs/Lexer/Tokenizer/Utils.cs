@@ -5,13 +5,13 @@ namespace Lexer
         public enum TokenType
         {
             EOL = 0,
-            COMMENT = 0,
+            COMMENT,
             WHITESPACE,
             IDENTIFIER,
             STRING,
             BOOL,
             EXPR,
-            SYMBOL,
+            SYMBOL
         }
 
         public struct Token(string Name, TokenType Type)
