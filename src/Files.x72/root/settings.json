@@ -18,7 +18,7 @@
     },
     "cmd_schema": [
         {
-            "cmd_names": [":", "rij"],
+            "cmd_names": [":", "Get-Files", "rij"],
             "help_message": "A quick search engine for files on your machines",
             "usage": null,
             "supported_args": null,
@@ -31,7 +31,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["admin"],
+            "cmd_names": ["Admin", "admin"],
             "help_message": "Launch an AOs instance as administrator",
             "usage": null,
             "supported_args": null,
@@ -44,7 +44,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["cls"],
+            "cmd_names": ["Clr-Scrn", "Clear", "cls"],
             "help_message": "Clear the screen",
             "usage": null,
             "supported_args": null,
@@ -57,7 +57,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["shutdown"],
+            "cmd_names": ["Shutdown-PC", "shutdown"],
             "help_message": "Shutdown the host machine",
             "usage": null,
             "supported_args": null,
@@ -70,7 +70,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["restart"],
+            "cmd_names": ["Restart-PC", "restart"],
             "help_message": "Restart the host machine",
             "usage": null,
             "supported_args": null,
@@ -83,7 +83,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["lock", "syslck", "deeplock"],
+            "cmd_names": ["Lock-PC", "lock", "syslck", "deeplock"],
             "help_message": "Lock the host machine",
             "usage": null,
             "supported_args": null,
@@ -96,7 +96,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["sleep", "sleepc", "deepsleep", "syslp"],
+            "cmd_names": ["Sleep-PC", "sleep", "sleepc", "deepsleep", "syslp"],
             "help_message": "Put the host machine to sleep mode",
             "usage": null,
             "supported_args": null,
@@ -109,7 +109,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["time", "clock", "watch"],
+            "cmd_names": ["Get-Time", "time", "clock", "watch"],
             "help_message": "Display current time",
             "usage": null,
             "supported_args": null,
@@ -122,7 +122,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["data", "calendar"],
+            "cmd_names": ["Get-Date", "date", "calendar"],
             "help_message": "Display today's date",
             "usage": null,
             "supported_args": null,
@@ -135,7 +135,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["diagxt", "aoscnfg"],
+            "cmd_names": ["Get-Config", "diagxt", "aoscnfg"],
             "help_message": "Display AOs specific properties and configuration",
             "usage": null,
             "supported_args": null,
@@ -148,7 +148,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["scan", "deepscan", "scannow", "syscn"],
+            "cmd_names": ["Scan-PC", "scan", "deepscan", "scannow", "syscn"],
             "help_message": "Scan the integrity of all protected system files of host machine",
             "usage": null,
             "supported_args": null,
@@ -161,7 +161,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["update", "upd", "newaos"],
+            "cmd_names": ["Check-Updates", "update", "upd", "newaos"],
             "help_message": "Check for AOs updates",
             "usage": null,
             "supported_args": null,
@@ -174,7 +174,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["itsmagic"],
+            "cmd_names": ["Show-Magic-Trick", "itsmagic"],
             "help_message": "It's magic, it's magic.",
             "usage": null,
             "supported_args": null,
@@ -187,7 +187,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["shout", "cout", "print", "printf", "echo"],
+            "cmd_names": ["Shout", "shout", "cout", "print", "printf", "echo"],
             "help_message": "Display messages",
             "usage": [
                 "shout [STRING]",
@@ -207,7 +207,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["history"],
+            "cmd_names": ["Get-History", "history"],
             "help_message": "Display the history of Commands",
             "usage": null,
             "supported_args": [
@@ -225,7 +225,7 @@
             "do_index": true
         },
         {
-            "cmd_names": [">", "console", "terminal", "cmd", "call"],
+            "cmd_names": [">", "Run-Console", "console", "terminal", "cmd", "call"],
             "help_message": "Call a specified program or command, given the full or sysenv path in terminal",
             "usage": [
                 "> [COMMAND]",
@@ -244,7 +244,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["open", "run", "start"],
+            "cmd_names": ["Open-App", "open", "run", "start"],
             "help_message": "Start a specified program or command, given the full or sysenv path",
             "usage": [
                 "open [COMMAND]",
@@ -262,7 +262,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["title"],
+            "cmd_names": ["Change-Title", "title"],
             "help_message": "Change the title for the terminal window",
             "usage": [
                 "title [STRING]",
@@ -281,7 +281,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["color"],
+            "cmd_names": ["Change-Color", "color"],
             "help_message": "Change the default AOs foreground colors",
             "usage": [
                 "color [INT]",
@@ -300,7 +300,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["wait", "timeout"],
+            "cmd_names": ["Sleep-Seconds", "wait", "timeout"],
             "help_message": "Suspend processing of a command for the given number of seconds",
             "usage": [
                 "wait [INT]",
@@ -318,7 +318,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["pause", "freeze"],
+            "cmd_names": ["Take-Break", "pause", "freeze"],
             "help_message": "Suspend processing of a command and display the message",
             "usage": [
                 "pause [STRING]",
@@ -337,7 +337,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["cat", "allinstapps", "installedapps", "allinstalledapps"],
+            "cmd_names": ["Open-Installed-App", "cat", "allinstapps", "installedapps", "allinstalledapps"],
             "help_message": "Start an installed program from the system",
             "usage": [
                 "cat [STRING]",
@@ -356,7 +356,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["prompt"],
+            "cmd_names": ["Change-Prompt", "prompt"],
             "help_message": "Change the terminal prompt",
             "usage": [
                 "prompt [OPTIONS] [STRING]",
@@ -418,7 +418,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["ls", "dir"],
+            "cmd_names": ["List-Dir", "ls", "dir"],
             "help_message": "Displays a list of files and subdirectories in a directory",
             "usage": [
                 "ls [STRING]",
@@ -438,7 +438,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["cd"],
+            "cmd_names": ["Change-Dir", "cd"],
             "help_message": "Change the current directory",
             "usage": [
                 "cd [STRING]",
@@ -458,7 +458,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["cd.."],
+            "cmd_names": ["Prev-Dir", "cd.."],
             "help_message": "Change to previous directory",
             "usage": null,
             "supported_args": null,
@@ -471,7 +471,7 @@
             "do_index": false
         },
         {
-            "cmd_names": ["touch", "create"],
+            "cmd_names": ["Create-Content", "touch", "create"],
             "help_message": "Create a one or more files or folders",
             "usage": [
                 "touch [filepath (STRING)] [content (STRING)]",
@@ -490,7 +490,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["del", "delete", "rm", "rmdir"],
+            "cmd_names": ["Delete-Content", "del", "delete", "rm", "rmdir"],
             "help_message": "Delete one or more files or folders",
             "usage": [
                 "del [filepath (STRING)]",
@@ -509,7 +509,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["ren", "rename", "rn"],
+            "cmd_names": ["Rename-Content", "ren", "rename", "rn"],
             "help_message": "Rename a file or folder",
             "usage": [
                 "ren [target filepath (STRING)] [renamed filepath (STRING)]",
@@ -528,7 +528,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["mv", "move"],
+            "cmd_names": ["Move-Content", "mv", "move"],
             "help_message": "Move a file or folder",
             "usage": [
                 "mv [target filepath (STRING)] [destination filepath (STRING)]",
@@ -547,7 +547,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["cp", "copy"],
+            "cmd_names": ["Copy-Content", "cp", "copy"],
             "help_message": "Copy a file or folder",
             "usage": [
                 "cp [target filepath (STRING)] [destination filepath (STRING)]",
@@ -566,7 +566,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["?", "pixelate", "leaf", "corner"],
+            "cmd_names": ["?", "Browse-Web", "pixelate", "leaf", "corner"],
             "help_message": "Start a website in a web browser",
             "usage": [
                 "pixelate [OPTIONS] [STRING]",
@@ -601,7 +601,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["read", "type"],
+            "cmd_names": ["Read-File", "read", "type"],
             "help_message": "Display the contents of a text file",
             "usage": [
                 "read [OPTIONS] [filepath (STRING)]",
@@ -625,7 +625,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["commit", "write"],
+            "cmd_names": ["Update-File", "commit", "write"],
             "help_message": "Edit the contents of a text file",
             "usage": [
                 "commit [OPTIONS] [filepath (STRING)] [content (STRING)]",
@@ -649,7 +649,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["zip", "rar", "winrar"],
+            "cmd_names": ["Zip-Content", "zip", "rar", "winrar"],
             "help_message": "Compress or Decompress files or folders",
             "usage": [
                 "zip [OPTIONS] [target filepath (STRING)] [compressed filepath (STRING)]",
@@ -674,7 +674,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["terminate", "taskkill", "tasklist", "kill", "close"],
+            "cmd_names": ["Close-App", "terminate", "taskkill", "tasklist", "kill", "close"],
             "help_message": "Terminate a specific running process",
             "usage": [
                 "terminate [STRING]",
@@ -693,7 +693,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["vol", "volume"],
+            "cmd_names": ["Change-Volume", "vol", "volume"],
             "help_message": "Control the host operating system volume",
             "usage": [
                 "vol [OPTIONS] [INT]",
@@ -723,7 +723,7 @@
             "do_index": true
         },
         {
-            "cmd_names": ["switch", "chapp"],
+            "cmd_names": ["Change-App", "switch", "chapp"],
             "help_message": "Switch between applications using the App IDs",
             "usage": [
                 "switch [process_ID (INT)]",
