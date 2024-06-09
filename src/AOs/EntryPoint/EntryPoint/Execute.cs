@@ -18,7 +18,10 @@ partial class EntryPoint
                 Terminal.Print("It was my first ever program to reach these many LINES OF CODE!", ConsoleColor.White);
             }
 
-            else if (i.cmd.Name == "tommyViceCity" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name == "_BadApple__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Features.Pixelate(["https://youtu.be/2Ni13dnAbSA"]);
+
+            else if (i.cmd.Name == "_tommyViceCity__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
                 SystemUtils.CommandPrompt("cls");
                 Terminal.Print("Lucia...", ConsoleColor.Magenta, false);
@@ -26,17 +29,20 @@ partial class EntryPoint
                 Features.ModifyPrompt(["Bad luck, I guess. "]);
             }
 
-            else if (i.cmd.Name == "R*6" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name == "_R*6__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 Features.Pixelate(["https://youtu.be/QdBZY2fkU-0"]);
 
-            else if (i.cmd.Name == "itanimulli" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name == "_itanimulli__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 Terminal.Print("it's illuminati", ConsoleColor.White);
 
-            else if (i.cmd.Name == "illuminati" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name == "_illuminati__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 Features.Pixelate(["carryminati ye kya hai meme"]);
 
-            else if (i.cmd.Name == "withgreatpowercomesgreatresponsibility" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            else if (i.cmd.Name == "_withgreatpowercomesgreatresponsibility__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
                 Terminal.Print("True", Console.BackgroundColor);
+
+            else if (i.cmd.Name == "_IAmIronMan__" && i.cmd.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+                Terminal.Print("And IAmBatMan.", Console.BackgroundColor);
 
             // Some other hidden featuers
             else if (i.cmd.Type == Lexer.Tokenizer.TokenType.STRING)
@@ -49,7 +55,15 @@ partial class EntryPoint
                 SystemUtils.StartApp(i.cmd.Name);
 
             else
+            {
+                for (int x = 0; x < i.args.Length; x++)
+                {
+                    if (i.args[x].Type == Lexer.Tokenizer.TokenType.STRING)
+                        i.args[x].Name = $"\"{i.args[x].Name}\"";
+                }
+
                 this.parser.Execute(this.parser.Parse(i.cmd, i.args));
+            }
         }
     }
 
