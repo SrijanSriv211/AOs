@@ -6,35 +6,6 @@ The goal of AOs is simple. To better customize command-line along with some basi
 
 ***
 
-## :toolbox: Getting Started for Developers
-AOs is officially untested on other development environments whilst I focus on a Windows build, but you can modify it to work cross-platform.
-
-### :bangbang: Prerequisites
-You need to install the following on your machine.
-- [Dotnet Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-- [Python 3.12](https://www.python.org/downloads/release/python-3122)
-
-### :pencil: Getting Started
-<ins>**1. Downloading the repository:**</ins>
-
-Start by cloning the repository with `git clone --recursive https://github.com/SrijanSriv211/AOs`.
-
-If the repository was cloned non-recursively previously, use `git submodule update --init --recursive` to clone the necessary submodules.
-
-<ins>**2. Running and Compiling AOs:**</ins>
-
-1. To run the program use:
-```console
-python scripts\build.py run
-```
-
-2. To compile the program don't use dotnet build, instead run:
-```console
-python scripts\build.py
-```
-
-***
-
 ## :gear: Getting AOs
 ### :eyes: Usage
 1. Download the latest version of [AOs](https://github.com/SrijanSriv211/AOs/releases) by clicking on the releases link.
@@ -331,3 +302,32 @@ $ switch <appname>
 ```
 
 and many more...
+
+***
+
+## :toolbox: Getting Started for Developers
+AOs is officially untested on other development environments whilst I focus on a Windows build, but you can modify it to work cross-platform.
+
+### :bangbang: Prerequisites
+You need to install the following on your machine.
+- [Dotnet Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+- [Python 3.12](https://www.python.org/downloads/release/python-3122)
+
+### :pencil: Getting Started
+<ins>**1. Downloading the repository:**</ins>
+
+Start by cloning the repository with `git clone --recursive https://github.com/SrijanSriv211/AOs`.
+
+If the repository was cloned non-recursively previously, use `git submodule update --init --recursive` to clone the necessary submodules.
+
+<ins>**2. Running and Compiling AOs:**</ins>
+
+1. To run the program use:
+```console
+python scripts\build.py run
+```
+
+2. To compile the program don't use dotnet build, instead run:
+```console
+python scripts\build.py
+```
