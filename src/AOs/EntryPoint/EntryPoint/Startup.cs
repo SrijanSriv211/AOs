@@ -192,7 +192,6 @@ partial class EntryPoint
             }
 
             NewTokens.Add(TokStr);
-            Console.WriteLine(TokStr);
         }
 
         // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
