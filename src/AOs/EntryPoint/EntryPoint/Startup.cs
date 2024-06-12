@@ -109,9 +109,9 @@ partial class EntryPoint
         // Read all lines in that file and execute them one by one.
         string[] lines = FileIO.FileSystem.ReadAllLines(filename, FileStream: true);
         DateTime LastModified = File.GetLastWriteTimeUtc(filename);
-        int pause_idx = ExecuteLines(lines, 0);
+        int start_idx = ExecuteLines(lines, 0);
 
-        while(pause_idx != -1)
+        while(start_idx != -1)
         {
             Thread.Sleep(250); // Wait for 250ms before checking for file changes
             DateTime NewLastModified = File.GetLastWriteTimeUtc(filename);
@@ -120,20 +120,20 @@ partial class EntryPoint
             {
                 LastModified = NewLastModified;
                 lines = FileIO.FileSystem.ReadAllLines(filename, FileStream: true);
-                pause_idx = ExecuteLines(lines, pause_idx);
+                start_idx = ExecuteLines(lines, start_idx);
             }
         }
     }
 
-    private int ExecuteLines(string[] lines, int pause_idx)
+    private int ExecuteLines(string[] lines, int start_idx)
     {
         // Loop through the entire file line-by-line.
-        for (int i = pause_idx; i < lines.Length; i++)
+        for (int i = start_idx; i < lines.Length; i++)
         {
             // Get the current line.
             string line = lines[i];
 
-            // If a line is "." then pause and wait until the file is updated and "." is moved or removed. AKA hot reload the file.
+            // If a line is '.' then pause and wait until the file is updated and '.' is moved or removed. AKA hot reload the file.
             //* I'm implementing this feature for WINTER (https://github.com/SrijanSriv211/WINTER)
             if (line.Trim() == ".")
                 return i;
@@ -141,6 +141,7 @@ partial class EntryPoint
             ExecuteLine(line);
         }
 
+        // Return -1 means because no line was = '.', therefore meaning that file had no where to stop.
         return -1;
     }
 
@@ -154,22 +155,44 @@ partial class EntryPoint
         {
             // Check if a token has '$' prefix, if yes then replace that '${any_number}' with the argument value
             // which is on that `any_number` index of all command-line arguments
-            string Name = Tok.Name;
-            if (Name.StartsWith("$") && Tok.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
+            string TokStr = Tok.Name;
+            if (TokStr.StartsWith("$") && Tok.Type == Lexer.Tokenizer.TokenType.IDENTIFIER)
             {
-                Name = int.TryParse(Name[1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
+                TokStr = int.TryParse(TokStr[1..], out int arg_index) && arg_index < this.args.Length ? this.args[arg_index] : "";
 
                 // If the argument contains a space for example: Name = "Hello world!",
                 // then wrap that value around with string literals something like this: Name = "\"Hello world!\"",
                 // this is to make sure that when the line will be executed no argument value will be missed.
-                if (Name.Contains(' '))
-                    Name = $"\"{Name}\"";
+                if (TokStr.Contains(' '))
+                    TokStr = $"\"{TokStr}\"";
             }
 
             else if (Tok.Type == Lexer.Tokenizer.TokenType.STRING)
-                Name = $"\"{Name}\"";
+            {
+                var EscapeCharMap = new Dictionary<string, string>
+                {
+                    { "\\", "\\\\" },
+                    { "\"", "\\\"" },
+                    { "\n", "\\n" },
+                    { "\0", "\\0" },
+                    { "\t", "\\t" },
+                    { "\r", "\\r" },
+                    { "\b", "\\b" },
+                    { "\a", "\\a" },
+                    { "\f", "\\f" }
+                };
 
-            NewTokens.Add(Name);
+                foreach (var i in EscapeCharMap)
+                {
+                    if (TokStr.Contains(i.Key))
+                        TokStr = TokStr.Replace(i.Key, i.Value);
+                }
+
+                TokStr = $"\"{TokStr}\"";
+            }
+
+            NewTokens.Add(TokStr);
+            Console.WriteLine(TokStr);
         }
 
         // Join and execute the new list of tokens that are modified to account for command-line arguments that were passed for the script.
