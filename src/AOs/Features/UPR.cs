@@ -22,12 +22,14 @@ partial class Features
         // pull the build version in 'latest_version' var and download link of that AOs version.
         foreach (AssetsJsonTemplate asset in assets)
         {
-            if (IsDigit(asset.name))
-            {
-                download_link = asset.browser_download_url;
-                int.TryParse(asset.name, out latest_version);
+            if (latest_version > -1 && !Utils.String.IsEmpty(download_link))
                 break;
-            }
+
+            else if (IsDigit(asset.name))
+                int.TryParse(asset.name, out latest_version);
+
+            else if (asset.name == "AOs.zip")
+                download_link = asset.browser_download_url;
         }
 
         if (current_version >= latest_version)
@@ -42,6 +44,8 @@ partial class Features
             Terminal.Print(latest_version.ToString(), ConsoleColor.White);
             Console.Write("Get the Latest version here: ");
             Terminal.Print(download_link, ConsoleColor.Cyan);
+            // Download the latest version of AOs
+            SystemUtils.StartApp(download_link);
         }
     }
 
