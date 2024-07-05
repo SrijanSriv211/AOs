@@ -77,6 +77,11 @@ namespace Lexer
             return "`~!@$^&?()=+-*/%_.[],{}|:<>\\".Contains(ch);
         }
 
+        private bool IsExpr(char ch)
+        {
+            return " ()[]{}+-*/%._=0123456789".Contains(ch);
+        }
+
         private bool IsIdentifier(char ch)
         {
             // Check if a char is empty or not, if not then check if the char is a letter or a digit or a symbol.

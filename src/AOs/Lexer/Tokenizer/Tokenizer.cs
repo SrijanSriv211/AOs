@@ -66,11 +66,20 @@ namespace Lexer
                 // Remove all the common chars from the Expr string and tok to calculate if the tok is an expr or identifier.
                 string UncommonChars = string.Concat(tok.Where(ch => !" ()[]{}+-*/%._=0123456789".Contains(ch)));
 
-                // Remove whitespace from token only when it's an expr.
-                tok = !Utils.String.IsEmpty(UncommonChars) ? tok : tok.Replace(" ", "");
+                // If the token contains any other char then it's an identifier.
+                TokenType type = !Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR;
 
-                // If the token contains any letter then it's an identifier.
-                AppendToken(!Utils.String.IsEmpty(UncommonChars) ? TokenType.IDENTIFIER : TokenType.EXPR);
+                if (type == TokenType.EXPR)
+                {
+                    AdvanceChar(IsExpr);
+                    // '_' can be used to seperate the numbers to make it more readable.
+                    // I've taken this feature from python. It's a cool feature to have.
+                    // For eg,
+                    // 100_000_000 -> 100000000
+                    tok = tok.Replace(" ", "").Replace("_", "");
+                }
+
+                AppendToken(type);
             }
 
             else if (tok == "\"" || tok == "'")

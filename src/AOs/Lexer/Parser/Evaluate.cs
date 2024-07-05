@@ -9,11 +9,7 @@ namespace Lexer
             // Try to evaluate the expr
             try
             {
-                // '_' can be used to seperate the numbers to make it more readable.
-                // I've taken this feature from python. It's a cool feature to have.
-                // For eg,
-                // 100_000_000 -> 100000000
-                result = dt.Compute(expr.Replace(" ", "").Replace("_", ""), "").ToString();
+                result = dt.Compute(expr, "").ToString();
                 // Division be zero error if the answer is infinity
                 if (result == "∞")
                     Error.ZeroDivision();
