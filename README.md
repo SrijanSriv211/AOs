@@ -40,7 +40,7 @@ For more details visit [Creadf's](https://github.com/SrijanSriv211/Creadf.git) g
 
 4. To see a list of all supported commands, type `help` in the AOs window:
 ```console
-AOs 2024 [Version 2.6]  (User)
+AOs 2024 [Version 2.7]  (User)
 $ help
 ```
 <br>
@@ -179,14 +179,14 @@ $ help
 >
 > :heavy_check_mark: Correct way:
 > ```console
-> AOs 2024 [Version 2.6]  (User)
+> AOs 2024 [Version 2.7]  (User)
 > $ "path\\to\\dir"
 > $ "path/to/dir"
 > ```
 >
 > :x: Wrong way:
 > ```console
-> AOs 2024 [Version 2.6]  (User)
+> AOs 2024 [Version 2.7]  (User)
 > $ "path\to\dir"
 > ```
 
@@ -198,7 +198,7 @@ $ help
 This command is used to control the volume of the host operating system volume through the command-line of AOs. It gives you the ability to mute/unmute your operating system volume, as well as, it allows you to dynamically control the volume of your system by increasing or decreasing the volume by the given levels. Also it allows you to set the volume to a specific level.
 
 ```console
-AOs 2024 [Version 2.6]  (User)
+AOs 2024 [Version 2.7]  (User)
 $ help vol
 Name:
 vol, volume                                                 Control the host operating system volume
@@ -235,7 +235,7 @@ $ vol
 Save your valuable time by using semicolon ; execute multiple AOs commands in a single file. This will automatically execute those commands without you waiting for the first one to finish then execute the second manually one-by-one. AOs follows the same multi-line execution conventions as in C#.
 
 ```console
-AOs 2024 [Version 2.6]  (User)
+AOs 2024 [Version 2.7]  (User)
 $ sfc /scannow; DISM /Online /Cleanup-image /Restorehealth
 ```
 
@@ -274,7 +274,7 @@ Filer is a text encryption and decryption algorithm powered by the AND random nu
 Filer's source code and binaries could be found [here](https://github.com/SrijanSriv211/Filer.git)
 
 ```console
-AOs 2024 [Version 2.6]  (User)
+AOs 2024 [Version 2.7]  (User)
 $ help filer
 Name:
 filer                                                       A powerful text encryption and decryption program
@@ -296,7 +296,7 @@ Options:
 
 - Switch between currently opened apps:
 ```console
-AOs 2024 [Version 2.6]  (User)
+AOs 2024 [Version 2.7]  (User)
 $ # This will search for all currently active app throughout your PC then switch the focus to it.
 $ switch <appname>
 ```

@@ -19,14 +19,14 @@ def update_build_no():
 
 # run AOs
 def run_AOs(build_no):
-    os.system(f"dotnet run -p:FileVersion=2.6.{build_no} -- {' '.join(sys.argv[2:])}")
+    os.system(f"dotnet run -p:FileVersion=2.7.{build_no} -- {' '.join(sys.argv[2:])}")
 
 # Build AOs in publish mode.
 def build_AOs():
     if os.path.exists("AOs") == False:
         os.mkdir("AOs")
 
-    os.system(f"dotnet publish -p:FileVersion=2.6.{update_build_no()} -c Release -o ./AOs")
+    os.system(f"dotnet publish -p:FileVersion=2.7.{update_build_no()} -c Release -o ./AOs")
     rmdirs(["bin", "obj"])
 
 if len(sys.argv) > 1:

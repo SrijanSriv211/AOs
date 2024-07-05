@@ -11,10 +11,10 @@
     	<ImplicitUsings>enable</ImplicitUsings>
     	<Nullable>disable</Nullable>
 
-    	<Version>2.6</Version>
+    	<Version>2.7</Version>
     	<ApplicationIcon>img/AOs.ico</ApplicationIcon>
     	<Description>A Developer Command-line Tool Built for Developers by a Developer.</Description>
-    	<FileVersion>2.6.9</FileVersion>
+    	<FileVersion>2.7</FileVersion>
     	<Company>SrijanSriv211</Company>
     	<Authors>Srijan Srivastava</Authors>
     	<Product>AOs</Product>
