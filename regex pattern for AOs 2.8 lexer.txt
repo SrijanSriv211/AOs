@@ -1,0 +1,19 @@
+identifier: [\w\d_\-.+*/]+
+math expr: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+
+strings: [`'\"]+[ \w\d~!@#$%^&*\(\)_+`\-=\{\}|\[\]\;:'\"<>,./?]+[`'\"]
+
+pattern: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[\w\d_\-\.]+
+pattern1: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[\w\d_\-.+*/]+
+pattern2: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[`'\"]+[ \w\d~!@#$%^&*\(\)_+`\-=\{\}|\[\]\\;:'\"<>./?]+[`'\"]|[\w\d_\-.+*/]+|[(),;]
+
+test string:
+print ("Hello world!", "Test")
+print('test'')
+print jkladf "adfasdf" 123 asdfadf 23-4 + 4/ 0.0 -s
+123 + k
+_google_engine__ transformer 123.txt
+print((3102/ 0) * 2)
+"this is a test string sent with a number 32 - 23"
+"Hey\n"
+
+EXPORT-TEXT my_text.txt; ping www.google.com
