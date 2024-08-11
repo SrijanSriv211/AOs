@@ -1,45 +1,54 @@
 #include "aospch.h"
 #include "console.h"
 
-// https://stackoverflow.com/a/4053879/18121288
-void console::print(const std::string& message, const WORD& color, const bool& is_newline)
+namespace console
 {
-    WORD default_color = console::get_console_color();
-    console::set_console_color(color);
+    // Get console color.
+    color get_console_fore_color()
+    {
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(hOut, &csbi);
 
-    std::cout << message;
+        WORD attributes = csbi.wAttributes;
+        color foreground_color = static_cast<color>(attributes);
+        return foreground_color;
+    }
 
-    if (is_newline)
-        std::cout << std::endl;
+    // code from chatgpt
+    color get_console_back_color()
+    {
+        const WORD BACKGROUND_MASK = 0xF0; // 0xF0 masks the upper 4 bits
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        if (GetConsoleScreenBufferInfo(hOut, &csbi))
+        {
+            WORD attributes = csbi.wAttributes;
+            color background_color = static_cast<color>((attributes & BACKGROUND_MASK) >> 4);
+            return background_color;
+        }
+        return color::BLACK; // Default to black if unable to retrieve
+    }
 
-    console::set_console_color(default_color);
-}
+    // Set console color.
+    void set_console_color(const color& fore)
+    {
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hOut, fore);
+    }
 
-void console::throw_error(const std::string& details, const std::string& name_of_error)
-{
-    console::print(name_of_error + " error:\n", 12, false);
-    console::print(details, console::get_console_color());
-}
+    void set_console_color(const color& fore, const color& back)
+    {
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        WORD color = (back << 4) | fore; // Background color is shifted to the upper 4 bits
+        SetConsoleTextAttribute(hOut, color);
+    }
 
-// Get console color.
-WORD console::get_console_color()
-{
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(hOut, &csbi);
-
-    return csbi.wAttributes;
-}
-
-// Reset console color.
-void console::reset_console_color()
-{
-    set_console_color(7);
-}
-
-// Set console color.
-void console::set_console_color(WORD color)
-{
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hOut, color);
+    // reset console color.
+    color original_fore = get_console_fore_color();
+    color original_back = get_console_back_color();
+    void reset_console_color()
+    {
+        set_console_color(original_fore, original_back);
+    }
 }
