@@ -1,3 +1,3 @@
 bin/
-src/app_icon.o
+src/ico.o
 src/aospch.h.gch
