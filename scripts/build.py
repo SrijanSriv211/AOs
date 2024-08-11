@@ -24,6 +24,9 @@ def compile_AOs():
     script = f"g++ src/ico.o {all_src_files} -Isrc/ -Isrc/shared/ -o bin/AOs.exe"
     os.system(script)
 
+def run_AOs(*arguments):
+    os.system(f"bin\\AOs.exe {" ".join(arguments[0])}")
+
 # update the build num
 def update_build_no():
     build_no = int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
@@ -45,18 +48,23 @@ if not sys.argv[1:]:
     compile_AOs()
     update_build_no()
 
-for i in sys.argv[1:]:
-    if i == "help":
+for i, x in enumerate(sys.argv[1:]):
+    if x == "help":
         print("If no argument is passed     -> Build AOs from source")
         print("clean                        -> Remove 'bin', 'obj' folders from the root directory.")
         print("run                          -> Run AOs")
         print("pch                          -> Precompile all headers")
+        print("exec                         -> Execute AOs without compiling")
 
-    elif i == "clean":
+    elif x == "clean":
         rm(folders=["bin"], files=["src/aospch.h.gch", "src/ico.o"])
 
-    elif i == "run":
+    elif x == "run":
         compile_AOs()
+        run_AOs(sys.argv[i+2:])
 
-    elif i == "pch":
+    elif x == "exec":
+        run_AOs(sys.argv[i+2:])
+
+    elif x == "pch":
         precompile_files()
