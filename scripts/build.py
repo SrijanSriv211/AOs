@@ -21,7 +21,7 @@ def compile_AOs():
 
     # compile AOs
     all_src_files = " ".join(cpp_dirs)
-    script = f"g++ src/ico.o {all_src_files} -Isrc/ -o bin/AOs.exe"
+    script = f"g++ src/ico.o {all_src_files} -Isrc/ -Isrc/shared/ -o bin/AOs.exe"
     os.system(script)
 
 # update the build num
@@ -56,7 +56,6 @@ for i in sys.argv[1:]:
         rm(folders=["bin"], files=["src/aospch.h.gch", "src/ico.o"])
 
     elif i == "run":
-        precompile_files()
         compile_AOs()
 
     elif i == "pch":
