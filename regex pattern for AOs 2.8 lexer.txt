@@ -17,3 +17,7 @@ print((3102/ 0) * 2)
 "Hey\n"
 
 EXPORT-TEXT my_text.txt; ping www.google.com
+
+'Google engine'"asdfadf"' "dsfasdf"' "asdfasdfadf"
+
+NOTE: There are many bugs in this pattern so fix it first.
