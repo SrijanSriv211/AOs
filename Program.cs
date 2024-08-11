@@ -1,1 +1,0 @@
-﻿EntryPoint Application = new(args);
