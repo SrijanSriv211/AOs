@@ -1,7 +1,9 @@
 #include "aospch.h"
+#include "core/entrypoint/entrypoint.h"
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "Hello world!" << std::endl;
-    return 0;
+    std::vector<std::string> args(argv, argv + argc);
+    args.erase(args.begin());
+    return take_entry(args);
 }
