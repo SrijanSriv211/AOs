@@ -3,6 +3,8 @@
 #include "argparse/argparse.h"
 #include "console/console.h"
 #include "fileio/foldersystem.h"
+#include "core/lexer/lex.h"
+#include "strings/strings.h"
 
 void unrecognized_argument_error(const std::string& err)
 {
@@ -14,7 +16,7 @@ void unrecognized_argument_error(const std::string& err)
 void init_folders()
 {
     foldersystem::create(".aos");
-    // foldersystem::create(".aos/files.x72");
+    foldersystem::create(".aos/files.x72");
     foldersystem::create(".aos/files.x72/root");
 }
 
@@ -41,6 +43,24 @@ int exec_parsed_args(argparse& parser, const std::vector<argparse::parsed_argume
     return 0;
 }
 
+std::string load_file(const std::string& filename)
+{
+    std::fstream file;
+    std::string current_line;
+    std::vector<std::string> code;
+
+    file.open(filename);
+
+    // if (!file)
+    //     Pastel::errors::open_file(filename);
+
+    while (std::getline(file, current_line))
+        code.push_back(current_line);
+
+    file.close();
+    return strings::join("\n", code);
+}
+
 int take_entry(std::vector<std::string> args)
 {
     argparse parser = argparse("AOs", "A developer tool made by a developer for developers", unrecognized_argument_error);
@@ -52,7 +72,8 @@ int take_entry(std::vector<std::string> args)
     if (parsed_args.size() > 0) return exec_parsed_args(parser, parsed_args);
     else
     {
-        // code here.
+        //*NOTE: CHANGE IT LATER. BY DEFAULT AOS WILL OPEN IN CLI MODE.
+        lex lexer(load_file("test.si"));
     }
 
     return 0;
