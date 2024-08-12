@@ -1,3 +1,4 @@
+.vscode/
 bin/
 src/ico.o
 src/aospch.h.gch
