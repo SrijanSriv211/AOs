@@ -10,6 +10,14 @@ def precompile_files():
         if os.path.isfile(path) == False:
             os.system(cmd)
 
+def get_build_no():
+    return int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
+
+# update the build num
+def update_build_no():
+    with open("scripts\\build.txt", "w") as f:
+        f.write(str(get_build_no() + 1)) # increment +1 to the current build no of AOs
+
 # https://stackoverflow.com/a/2909998/18121288
 def compile_AOs():
     cpp_dirs = []
@@ -21,18 +29,11 @@ def compile_AOs():
 
     # compile AOs
     all_src_files = " ".join(cpp_dirs)
-    script = f"g++ src/ico.o {all_src_files} -Isrc/ -Isrc/shared/ -std=c++20 -o bin/AOs.exe"
+    script = f"g++ src/ico.o {all_src_files} -DVERSION=2.8 -DBUILD_NUMBER={get_build_no()} -Isrc/ -Isrc/shared/ -std=c++20 -o bin/AOs.exe"
     os.system(script)
 
 def run_AOs(*arguments):
     os.system(f"bin\\AOs.exe {" ".join(arguments[0])}")
-
-# update the build num
-def update_build_no():
-    build_no = int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
-
-    with open("scripts\\build.txt", "w") as f:
-        f.write(str(build_no + 1)) # increment +1 to the current build no of AOs
 
 # remove folders from the root dir
 def rm(folders, files):
