@@ -10,5 +10,6 @@
 #include <cctype>
 #include <string>
 #include <cmath>
+#include <regex>
 
 #include <windows.h>
