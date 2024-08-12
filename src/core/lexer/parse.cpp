@@ -4,6 +4,7 @@
 
 void lex::parse(const std::vector<std::string>& toks)
 {
+    std::vector<lex::token> tokens;
     std::string tok;
 
     for (int i = 0; i < toks.size(); i++)
@@ -54,4 +55,42 @@ void lex::parse(const std::vector<std::string>& toks)
             tok.clear();
         }
     }
+
+    this->tokens = this->reduce_toks(tokens);
+}
+
+// reduce tokens by combining just succeeding tokens with same type into a single token
+std::vector<lex::token> lex::reduce_toks(const std::vector<lex::token>& toks)
+{
+    std::vector<lex::token> new_tokens;
+    lex::token_type tok_type;
+    std::string tok_name;
+
+    for (int i = 0; i < toks.size(); i++)
+    {
+        if (toks[i].type == toks[i+1].type)
+        {
+            tok_name += toks[i].name + toks[i+1].name;
+            tok_type = toks[i].type;
+            i++;
+        }
+
+        else
+        {
+            if (tok_name != "")
+            {
+                // push the previous common tokens to the array
+                new_tokens.push_back({tok_name, tok_type});
+
+                // clear the concatenated tok_name and tok_type
+                tok_name.clear();
+                tok_type = UNKNOWN;
+            }
+
+            // push the current tokens to the array
+            new_tokens.push_back({toks[i].name, toks[i].type});
+        }
+    }
+
+    return new_tokens;
 }

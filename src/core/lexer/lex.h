@@ -27,8 +27,9 @@ public:
     lex(const std::string& code);
 
 private:
-    std::vector<std::string> tokenizer(const std::string& str, const std::regex& re);
     void parse(const std::vector<std::string>& toks);
+    std::vector<std::string> tokenizer(const std::string& str, const std::regex& re);
+    std::vector<token> reduce_toks(const std::vector<token>& toks);
 
 private:
     std::vector<token> tokens;
