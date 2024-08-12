@@ -21,7 +21,7 @@ def compile_AOs():
 
     # compile AOs
     all_src_files = " ".join(cpp_dirs)
-    script = f"g++ src/ico.o {all_src_files} -Isrc/ -Isrc/shared/ -o bin/AOs.exe"
+    script = f"g++ src/ico.o {all_src_files} -Isrc/ -Isrc/shared/ -std=c++20 -o bin/AOs.exe"
     os.system(script)
 
 def run_AOs(*arguments):
