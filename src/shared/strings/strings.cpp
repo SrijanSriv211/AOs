@@ -34,4 +34,20 @@ namespace strings
     {
         return all_of(str.begin(), str.end(), ::isspace) || str.empty();
     }
+
+    // return true if any string from an iterable is present in target string
+    // `strict` argument checks if any string from the iterable is equal to the target string
+    bool any(const std::string& str, const std::vector<std::string>& iter, const bool& strict)
+    {
+        for (const std::string& i : iter)
+        {
+            if (strict && str == i)
+                return true;
+
+            else if (!strict && str.find(i) != std::string::npos)
+                return true;
+        }
+
+        return false;
+    }
 }
