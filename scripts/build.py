@@ -13,10 +13,10 @@ def precompile_files():
 def get_build_no():
     return int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
 
-# update the build num
+# increment +1 to the current build no of AOs
 def update_build_no():
-    with open("scripts\\build.txt", "w") as f:
-        f.write(str(get_build_no() + 1)) # increment +1 to the current build no of AOs
+    build_no = str(get_build_no() + 1)
+    open("scripts\\build.txt", "w").write(build_no)
 
 # https://stackoverflow.com/a/2909998/18121288
 def compile_AOs():
