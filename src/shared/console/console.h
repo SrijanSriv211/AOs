@@ -29,4 +29,11 @@ namespace console
     void print(const std::string& message, const console::color& fore, const bool& endl=true);
     void print(const std::string& message, const console::color& fore, const console::color& back, const bool& endl=true);
     void throw_error(const std::string& details, const std::string& name_of_error);
+
+    class readf
+    {
+    public:
+        readf();
+        std::string takeinput();
+    };
 };
