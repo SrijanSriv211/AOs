@@ -14,12 +14,12 @@ namespace foldersystem
         try
         {
             if (!std::filesystem::create_directory(folderpath))
-                console::throw_error("Failed to create folder.", "Folder system io");
+                console::throw_error("Failed to create folder.", "Folder system IO");
         }
 
         catch(const std::exception& e)
         {
-            console::throw_error(e.what(), "C++ folder system io");
+            console::throw_error(e.what(), "C++ folder system IO");
         }
     }
 }
