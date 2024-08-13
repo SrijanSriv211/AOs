@@ -1,4 +1,10 @@
 #pragma once
+#include "argparse/argparse.h"
 
-int take_entry(std::vector<std::string> args);
+void unrecognized_argument_error(const std::string& err);
 void init_folders();
+void show_setup();
+
+void exec_code(const std::string& code);
+int exec_parsed_args(argparse& parser, const std::vector<argparse::parsed_argument>& parsed_args);
+int take_entry(const std::vector<std::string> args);
