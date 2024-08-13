@@ -51,7 +51,20 @@ void lex::parse(const std::vector<std::string>& toks)
 
         else
         {
-            tokens.push_back({tok, lex::IDENTIFIER});
+            lex::token_type type;
+            if (tok == "true" || tok == "false")
+                type = lex::BOOL;
+
+            else if (tok.starts_with("-") || tok.starts_with("/"))
+                type = lex::FLAGS;
+
+            else if (tok.starts_with("_"))
+                type = lex::HIDDEN;
+
+            else
+                type = lex::IDENTIFIER;
+
+            tokens.push_back({tok, type});
             tok.clear();
         }
     }

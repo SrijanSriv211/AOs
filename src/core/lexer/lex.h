@@ -10,11 +10,12 @@ public:
         COMMENT, // 2
         WHITESPACE, // 3
         IDENTIFIER, // 4
-        STRING, // 5
-        SYMBOL, // 6
-        FLAGS, // 7
-        BOOL, // 8
-        EXPR // 9
+        HIDDEN, // 5
+        STRING, // 6
+        SYMBOL, // 7
+        FLAGS, // 8
+        BOOL, // 9
+        EXPR // 10
     };
 
     struct token
@@ -26,13 +27,15 @@ public:
 public:
     lex(const std::string& code);
 
+public:
+    std::vector<token> tokens;
+
 private:
     void parse(const std::vector<std::string>& toks);
     std::vector<std::string> tokenizer(const std::string& str, const std::regex& re);
     std::vector<token> reduce_toks(const std::vector<token>& toks);
 
 private:
-    std::vector<token> tokens;
     std::regex math_re = std::regex(R"(\(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*)");
     std::regex str_re = std::regex(R"(\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*')");
     std::regex identifier_re = std::regex(R"([\w\d_\-.+*/]+)");
