@@ -1,23 +1,39 @@
 identifier: [\w\d_\-.+*/]+
-math expr: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+
-strings: [`'\"]+[ \w\d~!@#$%^&*\(\)_+`\-=\{\}|\[\]\;:'\"<>,./?]+[`'\"]
+math expr: [\(\d][ .\d+*\/\-\(\)_]+[\)\d]
+math expr2: (?<!\w)(\(*\d+(?:_\d+)*(\.\d+)?\)*)(?:\s*[-+*/]\s*\(*\d+(?:_\d+)*(\.\d+)?\)*)*
+math expr3: (?<!\w)\(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*
+math expr4: \(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*
 
-pattern: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[\w\d_\-\.]+
-pattern1: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[\w\d_\-.+*/]+
-pattern2: [\(\d]+[ .\d+*/\-\(\)]+[\)\d]+|[`'\"]+[ \w\d~!@#$%^&*\(\)_+`\-=\{\}|\[\]\\;:'\"<>./?]+[`'\"]|[\w\d_\-.+*/]+|[(),;]
+strings: \"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'
+
+pattern: [\(\d][ .\d+*\/\-\(\)_]+[\)\d]|[\w\d_\-\.]+
+pattern1: [\(\d][ .\d+*\/\-\(\)_]+[\)\d]|[\w\d_\-.+*/]+
+pattern2: [\(\d][ .\d+*\/\-\(\)_]+[\)\d]|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|[\w\d_\-.+*/]+|[(),;?@!:>]+|[ ]+|#.*
+pattern3: \(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|[\w\d_\-.+*/]+|[(),;?@!:>]|[ ]+|#.*
 
 test string:
 print ("Hello world!", "Test")
-print('test'')
+print('test?', '')
 print jkladf "adfasdf" 123 asdfadf 23-4 + 4/ 0.0 -s
 123 + k
+11.c
+
+100_000_000 100000000
+
 _google_engine__ transformer 123.txt
 print((3102/ 0) * 2)
 "this is a test string sent with a number 32 - 23"
 "Hey\n"
 
+                
+
 EXPORT-TEXT my_text.txt; ping www.google.com
+# this is a comment
+'Google engine'"asdfadf"' "dsfasdf"' #so do this "asdfasdfadf"
+#inft this is also a comment. 213-32 123.txt
 
-'Google engine'"asdfadf"' "dsfasdf"' "asdfasdfadf"
+> Hello world!
+@overload
+?search on google
 
-NOTE: There are many bugs in this pattern so fix it first.
+(0 - (32+44)-58_90_87 +32) 
