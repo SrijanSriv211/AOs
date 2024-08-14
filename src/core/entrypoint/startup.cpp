@@ -39,7 +39,11 @@ int exec_parsed_args(argparse& parser, const std::vector<argparse::parsed_argume
             std::vector<std::string> code = load_file(arg.names[0]);
 
             for (int i = 0; i < code.size(); i++)
-                exec_code(code[i]);
+            {
+                std::string* line = new std::string(code[i]);
+                exec_code(line);
+                delete line;
+            }
         }
 
         else
