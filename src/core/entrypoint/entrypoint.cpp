@@ -1,8 +1,8 @@
 #include "aospch.h"
 #include "entrypoint.h"
 #include "argparse/argparse.h"
-#include "console/console.h"
 #include "fileio/foldersystem.h"
+#include "console/console.h"
 
 int take_entry(const std::vector<std::string> args)
 {
@@ -16,12 +16,8 @@ int take_entry(const std::vector<std::string> args)
 
     else
     {
-        // if AOs is booted for the first time then, show a setup screen with some basic details
-        // show_setup();
-
-        // JUST A TEMP SETUP. IMPROVE IT LATER.
-        console::readf readf = console::readf();
-        exec_code(readf.takeinput());
+        setup(); // show a setup screen with some basic details on first boot
+        exec_code(NULL);
     }
 
     return 0;
@@ -37,7 +33,6 @@ void unrecognized_argument_error(const std::string& err)
 void init_folders()
 {
     foldersystem::create(".aos");
-    foldersystem::create(".aos/files.x72");
-    foldersystem::create(".aos/files.x72/root");
-    foldersystem::create(".aos/files.x72/etc");
+    foldersystem::create(".aos/root");
+    foldersystem::create(".aos/etc");
 }
