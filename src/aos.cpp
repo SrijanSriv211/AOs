@@ -1,4 +1,5 @@
 #include "aospch.h"
+#include "aos.h"
 
 namespace AOs
 {
