@@ -1,5 +1,6 @@
 #include "aospch.h"
 #include "lex.h"
+
 #include "strings/strings.h"
 
 void lex::parse(const std::vector<std::string>& toks)

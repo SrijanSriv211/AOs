@@ -1,9 +1,11 @@
 #include "aospch.h"
 #include "entrypoint.h"
-#include "aos.h"
+
 #include "fileio/filesystem.h"
 #include "console/console.h"
 #include "strings/strings.h"
+
+#include "aos.h"
 
 void pause(const std::string& msg)
 {
