@@ -35,9 +35,9 @@ int exec_parsed_args(argparse& parser, const std::vector<argparse::parsed_argume
         else if (std::find(arg.names.begin(), arg.names.end(), "--init") != arg.names.end())
             init_folders();
 
-        else if (arg.names[0].ends_with(".aos"))
+        else if (arg.names.front().ends_with(".aos"))
         {
-            std::vector<std::string> code = load_file(arg.names[0]);
+            std::vector<std::string> code = load_file(arg.names.front());
 
             for (int i = 0; i < code.size(); i++)
             {
@@ -49,7 +49,7 @@ int exec_parsed_args(argparse& parser, const std::vector<argparse::parsed_argume
 
         else
         {
-            unrecognized_argument_error(arg.names[0] + ": Please type 'aos --help' for more information");
+            unrecognized_argument_error(arg.names.front() + ": Please type 'aos --help' for more information");
             return 1;
         }
     }

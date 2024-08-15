@@ -10,11 +10,11 @@ namespace console
 
     void readf::handle_backspace()
     {
-        if (this->config.i <= 0)
+        if (this->vector3.i <= 0)
             return;
 
-        this->config.i--;
-        this->config.x--;
-        text_buffer.erase(this->config.i, 1);
+        this->vector3.i--;
+        this->vector3.x--;
+        text_buffer.erase(this->vector3.i, 1);
     }
 }

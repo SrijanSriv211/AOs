@@ -88,7 +88,7 @@ std::vector<argparse::parsed_argument> argparse::parse(const std::vector<std::st
         for (const auto& argument : arguments)
         {
             if (argument.required && std::none_of(parsed_args.begin(), parsed_args.end(), [&](const parsed_argument& arg) { return arg.names == argument.names; }))
-                missing_arg_list.push_back(argument.names[0]);
+                missing_arg_list.push_back(argument.names.front());
         }
 
         if (!missing_arg_list.empty())
