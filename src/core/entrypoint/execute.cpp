@@ -1,7 +1,7 @@
 #include "aospch.h"
 #include "entrypoint.h"
 
-#include "console/readf/readf.h"
+#include "core/readf/readf.h"
 
 #include "core/lexer/lex.h"
 #include "aos.h"
