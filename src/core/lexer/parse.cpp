@@ -8,6 +8,20 @@ void lex::parse(const std::vector<std::string>& toks)
     std::vector<lex::token> tokens;
     std::string tok;
 
+    std::map<std::string, std::string> escape_chars = {
+        {"\\\\", "\\"},
+        {"\\\"", "\""},
+        {"\\'", "'"},
+        {"\\n", "\n"},
+        {"\\n", "\n"},
+        {"\\0", "\0"},
+        {"\\t", "\t"},
+        {"\\r", "\r"},
+        {"\\b", "\b"},
+        {"\\a", "\a"},
+        {"\\f", "\f"}
+    };
+
     for (int i = 0; i < toks.size(); i++)
     {
         tok = toks[i];
@@ -37,8 +51,30 @@ void lex::parse(const std::vector<std::string>& toks)
             tok.clear();
         }
 
-        else if ((tok.starts_with("\"") && tok.ends_with("\"")) || (tok.starts_with("'") && tok.ends_with("'")))
+        else if (tok.starts_with("\"") || tok.starts_with("'"))
         {
+            if (tok.length() == 1)
+            {
+                this->error = "unexpected end of tokens after " + std::string(1, tok.front());
+
+                if (this->break_at_error)
+                    break;
+            }
+
+            else if (tok.front() != tok.back())
+            {
+                this->error = "missing terminating " + std::string(1, tok.front()) + " character";
+
+                if (this->break_at_error)
+                    break;
+            }
+
+            for (auto const& [key, val] : escape_chars)
+            {
+                if (tok.find(key) != std::string::npos)
+                    tok = strings::replace_all(tok, key, val);
+            }
+
             tokens.push_back({tok, lex::STRING});
             tok.clear();
         }
@@ -46,7 +82,10 @@ void lex::parse(const std::vector<std::string>& toks)
         // check for math expressions
         else if (std::regex_match(tok, this->math_re))
         {
-            tokens.push_back({tok, lex::EXPR});
+            std::string normalized_expr = strings::replace_all(tok, "_", "");
+
+            //TODO: Implement a math engine to evaluate math exprs.
+            tokens.push_back({normalized_expr, lex::EXPR});
             tok.clear();
         }
 
