@@ -1,4 +1,9 @@
 # <img title="AOs" src="res/AOs.png" width="32" height="32"> AOs
+> [!IMPORTANT]
+> AOs now is being moved to: https://github.com/SrijanSriv211/AO<br>
+> No more updated will be pushed to this repository, all new changes will be pushed to the new repository.<br>
+> The repository won't be marked as acrhived and will stay as it is.
+
 > I started working on AOs as a hobby project back in 2020. Originally the project was written in Python but I shifted the project to C#.
 > I work on AOs as to learn a programming language or just do time pass.
 > Now I'm rewriting AOs in C++ I don't know why but it sounds cool.
