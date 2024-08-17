@@ -1,9 +1,11 @@
 #include "aospch.h"
 #include "lex.h"
 
-lex::lex(const std::string& code)
+lex::lex(const std::string& code, const bool& break_at_error)
 {
-    std::regex re(R"(\(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|[\w\d_\-.+*/]+|[(),;?@!:>]|[ ]+|#.*)");
+    this->break_at_error = break_at_error;
+    std::regex re(R"(\(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|[\w\d_\-.+*/]+|[(),;?@!:>]|[ ]+|#.*|.+)");
+
     std::vector<std::string> toks = this->tokenizer(code, re);
     this->parse(toks);
 }

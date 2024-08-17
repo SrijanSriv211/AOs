@@ -25,10 +25,11 @@ public:
     };
 
 public:
-    lex(const std::string& code);
+    lex(const std::string& code, const bool& break_at_error=true);
 
 public:
     std::vector<token> tokens;
+    std::string error;
 
 private:
     void parse(const std::vector<std::string>& toks);
@@ -36,6 +37,7 @@ private:
     std::vector<token> reduce_toks(const std::vector<token>& toks);
 
 private:
+    bool break_at_error;
     std::regex math_re = std::regex(R"(\(*\d+(?:[_\d]*)\)*(?:\s*[-+*/]\s*\(*\d+(?:[_\.\d]*)\)*)*)");
     std::regex str_re = std::regex(R"(\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*')");
     std::regex identifier_re = std::regex(R"([\w\d_\-.+*/]+)");
