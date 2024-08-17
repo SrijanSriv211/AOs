@@ -27,3 +27,5 @@ EXPORT-TEXT my_text.txt; ping www.google.com;
 true false
 --help -test-now
 _shutdown
+
+"Heloo world!
