@@ -10,7 +10,7 @@ namespace datetime
 
         std::tm now_tm = *std::localtime(&t_c);
         std::stringstream ss;
-        ss << std::put_time(&now_tm, "%d-%m-%Y %H:%M:%S");
+        ss << std::put_time(&now_tm, "%a, %d %b %Y, %H:%M:%S");
         return ss.str();
     }
 }
