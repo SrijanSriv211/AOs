@@ -1,4 +1,4 @@
-import shutil, sys, os
+import shutil, time, sys, os
 
 def get_build_no():
     return int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
@@ -15,10 +15,44 @@ def precompile_files():
 
     [os.system(cmd) for path, cmd in filedata if os.path.isfile(path) == False]
 
-# https://stackoverflow.com/a/2909998/18121288
-SRC_FILES = " ".join([os.path.join(path, "*.cpp") for path, _, files in os.walk("src") if any(name.endswith(".cpp") for name in files)])
-INCLUDE_DIRS = "-Isrc/ -Isrc/shared/"
-SCRIPT = f"g++ src/ico.o {SRC_FILES} {INCLUDE_DIRS} -DVERSION=2.8 -DBUILD_NUMBER={get_build_no()} -std=c++20 -o bin/AOs.exe"
+# convert seconds to hours, minutes and seconds
+def sec_to_time(seconds):
+    seconds = seconds % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+
+    hour = int(hour)
+    minutes = int(minutes)
+    seconds = int(seconds)
+
+    print(f"time taken: ", end="")
+    if hour != 0:
+        if hour > 1:
+            print(f"{hour} hours, ", end="")
+
+        else:
+            print(f"{hour} hour, ", end="")
+
+    if minutes != 0:
+        if minutes > 1:
+            print(f"{minutes} minutes and ", end="")
+
+        else:
+            print(f"{minutes} minute and ", end="")
+
+    print(f"{seconds} seconds")
+
+def compile_aos():
+    # https://stackoverflow.com/a/2909998/18121288
+    src_files = " ".join([os.path.join(path, "*.cpp") for path, _, files in os.walk("src") if any(name.endswith(".cpp") for name in files)])
+    include_dirs = "-Isrc/ -Isrc/shared/"
+    script = f"g++ src/ico.o {src_files} {include_dirs} -DVERSION=2.8 -DBUILD_NUMBER={get_build_no()} -std=c++20 -o bin/AOs.exe"
+
+    start = time.perf_counter()
+    os.system(script)
+    sec_to_time(time.perf_counter() - start)
 
 # create the bin folder
 if os.path.isdir("bin") == False:
@@ -27,11 +61,11 @@ if os.path.isdir("bin") == False:
 if not sys.argv[1:]:
     update_build_no()
     precompile_files()
-    os.system(SCRIPT)
+    compile_aos()
 
 for i, x in enumerate(sys.argv[1:]):
     if x == "help":
-        print("If no argument is passed     -> Build AOs from source")
+        print("if no argument is passed     -> Build AOs from source")
         print("clean                        -> Remove 'bin', 'obj' folders from the root directory.")
         print("run                          -> Run AOs")
         print("pch                          -> Precompile all headers")
@@ -42,7 +76,8 @@ for i, x in enumerate(sys.argv[1:]):
         [os.remove(i) for i in ["src/aospch.h.gch", "src/ico.o"] if os.path.isfile(i)]
 
     elif x == "run":
-        os.system(SCRIPT)
+        compile_aos()
+        input("press enter to continue.")
         os.system(f"bin\\AOs.exe {" ".join(sys.argv[i+2:])}")
 
     elif x == "exec":
