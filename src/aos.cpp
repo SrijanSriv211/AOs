@@ -2,6 +2,7 @@
 #include "aos.h"
 
 #include "console/console.h"
+#include "datetime/datetime.h"
 
 // https://stackoverflow.com/a/5459929/18121288
 // only the first 2 macros for useful for me
@@ -32,7 +33,8 @@ namespace AOs
         system("cls");
         std::string AOs_version = STR(VERSION);
         console::print("AOs 2024 [Version " + AOs_version + "]  ", console::color::LIGHT_YELLOW, false);
-        console::print("(" + std::string(std::getenv("username")) + ")", console::color::LIGHT_WHITE);
+        console::print("(" + std::string(std::getenv("username")) + ")  ", console::color::LIGHT_WHITE, false);
+        console::print(datetime::datetime(), console::color::GRAY);
 
         // ask user to use AOs in Windows Terminal if they are not already
         const char* env_var_val = std::getenv("WT_SESSION");
