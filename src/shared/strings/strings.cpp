@@ -30,6 +30,21 @@ namespace strings
         return str;
     }
 
+    std::string replace_all(const std::string str, const std::string& old_str, const std::string& new_str)
+    {
+        std::string replaced_str = str;
+
+        while (true)
+        {
+            if (str.find(old_str) == std::string::npos)
+                break;
+
+            replaced_str.replace(str.find(old_str), old_str.length(), new_str);
+        }
+
+        return replaced_str;
+    }
+
     bool is_empty(const std::string& str)
     {
         return all_of(str.begin(), str.end(), ::isspace) || str.empty();
