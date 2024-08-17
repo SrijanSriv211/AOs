@@ -14,6 +14,9 @@ void exec_code(const std::string* code)
         AOs::clear_console();
         console::readf readf = console::readf({""});
         std::vector<lex::token> tokens = readf.takeinput();
+
+        for (int i = 0; i < tokens.size(); i++)
+            std::cout << tokens[i].type << " : [" << tokens[i].name << "]\n";
     }
 
     else

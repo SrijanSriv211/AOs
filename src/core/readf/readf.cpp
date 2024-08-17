@@ -87,6 +87,7 @@ namespace console
             this->set_cursor_position((short)vector3.x);
         }
 
+        lexer = lex(text_buffer, false);
         return lexer.tokens;
     }
 
