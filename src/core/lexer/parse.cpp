@@ -1,149 +1,176 @@
-#include "aospch.h"
+#include "aopch.h"
 #include "lex.h"
 
 #include "strings/strings.h"
+#include "console/console.h"
+#include "math/math.h"
 
-void lex::parse(const std::vector<std::string>& toks)
+void lex::assign_token_type(const std::vector<std::string>& toks)
 {
     std::vector<lex::token> tokens;
-    std::string tok;
+    lex::token tok = {};
+    std::string str;
 
-    std::map<std::string, std::string> escape_chars = {
-        {"\\\\", "\\"},
-        {"\\\"", "\""},
-        {"\\'", "'"},
-        {"\\n", "\n"},
-        {"\\n", "\n"},
-        {"\\0", "\0"},
-        {"\\t", "\t"},
-        {"\\r", "\r"},
-        {"\\b", "\b"},
-        {"\\a", "\a"},
-        {"\\f", "\f"}
-    };
-
-    for (int i = 0; i < toks.size(); i++)
+    for (std::vector<std::string>::size_type i = 0; i < toks.size(); i++)
     {
-        tok = toks[i];
+        str = toks[i];
 
-        if (strings::is_empty(tok))
+        if (strings::is_empty(str))
+            tok = {str, lex::WHITESPACE};
+
+        else if (str.starts_with("#"))
+            tok = {str, lex::COMMENT};
+
+        else if (str == ";")
+            tok = {str, lex::SEMICOLON};
+
+        else if (str == "&")
+            tok = {str, lex::AMPERSAND};
+
+        else if (str == "@")
+            tok = {str, lex::AT};
+
+        else if (str == ">")
+            tok = {str, lex::GREATER};
+
+        else if (strings::any(str, {"true", "false"}, true))
+            tok = {str, lex::BOOL};
+
+        else if (strings::startswith_any(str, {"\"", "'", "`"}))
         {
-            tokens.push_back({tok, lex::WHITESPACE});
-            tok.clear();
+            if (!this->is_valid_string(str))
+                break;
+
+            tok = {str, lex::STRING};
         }
 
-        // COMMENT
-        else if (tok.starts_with('#'))
-        {
-            tokens.push_back({tok, lex::COMMENT});
-            tok.clear();
-        }
-
-        else if (tok == ";")
-        {
-            tokens.push_back({tok, lex::EOL});
-            tok.clear();
-        }
-
-        else if (strings::any(tok, {">", "@", "!", "?", ":"}, true))
-        {
-            tokens.push_back({tok, lex::SYMBOL});
-            tok.clear();
-        }
-
-        else if (tok.starts_with("\"") || tok.starts_with("'"))
-        {
-            if (tok.length() == 1)
-            {
-                this->error = "unexpected end of tokens after " + std::string(1, tok.front());
-
-                if (this->break_at_error)
-                    break;
-            }
-
-            else if (tok.front() != tok.back())
-            {
-                this->error = "missing terminating " + std::string(1, tok.front()) + " character";
-
-                if (this->break_at_error)
-                    break;
-            }
-
-            for (auto const& [key, val] : escape_chars)
-            {
-                if (tok.find(key) != std::string::npos)
-                    tok = strings::replace_all(tok, key, val);
-            }
-
-            tokens.push_back({tok, lex::STRING});
-            tok.clear();
-        }
-
-        // check for math expressions
-        else if (std::regex_match(tok, this->math_re))
-        {
-            std::string normalized_expr = strings::replace_all(tok, "_", "");
-
-            //TODO: Implement a math engine to evaluate math exprs.
-            tokens.push_back({normalized_expr, lex::EXPR});
-            tok.clear();
-        }
+        else if (this->is_math_expr(str))
+            tok = {str, lex::EXPR};
 
         else
+            tok = {str, lex::IDENTIFIER};
+
+        tokens.push_back(tok);
+        str.clear();
+    }
+
+    std::vector<lex::token> merged_tokens = this->merge_tokens(tokens);
+    this->tokens = this->evaluate_tokens ? this->eval_tokens(merged_tokens) : merged_tokens;
+}
+
+std::vector<lex::token> lex::merge_tokens(const std::vector<lex::token>& toks)
+{
+    std::vector<lex::token> tokens;
+    lex::token_type tok_type = lex::UNKNOWN;
+    std::string tok_name = "";
+
+    for (std::vector<lex::token>::size_type i = 0; i < toks.size(); i++)
+    {
+        if (this->any_token_type(toks[i].type, {lex::IDENTIFIER, lex::EXPR}) && this->any_token_type(toks[i+1].type, {lex::IDENTIFIER, lex::EXPR}))
+            tok_name += strings::is_empty(tok_name) ? toks[i].name + toks[i+1].name : toks[i+1].name;
+
+        else if (!strings::is_empty(tok_name))
         {
-            lex::token_type type;
-            if (tok == "true" || tok == "false")
-                type = lex::BOOL;
+            if (this->is_math_expr(tok_name))
+                tok_type = lex::EXPR;
 
-            else if (tok.starts_with("-") || tok.starts_with("/"))
-                type = lex::FLAGS;
+            else if (tok_name.starts_with("_"))
+                tok_type = lex::INTERNAL;
 
-            else if (tok.starts_with("_"))
-                type = lex::HIDDEN;
+            else if (strings::startswith_any(tok_name, {"-", "/"}))
+                tok_type = lex::FLAG;
 
             else
-                type = lex::IDENTIFIER;
+                tok_type = lex::IDENTIFIER;
 
-            tokens.push_back({tok, type});
-            tok.clear();
+            // push the previous common tokens to the array
+            tokens.push_back({tok_name, tok_type});
+
+            // clear the concatenated tok_name and tok_type
+            tok_name.clear();
+            tok_type = UNKNOWN;
+        }
+
+        // push the current tokens to the array
+        else
+        {
+            if (strings::startswith_any(toks[i].name, {"-", "/"}))
+                tokens.push_back({toks[i].name, lex::FLAG});
+
+            else if (strings::startswith_any(toks[i].name, {"_"}))
+                tokens.push_back({toks[i].name, lex::INTERNAL});
+
+            else
+                tokens.push_back(toks[i]);
         }
     }
 
-    this->tokens = this->reduce_toks(tokens);
+    return tokens;
 }
 
-// reduce tokens by combining just succeeding tokens with same type into a single token
-std::vector<lex::token> lex::reduce_toks(const std::vector<lex::token>& toks)
+std::vector<lex::token> lex::eval_tokens(const std::vector<lex::token>& toks)
 {
-    std::vector<lex::token> new_tokens;
-    lex::token_type tok_type;
-    std::string tok_name;
+    std::vector<lex::token> tokens;
+    lex::token tok = {};
 
-    for (int i = 0; i < toks.size(); i++)
+    for (std::vector<lex::token>::size_type i = 0; i < toks.size(); i++)
     {
-        if (toks[i].type == toks[i+1].type)
+        // ampersand just after a string literal will mean that string is to be evaluated into a `IDENTIFIER` or an `EXPR`,
+        // the string literals are used to define some ID or EXPR with spaces or other symbols which are a part of that token,
+        // therefore by placing ampersand just after the ending string literal will set the string to be evaluable,
+        // if the token name is not a math expression then set it as an ID.
+        if (toks[i].name.size() >= 3 && toks[i].type == lex::STRING && toks[i+1].type == lex::AMPERSAND)
         {
-            tok_name += toks[i].name + toks[i+1].name;
-            tok_type = toks[i].type;
+            std::string trimmed_str = strings::trim(toks[i].name, 1, 2);
+            tok = this->is_math_expr(trimmed_str) ? lex::token({math::eval(trimmed_str), lex::EXPR}) : lex::token({trimmed_str, lex::IDENTIFIER});
+            i++;
+        }
+
+        // @ just after a string literal will mean that string is to be evaluated into an `EXPR`,
+        // meaning the string contains a math expression and is to be evaluated.
+        else if (toks[i].name.size() >= 3 && toks[i].type == lex::STRING && toks[i+1].type == lex::AT)
+        {
+            std::string trimmed_str = strings::trim(toks[i].name, 1, 2);
+            tok = {math::eval(trimmed_str, false), lex::EXPR};
+            i++;
+        }
+
+        // check if string is env var string, a env var string in AO is defined by `env_var_name`, for eg, `username` -> SrijanSrivastava
+        else if (toks[i].type == lex::STRING && toks[i].name.front() == '`' && toks[i].name.back() == '`' && toks[i].name.size() >= 3)
+            tok = this->get_env_var_val(toks[i].name);
+
+        else if (toks[i].type == lex::STRING)
+            tok = {this->unescape_string(toks[i].name), toks[i].type};
+
+        else if (toks[i].type == lex::EXPR)
+            tok = {math::eval(toks[i].name), toks[i].type};
+
+        else if (toks[i].type == lex::SEMICOLON && toks[i+1].type == lex::WHITESPACE)
+        {
+            tok = toks[i];
             i++;
         }
 
         else
-        {
-            if (tok_name != "")
-            {
-                // push the previous common tokens to the array
-                new_tokens.push_back({tok_name, tok_type});
+            tok = toks[i];
 
-                // clear the concatenated tok_name and tok_type
-                tok_name.clear();
-                tok_type = UNKNOWN;
-            }
-
-            // push the current tokens to the array
-            new_tokens.push_back({toks[i].name, toks[i].type});
-        }
+        tokens.push_back(tok);
     }
 
-    return new_tokens;
+    return tokens;
+}
+
+std::map<int, console::color> lex::get_whitepoints()
+{
+    std::map<int, console::color> whitepoints = {{0, console::color::LIGHT_WHITE}};
+
+    for (std::vector<lex::token>::size_type i = 0; i < tokens.size(); i++)
+    {
+        // if the current token is a `;` then push the next token index to whitepoints
+        // if the next token is not a whitespace, otherwise move the next of next token index
+        if (tokens[i].type == lex::SEMICOLON || (tokens[i].type == lex::GREATER && i == 0))
+            whitepoints.insert({tokens[i+1].type == lex::WHITESPACE ? i+2 : i+1, console::color::LIGHT_WHITE});
+    }
+
+    return whitepoints;
 }
