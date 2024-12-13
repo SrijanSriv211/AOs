@@ -1,87 +1,88 @@
-import shutil, time, sys, os
+from utils import *
+import time, sys
 
-def get_build_no():
-    return int(open("scripts\\build.txt", "r").read()) if os.path.isfile("scripts\\build.txt") else 0
-
-def update_build_no():
-    build_no = str(get_build_no() + 1) # increment +1 to the current build no of AOs
-    open("scripts\\build.txt", "w").write(build_no)
-
-def precompile_files():
-    filedata = [
-        ("src/aospch.h.gch", "g++ src/aospch.h"), # compile AOs precompiled headers
-        ("src/ico.o", "windres src/ico.rc -O coff -o src/ico.o") # create ico.o containing the data for AOs icon
+CONFIG = {
+    "SRC_PATH": "src",
+    "ICON_PATH": "src/ico.o",
+    "INCLUDES": ["src/", "src/shared/", "src/vendor/"],
+    "DEFINES": ["VERSION=2024.3", "STD=2.8"],
+    "EXTRAS": "-lws2_32",
+    "STD": "c++20",
+    "OUTPATH": "bin\\AO.exe",
+    "OPTIMIZATION": "-O2",
+    "PRECOMPILES": [
+        ("src/aopch.h.gch", "g++ src/aopch.h"), # compile AO precompiled headers
+        ("src/ico.o", "windres src/ico.rc -O coff -o src/ico.o") # create ico.o containing the data for AO icon
     ]
+}
+COMMON = lambda: f"{join(CONFIG["INCLUDES"], "-I")} {CONFIG["EXTRAS"]} {join(CONFIG["DEFINES"], "-D")} {CONFIG["OPTIMIZATION"]} -std={CONFIG["STD"]} -Wall"
 
-    [os.system(cmd) for path, cmd in filedata if os.path.isfile(path) == False]
+def get_objs(file: str):
+    o_name = f"obj\\{create_unique_name(file)}.o"
 
-# convert seconds to hours, minutes and seconds
-def sec_to_time(seconds):
-    seconds = seconds % (24 * 3600)
-    hour = seconds // 3600
-    seconds %= 3600
-    minutes = seconds // 60
-    seconds %= 60
+    current_hash = hash_file(file)
+    previous_hash = load_hash(file)
 
-    hour = int(hour)
-    minutes = int(minutes)
-    seconds = int(seconds)
+    if not os.path.isfile(o_name) or current_hash != previous_hash:
+        save_hash(file, hash_file(file))
 
-    print(f"time taken: ", end="")
-    if hour != 0:
-        if hour > 1:
-            print(f"{hour} hours, ", end="")
+        if file.endswith(".cpp"):
+            os.system(f"g++ -c {file} {COMMON()} -o {o_name}")
 
-        else:
-            print(f"{hour} hour, ", end="")
+        elif file.endswith(".c"):
+            os.system(f"gcc -c {file} -o {o_name}")
 
-    if minutes != 0:
-        if minutes > 1:
-            print(f"{minutes} minutes and ", end="")
+    return o_name
 
-        else:
-            print(f"{minutes} minute and ", end="")
+def delete_stale_objects():
+    valid_files = {i for i in get_files(CONFIG["SRC_PATH"], (".cpp", ".c"))}
+    objects = {i["name"] for i in read_index_cache()}
+    cache = read_index_cache()
 
-    print(f"{seconds} seconds")
+    for file in list(objects - valid_files):
+        index = next((i for i, x in enumerate(cache) if x["name"] == file), None)
+        rm([cache[index]["o_name"]])
+        cache.pop(index)
+        remove_hash(cache)
 
-def compile_aos():
-    # https://stackoverflow.com/a/2909998/18121288
-    src_files = " ".join([os.path.join(path, "*.cpp") for path, _, files in os.walk("src") if any(name.endswith(".cpp") for name in files)])
-    include_dirs = "-Isrc/ -Isrc/shared/"
-    script = f"g++ src/ico.o {src_files} {include_dirs} -DVERSION=2.8 -DBUILD_NUMBER={get_build_no()} -std=c++20 -o bin/AOs.exe"
-
+def compile_ao():
     start = time.perf_counter()
-    os.system(script)
-    sec_to_time(time.perf_counter() - start)
 
-# create the bin folder
-if os.path.isdir("bin") == False:
-    os.mkdir("bin")
+    delete_stale_objects()
+    obj_files = [get_objs(f) for f in get_files(CONFIG["SRC_PATH"], (".cpp", ".c"))]
+    os.system(f"g++ {CONFIG["ICON_PATH"]} {join(obj_files)} {COMMON()} -o {CONFIG["OUTPATH"]}")
+
+    calc_total_time(time.perf_counter() - start)
+
+def run_ao(args):
+    os.system(f"{CONFIG["OUTPATH"]} {join(args)}")
+    pass
+
+###############################################################################################################################
+########################################################## MAIN CODE ##########################################################
+###############################################################################################################################
+
+mkdirs("bin", "obj")
+create_index_cache() if not os.path.isfile("scripts\\index.json") else None
 
 if not sys.argv[1:]:
-    update_build_no()
-    precompile_files()
-    compile_aos()
+    CONFIG["OPTIMIZATION"] = "-O2"
+    precompile_files(CONFIG["PRECOMPILES"])
+    compile_ao()
 
 for i, x in enumerate(sys.argv[1:]):
-    if x == "help":
-        print("if no argument is passed     -> Build AOs from source")
-        print("clean                        -> Remove 'bin', 'obj' folders from the root directory.")
-        print("run                          -> Run AOs")
-        print("pch                          -> Precompile all headers")
-        print("exec                         -> Execute AOs without compiling")
-
-    elif x == "clean":
-        [shutil.rmtree(i) for i in ["bin"] if os.path.exists(i)]
-        [os.remove(i) for i in ["src/aospch.h.gch", "src/ico.o"] if os.path.isfile(i)]
-
-    elif x == "run":
-        compile_aos()
-        input("press enter to continue.")
-        os.system(f"bin\\AOs.exe {" ".join(sys.argv[i+2:])}")
-
-    elif x == "exec":
-        os.system(f"bin\\AOs.exe {" ".join(sys.argv[i+2:])}")
+    if x == "clean":
+        rm(sys.argv[i+2:] if sys.argv[i+2:] else ["bin/", "obj/", "src/aopch.h.gch", "src/ico.o", "scripts/index.json"])
 
     elif x == "pch":
-        precompile_files()
+        precompile_files(CONFIG["PRECOMPILES"])
+
+    elif x == "run":
+        CONFIG["OPTIMIZATION"] = ""
+        compile_ao()
+        input("press enter to continue.")
+        run_ao(sys.argv[i+2:])
+
+    elif x == "exec":
+        run_ao(sys.argv[i+2:])
+        break
