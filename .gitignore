@@ -1,4 +1,8 @@
+.ao/
 .vscode/
+__pycache__/
 bin/
+obj/
 src/ico.o
-src/aospch.h.gch
+src/aopch.h.gch
+scripts/index.json
