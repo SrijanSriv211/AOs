@@ -1,5 +1,7 @@
-#include "aospch.h"
-#include "aos.h"
+#include "aopch.h"
+#include "ao.h"
+
+#include "core/entrypoint/entrypoint.h"
 
 #include "console/console.h"
 #include "datetime/datetime.h"
@@ -9,11 +11,11 @@
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
-namespace AOs
+namespace AO
 {
-    const std::string about_AOs = "A command-line tool built to control your OS directly through the command-line";
-    const std::string AOs_repo_link = "https://github.com/SrijanSriv211/AOs";
-    const std::filesystem::path aos_env_path = std::filesystem::current_path();
+    const std::string about_AO = "A command-line tool built to control your OS directly through the command-line";
+    const std::string AO_repo_link = "https://github.com/SrijanSriv211/AO";
+    std::string ao_env_path = std::filesystem::current_path().string();
 
     // https://stackoverflow.com/q/50889647/18121288
     std::string get_root_path()
@@ -31,20 +33,26 @@ namespace AOs
     void clear_console()
     {
         system("cls");
-        std::string AOs_version = STR(VERSION);
-        console::print("AOs 2024 [Version " + AOs_version + "]  ", console::color::LIGHT_YELLOW, false);
+        print_new_line = false;
+        std::string date_v = STR(VERSION);
+        std::string semantic_v = STR(STD);
+        console::print("AO " + date_v + " [Version " + semantic_v + "]  ", console::color::LIGHT_YELLOW, false);
         console::print("(" + std::string(std::getenv("username")) + ")  ", console::color::LIGHT_WHITE, false);
-        console::print(datetime::datetime(), console::color::GRAY);
+        console::print(datetime::datetime("%a, %d %b %Y"), console::color::GRAY);
 
-        // ask user to use AOs in Windows Terminal if they are not already
+        // ask user to use AO in Windows Terminal if they are not already
         const char* env_var_val = std::getenv("WT_SESSION");
         if (env_var_val == nullptr || env_var_val[0] == '\0')
         {
             console::print("> ", console::color::GRAY, false);
-            console::print("Please use AOs in Windows Terminal for better experience.", console::color::RED);
+            console::print("Please use AO in Windows Terminal for better experience.", console::color::RED);
         }
+    }
 
+    void print_prompt()
+    {
         console::print(std::filesystem::current_path().string(), console::color::LIGHT_WHITE);
+        console::print(datetime::datetime("%H:%M:%S"), console::color::LIGHT_WHITE);
         console::print("$ ", console::color::LIGHT_WHITE, false);
     }
 }
