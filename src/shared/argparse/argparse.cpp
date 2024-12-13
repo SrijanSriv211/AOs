@@ -1,4 +1,4 @@
-#include "aospch.h"
+#include "aopch.h"
 #include "argparse.h"
 
 #include "strings/strings.h"
@@ -34,12 +34,12 @@ std::vector<argparse::parsed_argument> argparse::parse(const std::vector<std::st
     std::vector<argparse::parsed_argument> parsed_args;
     const std::vector<std::string> arg_flags = { "--", "-", "/" };
 
-    for (int i = 0; i < args.size(); i++)
+    for (std::vector<std::string>::size_type i = 0; i < args.size(); i++)
     {
         std::string lowercase_arg = strings::lowercase(args[i]);
         argument matching_argument = find_matching_argument(lowercase_arg);
 
-        // Return if no matching command was found.
+        // return if no matching command was found.
         if (matching_argument.names.empty())
         {
             if (std::any_of(arg_flags.begin(), arg_flags.end(), [&](const std::string& flag) { return lowercase_arg.find(flag) == 0; }))
@@ -67,7 +67,7 @@ std::vector<argparse::parsed_argument> argparse::parse(const std::vector<std::st
             {
                 if (matching_argument.default_value.empty())
                 {
-                    console::throw_error(args[i], "No argument");
+                    console::errors::throw_error(args[i], "No argument");
                     return {};
                 }
 
@@ -94,7 +94,7 @@ std::vector<argparse::parsed_argument> argparse::parse(const std::vector<std::st
         if (!missing_arg_list.empty())
         {
             std::string str_missing_arg_list = "Missing required argument(s): " + strings::join(", ", missing_arg_list);
-            console::throw_error(str_missing_arg_list, "Too few arguments");
+            console::errors::throw_error(str_missing_arg_list, "Too few arguments");
             return {};
         }
     }
@@ -114,7 +114,7 @@ void argparse::print_help()
     std::cout << this->name << " [OPTIONS]" << "\n\n";
 
     console::print("Options:", console::color::MAGENTA);
-    for (int i = 0; i < arguments.size(); i++)
+    for (std::vector<argparse::argument>::size_type i = 0; i < arguments.size(); i++)
     {
         argparse::argument arg = arguments[i];
 
@@ -156,7 +156,7 @@ void argparse::get_help(const std::vector<std::string>& cmd_names)
     {
         std::cout << "Type `help <command-name>` for more information on a specific command" << "\n\n";
 
-        for (int i = 0; i < arguments.size(); i++)
+        for (std::vector<argparse::argument>::size_type i = 0; i < arguments.size(); i++)
         {
             argparse::argument detail = arguments[i];
 
@@ -172,7 +172,7 @@ void argparse::get_help(const std::vector<std::string>& cmd_names)
 
     else
     {
-        for (const std::string name : names)
+        for (const std::string& name : names)
         {
             argument matching_cmd = find_matching_argument(name);
             if (matching_cmd.names.empty())

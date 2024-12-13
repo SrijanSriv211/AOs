@@ -1,4 +1,4 @@
-#include "aospch.h"
+#include "aopch.h"
 #include "console.h"
 
 namespace console
@@ -9,9 +9,9 @@ namespace console
         set_console_color(fore);
 
         std::cout << message;
-        if (endl) std::cout << std::endl;
 
         set_console_color(default_fore);
+        if (endl) std::cout << std::endl;
     }
 
     // https://stackoverflow.com/a/4053879/18121288
@@ -22,14 +22,8 @@ namespace console
         set_console_color(fore, back);
 
         std::cout << message;
-        if (endl) std::cout << std::endl;
 
         set_console_color(default_fore, default_back);
-    }
-
-    void throw_error(const std::string& details, const std::string& name_of_error)
-    {
-        print(name_of_error + " error:\n", color::LIGHT_WHITE, color::LIGHT_RED, false);
-        print(details, get_console_fore_color());
+        if (endl) std::cout << std::endl;
     }
 }

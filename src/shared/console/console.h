@@ -26,7 +26,23 @@ namespace console
     void reset_console_color();
     void set_console_color(const color& fore);
     void set_console_color(const color& fore, const color& back);
+
     void print(const std::string& message, const console::color& fore, const bool& endl=true);
     void print(const std::string& message, const console::color& fore, const console::color& back, const bool& endl=true);
-    void throw_error(const std::string& details, const std::string& name_of_error);
+
+    int get_console_window_width();
+    int get_console_window_height();
+
+    COORD get_cursor_pos();
+    void set_cursor_pos(const COORD& c);
+
+    bool getconchar(KEY_EVENT_RECORD& krec);
+    DWORD get_modifier_state(KEY_EVENT_RECORD& krec);
+
+    namespace errors
+    {
+        std::string throw_error(const std::string& message, const std::string& name_of_error);
+        std::string runtime(const std::string& command, const std::string& message);
+        std::string syntax(const std::string& message);
+    };
 };

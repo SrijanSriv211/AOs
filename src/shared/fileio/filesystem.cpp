@@ -1,4 +1,4 @@
-#include "aospch.h"
+#include "aopch.h"
 #include "filesystem.h"
 #include "console/console.h"
 
@@ -6,11 +6,11 @@ namespace filesystem
 {
     void create(const std::filesystem::path& filepath)
     {
-        // Check if the file already exists
+        // check if the file already exists
         if (std::filesystem::exists(filepath))
             return;
 
-        // Create the folder
+        // create the folder
         try
         {
             std::ofstream file(filepath);
@@ -19,16 +19,16 @@ namespace filesystem
 
         catch(const std::exception& e)
         {
-            console::throw_error(e.what(), "C++ file system IO");
+            console::errors::throw_error(e.what(), "C++ file system IO");
         }
     }
 
     void write(const std::filesystem::path& filepath, const std::string& content)
     {
-        // Check if the file already exists
+        // check if the file already exists
         filesystem::create(filepath);
 
-        // Create the folder
+        // create the folder
         try
         {
             std::ofstream file(filepath);
@@ -38,7 +38,7 @@ namespace filesystem
 
         catch(const std::exception& e)
         {
-            console::throw_error(e.what(), "C++ file system IO");
+            console::errors::throw_error(e.what(), "C++ file system IO");
         }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace datetime
 {
-    std::string datetime();
+    std::string datetime(const std::string& format);
 }
